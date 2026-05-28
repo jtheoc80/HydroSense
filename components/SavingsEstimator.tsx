@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { calculateSavings } from "@/lib/savings";
 
 const discountTiers = [
   { label: "4%", value: 4 },
@@ -21,11 +22,10 @@ export default function SavingsEstimator() {
   const [discount, setDiscount] = useState(10);
   const [homeAge, setHomeAge] = useState("10-30");
 
-  const annual = Math.round(premium * (discount / 100));
-  const fiveYear = annual * 5;
-  const tenYear = annual * 10;
-  const installCost = 999;
-  const paybackMonths = annual > 0 ? Math.ceil((installCost / annual) * 12) : 0;
+  const { annual, fiveYear, tenYear, paybackMonths } = calculateSavings(
+    premium,
+    discount
+  );
 
   return (
     <section id="savings-estimator" className="py-20 lg:py-28 bg-ink-950/50">
@@ -34,18 +34,18 @@ export default function SavingsEstimator() {
           Your savings, calculated
         </h2>
         <p className="text-fog-300 mb-12 max-w-2xl">
-          Adjust the sliders to match your policy. These are illustrative estimates based on
-          published carrier discount tiers.
+          Adjust the sliders to match your policy. These are illustrative
+          estimates based on published carrier discount tiers.
         </p>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Inputs */}
           <div className="space-y-8">
-            {/* Premium slider */}
             <div>
               <label className="block text-sm text-fog-300 mb-3">
                 Annual premium:{" "}
-                <span className="font-mono text-signal-300">${premium.toLocaleString()}</span>
+                <span className="font-mono text-signal-400">
+                  ${premium.toLocaleString()}
+                </span>
               </label>
               <input
                 type="range"
@@ -63,9 +63,10 @@ export default function SavingsEstimator() {
               </div>
             </div>
 
-            {/* Discount tier */}
             <fieldset>
-              <legend className="block text-sm text-fog-300 mb-3">Carrier discount tier</legend>
+              <legend className="block text-sm text-fog-300 mb-3">
+                Carrier discount tier
+              </legend>
               <div className="grid grid-cols-4 gap-2">
                 {discountTiers.map((tier) => (
                   <button
@@ -84,9 +85,10 @@ export default function SavingsEstimator() {
               </div>
             </fieldset>
 
-            {/* Home age */}
             <fieldset>
-              <legend className="block text-sm text-fog-300 mb-3">Home age</legend>
+              <legend className="block text-sm text-fog-300 mb-3">
+                Home age
+              </legend>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {homeAges.map((age) => (
                   <button
@@ -106,14 +108,13 @@ export default function SavingsEstimator() {
             </fieldset>
           </div>
 
-          {/* Output */}
           <div className="bg-ink-800 border border-ink-700 rounded-xl p-6 lg:p-8 flex flex-col justify-center">
             <div className="space-y-6">
               <div>
                 <p className="text-xs uppercase tracking-widest text-fog-300 mb-1">
                   Annual savings
                 </p>
-                <p className="font-mono text-4xl lg:text-5xl text-signal-300 tracking-tight">
+                <p className="font-mono text-4xl lg:text-5xl text-signal-400 tracking-tight">
                   ${annual.toLocaleString()}
                 </p>
               </div>
@@ -122,7 +123,7 @@ export default function SavingsEstimator() {
                   <p className="text-xs uppercase tracking-widest text-fog-300 mb-1">
                     5-year savings
                   </p>
-                  <p className="font-mono text-2xl text-signal-300">
+                  <p className="font-mono text-2xl text-signal-400">
                     ${fiveYear.toLocaleString()}
                   </p>
                 </div>
@@ -130,7 +131,7 @@ export default function SavingsEstimator() {
                   <p className="text-xs uppercase tracking-widest text-fog-300 mb-1">
                     10-year savings
                   </p>
-                  <p className="font-mono text-2xl text-signal-300">
+                  <p className="font-mono text-2xl text-signal-400">
                     ${tenYear.toLocaleString()}
                   </p>
                 </div>
@@ -148,7 +149,7 @@ export default function SavingsEstimator() {
               href="#lead-form"
               className="btn-primary mt-8 text-center w-full"
             >
-              Lock in this savings — get a quote
+              Lock in this savings. Get a quote.
             </a>
           </div>
         </div>

@@ -10,7 +10,6 @@ function useCountUp(target: number, duration: number = 1500) {
     const step = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setValue(Math.round(target * eased));
       if (progress < 1) requestAnimationFrame(step);
@@ -33,22 +32,35 @@ export default function SavingsCounter() {
       </p>
       <div className="space-y-5">
         <div>
-          <p className="font-mono text-4xl lg:text-5xl text-signal-300 tracking-tight">
-            ${annual.toLocaleString()} <span className="text-lg text-fog-300">/ year</span>
+          <p className="font-mono text-4xl lg:text-5xl text-signal-400 tracking-tight">
+            ${annual.toLocaleString()}{" "}
+            <span className="text-lg text-fog-300">/ year</span>
           </p>
-          <p className="text-sm text-fog-300 mt-1">Your estimated insurance credit</p>
+          <p className="text-sm text-fog-300 mt-1">
+            Your estimated insurance credit
+          </p>
         </div>
         <div className="border-t border-ink-700 pt-5">
-          <p className="font-mono text-2xl lg:text-3xl text-signal-300 tracking-tight">
-            ${decade.toLocaleString()} <span className="text-base text-fog-300">over 10 years</span>
+          <p className="font-mono text-2xl lg:text-3xl text-signal-400 tracking-tight">
+            ${decade.toLocaleString()}{" "}
+            <span className="text-base text-fog-300">over 10 years</span>
           </p>
         </div>
         <div className="border-t border-ink-700 pt-5">
           <p className="font-mono text-2xl lg:text-3xl text-hydro-400 tracking-tight">
-            +{percent}% <span className="text-base text-fog-300">saved on water-damage portion</span>
+            +{percent}%{" "}
+            <span className="text-base text-fog-300">
+              saved on water-damage portion
+            </span>
           </p>
         </div>
       </div>
+      <a
+        href="#savings-estimator"
+        className="block text-center text-sm text-hydro-400 hover:text-hydro-300 mt-6 transition-colors"
+      >
+        Calculate your exact savings
+      </a>
     </div>
   );
 }

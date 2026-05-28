@@ -13,6 +13,8 @@ interface Lead {
   carrier: string | null;
   message: string | null;
   source: string;
+  city: string | null;
+  campaign: string | null;
   status: string;
   utm_source: string | null;
   utm_medium: string | null;
@@ -65,6 +67,7 @@ export default async function AdminLeadsPage() {
                 <th className="text-left py-3 px-3 text-fog-300 font-medium">Phone</th>
                 <th className="text-left py-3 px-3 text-fog-300 font-medium">ZIP</th>
                 <th className="text-left py-3 px-3 text-fog-300 font-medium">Carrier</th>
+                <th className="text-left py-3 px-3 text-fog-300 font-medium">City</th>
                 <th className="text-left py-3 px-3 text-fog-300 font-medium">Source</th>
                 <th className="text-left py-3 px-3 text-fog-300 font-medium">Status</th>
               </tr>
@@ -93,6 +96,7 @@ export default async function AdminLeadsPage() {
                   </td>
                   <td className="py-3 px-3 text-fog-300 font-mono">{lead.zip}</td>
                   <td className="py-3 px-3 text-fog-300">{lead.carrier || "-"}</td>
+                  <td className="py-3 px-3 text-fog-300 text-xs">{lead.city || "-"}</td>
                   <td className="py-3 px-3 text-fog-300 text-xs">
                     {lead.utm_source || lead.source}
                   </td>
@@ -120,7 +124,7 @@ export default async function AdminLeadsPage() {
               ))}
               {(!leads || leads.length === 0) && (
                 <tr>
-                  <td colSpan={8} className="py-12 text-center text-fog-300">
+                  <td colSpan={9} className="py-12 text-center text-fog-300">
                     No leads yet.
                   </td>
                 </tr>

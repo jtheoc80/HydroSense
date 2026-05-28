@@ -48,8 +48,8 @@ export default function Pricing() {
           Pricing
         </h2>
         <p className="text-fog-300 mb-12 max-w-2xl">
-          Every plan includes the certified install. Subscriptions add ongoing monitoring,
-          annual renewal, and carrier liaison services.
+          Every plan includes the certified install. Subscriptions add ongoing
+          monitoring, annual renewal, and carrier liaison services.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -57,9 +57,7 @@ export default function Pricing() {
             <div
               key={tier.name}
               className={`relative bg-ink-800 rounded-xl p-6 lg:p-8 border ${
-                tier.badge
-                  ? "border-hydro-400"
-                  : "border-ink-700"
+                tier.badge ? "border-hydro-400" : "border-ink-700"
               }`}
             >
               {tier.badge && (
@@ -67,17 +65,28 @@ export default function Pricing() {
                   {tier.badge}
                 </div>
               )}
-              <h3 className="text-xl font-semibold text-fog-50 mb-4">{tier.name}</h3>
+              <h3 className="text-xl font-semibold text-fog-50 mb-4">
+                {tier.name}
+              </h3>
               <div className="mb-6">
-                <span className="font-mono text-3xl text-fog-50">${tier.monthly}</span>
+                <span className="font-mono text-3xl text-fog-50">
+                  ${tier.monthly}
+                </span>
                 <span className="text-fog-300">/mo</span>
                 <span className="text-fog-300 ml-2">
-                  or <span className="font-mono text-fog-100">${tier.annual}</span>/yr
+                  or{" "}
+                  <span className="font-mono text-fog-100">
+                    ${tier.annual}
+                  </span>
+                  /yr
                 </span>
               </div>
               <ul className="space-y-3 mb-8">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm text-fog-200">
+                  <li
+                    key={feature}
+                    className="flex items-start gap-2 text-sm text-fog-200"
+                  >
                     <svg
                       className="w-4 h-4 text-hydro-400 mt-0.5 shrink-0"
                       fill="none"
@@ -85,7 +94,11 @@ export default function Pricing() {
                       stroke="currentColor"
                       strokeWidth={2}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     {feature}
                   </li>
@@ -94,9 +107,7 @@ export default function Pricing() {
               <a
                 href="#lead-form"
                 className={`block text-center w-full py-3 rounded-lg font-semibold transition-colors ${
-                  tier.badge
-                    ? "btn-primary"
-                    : "btn-outline"
+                  tier.badge ? "btn-primary" : "btn-outline"
                 }`}
               >
                 Get started

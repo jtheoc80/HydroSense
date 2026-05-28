@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, FormEvent } from "react";
+import { estimatedSavingsForCarrier } from "@/lib/savings";
 
 declare global {
   interface Window {
@@ -24,6 +25,10 @@ const carriers = [
   "Not sure",
 ];
 
+interface LeadFormProps {
+  city?: string;
+}
+
 interface UTMData {
   utm_source: string;
   utm_medium: string;
@@ -33,9 +38,10 @@ interface UTMData {
   referrer: string;
   page_path: string;
   user_agent: string;
+  campaign: string;
 }
 
-export default function LeadForm() {
+export default function LeadForm({ city }: LeadFormProps) {
   const [utm, setUtm] = useState<UTMData>({
     utm_source: "",
     utm_medium: "",
@@ -45,9 +51,11 @@ export default function LeadForm() {
     referrer: "",
     page_path: "",
     user_agent: "",
+    campaign: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [selectedCarrier, setSelectedCarrier] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -61,6 +69,7 @@ export default function LeadForm() {
       referrer: document.referrer || "",
       page_path: window.location.pathname,
       user_agent: navigator.userAgent,
+      campaign: params.get("utm_campaign") || "",
     });
   }, []);
 
@@ -81,9 +90,12 @@ export default function LeadForm() {
       address: data.get("address") as string,
       carrier: data.get("carrier") as string,
       message: data.get("message") as string,
+      city: city || "",
       source: "hydrosensetx.com",
       ...utm,
     };
+
+    setSelectedCarrier(body.carrier);
 
     try {
       const res = await fetch("/api/lead", {
@@ -94,14 +106,17 @@ export default function LeadForm() {
 
       if (!res.ok) {
         const json = await res.json();
-        setError(json.errors ? "Please check the form fields and try again." : "Something went wrong. Please try again.");
+        setError(
+          json.errors
+            ? "Please check the form fields and try again."
+            : "Something went wrong. Please try again."
+        );
         setSubmitting(false);
         return;
       }
 
       setSuccess(true);
 
-      // Fire analytics events
       if (window.gtag) {
         window.gtag("event", "generate_lead", {
           value: 0,
@@ -129,20 +144,48 @@ export default function LeadForm() {
   }
 
   if (success) {
+    const savings = estimatedSavingsForCarrier(selectedCarrier);
+
     return (
       <section id="lead-form" className="py-20 lg:py-28 bg-ink-950/50">
         <div className="section-container max-w-2xl text-center">
           <div className="bg-ink-800 border border-hydro-400/30 rounded-xl p-8 lg:p-12">
             <div className="w-16 h-16 bg-hydro-400/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-hydro-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              <svg
+                className="w-8 h-8 text-hydro-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
             <h3 className="font-display text-2xl text-fog-50 mb-3">
               You are on the list.
             </h3>
-            <p className="text-fog-300">
-              We will reach out within one business day with your carrier&apos;s likely discount.
+            <p className="text-fog-300 mb-6">
+              We will reach out within one business day with your carrier's
+              specific discount details.
+            </p>
+            {selectedCarrier &&
+              selectedCarrier !== "Other" &&
+              selectedCarrier !== "Not sure" && (
+                <div className="bg-ink-900/50 rounded-lg p-4 inline-block">
+                  <p className="text-xs uppercase tracking-widest text-fog-400 mb-1">
+                    Estimated annual savings with {selectedCarrier}
+                  </p>
+                  <p className="font-mono text-3xl text-signal-400">
+                    ${savings.low} to ${savings.high}
+                  </p>
+                </div>
+              )}
+            <p className="text-fog-400 text-xs mt-6">
+              Check your email for a confirmation with the full process overview.
             </p>
           </div>
         </div>
@@ -154,28 +197,31 @@ export default function LeadForm() {
     <section id="lead-form" className="py-20 lg:py-28 bg-ink-950/50">
       <div className="section-container">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Left: value prop */}
           <div className="flex flex-col justify-center">
             <h2 className="font-display text-3xl sm:text-4xl text-fog-50 mb-6">
               Texas insurance is up 46%. The credit is sitting there waiting.
             </h2>
             <p className="text-fog-200 leading-relaxed mb-4">
               A certified smart shutoff install qualifies you for{" "}
-              <span className="font-mono text-signal-300">$300 to $600</span> in annual
-              insurance credits. Most homeowners earn back the full install cost inside 24
-              months.
+              <span className="font-mono text-signal-400">
+                $300 to $600
+              </span>{" "}
+              in annual insurance credits. Most homeowners earn back the full
+              install cost inside 24 months.
             </p>
             <p className="text-fog-300 text-sm">
-              Fill out the form and we will get back to you within one business day with your
-              carrier-specific discount estimate.
+              Fill out the form and we will get back to you within one business
+              day with your carrier-specific discount estimate.
             </p>
           </div>
 
-          {/* Right: form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="first_name" className="block text-sm text-fog-300 mb-1.5">
+                <label
+                  htmlFor="first_name"
+                  className="block text-sm text-fog-300 mb-1.5"
+                >
                   First name *
                 </label>
                 <input
@@ -187,7 +233,10 @@ export default function LeadForm() {
                 />
               </div>
               <div>
-                <label htmlFor="last_name" className="block text-sm text-fog-300 mb-1.5">
+                <label
+                  htmlFor="last_name"
+                  className="block text-sm text-fog-300 mb-1.5"
+                >
                   Last name *
                 </label>
                 <input
@@ -201,7 +250,10 @@ export default function LeadForm() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm text-fog-300 mb-1.5">
+              <label
+                htmlFor="email"
+                className="block text-sm text-fog-300 mb-1.5"
+              >
                 Email *
               </label>
               <input
@@ -215,7 +267,10 @@ export default function LeadForm() {
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="phone" className="block text-sm text-fog-300 mb-1.5">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm text-fog-300 mb-1.5"
+                >
                   Phone
                 </label>
                 <input
@@ -226,7 +281,10 @@ export default function LeadForm() {
                 />
               </div>
               <div>
-                <label htmlFor="zip" className="block text-sm text-fog-300 mb-1.5">
+                <label
+                  htmlFor="zip"
+                  className="block text-sm text-fog-300 mb-1.5"
+                >
                   ZIP code *
                 </label>
                 <input
@@ -242,7 +300,10 @@ export default function LeadForm() {
             </div>
 
             <div>
-              <label htmlFor="address" className="block text-sm text-fog-300 mb-1.5">
+              <label
+                htmlFor="address"
+                className="block text-sm text-fog-300 mb-1.5"
+              >
                 Property address
               </label>
               <input
@@ -254,7 +315,10 @@ export default function LeadForm() {
             </div>
 
             <div>
-              <label htmlFor="carrier" className="block text-sm text-fog-300 mb-1.5">
+              <label
+                htmlFor="carrier"
+                className="block text-sm text-fog-300 mb-1.5"
+              >
                 Current insurance carrier
               </label>
               <select
@@ -272,7 +336,10 @@ export default function LeadForm() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm text-fog-300 mb-1.5">
+              <label
+                htmlFor="message"
+                className="block text-sm text-fog-300 mb-1.5"
+              >
                 Anything we should know
               </label>
               <textarea
@@ -284,9 +351,7 @@ export default function LeadForm() {
               />
             </div>
 
-            {error && (
-              <p className="text-alert-400 text-sm">{error}</p>
-            )}
+            {error && <p className="text-alert-500 text-sm">{error}</p>}
 
             <button
               type="submit"
@@ -297,7 +362,8 @@ export default function LeadForm() {
             </button>
 
             <p className="text-xs text-fog-300 text-center">
-              No spam. We contact you once to discuss your install and carrier discount.
+              No spam. We contact you once to discuss your install and carrier
+              discount.
             </p>
           </form>
         </div>

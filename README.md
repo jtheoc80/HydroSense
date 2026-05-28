@@ -1,6 +1,8 @@
-# HydroSense
+# HydroSense Texas
 
-Branded marketing site for [hydrosensetx.com](https://hydrosensetx.com). Licensed Texas smart water shutoff installs with carrier-recognized certification for homeowners insurance discounts.
+Branded marketing site for [hydrosensetx.com](https://hydrosensetx.com) with paid-ad alias [hydrosensehouston.com](https://hydrosensehouston.com). Licensed Texas smart water shutoff installs with carrier-recognized certification for homeowners insurance discounts.
+
+Texas Master Plumber License MPL 43057.
 
 ## Tech Stack
 
@@ -12,11 +14,13 @@ Branded marketing site for [hydrosensetx.com](https://hydrosensetx.com). License
 
 ## Routes
 
-| Route | Description |
-|---|---|
-| `/` | Landing page (all sections) |
-| `/api/lead` | POST — lead capture endpoint |
-| `/admin/leads` | Basic auth protected lead management |
+| Route | Type | Description |
+|---|---|---|
+| `/` | Static | 12-section landing page |
+| `/service-area/[city]` | SSG | 7 city pages (katy, cypress, the-woodlands, sugar-land, spring, baytown, houston) |
+| `/api/lead` | POST | Lead capture endpoint |
+| `/admin/leads` | Dynamic | Basic auth protected lead management |
+| `/sitemap.xml` | Auto | Generated sitemap |
 
 ## Setup
 
@@ -37,29 +41,28 @@ npm install
 ### 3. Create Resend account
 
 1. Sign up at [resend.com](https://resend.com).
-2. Add and verify the domain `hydrosensetx.com` (or use their test domain for dev).
+2. Add and verify the domain `hydrosensetx.com` (see Resend Domain Verification below).
 3. Copy your API key.
 
 ### 4. Set environment variables
-
-Copy `.env.example` to `.env.local` and fill in the values:
 
 ```bash
 cp .env.example .env.local
 ```
 
 Required for core functionality:
-- `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL
-- `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role key
-- `RESEND_API_KEY` — Resend API key
-- `ADMIN_PASSWORD` — Password for /admin/leads
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key
+- `RESEND_API_KEY` - Resend API key
+- `ADMIN_PASSWORD` - Password for /admin/leads
 
 Optional:
-- `LEAD_WEBHOOK_URL` — POST leads to your CRM (Zapier/n8n/Make/HubSpot)
-- `NEXT_PUBLIC_GA_ID` — Google Analytics 4 measurement ID
-- `NEXT_PUBLIC_META_PIXEL_ID` — Meta (Facebook) Pixel ID
-- `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID` — Google Ads conversion ID
-- `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` — Google Ads conversion label
+- `LEAD_WEBHOOK_URL` - POST leads to your CRM (Zapier/n8n/Make/HubSpot)
+- `NEXT_PUBLIC_GA_ID` - Google Analytics 4 measurement ID
+- `NEXT_PUBLIC_META_PIXEL_ID` - Meta (Facebook) Pixel ID
+- `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_ID` - Google Ads conversion ID
+- `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` - Google Ads conversion label
+- `GOOGLE_BUSINESS_PROFILE_URL` - Google Business Profile link (shown in footer)
 
 ### 5. Run locally
 
@@ -67,71 +70,59 @@ Optional:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
-
 ### 6. Deploy to Vercel
 
 ```bash
 npx vercel
-npx vercel env pull    # sync env vars if set in dashboard
-npx vercel --prod      # production deploy
+npx vercel --prod
 ```
 
 Or connect the GitHub repo in the Vercel dashboard for automatic deploys on push.
 
-### 7. Point domain
-
-Add these DNS records for `hydrosensetx.com`:
+### 7. DNS for hydrosensetx.com
 
 | Type | Name | Value |
 |---|---|---|
-| A | @ | 76.76.21.21 |
-| CNAME | www | cname.vercel-dns.com |
+| A | @ | `76.76.21.21` |
+| CNAME | www | `cname.vercel-dns.com` |
 
-Then add the domain in Vercel: Project Settings > Domains > Add `hydrosensetx.com`.
+Add `hydrosensetx.com` in Vercel > Project Settings > Domains.
+
+### 8. DNS for hydrosensehouston.com (paid-ad alias)
+
+| Type | Name | Value |
+|---|---|---|
+| A | @ | `76.76.21.21` |
+| CNAME | www | `cname.vercel-dns.com` |
+
+Add `hydrosensehouston.com` in Vercel > Project Settings > Domains. The `next.config.mjs` rewrite routes all traffic from this domain to `/service-area/houston`. Canonical tags point back to `hydrosensetx.com`.
 
 ## Wire Your CRM
 
-The lead API supports a webhook for CRM integration. Set `LEAD_WEBHOOK_URL` to receive a POST with the full lead JSON on every submission.
+Set `LEAD_WEBHOOK_URL` to receive a POST with the full lead JSON on every submission. Payload includes all form fields, UTM parameters, city tag, campaign, referrer, user agent, and IP.
 
-**Payload shape:**
-```json
-{
-  "id": "uuid",
-  "first_name": "string",
-  "last_name": "string",
-  "email": "string",
-  "phone": "string",
-  "zip": "string",
-  "address": "string",
-  "carrier": "string",
-  "message": "string",
-  "source": "hydrosensetx.com",
-  "page_path": "string",
-  "utm_source": "string",
-  "utm_medium": "string",
-  "utm_campaign": "string",
-  "utm_content": "string",
-  "utm_term": "string",
-  "referrer": "string",
-  "user_agent": "string",
-  "ip_address": "string"
-}
-```
-
-**Integration options:**
-- Zapier: Create a Zap with "Webhooks by Zapier" trigger (Catch Hook), paste the URL
-- n8n: Webhook node, paste the URL
+Integration options:
+- Zapier: Webhooks by Zapier trigger (Catch Hook)
+- n8n: Webhook node
 - Make: HTTP webhook module
 - HubSpot: Use Zapier/Make to map fields to HubSpot contacts
 
-## Admin
-
-Navigate to `/admin/leads` and authenticate with `ADMIN_USERNAME` / `ADMIN_PASSWORD` (HTTP Basic Auth). Update lead status (new / contacted / quoted / won / lost) directly from the table.
-
 ## Resend Domain Verification
 
-1. In Resend dashboard, go to Domains > Add Domain > `hydrosensetx.com`
-2. Add the MX, TXT (SPF), and CNAME (DKIM) records Resend provides to your DNS
-3. Click "Verify" in Resend once records propagate
-4. The `from` address `leads@hydrosensetx.com` will work once verified
+1. Resend Dashboard > Domains > Add `hydrosensetx.com`
+2. Add the 3 DNS records Resend provides (MX, TXT/SPF, CNAME/DKIM)
+3. Click Verify once records propagate
+4. Both `leads@hydrosensetx.com` (notifications) and `hello@hydrosensetx.com` (confirmations) will work after verification
+
+## LLM Crawlability
+
+The site includes aggressive LLM crawlability:
+- `/robots.txt` explicitly allows GPTBot, ClaudeBot, PerplexityBot, and 12 other AI crawlers
+- `/llms.txt` follows the llmstxt.org spec (table of contents)
+- `/llms-full.txt` full content dump, regenerated at build time via `scripts/generate-llms-full.ts`
+- JSON-LD structured data on every page (Organization, LocalBusiness, Service, FAQPage, BreadcrumbList, Article)
+- Sitemap at `/sitemap.xml`
+
+## Admin
+
+Navigate to `/admin/leads` and authenticate with `ADMIN_USERNAME` / `ADMIN_PASSWORD` (HTTP Basic Auth). Update lead status directly from the table.

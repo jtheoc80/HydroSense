@@ -3,19 +3,21 @@ export default function CriticalBar() {
     <div className="sticky top-0 z-50 bg-ink-950 border-b border-alert-500/30">
       <div className="section-container flex items-center justify-between py-2.5 text-sm">
         <div className="flex items-center gap-3">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="pulse-dot absolute inline-flex h-full w-full rounded-full bg-alert-400 opacity-75" />
+          <span className="relative flex h-2.5 w-2.5 shrink-0">
+            <span className="pulse-dot absolute inline-flex h-full w-full rounded-full bg-alert-500 opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-alert-500" />
           </span>
           <p className="text-fog-200">
             <span className="hidden sm:inline">
-              Texas home insurance up 46% in two years. Most homeowners qualify for{" "}
-              <span className="font-mono text-signal-300">$300 to $600</span> in annual credits
-              they are not collecting.
+              Texas homeowners insurance is up 46% in two years. Most homeowners qualify
+              for{" "}
+              <span className="font-mono text-signal-400">$300 to $600</span> in annual
+              credits they never collect.
             </span>
             <span className="sm:hidden">
               TX insurance up 46%.{" "}
-              <span className="font-mono text-signal-300">$300-$600/yr</span> in credits uncollected.
+              <span className="font-mono text-signal-400">$300-$600/yr</span> in credits
+              uncollected.
             </span>
           </p>
         </div>

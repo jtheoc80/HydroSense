@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { leadSchema } from "@/lib/validation";
-import { sendLeadNotification } from "@/lib/email";
+import { sendLeadNotification, sendLeadConfirmation } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,17 +39,20 @@ export async function POST(request: NextRequest) {
 
     const leadWithId = { ...parsed.data, id: data.id, ip_address: ip };
 
-    // Fire side effects in parallel, don't block response
     const sideEffects: Promise<void>[] = [];
 
-    // 1. Email notification
     sideEffects.push(
       sendLeadNotification(leadWithId).catch((err) =>
         console.error("Email notification failed:", err)
       )
     );
 
-    // 2. Webhook
+    sideEffects.push(
+      sendLeadConfirmation(leadWithId).catch((err) =>
+        console.error("Confirmation email failed:", err)
+      )
+    );
+
     if (process.env.LEAD_WEBHOOK_URL) {
       sideEffects.push(
         fetch(process.env.LEAD_WEBHOOK_URL, {
@@ -62,7 +65,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Wait for side effects but don't fail the response
     Promise.allSettled(sideEffects);
 
     return NextResponse.json({ ok: true, id: data.id });

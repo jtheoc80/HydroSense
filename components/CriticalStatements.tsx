@@ -1,7 +1,8 @@
 const statements = [
   {
-    headline: "Texas home insurance climbed 46% in two years and Houston is the bullseye.",
-    source: "Policygenius pricing analysis, May 2022 to May 2023",
+    headline:
+      "Texas home insurance climbed 46% in two years and Houston is the bullseye.",
+    source: "Policygenius pricing analysis, May 2022 to May 2024",
   },
   {
     headline:
@@ -36,6 +37,11 @@ export default function CriticalStatements() {
               </p>
             </article>
           ))}
+        </div>
+        <div className="mt-8 text-center">
+          <a href="#lead-form" className="btn-outline text-sm">
+            Stop leaving money on the table
+          </a>
         </div>
       </div>
     </section>

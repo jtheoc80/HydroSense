@@ -28,6 +28,12 @@ export default function CarriersSupported() {
             </span>
           ))}
         </div>
+        <a
+          href="#lead-form"
+          className="inline-block mt-8 text-sm text-hydro-400 hover:text-hydro-300 transition-colors"
+        >
+          Not sure about your carrier? We will check for you.
+        </a>
       </div>
     </section>
   );
