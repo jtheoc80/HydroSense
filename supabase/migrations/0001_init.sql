@@ -23,13 +23,18 @@ create table public.leads (
   referrer text,
   user_agent text,
   ip_address text,
+  lead_score integer default 0,
+  lead_tier text default 'cold',
   status text not null default 'new',
+  booked_at timestamptz,
+  meeting_url text,
   notes text
 );
 
 create index leads_created_at_idx on public.leads (created_at desc);
 create index leads_email_idx on public.leads (email);
 create index leads_status_idx on public.leads (status);
+create index leads_lead_tier_idx on public.leads (lead_tier);
 
 alter table public.leads enable row level security;
 -- No public policies. Server uses service role key to bypass RLS.
