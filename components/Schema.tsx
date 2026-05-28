@@ -4,6 +4,7 @@ export default function Schema() {
     "@type": "Organization",
     name: "HydroSense Texas",
     url: "https://hydrosensetx.com",
+    logo: "https://hydrosensetx.com/brand/logo-horizontal-dark.png",
     telephone: "+12816945754",
     description:
       "Texas Master Plumber installed smart water shutoff systems with carrier-recognized insurance discount certification. Houston metro and surrounding Texas markets.",

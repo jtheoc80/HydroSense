@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 const navLinks = [
   { label: "Why now", href: "#critical-statements" },
@@ -12,36 +13,31 @@ const navLinks = [
   { label: "FAQ", href: "#faq" },
 ];
 
-function WaterDropIcon() {
-  return (
-    <svg
-      width="20"
-      height="26"
-      viewBox="0 0 20 26"
-      fill="none"
-      className="text-hydro-400"
-      aria-hidden="true"
-    >
-      <path
-        d="M10 0C10 0 0 12 0 17C0 22.5228 4.47715 26 10 26C15.5228 26 20 22.5228 20 17C20 12 10 0 10 0Z"
-        fill="currentColor"
-        fillOpacity="0.9"
-      />
-    </svg>
-  );
-}
-
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <header className="sticky top-[42px] z-40 bg-ink-900/95 backdrop-blur-md border-b border-ink-700/50">
       <div className="section-container flex items-center justify-between h-16">
-        <a href="/" className="flex items-center gap-2" aria-label="HydroSense home">
-          <WaterDropIcon />
-          <span className="font-display text-2xl text-fog-50 tracking-tight">
-            HydroSense
-          </span>
+        <a href="/" className="flex items-center" aria-label="HydroSense home">
+          {/* Desktop: horizontal lockup */}
+          <Image
+            src="/brand/logo-horizontal-light.png"
+            alt="HydroSense"
+            width={160}
+            height={40}
+            className="hidden sm:block h-10 w-auto"
+            priority
+          />
+          {/* Mobile: white icon mark only */}
+          <Image
+            src="/brand/logo-mark-light.png"
+            alt="HydroSense"
+            width={32}
+            height={32}
+            className="sm:hidden h-8 w-8"
+            priority
+          />
         </a>
 
         <nav
