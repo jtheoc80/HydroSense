@@ -5,7 +5,7 @@ import { useState } from "react";
 const faqs = [
   {
     q: "Will my carrier actually accept the certificate?",
-    a: "Yes. The HydroSense certificate documents a Texas Master Plumber installation of a carrier-recognized automatic water shutoff device. We format it to match what underwriters expect. State Farm, USAA, Allstate, Farmers, Travelers, and every other major Texas carrier has published discount tiers for this class of device. If your agent needs a specific format, we accommodate it.",
+    a: "Yes. The HydroSense certificate documents a licensed installation of a carrier-recognized automatic water shutoff device, certified under a Texas Master Plumber license. We format it to match what underwriters expect. State Farm, USAA, Allstate, Farmers, Travelers, and every other major Texas carrier has published discount tiers for this class of device. If your agent needs a specific format, we accommodate it.",
   },
   {
     q: "What is the typical discount?",
@@ -29,7 +29,15 @@ const faqs = [
   },
   {
     q: "How long does the install take?",
-    a: "Approximately 2 hours on site. A licensed Texas Master Plumber handles the full installation at your main water line. No drywall cuts, no damage, no mess. Your water is off for roughly 30 minutes during the swap.",
+    a: "Approximately two hours on site. Our trained, licensed technicians perform the installation at your main water line under the supervision of our Texas Registered Master Plumber, whose license certifies the work. No drywall cuts, no damage, no mess. Your water is off for roughly 30 minutes during the swap.",
+  },
+  {
+    q: "Who performs the installation?",
+    a: "Your install is performed by trained, licensed technicians. Our Texas Registered Master Plumber trains and supervises the install team and holds the license that certifies every installation for your insurer. This is the standard structure for licensed plumbing work in Texas, and it is what lets us schedule installs quickly across the Houston metro while keeping every job certified.",
+  },
+  {
+    q: "When do I get my certificate?",
+    a: "After your final payment, we issue the certificate in both paper and digital form. The digital copy is emailed to you and, with your permission, to your agent. You keep the paper copy for your records. We reissue it annually so the discount stays applied at each renewal.",
   },
   {
     q: "What does $999+ really mean?",

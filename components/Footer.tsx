@@ -103,8 +103,8 @@ export default function Footer() {
               Get Started
             </p>
             <p className="text-sm text-fog-300 leading-relaxed mb-5">
-              15-minute phone assessment, same-week install, same-day
-              certificate.
+              15-minute phone assessment, same-week install, certificate
+              in paper and digital form after final payment.
             </p>
             <a
               href="#lead-form"

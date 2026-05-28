@@ -130,7 +130,7 @@ export async function sendLeadConfirmation(
           <td style="padding:12px 0;color:#38BDF8;font-weight:700;vertical-align:top;">3.</td>
           <td style="padding:12px 0;color:#CBD5E1;">
             <strong style="color:#F8FAFC;">Professional install</strong><br/>
-            A licensed Texas Master Plumber installs the smart shutoff at your main water line. Approximately 2 hours on site.
+            Trained, licensed technicians install the smart shutoff at your main water line under our Texas Master Plumber license. Approximately 2 hours on site.
           </td>
         </tr>
         <tr>
@@ -144,7 +144,7 @@ export async function sendLeadConfirmation(
           <td style="padding:12px 0;color:#38BDF8;font-weight:700;vertical-align:top;">5.</td>
           <td style="padding:12px 0;color:#CBD5E1;">
             <strong style="color:#F8FAFC;">Certificate to your insurer</strong><br/>
-            Same-day certificate emailed to you and your insurance agent. The discount applies at your next renewal.
+            After final payment, your certificate is issued in paper and digital form. The digital copy is emailed to you and your insurance agent. The discount applies at your next renewal.
           </td>
         </tr>
         <tr>

@@ -7,7 +7,7 @@ export default function Schema() {
     logo: "https://hydrosensetx.com/brand/logo-horizontal-dark.png",
     telephone: "+12816945754",
     description:
-      "Texas Master Plumber installed smart water shutoff systems with carrier-recognized insurance discount certification. Houston metro and surrounding Texas markets.",
+      "Licensed smart water shutoff installs certified under a Texas Master Plumber license, with carrier-recognized insurance discount certification. Houston metro and surrounding Texas markets.",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Houston",
@@ -73,7 +73,7 @@ export default function Schema() {
       name: "Texas",
     },
     description:
-      "Licensed Texas Master Plumber installs carrier-recognized smart water shutoff valves (Moen Flo, Phyn, StreamLabs) and issues the insurance certificate required to apply a 5-15% homeowners discount.",
+      "Trained, licensed technicians install carrier-recognized smart water shutoff valves (Moen Flo, Phyn, StreamLabs, Guardian) under a Texas Master Plumber license, then issue the insurance certificate required to apply a 5-15% homeowners discount.",
   };
 
   return (

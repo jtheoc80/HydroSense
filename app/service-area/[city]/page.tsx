@@ -127,7 +127,7 @@ export default function CityPage({ params }: PageProps) {
               <span className="text-fog-200">{city.name}</span>
             </nav>
             <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
-              Licensed Texas Master Plumber install
+              Licensed install, Texas Master Plumber certified
             </p>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-fog-50 leading-[1.1] mb-6">
               Smart water shutoff installation for {city.name} homeowners

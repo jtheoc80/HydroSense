@@ -21,7 +21,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
   if (!device) return {};
 
   const title = `${device.name} Installation in Houston | HydroSense Texas`;
-  const description = `${device.name}: ${device.tagline} Licensed Texas Master Plumber install with carrier-recognized certificate. Save $300-$600/yr on insurance.`;
+  const description = `${device.name}: ${device.tagline} Licensed install, Texas Master Plumber certified. Carrier-recognized certificate. Save $300-$600/yr on insurance.`;
 
   return {
     title,
@@ -187,9 +187,9 @@ export default function DevicePage({ params }: PageProps) {
               {device.tagline}
             </p>
             <p className="text-fog-300 mb-8">
-              We install this across the Houston metro. Licensed Texas
-              Master Plumber, carrier-recognized certificate issued same
-              day.
+              We install this across the Houston metro. Licensed
+              technicians, Texas Master Plumber certified. Carrier-recognized
+              certificate in paper and digital form after final payment.
             </p>
 
             {/* Part 1: Lead visual -- mechanism animation */}
@@ -340,11 +340,12 @@ export default function DevicePage({ params }: PageProps) {
               How HydroSense installs {device.name}
             </h2>
             <p className="text-lg text-fog-200 leading-relaxed">
-              A licensed Texas Master Plumber installs the device at your
-              main water line, configures the app on your phone, tests the
-              shutoff, and issues the carrier-recognized certificate the
-              same day. The entire on-site visit takes approximately two
-              hours.
+              Trained, licensed technicians install the device at your
+              main water line under our Texas Master Plumber license,
+              configure the app on your phone, and test the shutoff. After
+              final payment, we issue the carrier-recognized certificate
+              in paper and digital form. The on-site visit takes
+              approximately two hours.
             </p>
           </div>
         </section>

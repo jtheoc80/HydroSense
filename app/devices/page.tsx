@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Smart Water Shutoff Devices We Install | HydroSense Texas",
     description:
-      "Compare Flo by Moen, Phyn Plus, StreamLabs Control, and Guardian by Elexa. Licensed Texas Master Plumber install with carrier-recognized certificate.",
+      "Compare Flo by Moen, Phyn Plus, StreamLabs Control, and Guardian by Elexa. Licensed install, Texas Master Plumber certified. Carrier-recognized certificate.",
     url: "https://hydrosensetx.com/devices",
     siteName: "HydroSense Texas",
     type: "website",

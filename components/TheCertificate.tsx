@@ -25,10 +25,12 @@ export default function TheCertificate() {
                 did not.
               </p>
               <p>
-                HydroSense handles both sides. A licensed Texas Master Plumber
-                installs the device, then we issue a
-                carrier-recognized certificate the same day. We email it
-                directly to you and to your insurance agent.
+                HydroSense handles both sides. Trained, licensed technicians
+                install the device under the supervision and Texas Master
+                Plumber license that certifies the work. After your final
+                payment, we issue a carrier-recognized certificate in both
+                paper and digital form, and with your permission we send
+                the digital copy directly to your insurance agent.
               </p>
               <p>
                 At renewal, we reissue the certificate so the discount stays

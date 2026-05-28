@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title:
     "HydroSense Texas | Smart Water Shutoff Installs, $300-$600/yr Insurance Credit",
   description:
-    "Licensed Texas Master Plumber installed smart water shutoff with carrier-recognized certification. 5-15% homeowners insurance discount. Install from $999.",
+    "Licensed smart water shutoff installs, Texas Master Plumber certified. Carrier-recognized certification. 5-15% homeowners insurance discount. Install from $999.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://hydrosensetx.com"
   ),

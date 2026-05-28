@@ -130,7 +130,7 @@ export const cities: Record<string, CityData> = {
       },
       {
         q: "What is the install timeline for Cypress?",
-        a: "Typically 5 to 7 business days from phone assessment to completed install. Certificate is emailed the same day as installation.",
+        a: "Typically 5 to 7 business days from phone assessment to completed install. After final payment, we issue the certificate in both paper and digital form.",
       },
     ],
     whyInstall: [

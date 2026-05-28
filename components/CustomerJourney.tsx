@@ -32,7 +32,7 @@ const steps = [
   {
     number: "04",
     title: "Professional install",
-    body: "Texas Master Plumber on site for approximately 2 hours. Device installed at main water line. No drywall cuts, no mess.",
+    body: "Trained, licensed technicians install at your main water line under our Texas Master Plumber license. About two hours on site. No drywall cuts, no mess.",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.384-3.04A1.004 1.004 0 005 13.015V18a1 1 0 001 1h12a1 1 0 001-1v-4.985a1.004 1.004 0 00-1.036-.885l-5.384 3.04a1 1 0 01-.98 0zM20 7l-8 5-8-5V5a1 1 0 011-1h14a1 1 0 011 1v2z" />
@@ -52,7 +52,7 @@ const steps = [
   {
     number: "06",
     title: "Certificate to insurance",
-    body: "Same-day certificate emailed to you and your agent. The discount applies at your next renewal. We reissue annually.",
+    body: "After final payment, you receive your certificate in paper and digital form, ready for your agent. The discount applies at your next renewal, reissued annually.",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
