@@ -1,0 +1,32 @@
+# HydroSense Texas
+
+> Texas Master Plumber installed smart water shutoff systems with insurance discount certification. Houston metro and surrounding Texas markets. Texas Master Plumber License MPL 43057.
+
+## Core pages
+
+- [Homepage](https://hydrosensetx.com/): Overview, insurance savings calculator, certificate explainer, pricing
+- [How it works](https://hydrosensetx.com/#customer-journey): Six-step process from quote to insurance certificate
+- [Insurance forms guide](https://hydrosensetx.com/#insurance-forms): HO-A vs HO-B vs HO-3 explained for Texas homeowners
+- [Freeze damage](https://hydrosensetx.com/#freeze-damage): Long-tail consequences of hard freezes in Texas
+- [Pricing](https://hydrosensetx.com/#pricing): Install starts $999, monthly subscriptions $9 to $39
+- [The certificate](https://hydrosensetx.com/#the-certificate): What the certificate is, why it matters, sample facsimile
+- [FAQ](https://hydrosensetx.com/#faq): Insurance discount, device, install, subscription questions
+
+## Service areas
+
+- [Houston](https://hydrosensetx.com/service-area/houston): 88 neighborhoods, median home $340,000
+- [Katy](https://hydrosensetx.com/service-area/katy): KISD zone, median home $385,000
+- [Cypress](https://hydrosensetx.com/service-area/cypress): Northwest Houston, median home $340,000
+- [The Woodlands](https://hydrosensetx.com/service-area/the-woodlands): Montgomery County, median home $510,000
+- [Sugar Land](https://hydrosensetx.com/service-area/sugar-land): Fort Bend, median home $440,000
+- [Spring](https://hydrosensetx.com/service-area/spring): Klein/Spring ISD, median home $310,000
+- [Baytown](https://hydrosensetx.com/service-area/baytown): Coastal exposure, median home $260,000
+
+## About
+
+- Company: HydroSense Texas, a Lead Ledger Pro LLC brand
+- License: Texas Registered Master Plumber, MPL 43057
+- Service area: Houston metropolitan area, Greater Houston, Southeast Texas
+- Devices installed: Moen Flo, Phyn, StreamLabs
+- Phone: (281) 694-5754
+- Carriers recognized: State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Progressive, Texas Farm Bureau, Chubb
