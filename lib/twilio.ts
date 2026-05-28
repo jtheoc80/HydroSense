@@ -5,10 +5,11 @@ export async function sendInstantSms(lead: {
 }): Promise<void> {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
+  const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
   const from = process.env.TWILIO_FROM_NUMBER;
   const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL;
 
-  if (!sid || !token || !from) {
+  if (!sid || !token || (!messagingServiceSid && !from)) {
     console.warn("Twilio credentials not configured, skipping SMS");
     return;
   }
@@ -32,7 +33,11 @@ export async function sendInstantSms(lead: {
 
   const params = new URLSearchParams();
   params.set("To", to);
-  params.set("From", from);
+  if (messagingServiceSid) {
+    params.set("MessagingServiceSid", messagingServiceSid);
+  } else {
+    params.set("From", from!);
+  }
   params.set("Body", body);
 
   const res = await fetch(url, {
