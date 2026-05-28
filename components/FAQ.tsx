@@ -64,46 +64,68 @@ export default function FAQ() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="section-container max-w-3xl">
-        <h2 className="font-display text-3xl sm:text-4xl text-fog-50 mb-12">
-          Frequently asked questions
-        </h2>
-        <div className="divide-y divide-ink-700">
+        <div className="mb-14">
+          <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
+            Common questions
+          </p>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] text-fog-50">
+            Frequently asked questions
+          </h2>
+        </div>
+
+        <div className="divide-y divide-ink-700/50">
           {faqs.map((faq, i) => (
             <div key={i}>
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between py-5 text-left group"
+                className="w-full flex items-center justify-between py-6 text-left group"
                 aria-expanded={openIndex === i}
               >
-                <span className="text-fog-50 font-medium pr-4 group-hover:text-hydro-400 transition-colors">
+                <span className="text-fog-50 font-medium text-base pr-6 group-hover:text-hydro-400 transition-colors leading-snug">
                   {faq.q}
                 </span>
-                <svg
-                  className={`w-5 h-5 text-fog-300 shrink-0 transition-transform duration-200 ${
-                    openIndex === i ? "rotate-180" : ""
+                <span
+                  className={`w-8 h-8 rounded-lg bg-ink-800/60 border border-ink-700/40 flex items-center justify-center shrink-0 transition-all ${
+                    openIndex === i
+                      ? "bg-hydro-400/10 border-hydro-400/30"
+                      : ""
                   }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+                  <svg
+                    className={`w-4 h-4 text-fog-300 transition-transform duration-200 ${
+                      openIndex === i ? "rotate-180 text-hydro-400" : ""
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </span>
               </button>
-              {openIndex === i && (
-                <div className="pb-5 text-fog-300 leading-relaxed text-sm">
+              <div
+                className={`overflow-hidden transition-all duration-200 ${
+                  openIndex === i ? "max-h-96 pb-6" : "max-h-0"
+                }`}
+              >
+                <p className="text-fog-300 leading-relaxed pr-12">
                   {faq.a}
-                </div>
-              )}
+                </p>
+              </div>
             </div>
           ))}
         </div>
-        <div className="mt-8 text-center">
-          <a href="#lead-form" className="btn-primary text-sm">
+
+        <div className="mt-12 text-center">
+          <a
+            href="#lead-form"
+            className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-sm px-8 py-3.5 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 transition-all"
+          >
             Still have questions? We will call you.
           </a>
         </div>

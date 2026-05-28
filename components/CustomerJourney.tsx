@@ -1,6 +1,6 @@
 const steps = [
   {
-    number: "1",
+    number: "01",
     title: "Sign up",
     body: "Submit the form or call us. No commitment, no credit card. We collect your address, carrier, and policy details.",
     icon: (
@@ -10,7 +10,7 @@ const steps = [
     ),
   },
   {
-    number: "2",
+    number: "02",
     title: "15-minute assessment",
     body: "Phone call with our team. We review your plumbing layout, recommend the right device, and confirm your carrier's discount tier.",
     icon: (
@@ -20,7 +20,7 @@ const steps = [
     ),
   },
   {
-    number: "3",
+    number: "03",
     title: "Service agreement",
     body: "You receive a written scope of work with exact pricing. No hidden fees. Approve before we schedule.",
     icon: (
@@ -30,7 +30,7 @@ const steps = [
     ),
   },
   {
-    number: "4",
+    number: "04",
     title: "Professional install",
     body: "Texas Master Plumber on site for approximately 2 hours. Device installed at main water line. No drywall cuts, no mess.",
     icon: (
@@ -40,7 +40,7 @@ const steps = [
     ),
   },
   {
-    number: "5",
+    number: "05",
     title: "App handoff",
     body: "We configure the device, connect it to your phone, and walk you through the monitoring dashboard. You control it from day one.",
     icon: (
@@ -50,7 +50,7 @@ const steps = [
     ),
   },
   {
-    number: "6",
+    number: "06",
     title: "Certificate to insurance",
     body: "Same-day certificate emailed to you and your agent. The discount applies at your next renewal. We reissue annually.",
     icon: (
@@ -65,25 +65,31 @@ export default function CustomerJourney() {
   return (
     <section id="customer-journey" className="py-20 lg:py-28 bg-ink-950/50">
       <div className="section-container">
-        <h2 className="font-display text-3xl sm:text-4xl text-fog-50 mb-4">
-          How it works
-        </h2>
-        <p className="text-fog-300 mb-12 max-w-2xl">
-          Six steps from first contact to insurance credit applied. Most
-          homeowners complete the process in under two weeks.
-        </p>
+        <div className="max-w-3xl mb-14">
+          <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
+            The process
+          </p>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] text-fog-50 mb-5">
+            How it works
+          </h2>
+          <p className="text-fog-300 text-lg leading-relaxed">
+            Six steps from first contact to insurance credit applied. Most
+            homeowners complete the process in under two weeks.
+          </p>
+        </div>
 
-        {/* Desktop: horizontal with connecting line */}
+        {/* Desktop: horizontal timeline */}
         <div className="hidden lg:block relative">
-          <div className="absolute top-8 left-[4%] right-[4%] h-px bg-ink-700" />
-          <div className="grid grid-cols-6 gap-4">
+          {/* Connecting line */}
+          <div className="absolute top-10 left-[8%] right-[8%] h-px bg-gradient-to-r from-hydro-400/40 via-ink-700 to-hydro-400/40" />
+          <div className="grid grid-cols-6 gap-6">
             {steps.map((step) => (
-              <div key={step.number} className="relative text-center">
-                <div className="w-16 h-16 rounded-full bg-ink-800 border-2 border-hydro-400 text-hydro-400 flex items-center justify-center mx-auto relative z-10">
+              <div key={step.number} className="relative text-center group">
+                <div className="w-20 h-20 rounded-2xl bg-ink-800/60 border border-ink-700/40 text-hydro-400 flex items-center justify-center mx-auto relative z-10 group-hover:border-hydro-400/40 group-hover:bg-ink-800 transition-all backdrop-blur-sm">
                   {step.icon}
                 </div>
-                <p className="font-mono text-xs text-hydro-400 mt-3 mb-1">
-                  Step {step.number}
+                <p className="font-mono text-xs text-hydro-400/60 mt-4 mb-2">
+                  {step.number}
                 </p>
                 <h3 className="text-sm font-semibold text-fog-50 mb-2">
                   {step.title}
@@ -96,23 +102,25 @@ export default function CustomerJourney() {
           </div>
         </div>
 
-        {/* Mobile: stacked */}
-        <div className="lg:hidden space-y-6">
+        {/* Mobile: stacked cards */}
+        <div className="lg:hidden space-y-4">
           {steps.map((step) => (
             <div
               key={step.number}
-              className="flex gap-4 items-start"
+              className="flex gap-5 items-start bg-ink-800/30 border border-ink-700/30 rounded-xl p-5"
             >
-              <div className="w-12 h-12 rounded-full bg-ink-800 border-2 border-hydro-400 text-hydro-400 flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-ink-800/60 border border-ink-700/40 text-hydro-400 flex items-center justify-center shrink-0">
                 {step.icon}
               </div>
               <div>
-                <p className="font-mono text-xs text-hydro-400 mb-0.5">
-                  Step {step.number}
-                </p>
-                <h3 className="text-sm font-semibold text-fog-50 mb-1">
-                  {step.title}
-                </h3>
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="font-mono text-xs text-hydro-400/60">
+                    {step.number}
+                  </span>
+                  <h3 className="text-sm font-semibold text-fog-50">
+                    {step.title}
+                  </h3>
+                </div>
                 <p className="text-sm text-fog-300 leading-relaxed">
                   {step.body}
                 </p>
@@ -121,8 +129,11 @@ export default function CustomerJourney() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
-          <a href="#lead-form" className="btn-primary text-sm">
+        <div className="mt-12 text-center">
+          <a
+            href="#lead-form"
+            className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-sm px-8 py-3.5 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 transition-all"
+          >
             Start with step 1. It takes 60 seconds.
           </a>
         </div>
