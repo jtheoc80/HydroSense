@@ -3,12 +3,24 @@ import type { LeadInput } from "./validation";
 import { estimatedSavingsForCarrier } from "./savings";
 
 function getResend() {
-  return new Resend(process.env.RESEND_API_KEY);
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return null;
+  return new Resend(key);
+}
+
+function fromAddress(): string {
+  return process.env.LEAD_FROM_EMAIL || "quotes@hydrosensetx.com";
 }
 
 export async function sendLeadNotification(
   lead: LeadInput & { id: string; ip_address: string; lead_score?: number; lead_tier?: string }
 ) {
+  const resend = getResend();
+  if (!resend) {
+    console.warn("RESEND_API_KEY not configured, skipping notification email");
+    return;
+  }
+
   const to = process.env.LEAD_NOTIFICATION_EMAIL;
   if (!to) {
     console.warn("LEAD_NOTIFICATION_EMAIL not set, skipping email");
@@ -60,8 +72,8 @@ export async function sendLeadNotification(
     </div>
   `;
 
-  await getResend().emails.send({
-    from: "HydroSense Texas <leads@hydrosensetx.com>",
+  await resend.emails.send({
+    from: `HydroSense Texas <${fromAddress()}>`,
     to,
     subject: `${lead.lead_tier === "hot" ? "[HOT] " : ""}New HydroSense lead: ${lead.first_name} ${lead.last_name} (${lead.zip})`,
     html,
@@ -72,6 +84,12 @@ export async function sendLeadConfirmation(
   lead: LeadInput & { id: string }
 ) {
   if (!lead.email) return;
+
+  const resend = getResend();
+  if (!resend) {
+    console.warn("RESEND_API_KEY not configured, skipping confirmation email");
+    return;
+  }
 
   const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL;
   const savings = estimatedSavingsForCarrier(lead.carrier || "");
@@ -165,8 +183,8 @@ export async function sendLeadConfirmation(
     </div>
   `;
 
-  await getResend().emails.send({
-    from: "HydroSense Texas <hello@hydrosensetx.com>",
+  await resend.emails.send({
+    from: `HydroSense Texas <${fromAddress()}>`,
     to: lead.email,
     subject:
       "Your HydroSense quote is in motion. Here is what happens next.",

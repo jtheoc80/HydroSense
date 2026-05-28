@@ -290,7 +290,15 @@ export default function LeadForm({ city }: LeadFormProps) {
                   </p>
                 </div>
               )}
-            <p className="text-fog-400 text-sm mt-8">
+            {process.env.NEXT_PUBLIC_BOOKING_URL && (
+              <a
+                href={process.env.NEXT_PUBLIC_BOOKING_URL}
+                className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-base px-8 py-4 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 hover:-translate-y-0.5 transition-all mt-8"
+              >
+                Book your 15-minute call now
+              </a>
+            )}
+            <p className="text-fog-400 text-sm mt-6">
               Check your email for a confirmation with the full process
               overview.
             </p>

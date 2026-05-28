@@ -4,6 +4,8 @@ export async function sendPushNotification(lead: {
   last_name: string;
   zip: string;
   carrier?: string;
+  lead_score?: number;
+  lead_tier?: string;
 }): Promise<void> {
   const userKey = process.env.PUSHOVER_USER_KEY;
   const appToken = process.env.PUSHOVER_APP_TOKEN;
@@ -16,8 +18,9 @@ export async function sendPushNotification(lead: {
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://hydrosensetx.com";
 
-  const message =
-    `NEW LEAD: ${lead.first_name} ${lead.last_name} | ${lead.zip} | ${lead.carrier || "no carrier"} | tap to view in admin`;
+  const isHot = lead.lead_tier === "hot";
+  const title = isHot ? "HOT lead" : "New lead";
+  const message = `${lead.first_name} ${lead.last_name} | ${lead.zip} | ${lead.carrier || "no carrier"} | score ${lead.lead_score ?? 0}`;
 
   const res = await fetch("https://api.pushover.net/1/messages.json", {
     method: "POST",
@@ -25,12 +28,12 @@ export async function sendPushNotification(lead: {
     body: JSON.stringify({
       token: appToken,
       user: userKey,
-      title: "HydroSense Lead",
+      title,
       message,
       url: `${siteUrl}/admin/leads`,
       url_title: "View in Admin",
-      priority: 1,
-      sound: "cashregister",
+      priority: isHot ? 1 : 0,
+      sound: isHot ? "cashregister" : "pushover",
     }),
   });
 
