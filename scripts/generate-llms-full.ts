@@ -36,7 +36,7 @@ import { join } from "path";
 
 let output = `# HydroSense Texas - Full Content
 
-> Texas Master Plumber installed smart water shutoff systems with insurance discount certification. Houston metro. License MPL 43057.
+> Licensed Texas Master Plumber installed smart water shutoff systems with insurance discount certification. Houston metro.
 
 ---
 
@@ -56,9 +56,9 @@ A hard freeze does not always announce itself immediately. Supply lines develop 
 
 ## Insurance Forms: HO-A vs HO-B vs HO-3
 
-- HO-A (Basic): Covers 10 named perils at actual cash value (depreciated). Least coverage.
-- HO-B (Broad): Covers 16 named perils at replacement cost. Most common in Texas.
-- HO-3 (Special): Open peril, replacement cost. Broadest standard form.
+- HO-A (Basic): Named-peril, actual cash value (depreciated). Least coverage.
+- HO-B (Broad): Open-peril dwelling, named-peril contents, replacement cost. Historically the TX standard.
+- HO-3 (Special): Open-peril dwelling, named-peril contents, replacement cost. Most common today.
 
 The smart shutoff discount applies on all three forms.
 
@@ -131,7 +131,7 @@ output += `## Contact
 
 - Phone: (281) 694-5754
 - Website: https://hydrosensetx.com
-- License: Texas Registered Master Plumber, MPL 43057
+- License: Texas Registered Master Plumber
 - Company: Lead Ledger Pro LLC
 `;
 

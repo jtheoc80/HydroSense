@@ -18,7 +18,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-5">
-              Texas Master Plumber License MPL 43057
+              Licensed Texas Master Plumber install
             </p>
             <h1 className="font-display text-5xl sm:text-6xl lg:text-[4.25rem] lg:leading-[1.05] text-fog-50 mb-8">
               Your homeowners insurance is bleeding{" "}

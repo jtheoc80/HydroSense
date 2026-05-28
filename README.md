@@ -2,7 +2,7 @@
 
 Branded marketing site for [hydrosensetx.com](https://hydrosensetx.com) with paid-ad alias [hydrosensehouston.com](https://hydrosensehouston.com). Licensed Texas smart water shutoff installs with carrier-recognized certification for homeowners insurance discounts.
 
-Texas Master Plumber License MPL 43057.
+Licensed Texas Registered Master Plumber.
 
 ## Tech Stack
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { MASTER_PLUMBER_LICENSE } from "@/lib/config";
 
 const serviceAreas = [
   { name: "Houston", href: "/service-area/houston" },
@@ -121,7 +122,7 @@ export default function Footer() {
           </p>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <p className="text-xs text-fog-300 font-medium">
-              Texas Registered Master Plumber. Master Plumber License MPL 43057.
+              Texas Registered Master Plumber. Master Plumber License {MASTER_PLUMBER_LICENSE}.
             </p>
             <p className="text-xs text-fog-400">
               Copyright {new Date().getFullYear()} Lead Ledger Pro LLC. All

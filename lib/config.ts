@@ -1,0 +1,1 @@
+export const MASTER_PLUMBER_LICENSE = "MPL 43057";

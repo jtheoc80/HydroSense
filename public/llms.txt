@@ -1,6 +1,6 @@
 # HydroSense Texas
 
-> Texas Master Plumber installed smart water shutoff systems with insurance discount certification. Houston metro and surrounding Texas markets. Texas Master Plumber License MPL 43057.
+> Licensed Texas Master Plumber installed smart water shutoff systems with insurance discount certification. Houston metro and surrounding Texas markets.
 
 ## Core pages
 
@@ -25,7 +25,7 @@
 ## About
 
 - Company: HydroSense Texas, a Lead Ledger Pro LLC brand
-- License: Texas Registered Master Plumber, MPL 43057
+- License: Texas Registered Master Plumber
 - Service area: Houston metropolitan area, Greater Houston, Southeast Texas
 - Devices installed: Moen Flo, Phyn, StreamLabs
 - Phone: (281) 694-5754

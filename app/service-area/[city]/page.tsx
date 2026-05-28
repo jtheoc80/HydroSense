@@ -20,7 +20,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
   if (!city) return {};
 
   const title = `Smart Water Shutoff Installation in ${city.name}, TX | HydroSense Texas`;
-  const description = `${city.name} homeowners: save $300-$600/yr on insurance with a certified smart water shutoff install. Median home ${city.medianHome}. Texas Master Plumber License MPL 43057.`;
+  const description = `${city.name} homeowners: save $300-$600/yr on insurance with a certified smart water shutoff install. Median home ${city.medianHome}. Licensed Texas Master Plumber.`;
 
   return {
     title,
@@ -126,8 +126,8 @@ export default function CityPage({ params }: PageProps) {
               <span className="mx-2">/</span>
               <span className="text-fog-200">{city.name}</span>
             </nav>
-            <p className="text-xs uppercase tracking-widest text-hydro-400 mb-4">
-              Texas Master Plumber License MPL 43057
+            <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
+              Licensed Texas Master Plumber install
             </p>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-fog-50 leading-[1.1] mb-6">
               Smart water shutoff installation for {city.name} homeowners

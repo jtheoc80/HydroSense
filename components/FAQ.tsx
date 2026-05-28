@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: "How long does the install take?",
-    a: "Approximately 2 hours on site. A Texas Master Plumber (License MPL 43057) handles the full installation at your main water line. No drywall cuts, no damage, no mess. Your water is off for roughly 30 minutes during the swap.",
+    a: "Approximately 2 hours on site. A licensed Texas Master Plumber handles the full installation at your main water line. No drywall cuts, no damage, no mess. Your water is off for roughly 30 minutes during the swap.",
   },
   {
     q: "What does $999+ really mean?",

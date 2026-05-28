@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title:
     "HydroSense Texas | Smart Water Shutoff Installs, $300-$600/yr Insurance Credit",
   description:
-    "Texas Master Plumber installed smart water shutoff with carrier-recognized certification. 5-15% homeowners insurance discount. Install from $999. License MPL 43057.",
+    "Licensed Texas Master Plumber installed smart water shutoff with carrier-recognized certification. 5-15% homeowners insurance discount. Install from $999.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://hydrosensetx.com"
   ),
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "HydroSense Texas | Smart Water Shutoff Installs",
     description:
-      "Save $300-$600/yr on Texas homeowners insurance with a certified smart shutoff install. License MPL 43057.",
+      "Save $300-$600/yr on Texas homeowners insurance with a certified smart shutoff install. Licensed Texas Master Plumber.",
     images: ["/og-image.png"],
   },
   robots: { index: true, follow: true },

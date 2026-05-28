@@ -130,7 +130,7 @@ export async function sendLeadConfirmation(
           <td style="padding:12px 0;color:#38BDF8;font-weight:700;vertical-align:top;">3.</td>
           <td style="padding:12px 0;color:#CBD5E1;">
             <strong style="color:#F8FAFC;">Professional install</strong><br/>
-            Texas Master Plumber (License MPL 43057) installs the smart shutoff at your main water line. Approximately 2 hours on site.
+            A licensed Texas Master Plumber installs the smart shutoff at your main water line. Approximately 2 hours on site.
           </td>
         </tr>
         <tr>
@@ -158,7 +158,7 @@ export async function sendLeadConfirmation(
 
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid #002469;">
         <p style="color:#9AA8BF;font-size:12px;margin:0;">
-          HydroSense Texas, a Lead Ledger Pro LLC brand. Texas Master Plumber License MPL 43057.<br/>
+          HydroSense Texas, a Lead Ledger Pro LLC brand. Licensed Texas Master Plumber.<br/>
           Questions? Call <a href="tel:+12816945754" style="color:#38BDF8;">(281) 694-5754</a>.
         </p>
       </div>

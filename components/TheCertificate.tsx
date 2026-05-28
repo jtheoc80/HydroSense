@@ -25,8 +25,8 @@ export default function TheCertificate() {
                 did not.
               </p>
               <p>
-                HydroSense handles both sides. A Texas Master Plumber (License
-                MPL 43057) installs the device, then we issue a
+                HydroSense handles both sides. A licensed Texas Master Plumber
+                installs the device, then we issue a
                 carrier-recognized certificate the same day. We email it
                 directly to you and to your insurance agent.
               </p>
@@ -75,7 +75,7 @@ export default function TheCertificate() {
                     ["Install Date", "2026-05-15"],
                     ["Device", "Moen Flo Smart Water Monitor"],
                     ["Serial No.", "FLO-2026-049281"],
-                    ["TX Master Plumber", "License MPL 43057"],
+                    ["TX Master Plumber", "License on file"],
                     [
                       "Issued By",
                       "HydroSense Texas, Lead Ledger Pro LLC",
