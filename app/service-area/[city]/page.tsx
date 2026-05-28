@@ -357,6 +357,41 @@ export default function CityPage({ params }: PageProps) {
           </div>
         </section>
 
+        {/* Vacation rental cross-links */}
+        {city.vacationRental && (
+          <section className="py-16 lg:py-20">
+            <div className="section-container">
+              <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
+                Other vacation home markets we serve
+              </h2>
+              <p className="text-fog-200 leading-relaxed max-w-3xl mb-8">
+                Second homes and vacation properties face elevated risk because
+                no one is on-site when a pipe fails. We install across all three
+                Texas vacation home markets.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-6">
+                {Object.values(cities)
+                  .filter((c) => c.vacationRental && c.slug !== city.slug)
+                  .map((c) => (
+                    <a
+                      key={c.slug}
+                      href={`/service-area/${c.slug}`}
+                      className="group bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all"
+                    >
+                      <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">
+                        Vacation home market
+                      </p>
+                      <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">
+                        {c.name}
+                      </p>
+                      <p className="text-fog-300 text-sm">{c.heroNote}</p>
+                    </a>
+                  ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Lead form */}
         <LeadForm city={city.name} />
       </main>

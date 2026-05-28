@@ -9,6 +9,9 @@ const serviceAreas = [
   { name: "Sugar Land", href: "/service-area/sugar-land" },
   { name: "Spring", href: "/service-area/spring" },
   { name: "Baytown", href: "/service-area/baytown" },
+  { name: "Galveston", href: "/service-area/galveston" },
+  { name: "Lake Conroe", href: "/service-area/lake-conroe" },
+  { name: "Lake Livingston", href: "/service-area/lake-livingston" },
 ];
 
 export default function Footer() {

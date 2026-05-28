@@ -23,6 +23,7 @@ export interface CityData {
   };
   cityFaqs: { q: string; a: string }[];
   whyInstall: string[];
+  vacationRental?: boolean;
 }
 
 export const cities: Record<string, CityData> = {
@@ -415,6 +416,180 @@ export const cities: Record<string, CityData> = {
       "The city spans every construction era and pipe material. Whether you have a 1960s galvanized system in the Heights or PEX in a 2023 Energy Corridor build, the insurance discount applies at the same tier. The certificate is what the carrier needs, not a specific pipe material.",
       "Houston carriers are actively tightening underwriting on water damage claims. Several major carriers now offer preferential renewal terms to homeowners with documented smart shutoff installations. The HydroSense certificate positions you on the right side of that underwriting shift.",
     ],
+  },
+  galveston: {
+    name: "Galveston",
+    slug: "galveston",
+    county: "Galveston",
+    medianHome: "$320,000",
+    medianHomeNum: 320000,
+    typicalPremium: "$5,400 to $9,200",
+    zips: ["77550", "77551", "77553", "77554"],
+    heroNote:
+      "Beach houses, vacation rentals, year-round and seasonal occupancy",
+    schoolDistrict: "Galveston ISD",
+    freezeRisk:
+      "Galveston's island location provides some thermal buffering, but hard freezes still reach the island. Winter Storm Uri caused widespread pipe failures in beach houses and rental properties that sat unoccupied during the freeze. Vacation homes without anyone on-site to cut the water are the highest-risk category for catastrophic damage.",
+    homeAge:
+      "Housing stock ranges from historic Strand-area homes built in the 1890s to modern beachfront construction on the west end. Elevated pier-and-beam homes have exposed underfloor plumbing that is particularly freeze-vulnerable.",
+    hoaNote:
+      "Many Galveston beach communities and rental complexes require documented water mitigation for properties listed on Airbnb, VRBO, and other short-term rental platforms. Property managers increasingly list smart shutoff installation as a condition of management agreements.",
+    carriers: [
+      { name: "State Farm", typicalDiscount: "5-10%" },
+      { name: "USAA", typicalDiscount: "8-15%" },
+      { name: "Texas Farm Bureau", typicalDiscount: "5-10%" },
+      { name: "Allstate", typicalDiscount: "7-12%" },
+      { name: "Nationwide", typicalDiscount: "5-8%" },
+    ],
+    hoFormScenario:
+      "A west-end beach house on HO-3 form: a supply line failure while the owner is in Houston settles at $28,000 for full remediation including mold treatment in the salt-air environment. On HO-A form, the same event settles at $9,400 after depreciation. On vacation properties, the form difference is amplified because undetected leaks run longer.",
+    caseStudy: {
+      name: "The Warren Family",
+      neighborhood: "West End, Galveston",
+      premium: "$7,800/yr",
+      event:
+        "January 2024 freeze. Beach house unoccupied for two weeks. Overnight low hit 24F. Supply line under the elevated first floor cracked at a copper fitting.",
+      deviceCaught:
+        "Moen Flo detected abnormal flow at 1:48 AM and shut the main remotely. The owner received a phone alert in Houston 45 minutes away. Morning inspection found the crack with no water damage.",
+      outcome:
+        "Estimated avoided damage: $25,000 to $45,000 based on comparable unoccupied beach house claims. The family applied an 8% water-damage credit at renewal, saving $624/yr.",
+    },
+    cityFaqs: [
+      {
+        q: "Do you install in vacation rental properties on Galveston Island?",
+        a: "Yes. We install on beach houses, vacation rentals, and year-round residences across the island including the West End, East Beach, and the Strand area. Many of our Galveston installs are for Houston-based owners who need remote monitoring.",
+      },
+      {
+        q: "Does salt air affect the device?",
+        a: "The device installs on the main water line inside the home or in a utility closet, not in direct salt-air exposure. All four devices we install are rated for indoor residential use. The salt-air environment does accelerate pipe corrosion, which is one more reason a shutoff device is valuable on the island.",
+      },
+      {
+        q: "Can I monitor my Galveston property from Houston?",
+        a: "Yes. All four devices include a smartphone app with real-time flow monitoring and instant alerts. If the device detects an anomaly, it shuts the main automatically and notifies you immediately, whether you are in Houston, Dallas, or anywhere else.",
+      },
+    ],
+    whyInstall: [
+      "Galveston vacation properties carry some of the highest insurance premiums in the Houston metro due to combined wind, flood, and water damage exposure. Premiums on island properties routinely exceed $7,000/yr. A 10% water-damage credit puts $700+ back in your pocket annually.",
+      "The core risk on vacation properties is unoccupied time. A burst pipe in an occupied home gets caught in minutes. The same failure in an empty beach house runs for hours or days. A smart shutoff closes the main in seconds whether anyone is home or not. For Airbnb and VRBO hosts, this is the difference between a maintenance call and a $40,000 remediation.",
+      "Galveston property managers are increasingly requiring documented water mitigation as a condition of management agreements. The HydroSense certificate satisfies that requirement and positions your property favorably with both your insurer and your property manager.",
+    ],
+    vacationRental: true,
+  },
+  "lake-conroe": {
+    name: "Lake Conroe",
+    slug: "lake-conroe",
+    county: "Montgomery",
+    medianHome: "$420,000",
+    medianHomeNum: 420000,
+    typicalPremium: "$5,000 to $7,400",
+    zips: ["77301", "77302", "77303", "77304", "77316", "77356"],
+    heroNote:
+      "Lake houses, second homes, weekend occupancy, owners often Houston-based",
+    schoolDistrict: "Conroe ISD / Montgomery ISD",
+    freezeRisk:
+      "Lake Conroe sits in Montgomery County, north of Houston, where winter temperatures consistently run 3 to 5 degrees colder than the city. Second homes that sit unoccupied during weekdays are the highest-risk category. No one is home to notice a drip, cut the water, or call a plumber. Winter Storm Uri caused severe damage to lake houses where owners could not reach their properties for days.",
+    homeAge:
+      "Mix of 1990s-era lakefront development and newer luxury construction from 2010 to present. April Sound, Walden, and Del Lago date to the 1980s and 1990s. Newer communities like Grand Harbor and The Reserve are 2015+.",
+    hoaNote:
+      "Lakefront HOAs and POAs in communities like April Sound and Walden have tightened property maintenance standards. Water damage that goes undetected in a weekend home creates mold issues that affect neighboring properties.",
+    carriers: [
+      { name: "State Farm", typicalDiscount: "5-10%" },
+      { name: "USAA", typicalDiscount: "8-15%" },
+      { name: "Chubb", typicalDiscount: "10-15%" },
+      { name: "Travelers", typicalDiscount: "6-10%" },
+      { name: "Farmers", typicalDiscount: "5-8%" },
+    ],
+    hoFormScenario:
+      "A $500,000 lakefront home on HO-3 form: a second-floor bathroom supply line failure while the owner is in Houston for the workweek settles at $38,000 for full remediation. On HO-A form, the same event settles at $12,600. On high-value second homes, the form gap is substantial.",
+    caseStudy: {
+      name: "The Brooks Family",
+      neighborhood: "Walden on Lake Conroe",
+      premium: "$6,400/yr",
+      event:
+        "February 2024 freeze. Lake house unoccupied Monday through Thursday. Temperature dropped to 20F on Wednesday night. CPVC supply line in the attic cracked at a tee fitting.",
+      deviceCaught:
+        "Phyn detected the pressure anomaly at 11:22 PM and shut the main automatically. The owner in Katy received an immediate alert. Thursday morning inspection found the crack with zero water release.",
+      outcome:
+        "Estimated avoided damage: $30,000 to $50,000 based on comparable unoccupied lakefront claims. Applied a 10% credit through USAA, saving $640/yr.",
+    },
+    cityFaqs: [
+      {
+        q: "Do you install in April Sound and Walden?",
+        a: "Yes. We service all Lake Conroe communities including April Sound, Walden, Del Lago, Grand Harbor, The Reserve, Bentwater, and lakefront properties in Conroe, Montgomery, and Willis.",
+      },
+      {
+        q: "My lake house is only occupied on weekends. Is that when most damage happens?",
+        a: "Unoccupied time is when damage escalates. A burst pipe in an occupied home gets caught quickly. The same failure in a weekend-only home can run for days before anyone notices. The smart shutoff closes the main within seconds regardless of occupancy.",
+      },
+      {
+        q: "I am based in Houston. Can I monitor my Lake Conroe property remotely?",
+        a: "Yes. All four devices include smartphone apps with real-time monitoring and instant push alerts. If a leak is detected, the valve closes automatically and you are notified immediately. No need to drive up to check.",
+      },
+    ],
+    whyInstall: [
+      "Lake Conroe is one of the most active second-home markets in the Houston metro. Most owners live in Houston, Katy, or The Woodlands and visit on weekends. That leaves the property unoccupied 5 days a week during which a pipe failure can run undetected. A smart shutoff closes the main in seconds whether anyone is home or not.",
+      "Montgomery County winter temperatures run 3 to 5 degrees colder than central Houston. Lake Conroe properties with attic-routed plumbing face elevated freeze risk, compounded by the fact that HVAC may be set to a lower temperature during unoccupied periods. The shutoff device protects the home even when the thermostat is dialed down.",
+      "High-value lakefront homes carry premiums in the $5,000 to $7,400 range. A 10% water-damage credit on a $6,400 premium returns $640/yr, paying back the install in under 18 months. For second-home owners already carrying the overhead of a lake property, the credit is one of the simplest ways to reduce carrying cost.",
+    ],
+    vacationRental: true,
+  },
+  "lake-livingston": {
+    name: "Lake Livingston",
+    slug: "lake-livingston",
+    county: "Polk / San Jacinto / Trinity",
+    medianHome: "$240,000",
+    medianHomeNum: 240000,
+    typicalPremium: "$3,200 to $5,000",
+    zips: ["77351", "77360", "77331", "77334"],
+    heroNote:
+      "Weekend cabins, retirement homes, mixed occupancy, Houston and East Texas owners",
+    schoolDistrict: "Livingston ISD / Coldspring-Oakhurst CISD",
+    freezeRisk:
+      "Lake Livingston is 80 miles north of Houston in the Piney Woods. Winter temperatures regularly drop below 25F, colder than anywhere in the Houston metro. Weekend cabins and seasonal homes often have minimal insulation and exposed plumbing under pier-and-beam construction. During Winter Storm Uri, the Livingston area experienced prolonged sub-freezing conditions that caused widespread pipe failures in unoccupied lake cabins.",
+    homeAge:
+      "Housing stock ranges from 1970s-era fishing cabins to modern lakefront retirement homes built in the 2010s. Older cabins in Onalaska and along FM 356 have galvanized and copper plumbing that is highly freeze-vulnerable. Newer construction in Cape Royale and Westwood Shores uses PEX but still benefits from the shutoff.",
+    hoaNote:
+      "POA presence varies. Cape Royale and Westwood Shores have active property owner associations. Many lakefront lots outside organized communities have no HOA. Individual insurance management is the norm.",
+    carriers: [
+      { name: "State Farm", typicalDiscount: "5-10%" },
+      { name: "Texas Farm Bureau", typicalDiscount: "5-10%" },
+      { name: "Farmers", typicalDiscount: "5-8%" },
+      { name: "Nationwide", typicalDiscount: "5-8%" },
+      { name: "Progressive", typicalDiscount: "4-8%" },
+    ],
+    hoFormScenario:
+      "A Lake Livingston cabin on HO-B form: a supply line failure while the owner is in Houston settles at $14,000 for remediation including mold treatment. On HO-A form, the same event settles at $4,800 after depreciation. On older cabins with limited insulation, mold escalation is faster and remediation costs are proportionally higher.",
+    caseStudy: {
+      name: "The Hernandez Family",
+      neighborhood: "Onalaska, Lake Livingston",
+      premium: "$4,200/yr",
+      event:
+        "January 2024 freeze. Weekend cabin unoccupied. Temperature hit 18F. Copper supply line under the pier-and-beam foundation cracked at a 90-degree elbow.",
+      deviceCaught:
+        "StreamLabs detected the flow anomaly at 3:15 AM and closed the valve. The owner in Spring received an alert and arranged a plumber visit for the following day. Inspection found the crack with no water damage.",
+      outcome:
+        "Estimated avoided damage: $12,000 to $22,000 based on comparable unoccupied cabin claims. Applied a 5% credit at renewal, saving $210/yr.",
+    },
+    cityFaqs: [
+      {
+        q: "Do you install at Lake Livingston? That is further out than Houston.",
+        a: "Yes. Lake Livingston is within our extended service area. We service Livingston, Onalaska, Coldspring, and surrounding lake communities. There is no travel surcharge for the ZIP codes we cover.",
+      },
+      {
+        q: "My cabin is pier-and-beam with exposed plumbing underneath. Does that work?",
+        a: "Yes. The device installs at the main water line regardless of foundation type. Pier-and-beam homes with exposed underfloor plumbing actually benefit the most from the shutoff because those pipes have the highest freeze exposure.",
+      },
+      {
+        q: "My lake house has well water, not city water. Can you still install?",
+        a: "Yes. The device can be installed on well systems after the pressure tank on the main supply line into the home. The installation is similar to city water but positioned downstream of the well equipment.",
+      },
+    ],
+    whyInstall: [
+      "Lake Livingston is 80 miles north of Houston in the East Texas Piney Woods. Winter temperatures regularly drop below 25F, colder than anywhere in the Houston metro. Weekend cabins and seasonal homes that sit empty during freezes are the highest-risk category for catastrophic pipe damage. A smart shutoff closes the main within seconds whether anyone is on-site or not.",
+      "Many Lake Livingston properties are owned by Houston or East Texas families who visit on weekends and holidays. That leaves the property unoccupied most of the time. The combination of older plumbing, minimal insulation, and extended unoccupied periods creates a risk profile that carriers recognize. A smart shutoff device addresses the root cause: no one is there to cut the water when something fails.",
+      "Lake Livingston premiums are lower than Houston metro averages but the percentage credit is the same. A 5% credit on a $4,200 premium returns $210/yr. At 10%, that is $420/yr. The install pays for itself in 2 to 5 years depending on your carrier, and the actual leak protection is immediate.",
+    ],
+    vacationRental: true,
   },
 };
 

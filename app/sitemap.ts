@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { cityKeys } from "@/lib/cities";
+import { cities, cityKeys } from "@/lib/cities";
 import { deviceSlugs } from "@/lib/devices";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/service-area/${city}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: 0.9,
+    priority: cities[city].vacationRental ? 0.7 : 0.9,
   }));
 
   const devicePages = deviceSlugs.map((slug) => ({

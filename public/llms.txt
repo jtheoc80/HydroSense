@@ -18,7 +18,7 @@
 - [Freeze Damage Claims in Texas](https://hydrosensetx.com/freeze-damage-texas): How freeze damage claims work, Winter Storm Uri data, smart shutoff response time
 - [Service Area Hub](https://hydrosensetx.com/service-area): All seven cities with local carrier data, freeze risk profiles, ZIP codes
 
-## Service areas
+## Service areas — primary residence markets
 
 - [Houston](https://hydrosensetx.com/service-area/houston): 88 neighborhoods, median home $340,000
 - [Katy](https://hydrosensetx.com/service-area/katy): KISD zone, median home $385,000
@@ -27,6 +27,12 @@
 - [Sugar Land](https://hydrosensetx.com/service-area/sugar-land): Fort Bend, median home $440,000
 - [Spring](https://hydrosensetx.com/service-area/spring): Klein/Spring ISD, median home $310,000
 - [Baytown](https://hydrosensetx.com/service-area/baytown): Coastal exposure, median home $260,000
+
+## Service areas — vacation home markets
+
+- [Galveston](https://hydrosensetx.com/service-area/galveston): Beach houses, vacation rentals, salt air corrosion, hurricane exposure, Airbnb/VRBO density
+- [Lake Conroe](https://hydrosensetx.com/service-area/lake-conroe): High-end second homes, weekend occupancy, freeze vulnerability, Houston-based owners
+- [Lake Livingston](https://hydrosensetx.com/service-area/lake-livingston): Weekend cabins, retirement homes, Piney Woods freeze exposure, Houston/East Texas owners
 
 ## Devices we install
 
