@@ -40,8 +40,8 @@ function useCountUp(target: number, duration: number = 1800) {
 }
 
 export default function SavingsCounter() {
-  const annual = useCountUp(487);
-  const decade = useCountUp(5844);
+  const annual = useCountUp(600);
+  const decade = useCountUp(6000);
   const percent = useCountUp(12);
 
   return (

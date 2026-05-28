@@ -80,7 +80,7 @@ export const cities: Record<string, CityData> = {
     whyInstall: [
       "Katy is one of the highest-volume water damage claim markets in the Houston metro. The combination of 1990s-era CPVC supply lines, attic-routed plumbing, and hard freeze exposure creates a risk profile that carriers price aggressively. A certified smart shutoff install moves you into a lower risk tier on paper.",
       "The Katy ISD zone experienced $180M+ in residential water damage claims during Winter Storm Uri. Insurance carriers responded by tightening underwriting in this ZIP cluster. A growing number of Katy homeowners report that their renewal premiums are conditional on documented water mitigation. The HydroSense certificate satisfies that requirement.",
-      "Post-Uri construction in Elyson and Cane Island uses PEX and updated building codes. These homes face lower freeze risk but the insurance discount still applies. If you are paying $5,000+/yr in premiums on a $400K home, a 10% water-damage credit returns $500/yr for a $999 install.",
+      "Post-Uri construction in Elyson and Cane Island uses PEX and updated building codes. These homes face lower freeze risk but the insurance discount still applies. If you are paying $5,000+/yr in premiums on a $400K home, a 10% water-damage credit returns $600/yr for a $999 install.",
     ],
   },
   cypress: {

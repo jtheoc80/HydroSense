@@ -22,7 +22,7 @@ export default function Hero() {
             </p>
             <h1 className="font-display text-5xl sm:text-6xl lg:text-[4.25rem] lg:leading-[1.05] text-fog-50 mb-8">
               Your homeowners insurance is bleeding{" "}
-              <span className="text-signal-400">$500</span> a year.
+              <span className="text-signal-400">$600</span> a year.
               <br className="hidden sm:block" />
               <span className="text-fog-200"> We stop it.</span>
             </h1>

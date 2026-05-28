@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "HydroSense Texas | Stop Leaving $500/yr on the Table",
+    title: "HydroSense Texas | Stop Leaving $600/yr on the Table",
     description:
       "Texas home insurance is up 46% in two years. A certified smart water shutoff install qualifies you for $300-$600 in annual credits most homeowners never collect.",
     url: "https://hydrosensetx.com",

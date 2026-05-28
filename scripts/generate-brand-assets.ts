@@ -150,7 +150,7 @@ async function generateOgImage() {
       <text x="600" y="50" text-anchor="middle"
         font-family="Georgia, 'Times New Roman', serif"
         font-size="32" font-style="italic" fill="#CBD5E1"
-        letter-spacing="0.5">Stop leaving $500 a year on the table</text>
+        letter-spacing="0.5">Stop leaving $600 a year on the table</text>
     </svg>
   `);
 
