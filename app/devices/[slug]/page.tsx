@@ -44,12 +44,6 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-const cityLinks = [
-  { name: "Houston", slug: "houston" },
-  { name: "Katy", slug: "katy" },
-  { name: "The Woodlands", slug: "the-woodlands" },
-];
-
 export default function DevicePage({ params }: PageProps) {
   const device = devices[params.slug];
   if (!device) notFound();
@@ -320,12 +314,19 @@ export default function DevicePage({ params }: PageProps) {
             <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
               The discount comes from the install, not the brand
             </h2>
-            <p className="text-lg text-fog-200 leading-relaxed">
+            <p className="text-lg text-fog-200 leading-relaxed mb-4">
               Every device we install is carrier recognized. The discount
               comes from the certified install and the documentation, not
               the brand. We match the device to your home, your plumbing,
               and your carrier's approved list during the 15-minute
               assessment.
+            </p>
+            <p className="text-fog-200 leading-relaxed">
+              Understanding{" "}
+              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">
+                which insurance form you carry (HO-A, HO-B, or HO-3)
+              </a>{" "}
+              matters because the form determines whether your claim settles at replacement cost or depreciated value.
             </p>
           </div>
         </section>
@@ -452,7 +453,7 @@ export default function DevicePage({ params }: PageProps) {
                 href="/devices"
                 className="inline-flex items-center justify-center rounded-lg border border-fog-300/20 text-fog-100 font-medium text-sm px-8 py-3.5 hover:bg-white/5 hover:border-fog-300/30 transition-all"
               >
-                Full device comparison
+                Compare all four smart water shutoff devices
               </a>
             </div>
           </div>
@@ -480,24 +481,22 @@ export default function DevicePage({ params }: PageProps) {
                   </p>
                 </a>
               ))}
-              {/* City links */}
-              {cityLinks.map((city) => (
-                <a
-                  key={city.slug}
-                  href={`/service-area/${city.slug}`}
-                  className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
-                >
-                  <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">
-                    Service area
-                  </p>
-                  <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">
-                    {city.name}
-                  </p>
-                  <p className="text-fog-300 text-sm">
-                    Smart water shutoff installs in {city.name}, TX
-                  </p>
-                </a>
-              ))}
+              {/* Guide links */}
+              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">HO-A vs HO-B vs HO-3 in Texas</p>
+                <p className="text-fog-300 text-sm">Your policy form determines how water damage claims settle.</p>
+              </a>
+              <a href="/freeze-damage-texas" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Freeze damage claims in Texas</p>
+                <p className="text-fog-300 text-sm">How frozen pipe claims work and why carriers reward prevention.</p>
+              </a>
+              <a href="/service-area" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Service area</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Houston metro service area</p>
+                <p className="text-fog-300 text-sm">Seven cities across Greater Houston.</p>
+              </a>
             </div>
           </div>
         </section>

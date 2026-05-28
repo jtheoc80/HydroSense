@@ -110,6 +110,15 @@ export default function InsuranceForms() {
             even more critical because your claim settlement will be
             depreciated. Prevention is worth more when your coverage pays less.
           </p>
+          <a
+            href="/insurance/ho-a-vs-ho-b-ho-3"
+            className="inline-flex items-center text-hydro-400 hover:text-hydro-300 text-sm font-medium mt-4 transition-colors"
+          >
+            Read the full HO-A vs HO-B vs HO-3 guide for Texas homeowners
+            <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
 
         <div className="mt-10 text-center">

@@ -1,6 +1,12 @@
+import { Metadata } from "next";
 import { supabase } from "@/lib/supabase";
 import AdminLeadsClient from "./AdminLeadsClient";
 import type { Lead } from "./types";
+
+export const metadata: Metadata = {
+  title: "Admin | Leads",
+  robots: { index: false, follow: false },
+};
 
 export const dynamic = "force-dynamic";
 

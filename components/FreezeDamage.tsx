@@ -34,6 +34,17 @@ export default function FreezeDamage() {
                 ceiling is sagging.
               </p>
               <p>
+                <a
+                  href="/freeze-damage-texas"
+                  className="inline-flex items-center text-hydro-400 hover:text-hydro-300 text-base font-medium transition-colors"
+                >
+                  Read the full Texas freeze damage and insurance guide
+                  <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </p>
+              <p>
                 A smart shutoff valve monitors flow and pressure continuously.
                 When it detects an anomaly consistent with a leak, it closes
                 the main water line within seconds. No human intervention

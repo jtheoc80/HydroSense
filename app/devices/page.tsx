@@ -62,8 +62,16 @@ export default function DevicesPage() {
       <Header />
 
       <main>
+        <div className="section-container pt-8">
+          <nav aria-label="Breadcrumb" className="text-sm text-fog-400">
+            <a href="/" className="hover:text-fog-200 transition-colors">Home</a>
+            <span className="mx-2">/</span>
+            <span className="text-fog-200">Devices</span>
+          </nav>
+        </div>
+
         {/* Hero */}
-        <section className="py-20 lg:py-28">
+        <section className="py-16 lg:py-24">
           <div className="section-container max-w-3xl">
             <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
               Devices we install
@@ -177,9 +185,9 @@ export default function DevicesPage() {
                   <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-3">
                     {d.installType}
                   </p>
-                  <h3 className="font-display text-2xl text-fog-50 group-hover:text-hydro-400 transition-colors mb-3">
+                  <h2 className="font-display text-2xl text-fog-50 group-hover:text-hydro-400 transition-colors mb-3">
                     {d.name}
-                  </h3>
+                  </h2>
                   <p className="text-fog-200 leading-relaxed mb-4">
                     {d.tagline}
                   </p>
@@ -187,7 +195,7 @@ export default function DevicesPage() {
                     {d.howItWorks}
                   </p>
                   <span className="inline-flex items-center text-hydro-400 text-sm font-medium group-hover:translate-x-1 transition-transform">
-                    Learn more
+                    {d.name} installation details
                     <svg
                       className="w-4 h-4 ml-1.5"
                       fill="none"
@@ -204,6 +212,29 @@ export default function DevicesPage() {
                   </span>
                 </a>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Cross-links */}
+        <section className="py-16 lg:py-20">
+          <div className="section-container">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">HO-A vs HO-B vs HO-3 in Texas</p>
+                <p className="text-fog-300 text-sm">Your policy form determines how water damage claims settle.</p>
+              </a>
+              <a href="/freeze-damage-texas" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Freeze damage claims in Texas</p>
+                <p className="text-fog-300 text-sm">How frozen pipe claims work and why carriers reward prevention.</p>
+              </a>
+              <a href="/service-area" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Service area</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Houston metro service area</p>
+                <p className="text-fog-300 text-sm">Seven cities across Greater Houston.</p>
+              </a>
             </div>
           </div>
         </section>

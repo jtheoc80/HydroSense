@@ -55,7 +55,7 @@ export default function Footer() {
           {/* Service Area */}
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-fog-400 font-medium mb-5">
-              Service Area
+              <a href="/service-area" className="hover:text-fog-200 transition-colors">Service Area</a>
             </p>
             <div className="flex flex-col gap-2.5">
               {serviceAreas.map((area) => (
@@ -87,6 +87,12 @@ export default function Footer() {
               </a>
               <a href="/devices" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Devices We Install
+              </a>
+              <a href="/freeze-damage-texas" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+                Freeze Damage Guide
+              </a>
+              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+                HO-A vs HO-B vs HO-3
               </a>
               <a href="#pricing" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Pricing

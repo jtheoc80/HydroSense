@@ -61,7 +61,7 @@ export default function CityPage({ params }: PageProps) {
         "@type": "ListItem",
         position: 2,
         name: "Service Area",
-        item: "https://hydrosensetx.com/#service-area",
+        item: "https://hydrosensetx.com/service-area",
       },
       {
         "@type": "ListItem",
@@ -122,6 +122,10 @@ export default function CityPage({ params }: PageProps) {
             <nav className="text-xs text-fog-400 mb-6" aria-label="Breadcrumb">
               <a href="/" className="hover:text-fog-200 transition-colors">
                 Home
+              </a>
+              <span className="mx-2">/</span>
+              <a href="/service-area" className="hover:text-fog-200 transition-colors">
+                Service Area
               </a>
               <span className="mx-2">/</span>
               <span className="text-fog-200">{city.name}</span>
@@ -316,6 +320,39 @@ export default function CityPage({ params }: PageProps) {
                   </p>
                 </details>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Cross-links */}
+        <section className="py-16 lg:py-20 bg-ink-950/50">
+          <div className="section-container">
+            <div className="space-y-5 text-fog-200 leading-relaxed max-w-3xl mb-8">
+              <p>
+                We install{" "}
+                <a href="/devices/moen-flo" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">Flo by Moen</a>,{" "}
+                <a href="/devices/phyn-plus" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">Phyn Plus</a>,{" "}
+                <a href="/devices/streamlabs" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">StreamLabs Control</a>, and{" "}
+                <a href="/devices/guardian" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">Guardian by Elexa</a>{" "}
+                across {city.name}. We match the device to your home during the 15-minute assessment.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">HO-A vs HO-B vs HO-3 in Texas</p>
+                <p className="text-fog-300 text-sm">Your policy form determines how water damage claims settle.</p>
+              </a>
+              <a href="/freeze-damage-texas" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Freeze damage claims in Texas</p>
+                <p className="text-fog-300 text-sm">How frozen pipe water damage claims work and why carriers reward prevention.</p>
+              </a>
+              <a href="/devices" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Devices</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Smart water shutoff devices we install</p>
+                <p className="text-fog-300 text-sm">Compare Flo by Moen, Phyn Plus, StreamLabs, and Guardian.</p>
+              </a>
             </div>
           </div>
         </section>

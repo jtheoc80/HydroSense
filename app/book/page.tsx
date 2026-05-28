@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Book Your 15-Minute Quote Call | HydroSense Texas",
   description:
     "Schedule a 15-minute phone assessment with HydroSense Texas. We review your home, plumbing layout, and carrier to confirm your insurance discount eligibility.",
+  alternates: {
+    canonical: "https://hydrosensetx.com/book",
+  },
   robots: { index: false, follow: false },
 };
 

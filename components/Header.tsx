@@ -9,7 +9,8 @@ const navLinks = [
   { label: "Savings", href: "#savings-estimator" },
   { label: "How it works", href: "#customer-journey" },
   { label: "Devices", href: "/devices" },
-  { label: "Service area", href: "#service-area" },
+  { label: "Service area", href: "/service-area" },
+  { label: "Guides", href: "/freeze-damage-texas" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
 ];

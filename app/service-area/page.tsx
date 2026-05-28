@@ -1,0 +1,135 @@
+import { Metadata } from "next";
+import { cities, cityKeys } from "@/lib/cities";
+import CriticalBar from "@/components/CriticalBar";
+import Header from "@/components/Header";
+import LeadForm from "@/components/LeadForm";
+import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Houston Metro Smart Water Shutoff Service Area | HydroSense Texas",
+  description:
+    "HydroSense installs smart water shutoff devices across the Houston metro: Houston, Katy, Cypress, The Woodlands, Sugar Land, Spring, and Baytown. Licensed install, Texas Master Plumber certified.",
+  alternates: {
+    canonical: "https://hydrosensetx.com/service-area",
+  },
+  openGraph: {
+    title: "Service Area | HydroSense Texas",
+    description:
+      "Seven cities across Greater Houston. Licensed smart water shutoff installs with carrier-recognized certification.",
+    url: "https://hydrosensetx.com/service-area",
+    siteName: "HydroSense Texas",
+    type: "website",
+  },
+};
+
+export default function ServiceAreaHub() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://hydrosensetx.com" },
+      { "@type": "ListItem", position: 2, name: "Service Area", item: "https://hydrosensetx.com/service-area" },
+    ],
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+      <CriticalBar />
+      <Header />
+
+      <main>
+        <div className="section-container pt-8">
+          <nav aria-label="Breadcrumb" className="text-sm text-fog-400">
+            <a href="/" className="hover:text-fog-200 transition-colors">Home</a>
+            <span className="mx-2">/</span>
+            <span className="text-fog-200">Service Area</span>
+          </nav>
+        </div>
+
+        {/* Hero */}
+        <section className="py-16 lg:py-24">
+          <div className="section-container max-w-3xl">
+            <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
+              Where we install
+            </p>
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08] text-fog-50 mb-6">
+              Houston metro smart water shutoff service area
+            </h1>
+            <p className="text-xl text-fog-200 leading-relaxed">
+              We install across seven cities in the Greater Houston area. Each
+              city page includes local carrier data, freeze risk profile, and
+              ZIP codes served.
+            </p>
+          </div>
+        </section>
+
+        {/* City cards */}
+        <section className="py-16 lg:py-20 bg-ink-950/50">
+          <div className="section-container">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {cityKeys.map((key) => {
+                const city = cities[key];
+                return (
+                  <a
+                    key={key}
+                    href={`/service-area/${city.slug}`}
+                    className="group bg-ink-800/40 border border-ink-700/30 rounded-xl p-7 hover:border-hydro-400/30 transition-all"
+                  >
+                    <h2 className="font-display text-2xl text-fog-50 group-hover:text-hydro-400 transition-colors mb-3">
+                      {city.name}
+                    </h2>
+                    <div className="space-y-1.5 text-sm mb-4">
+                      <p className="text-fog-300">
+                        County: <span className="text-fog-200">{city.county}</span>
+                      </p>
+                      <p className="text-fog-300">
+                        Median home:{" "}
+                        <span className="font-mono text-signal-400">{city.medianHome}</span>
+                      </p>
+                      <p className="text-fog-300">
+                        Typical premium:{" "}
+                        <span className="font-mono text-fog-200">{city.typicalPremium}</span>
+                      </p>
+                    </div>
+                    <p className="text-fog-300 text-sm leading-relaxed mb-4">
+                      {city.heroNote}
+                    </p>
+                    <span className="inline-flex items-center text-hydro-400 text-sm font-medium group-hover:translate-x-1 transition-transform">
+                      {city.name} installs and carrier data
+                      <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Guide links */}
+        <section className="py-16 lg:py-20">
+          <div className="section-container">
+            <div className="grid sm:grid-cols-2 gap-6">
+              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">HO-A vs HO-B vs HO-3 in Texas</p>
+                <p className="text-fog-300 text-sm">Your policy form determines how water damage claims settle.</p>
+              </a>
+              <a href="/freeze-damage-texas" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Freeze damage claims in Texas</p>
+                <p className="text-fog-300 text-sm">How frozen pipe water damage claims work and why carriers reward prevention.</p>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <LeadForm />
+      </main>
+      <Footer />
+    </>
+  );
+}

@@ -12,6 +12,12 @@
 - [The certificate](https://hydrosensetx.com/#the-certificate): What the certificate is, why it matters, sample facsimile
 - [FAQ](https://hydrosensetx.com/#faq): Insurance discount, device, install, subscription questions
 
+## Guides
+
+- [HO-A vs HO-B vs HO-3 in Texas](https://hydrosensetx.com/insurance/ho-a-vs-ho-b-ho-3): Insurance forms explained, settlement differences, smart shutoff discount on all forms
+- [Freeze Damage Claims in Texas](https://hydrosensetx.com/freeze-damage-texas): How freeze damage claims work, Winter Storm Uri data, smart shutoff response time
+- [Service Area Hub](https://hydrosensetx.com/service-area): All seven cities with local carrier data, freeze risk profiles, ZIP codes
+
 ## Service areas
 
 - [Houston](https://hydrosensetx.com/service-area/houston): 88 neighborhoods, median home $340,000

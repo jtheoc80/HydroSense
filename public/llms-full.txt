@@ -56,6 +56,26 @@ Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa
 
 ---
 
+# Guides
+
+## HO-A vs HO-B vs HO-3 in Texas
+
+Your insurance form determines whether a water damage claim settles at replacement cost or depreciated value. That distinction can mean a $12,000 difference on one event.
+
+- HO-A (Basic): Named-peril, actual cash value (depreciated). A burst supply line causing $18,000 in damage settles at roughly $6,000.
+- HO-B (Broad): Open-peril dwelling, replacement cost. The same $18,000 claim settles at $18,000.
+- HO-3 (Special): Open-peril dwelling, named-peril contents, replacement cost. Most common in Texas today.
+
+The smart shutoff discount applies on all three forms.
+
+## Freeze Damage Claims in Texas
+
+A hard freeze does not always announce itself immediately. Supply lines develop hairline cracks under pressure that hold for days or weeks. Winter Storm Uri caused $10B+ in Texas insurance industry losses. The single largest cause category was burst supply lines downstream of unattended main shutoffs.
+
+A smart shutoff responds in approximately 8 seconds. The difference between a $280 drywall patch and a $35,000 remediation is whether the water ran for seconds or hours.
+
+---
+
 # Flo by Moen
 
 The insurance default. Fastest to calibrate, most widely recognized.
