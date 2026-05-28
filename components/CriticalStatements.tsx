@@ -20,26 +20,36 @@ export default function CriticalStatements() {
   return (
     <section id="critical-statements" className="py-20 lg:py-28">
       <div className="section-container">
-        <h2 className="font-display text-3xl sm:text-4xl text-fog-50 mb-12">
-          What no one is telling Texas homeowners
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="max-w-3xl mb-14">
+          <p className="text-xs uppercase tracking-[0.2em] text-signal-400 font-medium mb-4">
+            The numbers
+          </p>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] text-fog-50">
+            What no one is telling Texas homeowners
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {statements.map((s, i) => (
             <article
               key={i}
-              className="bg-ink-800 border-l-4 border-l-hydro-400 rounded-r-lg p-6 lg:p-8 flex flex-col"
+              className="bg-ink-800/40 border-l-4 border-l-hydro-400 rounded-r-xl p-7 lg:p-9 flex flex-col backdrop-blur-sm"
             >
               <p className="font-display text-xl lg:text-2xl text-fog-50 leading-snug flex-1">
                 {s.headline}
               </p>
-              <p className="mt-6 text-xs uppercase tracking-wider text-fog-300">
+              <p className="mt-8 text-xs uppercase tracking-[0.15em] text-fog-400">
                 {s.source}
               </p>
             </article>
           ))}
         </div>
-        <div className="mt-8 text-center">
-          <a href="#lead-form" className="btn-outline text-sm">
+
+        <div className="mt-10 text-center">
+          <a
+            href="#lead-form"
+            className="inline-flex items-center justify-center rounded-lg border border-fog-300/20 text-fog-100 font-medium text-sm px-8 py-3.5 hover:bg-white/5 hover:border-fog-300/30 transition-all"
+          >
             Stop leaving money on the table
           </a>
         </div>
