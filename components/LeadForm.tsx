@@ -2,6 +2,11 @@
 
 import { useState, useEffect, FormEvent } from "react";
 import { estimatedSavingsForCarrier } from "@/lib/savings";
+import { Field, Label, ErrorMessage } from "@/components/catalyst/fieldset";
+import { Input } from "@/components/catalyst/input";
+import { Select } from "@/components/catalyst/select";
+import { Textarea } from "@/components/catalyst/textarea";
+import { Button } from "@/components/catalyst/button";
 
 declare global {
   interface Window {
@@ -57,6 +62,7 @@ export default function LeadForm({ city }: LeadFormProps) {
   const [success, setSuccess] = useState(false);
   const [selectedCarrier, setSelectedCarrier] = useState("");
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -72,6 +78,31 @@ export default function LeadForm({ city }: LeadFormProps) {
       campaign: params.get("utm_campaign") || "",
     });
   }, []);
+
+  function validateField(name: string, value: string): string {
+    switch (name) {
+      case "first_name":
+        return value.trim() ? "" : "First name is required";
+      case "last_name":
+        return value.trim() ? "" : "Last name is required";
+      case "email":
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? ""
+          : "Enter a valid email address";
+      case "zip":
+        return /^\d{5}(-\d{4})?$/.test(value)
+          ? ""
+          : "Enter a valid 5-digit ZIP code";
+      default:
+        return "";
+    }
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+    const { name, value } = e.target;
+    const err = validateField(name, value);
+    setFieldErrors((prev) => ({ ...prev, [name]: err }));
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -149,14 +180,14 @@ export default function LeadForm({ city }: LeadFormProps) {
     return (
       <section id="lead-form" className="py-20 lg:py-28 bg-ink-950/50">
         <div className="section-container max-w-2xl text-center">
-          <div className="bg-ink-800 border border-hydro-400/30 rounded-xl p-8 lg:p-12">
-            <div className="w-16 h-16 bg-hydro-400/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="bg-ink-800/80 border border-hydro-400/20 rounded-2xl p-10 lg:p-14 backdrop-blur-sm">
+            <div className="w-20 h-20 bg-hydro-400/10 rounded-full flex items-center justify-center mx-auto mb-8">
               <svg
-                className="w-8 h-8 text-hydro-400"
+                className="w-10 h-10 text-hydro-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2}
+                strokeWidth={1.5}
               >
                 <path
                   strokeLinecap="round"
@@ -165,27 +196,28 @@ export default function LeadForm({ city }: LeadFormProps) {
                 />
               </svg>
             </div>
-            <h3 className="font-display text-2xl text-fog-50 mb-3">
+            <h3 className="font-display text-3xl lg:text-4xl text-fog-50 mb-4">
               You are on the list.
             </h3>
-            <p className="text-fog-300 mb-6">
-              We will reach out within one business day with your carrier's
-              specific discount details.
+            <p className="text-fog-200 text-lg leading-relaxed mb-8 max-w-md mx-auto">
+              We will reach out within one business day with your
+              carrier-specific discount details.
             </p>
             {selectedCarrier &&
               selectedCarrier !== "Other" &&
               selectedCarrier !== "Not sure" && (
-                <div className="bg-ink-900/50 rounded-lg p-4 inline-block">
-                  <p className="text-xs uppercase tracking-widest text-fog-400 mb-1">
+                <div className="bg-ink-900/60 border border-ink-700/50 rounded-xl p-6 lg:p-8 inline-block">
+                  <p className="text-xs uppercase tracking-[0.2em] text-fog-400 mb-3">
                     Estimated annual savings with {selectedCarrier}
                   </p>
-                  <p className="font-mono text-3xl text-signal-400">
-                    ${savings.low} to ${savings.high}
+                  <p className="font-mono text-4xl lg:text-5xl text-signal-400 tracking-tight">
+                    ${savings.low}&ndash;${savings.high}
                   </p>
                 </div>
               )}
-            <p className="text-fog-400 text-xs mt-6">
-              Check your email for a confirmation with the full process overview.
+            <p className="text-fog-400 text-sm mt-8">
+              Check your email for a confirmation with the full process
+              overview.
             </p>
           </div>
         </div>
@@ -196,176 +228,205 @@ export default function LeadForm({ city }: LeadFormProps) {
   return (
     <section id="lead-form" className="py-20 lg:py-28 bg-ink-950/50">
       <div className="section-container">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          <div className="flex flex-col justify-center">
-            <h2 className="font-display text-3xl sm:text-4xl text-fog-50 mb-6">
-              Texas insurance is up 46%. The credit is sitting there waiting.
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          {/* Copy side */}
+          <div className="flex flex-col justify-center lg:sticky lg:top-32">
+            <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
+              Free quote
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15] text-fog-50 mb-6">
+              Texas insurance is up 46%.{" "}
+              <span className="text-fog-200">
+                The credit is sitting there waiting.
+              </span>
             </h2>
-            <p className="text-fog-200 leading-relaxed mb-4">
+            <p className="text-fog-200 text-lg leading-relaxed mb-6">
               A certified smart shutoff install qualifies you for{" "}
-              <span className="font-mono text-signal-400">
+              <span className="font-mono text-signal-400 font-semibold">
                 $300 to $600
               </span>{" "}
               in annual insurance credits. Most homeowners earn back the full
               install cost inside 24 months.
             </p>
-            <p className="text-fog-300 text-sm">
-              Fill out the form and we will get back to you within one business
-              day with your carrier-specific discount estimate.
-            </p>
+            <div className="hidden lg:flex items-start gap-4 p-5 bg-ink-800/50 border border-ink-700/30 rounded-xl">
+              <div className="w-10 h-10 rounded-full bg-hydro-400/10 flex items-center justify-center shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-hydro-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-fog-50 text-sm font-medium mb-1">
+                  15-minute call, same-week install
+                </p>
+                <p className="text-fog-300 text-sm leading-relaxed">
+                  Fill out the form and we will get back to you within one
+                  business day with your carrier-specific discount estimate.
+                </p>
+              </div>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label
-                  htmlFor="first_name"
-                  className="block text-sm text-fog-300 mb-1.5"
-                >
-                  First name *
-                </label>
-                <input
-                  id="first_name"
-                  name="first_name"
-                  type="text"
+          {/* Form side */}
+          <div className="bg-ink-800/60 border border-ink-700/40 rounded-2xl p-6 sm:p-8 lg:p-10 backdrop-blur-sm">
+            <form onSubmit={handleSubmit} className="space-y-6 dark">
+              <div className="grid sm:grid-cols-2 gap-5">
+                <Field>
+                  <Label className="text-sm text-fog-300">
+                    First name <span className="text-hydro-400">*</span>
+                  </Label>
+                  <Input
+                    name="first_name"
+                    type="text"
+                    required
+                    onBlur={handleBlur}
+                    invalid={!!fieldErrors.first_name}
+                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                  />
+                  {fieldErrors.first_name && (
+                    <ErrorMessage className="!text-alert-500">
+                      {fieldErrors.first_name}
+                    </ErrorMessage>
+                  )}
+                </Field>
+                <Field>
+                  <Label className="text-sm text-fog-300">
+                    Last name <span className="text-hydro-400">*</span>
+                  </Label>
+                  <Input
+                    name="last_name"
+                    type="text"
+                    required
+                    onBlur={handleBlur}
+                    invalid={!!fieldErrors.last_name}
+                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                  />
+                  {fieldErrors.last_name && (
+                    <ErrorMessage className="!text-alert-500">
+                      {fieldErrors.last_name}
+                    </ErrorMessage>
+                  )}
+                </Field>
+              </div>
+
+              <Field>
+                <Label className="text-sm text-fog-300">
+                  Email <span className="text-hydro-400">*</span>
+                </Label>
+                <Input
+                  name="email"
+                  type="email"
                   required
-                  className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 placeholder-fog-300/50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent"
+                  onBlur={handleBlur}
+                  invalid={!!fieldErrors.email}
+                  className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
                 />
+                {fieldErrors.email && (
+                  <ErrorMessage className="!text-alert-500">
+                    {fieldErrors.email}
+                  </ErrorMessage>
+                )}
+              </Field>
+
+              <div className="grid sm:grid-cols-2 gap-5">
+                <Field>
+                  <Label className="text-sm text-fog-300">Phone</Label>
+                  <Input
+                    name="phone"
+                    type="tel"
+                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                  />
+                </Field>
+                <Field>
+                  <Label className="text-sm text-fog-300">
+                    ZIP code <span className="text-hydro-400">*</span>
+                  </Label>
+                  <Input
+                    name="zip"
+                    type="text"
+                    required
+                    maxLength={10}
+                    onBlur={handleBlur}
+                    invalid={!!fieldErrors.zip}
+                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400 [&_input]:font-mono"
+                  />
+                  {fieldErrors.zip && (
+                    <ErrorMessage className="!text-alert-500">
+                      {fieldErrors.zip}
+                    </ErrorMessage>
+                  )}
+                </Field>
               </div>
-              <div>
-                <label
-                  htmlFor="last_name"
-                  className="block text-sm text-fog-300 mb-1.5"
-                >
-                  Last name *
-                </label>
-                <input
-                  id="last_name"
-                  name="last_name"
+
+              <Field>
+                <Label className="text-sm text-fog-300">
+                  Property address
+                </Label>
+                <Input
+                  name="address"
                   type="text"
-                  required
-                  className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 placeholder-fog-300/50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent"
+                  className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
                 />
-              </div>
-            </div>
+              </Field>
 
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm text-fog-300 mb-1.5"
-              >
-                Email *
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 placeholder-fog-300/50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent"
-              />
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm text-fog-300 mb-1.5"
+              <Field>
+                <Label className="text-sm text-fog-300">
+                  Current insurance carrier
+                </Label>
+                <Select
+                  name="carrier"
+                  className="[&_select]:!bg-ink-900/80 [&_select]:!border-ink-700 [&_select]:!text-fog-50 has-data-focus:after:!ring-hydro-400 [&_select_option]:!bg-ink-800"
                 >
-                  Phone
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 placeholder-fog-300/50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent"
+                  <option value="">Select your carrier</option>
+                  {carriers.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+
+              <Field>
+                <Label className="text-sm text-fog-300">
+                  Anything we should know
+                </Label>
+                <Textarea
+                  name="message"
+                  rows={3}
+                  maxLength={2000}
+                  className="[&_textarea]:!bg-ink-900/80 [&_textarea]:!border-ink-700 [&_textarea]:!text-fog-50 [&_textarea]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
                 />
-              </div>
-              <div>
-                <label
-                  htmlFor="zip"
-                  className="block text-sm text-fog-300 mb-1.5"
-                >
-                  ZIP code *
-                </label>
-                <input
-                  id="zip"
-                  name="zip"
-                  type="text"
-                  required
-                  pattern="\d{5}(-\d{4})?"
-                  maxLength={10}
-                  className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 placeholder-fog-300/50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent"
-                />
-              </div>
-            </div>
+              </Field>
 
-            <div>
-              <label
-                htmlFor="address"
-                className="block text-sm text-fog-300 mb-1.5"
+              {error && (
+                <div className="bg-alert-500/10 border border-alert-500/20 rounded-lg p-3">
+                  <p className="text-alert-500 text-sm">{error}</p>
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={submitting}
+                className="!w-full !rounded-lg !py-3.5 !text-base !font-semibold !bg-hydro-400 !text-ink-950 hover:!bg-hydro-300 !border-transparent !shadow-lg !shadow-hydro-400/25 disabled:!opacity-50 disabled:!cursor-not-allowed [--btn-bg:var(--color-hydro-400)] [--btn-border:var(--color-hydro-400)] [--btn-hover-overlay:transparent] before:!bg-hydro-400 before:!shadow-none dark:!bg-hydro-400 dark:before:!hidden"
               >
-                Property address
-              </label>
-              <input
-                id="address"
-                name="address"
-                type="text"
-                className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 placeholder-fog-300/50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent"
-              />
-            </div>
+                {submitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Submitting...
+                  </span>
+                ) : (
+                  "Get my 15-minute quote"
+                )}
+              </Button>
 
-            <div>
-              <label
-                htmlFor="carrier"
-                className="block text-sm text-fog-300 mb-1.5"
-              >
-                Current insurance carrier
-              </label>
-              <select
-                id="carrier"
-                name="carrier"
-                className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent"
-              >
-                <option value="">Select your carrier</option>
-                {carriers.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="message"
-                className="block text-sm text-fog-300 mb-1.5"
-              >
-                Anything we should know
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={3}
-                maxLength={2000}
-                className="w-full px-4 py-3 bg-ink-800 border border-ink-700 rounded-lg text-fog-50 placeholder-fog-300/50 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:border-transparent resize-y"
-              />
-            </div>
-
-            {error && <p className="text-alert-500 text-sm">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={submitting}
-              className="btn-primary w-full text-base disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {submitting ? "Submitting..." : "Get my 15-minute quote"}
-            </button>
-
-            <p className="text-xs text-fog-300 text-center">
-              No spam. We contact you once to discuss your install and carrier
-              discount.
-            </p>
-          </form>
+              <p className="text-xs text-fog-400 text-center leading-relaxed">
+                No spam. We contact you once to discuss your install and
+                carrier discount.
+              </p>
+            </form>
+          </div>
         </div>
       </div>
     </section>
