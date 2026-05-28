@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-ink-900 text-fog-200 font-body;
+  }
+
+  ::selection {
+    @apply bg-hydro-400/30 text-white;
+  }
+}
+
+@layer components {
+  .hydro-mesh {
+    background-image:
+      radial-gradient(ellipse at 0% 0%, rgba(34, 211, 238, 0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 0%, rgba(34, 211, 238, 0.08) 0%, transparent 50%);
+  }
+
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(103, 232, 249, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(103, 232, 249, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-hydro-400 text-ink-950 font-semibold rounded-lg
+      hover:bg-hydro-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:ring-offset-2 focus:ring-offset-ink-900;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-hydro-400 text-hydro-400 font-semibold rounded-lg
+      hover:bg-hydro-400/10 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-hydro-400 focus:ring-offset-2 focus:ring-offset-ink-900;
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* Pulse animation for critical bar */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
