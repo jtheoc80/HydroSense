@@ -13,6 +13,8 @@
     "@calcom/embed-react": "^1.5.3",
     "@headlessui/react": "^2.2.10",
     "@supabase/supabase-js": "^2.106.2",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
     "geist": "^1.7.1",
