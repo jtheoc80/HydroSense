@@ -11,6 +11,8 @@ create table public.leads (
   address text,
   carrier text,
   message text,
+  city text,
+  campaign text,
   source text not null default 'hydrosensetx.com',
   page_path text,
   utm_source text,

@@ -13,6 +13,8 @@ export const leadSchema = z.object({
   address: z.string().max(500).optional().default(""),
   carrier: z.string().max(100).optional().default(""),
   message: z.string().max(2000).optional().default(""),
+  city: z.string().max(100).optional().default(""),
+  campaign: z.string().max(200).optional().default(""),
   source: z.string().default("hydrosensetx.com"),
   page_path: z.string().optional().default(""),
   utm_source: z.string().optional().default(""),
