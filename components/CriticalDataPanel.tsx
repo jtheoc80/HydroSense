@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   AreaChart,
   Area,
@@ -26,18 +26,37 @@ const premiumData = [
 /*  Claims counter logic                                               */
 /* ------------------------------------------------------------------ */
 
-const DAILY_CLAIMS = 60;
+const DAILY_RATE = 60;
 
-function getClaimsToday(): number {
+interface ClaimCounts {
+  today: number;
+  month: number;
+  year: number;
+}
+
+function getClaimCounts(): ClaimCounts {
   const now = new Date();
-  const ctNow = new Date(
+  const ct = new Date(
     now.toLocaleString("en-US", { timeZone: "America/Chicago" })
   );
-  const midnight = new Date(ctNow);
+
+  const midnight = new Date(ct);
   midnight.setHours(0, 0, 0, 0);
-  const fractionOfDay =
-    (ctNow.getTime() - midnight.getTime()) / 86_400_000;
-  return Math.floor(fractionOfDay * DAILY_CLAIMS);
+  const today = Math.floor(
+    ((ct.getTime() - midnight.getTime()) / 86_400_000) * DAILY_RATE
+  );
+
+  const monthStart = new Date(ct.getFullYear(), ct.getMonth(), 1);
+  const month = Math.floor(
+    ((ct.getTime() - monthStart.getTime()) / 86_400_000) * DAILY_RATE
+  );
+
+  const yearStart = new Date(ct.getFullYear(), 0, 1);
+  const year = Math.floor(
+    ((ct.getTime() - yearStart.getTime()) / 86_400_000) * DAILY_RATE
+  );
+
+  return { today, month, year };
 }
 
 /* ------------------------------------------------------------------ */
@@ -63,33 +82,66 @@ function AnnotationLabel({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Animated claims number                                             */
+/*  Animated count-up number                                           */
 /* ------------------------------------------------------------------ */
 
-function AnimatedNumber({ value }: { value: number }) {
-  const [display, setDisplay] = useState(value);
+function CountUpNumber({
+  value,
+  animate,
+  format,
+}: {
+  value: number;
+  animate: boolean;
+  format?: boolean;
+}) {
+  const [display, setDisplay] = useState(0);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    const start = display;
-    const diff = value - start;
-    if (diff === 0) return;
+    // Initial count-up from 0 when scrolled into view
+    if (animate && !hasAnimated.current) {
+      hasAnimated.current = true;
+      const duration = 1200;
+      const startTime = performance.now();
 
-    const duration = 800;
-    const startTime = performance.now();
+      const step = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplay(Math.floor(value * eased));
+        if (progress < 1) requestAnimationFrame(step);
+      };
 
-    function step(now: number) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Cubic ease-out
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.floor(start + diff * eased));
-      if (progress < 1) requestAnimationFrame(step);
+      requestAnimationFrame(step);
+      return;
     }
 
-    requestAnimationFrame(step);
-  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Subsequent interval ticks: brief animate from current to new
+    if (hasAnimated.current && display !== value) {
+      const start = display;
+      const diff = value - start;
+      if (diff === 0) return;
 
-  return <>{display}</>;
+      const duration = 600;
+      const startTime = performance.now();
+
+      const step = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplay(Math.floor(start + diff * eased));
+        if (progress < 1) requestAnimationFrame(step);
+      };
+
+      requestAnimationFrame(step);
+    }
+  }, [value, animate]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!animate && !hasAnimated.current) {
+    return <>{format ? (0).toLocaleString() : 0}</>;
+  }
+
+  return <>{format ? display.toLocaleString() : display}</>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -97,17 +149,39 @@ function AnimatedNumber({ value }: { value: number }) {
 /* ------------------------------------------------------------------ */
 
 export default function CriticalDataPanel() {
-  const [claims, setClaims] = useState<number | null>(null);
+  const [counts, setCounts] = useState<ClaimCounts | null>(null);
+  const [visible, setVisible] = useState(false);
+  const counterRef = useRef<HTMLDivElement>(null);
 
-  const updateClaims = useCallback(() => {
-    setClaims(getClaimsToday());
+  const updateCounts = useCallback(() => {
+    setCounts(getClaimCounts());
   }, []);
 
+  // Compute counts on mount and every 60s
   useEffect(() => {
-    updateClaims();
-    const interval = setInterval(updateClaims, 60_000);
+    updateCounts();
+    const interval = setInterval(updateCounts, 60_000);
     return () => clearInterval(interval);
-  }, [updateClaims]);
+  }, [updateCounts]);
+
+  // IntersectionObserver to trigger count-up animation
+  useEffect(() => {
+    const el = counterRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="rounded-2xl bg-ink-900 border border-ink-700/30 overflow-hidden">
@@ -201,15 +275,62 @@ export default function CriticalDataPanel() {
         {/* Divider */}
         <div className="h-px bg-ink-700/40" />
 
-        {/* Element 2: Claims counter */}
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-fog-300 font-medium mb-4">
-            Water damage claims filed in the Houston metro today
+        {/* Element 2: Claims counters */}
+        <div ref={counterRef}>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-fog-300 font-medium mb-6">
+            Water damage claims, Houston metro
           </p>
-          <p className="font-mono text-5xl font-bold text-signal-400 tabular-nums">
-            {claims !== null ? <AnimatedNumber value={claims} /> : "--"}
-          </p>
-          <p className="mt-4 text-sm text-fog-300 leading-relaxed">
+
+          {counts !== null ? (
+            <div className="space-y-5">
+              {/* Year to date: hero number */}
+              <div>
+                <p className="font-mono text-6xl font-bold text-signal-400 tabular-nums leading-none">
+                  <CountUpNumber
+                    value={counts.year}
+                    animate={visible}
+                    format
+                  />
+                </p>
+                <p className="mt-2 text-sm text-fog-300 font-medium">
+                  this year
+                </p>
+              </div>
+
+              {/* Month + today row */}
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <p className="font-mono text-3xl font-bold text-signal-400 tabular-nums leading-none">
+                    <CountUpNumber
+                      value={counts.month}
+                      animate={visible}
+                      format
+                    />
+                  </p>
+                  <p className="mt-1.5 text-sm text-fog-300 font-medium">
+                    this month
+                  </p>
+                </div>
+                <div>
+                  <p className="font-mono text-3xl font-bold text-signal-400 tabular-nums leading-none">
+                    <CountUpNumber
+                      value={counts.today}
+                      animate={visible}
+                    />
+                  </p>
+                  <p className="mt-1.5 text-sm text-fog-300 font-medium">
+                    today
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p className="font-mono text-6xl font-bold text-signal-400 tabular-nums leading-none">
+              --
+            </p>
+          )}
+
+          <p className="mt-6 text-sm text-fog-300 leading-relaxed">
             An estimated 60 water damage claims are filed across the
             Houston area every day. Your homeowners policy covers these.
             Flood is separate and excluded.
@@ -217,7 +338,8 @@ export default function CriticalDataPanel() {
           <p className="mt-3 text-[10px] text-fog-400 leading-relaxed">
             Modeled from Insurance Information Institute 1-in-67 annual
             water damage claim rate across approximately 1.5 million
-            Houston-area owner-occupied homes. Illustrative estimate.
+            Houston-area owner-occupied homes. Counts reset at the start
+            of each day, month, and year. Illustrative estimate.
           </p>
         </div>
       </div>
