@@ -1,3 +1,5 @@
+import CriticalDataPanel from "./CriticalDataPanel";
+
 const statements = [
   {
     headline:
@@ -29,20 +31,28 @@ export default function CriticalStatements() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-          {statements.map((s, i) => (
-            <article
-              key={i}
-              className="bg-ink-800/40 border-l-4 border-l-hydro-400 rounded-r-xl p-7 lg:p-9 flex flex-col backdrop-blur-sm"
-            >
-              <p className="font-display text-xl lg:text-2xl text-fog-50 leading-snug flex-1">
-                {s.headline}
-              </p>
-              <p className="mt-8 text-xs uppercase tracking-[0.15em] text-fog-400">
-                {s.source}
-              </p>
-            </article>
-          ))}
+        <div className="grid lg:grid-cols-[58fr_42fr] gap-8 lg:gap-10">
+          {/* Left column: statement cards stacked */}
+          <div className="flex flex-col gap-6">
+            {statements.map((s, i) => (
+              <article
+                key={i}
+                className="bg-ink-800/40 border-l-4 border-l-hydro-400 rounded-r-xl p-7 lg:p-9 flex flex-col backdrop-blur-sm"
+              >
+                <p className="font-display text-xl lg:text-2xl text-fog-50 leading-snug flex-1">
+                  {s.headline}
+                </p>
+                <p className="mt-8 text-xs uppercase tracking-[0.15em] text-fog-400">
+                  {s.source}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          {/* Right column: sticky data panel */}
+          <div className="lg:sticky lg:top-8 lg:self-start">
+            <CriticalDataPanel />
+          </div>
         </div>
 
         <div className="mt-10 text-center">
