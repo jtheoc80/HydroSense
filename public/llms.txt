@@ -36,6 +36,11 @@
 - [StreamLabs Control](https://hydrosensetx.com/devices/streamlabs): Ultrasonic flow meter, no internal turbine
 - [Guardian by Elexa](https://hydrosensetx.com/devices/guardian): Retrofit, mounts on existing valve, no plumbing replacement
 
+## Legal
+
+- [Privacy Policy](https://hydrosensetx.com/privacy): Data collection, SMS consent, third-party services, data deletion requests
+- [Terms of Service](https://hydrosensetx.com/terms): Service terms, pricing, certificate issuance, insurance disclaimer, Texas governing law
+
 ## About
 
 - Company: HydroSense Texas, a Lead Ledger Pro LLC brand

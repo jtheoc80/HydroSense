@@ -100,6 +100,12 @@ export default function Footer() {
               <a href="#faq" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 FAQ
               </a>
+              <a href="/privacy" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+                Privacy Policy
+              </a>
+              <a href="/terms" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+                Terms of Service
+              </a>
             </div>
           </div>
 
