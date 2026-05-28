@@ -30,6 +30,67 @@ const carriers = [
   "Not sure",
 ];
 
+/* ------------------------------------------------------------------ */
+/*  Shared dark-on-navy override classes for Catalyst controls         */
+/* ------------------------------------------------------------------ */
+
+// Outer <span> wrapper: focus ring override
+const controlFocus =
+  "focus-within:after:!ring-2 focus-within:after:!ring-hydro-400 sm:focus-within:after:!ring-2 sm:focus-within:after:!ring-hydro-400";
+
+// Inner <input> overrides
+const inputClasses = [
+  controlFocus,
+  // Background and border
+  "[&_input]:!bg-ink-900 [&_input]:!border [&_input]:!border-fog-400/40",
+  "[&_input]:data-[hover]:!border-fog-300/60",
+  "[&_input]:focus:!border-hydro-400",
+  // Text and placeholder
+  "[&_input]:!text-white [&_input]:!text-base [&_input]:sm:!text-base",
+  "[&_input]:placeholder:!text-fog-300",
+  // Sizing: min 44px tap target, comfortable padding
+  "[&_input]:!py-3 [&_input]:!px-4",
+  // Invalid state: bright border
+  "[&_input]:data-[invalid]:!border-[#F87171] [&_input]:data-[invalid]:data-[hover]:!border-[#F87171]",
+].join(" ");
+
+// Inner <select> overrides
+const selectClasses = [
+  // Focus ring (select uses has-data-focus not focus-within)
+  "has-data-[focus]:after:!ring-2 has-data-[focus]:after:!ring-hydro-400",
+  // Background and border
+  "[&_select]:!bg-ink-900 [&_select]:!border [&_select]:!border-fog-400/40",
+  "[&_select]:data-[hover]:!border-fog-300/60",
+  "[&_select]:data-[focus]:!border-hydro-400",
+  // Text
+  "[&_select]:!text-white [&_select]:!text-base [&_select]:sm:!text-base",
+  // Option backgrounds
+  "[&_select_option]:!bg-ink-800 [&_select_option]:!text-white",
+  // Sizing
+  "[&_select]:!py-3 [&_select]:!pl-4",
+  // Invalid
+  "[&_select]:data-[invalid]:!border-[#F87171]",
+  // Dropdown arrow
+  "[&_svg]:!stroke-fog-300",
+].join(" ");
+
+// Inner <textarea> overrides
+const textareaClasses = [
+  controlFocus,
+  "[&_textarea]:!bg-ink-900 [&_textarea]:!border [&_textarea]:!border-fog-400/40",
+  "[&_textarea]:data-[hover]:!border-fog-300/60",
+  "[&_textarea]:focus:!border-hydro-400",
+  "[&_textarea]:!text-white [&_textarea]:!text-base [&_textarea]:sm:!text-base",
+  "[&_textarea]:placeholder:!text-fog-300",
+  "[&_textarea]:!py-3 [&_textarea]:!px-4",
+  "[&_textarea]:data-[invalid]:!border-[#F87171]",
+].join(" ");
+
+/* ------------------------------------------------------------------ */
+/*  Label style: white, 15px+, medium weight                           */
+/* ------------------------------------------------------------------ */
+const labelClasses = "!text-white !text-[15px] !font-medium";
+
 interface LeadFormProps {
   city?: string;
 }
@@ -111,6 +172,20 @@ export default function LeadForm({ city }: LeadFormProps) {
 
     const form = e.currentTarget;
     const data = new FormData(form);
+
+    // Validate all required fields before submit
+    const required = ["first_name", "last_name", "email", "zip"];
+    const errors: Record<string, string> = {};
+    for (const field of required) {
+      const val = (data.get(field) as string) || "";
+      const err = validateField(field, val);
+      if (err) errors[field] = err;
+    }
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors((prev) => ({ ...prev, ...errors }));
+      setSubmitting(false);
+      return;
+    }
 
     const body = {
       first_name: data.get("first_name") as string,
@@ -271,37 +346,41 @@ export default function LeadForm({ city }: LeadFormProps) {
             <form onSubmit={handleSubmit} className="space-y-6 dark">
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field>
-                  <Label className="text-sm text-fog-300">
+                  <Label htmlFor="first_name" className={labelClasses}>
                     First name <span className="text-hydro-400">*</span>
                   </Label>
                   <Input
+                    id="first_name"
                     name="first_name"
                     type="text"
                     required
+                    placeholder="Jane"
                     onBlur={handleBlur}
                     invalid={!!fieldErrors.first_name}
-                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                    className={inputClasses}
                   />
                   {fieldErrors.first_name && (
-                    <ErrorMessage className="!text-alert-500">
+                    <ErrorMessage className="!text-[#F87171] !text-sm">
                       {fieldErrors.first_name}
                     </ErrorMessage>
                   )}
                 </Field>
                 <Field>
-                  <Label className="text-sm text-fog-300">
+                  <Label htmlFor="last_name" className={labelClasses}>
                     Last name <span className="text-hydro-400">*</span>
                   </Label>
                   <Input
+                    id="last_name"
                     name="last_name"
                     type="text"
                     required
+                    placeholder="Smith"
                     onBlur={handleBlur}
                     invalid={!!fieldErrors.last_name}
-                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                    className={inputClasses}
                   />
                   {fieldErrors.last_name && (
-                    <ErrorMessage className="!text-alert-500">
+                    <ErrorMessage className="!text-[#F87171] !text-sm">
                       {fieldErrors.last_name}
                     </ErrorMessage>
                   )}
@@ -309,19 +388,21 @@ export default function LeadForm({ city }: LeadFormProps) {
               </div>
 
               <Field>
-                <Label className="text-sm text-fog-300">
+                <Label htmlFor="email" className={labelClasses}>
                   Email <span className="text-hydro-400">*</span>
                 </Label>
                 <Input
+                  id="email"
                   name="email"
                   type="email"
                   required
+                  placeholder="jane@example.com"
                   onBlur={handleBlur}
                   invalid={!!fieldErrors.email}
-                  className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                  className={inputClasses}
                 />
                 {fieldErrors.email && (
-                  <ErrorMessage className="!text-alert-500">
+                  <ErrorMessage className="!text-[#F87171] !text-sm">
                     {fieldErrors.email}
                   </ErrorMessage>
                 )}
@@ -329,28 +410,34 @@ export default function LeadForm({ city }: LeadFormProps) {
 
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field>
-                  <Label className="text-sm text-fog-300">Phone</Label>
+                  <Label htmlFor="phone" className={labelClasses}>
+                    Phone
+                  </Label>
                   <Input
+                    id="phone"
                     name="phone"
                     type="tel"
-                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                    placeholder="(281) 555-0100"
+                    className={inputClasses}
                   />
                 </Field>
                 <Field>
-                  <Label className="text-sm text-fog-300">
+                  <Label htmlFor="zip" className={labelClasses}>
                     ZIP code <span className="text-hydro-400">*</span>
                   </Label>
                   <Input
+                    id="zip"
                     name="zip"
                     type="text"
                     required
                     maxLength={10}
+                    placeholder="77449"
                     onBlur={handleBlur}
                     invalid={!!fieldErrors.zip}
-                    className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400 [&_input]:font-mono"
+                    className={`${inputClasses} [&_input]:!font-mono`}
                   />
                   {fieldErrors.zip && (
-                    <ErrorMessage className="!text-alert-500">
+                    <ErrorMessage className="!text-[#F87171] !text-sm">
                       {fieldErrors.zip}
                     </ErrorMessage>
                   )}
@@ -358,23 +445,26 @@ export default function LeadForm({ city }: LeadFormProps) {
               </div>
 
               <Field>
-                <Label className="text-sm text-fog-300">
+                <Label htmlFor="address" className={labelClasses}>
                   Property address
                 </Label>
                 <Input
+                  id="address"
                   name="address"
                   type="text"
-                  className="[&_input]:!bg-ink-900/80 [&_input]:!border-ink-700 [&_input]:!text-fog-50 [&_input]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                  placeholder="123 Main St, Katy, TX"
+                  className={inputClasses}
                 />
               </Field>
 
               <Field>
-                <Label className="text-sm text-fog-300">
+                <Label htmlFor="carrier" className={labelClasses}>
                   Current insurance carrier
                 </Label>
                 <Select
+                  id="carrier"
                   name="carrier"
-                  className="[&_select]:!bg-ink-900/80 [&_select]:!border-ink-700 [&_select]:!text-fog-50 has-data-focus:after:!ring-hydro-400 [&_select_option]:!bg-ink-800"
+                  className={selectClasses}
                 >
                   <option value="">Select your carrier</option>
                   {carriers.map((c) => (
@@ -386,30 +476,32 @@ export default function LeadForm({ city }: LeadFormProps) {
               </Field>
 
               <Field>
-                <Label className="text-sm text-fog-300">
+                <Label htmlFor="message" className={labelClasses}>
                   Anything we should know
                 </Label>
                 <Textarea
+                  id="message"
                   name="message"
                   rows={3}
                   maxLength={2000}
-                  className="[&_textarea]:!bg-ink-900/80 [&_textarea]:!border-ink-700 [&_textarea]:!text-fog-50 [&_textarea]:placeholder:!text-fog-400/50 focus-within:after:!ring-hydro-400"
+                  placeholder="e.g. I have a two-story home built in 2005"
+                  className={textareaClasses}
                 />
               </Field>
 
               {error && (
-                <div className="bg-alert-500/10 border border-alert-500/20 rounded-lg p-3">
-                  <p className="text-alert-500 text-sm">{error}</p>
+                <div className="bg-[#F87171]/10 border-2 border-[#F87171]/30 rounded-lg p-4">
+                  <p className="text-[#F87171] text-sm font-medium">{error}</p>
                 </div>
               )}
 
               <Button
                 type="submit"
                 disabled={submitting}
-                className="!w-full !rounded-lg !py-3.5 !text-base !font-semibold !bg-hydro-400 !text-ink-950 hover:!bg-hydro-300 !border-transparent !shadow-lg !shadow-hydro-400/25 disabled:!opacity-50 disabled:!cursor-not-allowed [--btn-bg:var(--color-hydro-400)] [--btn-border:var(--color-hydro-400)] [--btn-hover-overlay:transparent] before:!bg-hydro-400 before:!shadow-none dark:!bg-hydro-400 dark:before:!hidden"
+                className="!w-full !rounded-lg !py-4 !text-base !font-semibold !bg-hydro-400 !text-ink-900 hover:!bg-hydro-300 !border-transparent !shadow-lg !shadow-hydro-400/25 disabled:!opacity-50 disabled:!cursor-not-allowed [--btn-bg:theme(--color-hydro-400)] [--btn-border:transparent] [--btn-hover-overlay:transparent] before:!bg-hydro-400 before:!shadow-none dark:!bg-hydro-400 dark:!text-ink-900 dark:before:!hidden"
               >
                 {submitting ? (
-                  <span className="flex items-center justify-center gap-2">
+                  <span className="flex items-center justify-center gap-2 text-ink-900">
                     <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -421,7 +513,7 @@ export default function LeadForm({ city }: LeadFormProps) {
                 )}
               </Button>
 
-              <p className="text-xs text-fog-400 text-center leading-relaxed">
+              <p className="text-sm text-fog-200 text-center leading-relaxed">
                 No spam. We contact you once to discuss your install and
                 carrier discount.
               </p>
