@@ -39,6 +39,9 @@ export const metadata: Metadata = {
       "Save $300-$600/yr on Texas homeowners insurance with a certified smart shutoff install. License MPL 43057.",
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "761yTR0D67eaCnkpzqLtis59VqJzCZfdHq-sMeeFx78",
+  },
 };
 
 export default function RootLayout({
