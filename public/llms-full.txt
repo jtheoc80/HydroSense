@@ -52,7 +52,63 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 ## Devices Installed
 
-Moen Flo, Phyn, StreamLabs
+Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa
+
+---
+
+# Flo by Moen
+
+The insurance default. Fastest to calibrate, most widely recognized.
+
+## How it works
+
+Installs at your main water line. Monitors flow and pressure continuously, runs a daily automated health test, and closes the valve when it detects an anomaly.
+
+## Best for
+
+Homeowners who want the broadest carrier acceptance and protection calibrated within days, not a month.
+
+---
+
+# Phyn Plus
+
+The accuracy leader. Independently ranked first for leak detection.
+
+## How it works
+
+Installs at your main. Uses pressure wave analysis to read your plumbing 240 times per second, detecting leaks without separate sensors placed around the house.
+
+## Best for
+
+Older Houston homes, complex plumbing, and owners who want the most sensitive detection available.
+
+---
+
+# StreamLabs Control
+
+The durability pick. Fewer moving parts, fewer failure points.
+
+## How it works
+
+Installs inline on your main water line. Uses an ultrasonic flow meter with no internal turbine, monitors flow over Wi-Fi, and shuts off on a detected leak.
+
+## Best for
+
+Homeowners who prioritize mechanical simplicity and long-term reliability.
+
+---
+
+# Guardian by Elexa
+
+The retrofit option. No plumbing replacement required.
+
+## How it works
+
+A motorized actuator mounts onto your existing main shutoff valve and physically turns the handle when wireless leak sensors detect water. No cutting into the line.
+
+## Best for
+
+Older homes and situations where replacing or cutting into the main line is not an option.
 
 ---
 

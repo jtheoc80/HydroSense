@@ -22,11 +22,19 @@
 - [Spring](https://hydrosensetx.com/service-area/spring): Klein/Spring ISD, median home $310,000
 - [Baytown](https://hydrosensetx.com/service-area/baytown): Coastal exposure, median home $260,000
 
+## Devices we install
+
+- [All devices](https://hydrosensetx.com/devices): Comparison of all four devices, how to choose
+- [Flo by Moen](https://hydrosensetx.com/devices/moen-flo): Broadest insurer acceptance, 1-week learning period
+- [Phyn Plus](https://hydrosensetx.com/devices/phyn-plus): Pressure wave analysis, ranked first for leak detection accuracy
+- [StreamLabs Control](https://hydrosensetx.com/devices/streamlabs): Ultrasonic flow meter, no internal turbine
+- [Guardian by Elexa](https://hydrosensetx.com/devices/guardian): Retrofit, mounts on existing valve, no plumbing replacement
+
 ## About
 
 - Company: HydroSense Texas, a Lead Ledger Pro LLC brand
 - License: Texas Registered Master Plumber
 - Service area: Houston metropolitan area, Greater Houston, Southeast Texas
-- Devices installed: Moen Flo, Phyn, StreamLabs
+- Devices installed: Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa
 - Phone: (281) 694-5754
 - Carriers recognized: State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Progressive, Texas Farm Bureau, Chubb

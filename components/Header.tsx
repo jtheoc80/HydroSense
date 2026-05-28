@@ -8,6 +8,7 @@ const navLinks = [
   { label: "The certificate", href: "#the-certificate" },
   { label: "Savings", href: "#savings-estimator" },
   { label: "How it works", href: "#customer-journey" },
+  { label: "Devices", href: "/devices" },
   { label: "Service area", href: "#service-area" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },

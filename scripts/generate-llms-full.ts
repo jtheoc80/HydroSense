@@ -88,11 +88,37 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 ## Devices Installed
 
-Moen Flo, Phyn, StreamLabs
+Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa
 
 ---
 
 `;
+
+// Device pages
+const deviceData = [
+  { name: "Flo by Moen", slug: "moen-flo", tagline: "The insurance default. Fastest to calibrate, most widely recognized.", howItWorks: "Installs at your main water line. Monitors flow and pressure continuously, runs a daily automated health test, and closes the valve when it detects an anomaly.", bestFor: "Homeowners who want the broadest carrier acceptance and protection calibrated within days, not a month." },
+  { name: "Phyn Plus", slug: "phyn-plus", tagline: "The accuracy leader. Independently ranked first for leak detection.", howItWorks: "Installs at your main. Uses pressure wave analysis to read your plumbing 240 times per second, detecting leaks without separate sensors placed around the house.", bestFor: "Older Houston homes, complex plumbing, and owners who want the most sensitive detection available." },
+  { name: "StreamLabs Control", slug: "streamlabs", tagline: "The durability pick. Fewer moving parts, fewer failure points.", howItWorks: "Installs inline on your main water line. Uses an ultrasonic flow meter with no internal turbine, monitors flow over Wi-Fi, and shuts off on a detected leak.", bestFor: "Homeowners who prioritize mechanical simplicity and long-term reliability." },
+  { name: "Guardian by Elexa", slug: "guardian", tagline: "The retrofit option. No plumbing replacement required.", howItWorks: "A motorized actuator mounts onto your existing main shutoff valve and physically turns the handle when wireless leak sensors detect water. No cutting into the line.", bestFor: "Older homes and situations where replacing or cutting into the main line is not an option." },
+];
+
+for (const dev of deviceData) {
+  output += `# ${dev.name}
+
+${dev.tagline}
+
+## How it works
+
+${dev.howItWorks}
+
+## Best for
+
+${dev.bestFor}
+
+---
+
+`;
+}
 
 for (const [slug, city] of Object.entries(cities)) {
   output += `# ${city.name}, Texas

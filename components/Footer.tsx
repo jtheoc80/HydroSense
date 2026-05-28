@@ -85,6 +85,9 @@ export default function Footer() {
               <a href="#insurance-forms" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Insurance Forms Guide
               </a>
+              <a href="/devices" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+                Devices We Install
+              </a>
               <a href="#pricing" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Pricing
               </a>
