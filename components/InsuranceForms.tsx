@@ -3,34 +3,34 @@ const forms = [
     name: "HO-A (Basic)",
     coverage: "Actual Cash Value",
     description:
-      "Covers 10 named perils only. Claims settle at depreciated value, not replacement cost. A 15-year-old water heater that fails is valued at what a 15-year-old water heater is worth, not what a new one costs.",
+      "Named-peril coverage on a limited list: fire, hail, wind, theft, and a few others. Does not automatically cover sudden water discharge from plumbing. Claims settle at actual cash value, meaning depreciated, not replacement. A 15-year-old water heater that fails is valued at what a 15-year-old water heater is worth, not what a new one costs.",
     example:
-      "A burst supply line causing $18,000 in damage settles at $6,000 after depreciation. You cover the $12,000 gap out of pocket.",
+      "A burst supply line causing $18,000 in damage settles at roughly $6,000 after depreciation. You cover the gap.",
     verdict:
       "Least coverage. Lowest premium. Largest out-of-pocket exposure.",
     highlight: false,
   },
   {
     name: "HO-B (Broad)",
-    coverage: "Replacement Cost",
+    coverage: "Open Peril Dwelling, Replacement Cost",
     description:
-      "Covers 16 named perils at replacement cost. Claims settle at what it costs to repair or replace, regardless of age or depreciation. This is the most common form in Texas.",
+      "Open-peril coverage on the dwelling, named-peril on contents. Settles at replacement cost. This was historically the Texas gold standard for water and foundation claims. Many carriers have phased it out in favor of HO-3, but some still write it. Worth asking your carrier by name.",
     example:
-      "The same $18,000 supply line claim settles at $18,000. No depreciation gap. You pay the deductible only.",
+      "The same $18,000 supply line claim settles at $18,000. You pay only the deductible.",
     verdict:
-      "Standard for most Texas homes. Replacement cost eliminates the depreciation gap.",
-    highlight: true,
+      "Replacement cost eliminates the depreciation gap. Ask your carrier if they still write this form.",
+    highlight: false,
   },
   {
     name: "HO-3 (Special)",
-    coverage: "Open Peril, Replacement Cost",
+    coverage: "Open Peril Dwelling, Named Peril Contents",
     description:
-      "Covers all perils except those specifically excluded. This is the broadest standard form. Your dwelling is covered unless your policy says otherwise, instead of only being covered for listed events.",
+      "Open-peril on the dwelling, named-peril on contents, replacement cost. The national standard and the form most Texas carriers now default to. Your dwelling is covered against anything not specifically excluded.",
     example:
-      "An unusual event that is not listed in HO-A or HO-B named perils is still covered under HO-3, as long as it is not specifically excluded.",
+      "An unusual loss not on a named-peril list is still covered, as long as the policy does not specifically exclude it.",
     verdict:
-      "Broadest coverage. Higher premium. Recommended for homes valued above $400,000.",
-    highlight: false,
+      "Broadest standard coverage. The default for most Texas carriers today.",
+    highlight: true,
   },
 ];
 
@@ -73,7 +73,7 @@ export default function InsuranceForms() {
                 </p>
                 {form.highlight && (
                   <span className="inline-block mt-3 text-[10px] uppercase tracking-[0.2em] font-semibold text-hydro-400 bg-hydro-400/10 px-3 py-1 rounded-full">
-                    Most common in Texas
+                    Most common today
                   </span>
                 )}
               </div>

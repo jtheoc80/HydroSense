@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: "What is the difference between HO-A, HO-B, and HO-3?",
-    a: "HO-A covers 10 named perils at actual cash value (depreciated). HO-B covers 16 named perils at replacement cost. HO-3 is open peril with replacement cost, the broadest standard form. The smart shutoff discount applies on all three forms, but the device protection is most critical on HO-A where claim settlements are depreciated.",
+    a: "HO-A is named-peril, actual cash value (depreciated). HO-B is open-peril on the dwelling with replacement cost, historically the Texas gold standard but now phased out by many carriers. HO-3 is open-peril on the dwelling, named-peril on contents, replacement cost, and the form most Texas carriers default to today. The smart shutoff discount applies on all three forms, but the device protection is most critical on HO-A where claim settlements are depreciated.",
   },
   {
     q: "Can freeze damage show up weeks after the event?",
