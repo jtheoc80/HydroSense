@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { sendQuoteAcceptedEmail } from "@/lib/email-quote";
 import { sendPushNotification } from "@/lib/pushover";
 import { postWebhook } from "@/lib/webhook";
+import { submitJotformAgreement } from "@/lib/jotform";
 
 export async function POST(
   _request: NextRequest,
@@ -94,6 +95,20 @@ export async function POST(
         quote_number: quote.quote_number,
         accepted_at: new Date().toISOString(),
       }).catch((err) => console.error("Webhook failed:", err)),
+
+      submitJotformAgreement({
+        quote_number: quote.quote_number,
+        first_name: quote.customer_first_name,
+        last_name: quote.customer_last_name,
+        email: quote.customer_email,
+        phone: quote.customer_phone || "",
+        address: quote.property_address || "",
+        city: quote.property_city || "",
+        zip: quote.property_zip || "",
+        carrier: quote.carrier || "",
+        total: quote.total ?? 0,
+        line_items: quote.line_items ?? [],
+      }).catch((err) => console.error("Jotform submission failed:", err)),
     ]);
 
     return NextResponse.json({ ok: true });

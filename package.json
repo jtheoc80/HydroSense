@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "indexnow:seed": "tsx scripts/indexnow-seed.ts"
+    "indexnow:seed": "tsx scripts/indexnow-seed.ts",
+    "jotform:discover": "tsx scripts/discover-jotform-fields.ts"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

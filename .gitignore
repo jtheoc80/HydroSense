@@ -42,3 +42,4 @@ public/brand/source/
 *.sketch
 
 .vercel
+.env*.local
