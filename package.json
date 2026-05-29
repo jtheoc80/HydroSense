@@ -7,7 +7,8 @@
     "prebuild": "tsx scripts/generate-llms-full.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "indexnow:seed": "tsx scripts/indexnow-seed.ts"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
