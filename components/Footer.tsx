@@ -103,6 +103,9 @@ export default function Footer() {
               <a href="#faq" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 FAQ
               </a>
+              <a href="/blog/smart-water-shutoff-texas-vacation-rentals" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+                Blog
+              </a>
               <a href="/privacy" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Privacy Policy
               </a>

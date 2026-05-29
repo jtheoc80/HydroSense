@@ -119,6 +119,18 @@ A smart shutoff responds in approximately 8 seconds. The difference between a $2
 
 `;
 
+output += `# Blog
+
+## Smart Water Shutoff for Texas Vacation Rentals
+
+Pillar guide for Galveston, Lake Conroe, and Lake Livingston vacation home owners. Covers the 6-day undetected leak scenario, why vacation homes carry higher water damage risk than primary residences, insurance reality for Texas STR properties (DP-3, HO-5 with STR rider), the three vacation markets we serve, install process for beach and lake houses, and the math on a $999 install with $400-$700/yr typical credit.
+
+URL: https://hydrosensetx.com/blog/smart-water-shutoff-texas-vacation-rentals
+
+---
+
+`;
+
 // Device pages
 const deviceData = [
   { name: "Flo by Moen", slug: "moen-flo", tagline: "The insurance default. Fastest to calibrate, most widely recognized.", howItWorks: "Installs at your main water line. Monitors flow and pressure continuously, runs a daily automated health test, and closes the valve when it detects an anomaly.", bestFor: "Homeowners who want the broadest carrier acceptance and protection calibrated within days, not a month." },

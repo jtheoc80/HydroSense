@@ -42,6 +42,10 @@
 - [StreamLabs Control](https://hydrosensetx.com/devices/streamlabs): Ultrasonic flow meter, no internal turbine
 - [Guardian by Elexa](https://hydrosensetx.com/devices/guardian): Retrofit, mounts on existing valve, no plumbing replacement
 
+## Blog
+
+- [Smart Water Shutoff for Texas Vacation Rentals](https://hydrosensetx.com/blog/smart-water-shutoff-texas-vacation-rentals): Pillar guide for Galveston, Lake Conroe, and Lake Livingston owners covering insurance credits, install process, and the 6-day failure scenario
+
 ## Legal
 
 - [Privacy Policy](https://hydrosensetx.com/privacy): Data collection, SMS consent, third-party services, data deletion requests
