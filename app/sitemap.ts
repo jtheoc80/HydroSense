@@ -51,7 +51,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/blog/smart-water-shutoff-texas-vacation-rentals`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/best-home-investment-texas-tight-budget`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
