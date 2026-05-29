@@ -9,10 +9,18 @@ for (const city of Object.values(cities)) {
   }
 }
 
+export interface QualifyingFlags {
+  install_ready: boolean;
+  needs_electrician: boolean;
+  fire_sprinkler_concern: boolean;
+  wifi_extender_needed: boolean;
+}
+
 export interface LeadScore {
   score: number;
   tier: "hot" | "warm" | "cold";
   factors: string[];
+  qualifying_flags: QualifyingFlags;
 }
 
 export function scoreLead(lead: {
@@ -20,6 +28,9 @@ export function scoreLead(lead: {
   zip?: string;
   address?: string;
   message?: string;
+  power_within_12ft?: string;
+  fire_sprinkler_system?: string;
+  wifi_at_install_location?: string;
 }): LeadScore {
   let score = 0;
   const factors: string[] = [];
@@ -47,5 +58,15 @@ export function scoreLead(lead: {
 
   const tier = score >= 3 ? "hot" : score >= 2 ? "warm" : "cold";
 
-  return { score, tier, factors };
+  const qualifying_flags: QualifyingFlags = {
+    install_ready:
+      lead.power_within_12ft === "yes" &&
+      lead.fire_sprinkler_system === "no" &&
+      lead.wifi_at_install_location === "yes",
+    needs_electrician: lead.power_within_12ft === "no",
+    fire_sprinkler_concern: lead.fire_sprinkler_system === "yes",
+    wifi_extender_needed: lead.wifi_at_install_location === "no",
+  };
+
+  return { score, tier, factors, qualifying_flags };
 }

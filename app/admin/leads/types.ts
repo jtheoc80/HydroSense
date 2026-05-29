@@ -20,4 +20,13 @@ export interface Lead {
   booked_at: string | null;
   meeting_url: string | null;
   notes: string | null;
+  power_within_12ft: string | null;
+  fire_sprinkler_system: string | null;
+  wifi_at_install_location: string | null;
+  qualifying_flags: {
+    install_ready: boolean;
+    needs_electrician: boolean;
+    fire_sprinkler_concern: boolean;
+    wifi_extender_needed: boolean;
+  } | null;
 }

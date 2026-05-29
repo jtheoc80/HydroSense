@@ -23,6 +23,40 @@ const SOURCE_FILTERS = [
   { label: "Paid ad", value: "paid" },
 ];
 
+const ANSWER_COLORS: Record<string, string> = {
+  yes: "bg-green-500/20 text-green-400",
+  no: "bg-red-500/20 text-red-400",
+  unsure: "bg-amber-500/20 text-amber-400",
+};
+
+function AnswerBadge({ label, value }: { label: string; value: string | null }) {
+  if (!value) return null;
+  return (
+    <span className={`text-[10px] px-1.5 py-0.5 rounded ${ANSWER_COLORS[value] || "bg-ink-700 text-fog-400"}`}>
+      {label}: {value === "unsure" ? "?" : value}
+    </span>
+  );
+}
+
+function QualifyingBadges({ lead }: { lead: Lead }) {
+  const has = lead.power_within_12ft || lead.fire_sprinkler_system || lead.wifi_at_install_location;
+  if (!has) return null;
+  return (
+    <div className="flex flex-wrap gap-1 mt-1.5">
+      <AnswerBadge label="110V" value={lead.power_within_12ft} />
+      <AnswerBadge label="WiFi" value={lead.wifi_at_install_location} />
+      {lead.fire_sprinkler_system === "yes" && (
+        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-signal-400/20 text-signal-400">
+          SPRINKLER
+        </span>
+      )}
+      {lead.fire_sprinkler_system && lead.fire_sprinkler_system !== "yes" && (
+        <AnswerBadge label="Sprinkler" value={lead.fire_sprinkler_system} />
+      )}
+    </div>
+  );
+}
+
 function getSourceTag(lead: Lead): string {
   if (lead.utm_source && /google|meta|facebook|bing/i.test(lead.utm_source))
     return "paid";
@@ -188,6 +222,7 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
                           {lead.city}
                         </p>
                       )}
+                      <QualifyingBadges lead={lead} />
                       <div className="mt-2 flex items-center gap-1 text-xs text-fog-400">
                         {new Date(lead.created_at).toLocaleDateString(
                           "en-US",
@@ -272,6 +307,9 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
                     Score
                   </th>
                   <th className="text-left py-3 px-3 text-fog-300 font-medium">
+                    Qualifying
+                  </th>
+                  <th className="text-left py-3 px-3 text-fog-300 font-medium">
                     Source
                   </th>
                   <th className="text-left py-3 px-3 text-fog-300 font-medium">
@@ -334,6 +372,9 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
                         {lead.lead_score ?? 0}
                       </span>
                     </td>
+                    <td className="py-3 px-3">
+                      <QualifyingBadges lead={lead} />
+                    </td>
                     <td className="py-3 px-3 text-fog-300 text-xs">
                       {getSourceTag(lead)}
                     </td>
@@ -352,7 +393,7 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
                 {filtered.length === 0 && (
                   <tr>
                     <td
-                      colSpan={10}
+                      colSpan={11}
                       className="py-12 text-center text-fog-300"
                     >
                       No leads match your filters.

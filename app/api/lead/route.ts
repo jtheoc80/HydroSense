@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const userAgent = request.headers.get("user-agent") || "";
 
     // Score the lead before insert
-    const { score, tier, factors } = scoreLead(parsed.data);
+    const { score, tier, factors, qualifying_flags } = scoreLead(parsed.data);
 
     const { data, error } = await supabase
       .from("leads")
@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
         ip_address: ip,
         lead_score: score,
         lead_tier: tier,
+        qualifying_flags,
       })
       .select("id")
       .single();
@@ -55,11 +56,13 @@ export async function POST(request: NextRequest) {
       ip_address: ip,
       lead_score: score,
       lead_tier: tier,
+      qualifying_flags,
     };
 
     const webhookPayload = {
       ...leadWithId,
       lead_factors: factors,
+      qualifying_flags,
       submitted_at: new Date().toISOString(),
       booking_url: process.env.NEXT_PUBLIC_BOOKING_URL || null,
     };

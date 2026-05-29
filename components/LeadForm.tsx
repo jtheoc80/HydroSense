@@ -34,16 +34,11 @@ const carriers = [
 /*  Shared dark-on-navy override classes for Catalyst controls         */
 /* ------------------------------------------------------------------ */
 
-// Outer <span> wrapper: focus ring override
-const controlFocus =
-  "focus-within:after:!ring-2 focus-within:after:!ring-hydro-400 sm:focus-within:after:!ring-2 sm:focus-within:after:!ring-hydro-400";
-
 // Inner <input> overrides
 const inputClasses = [
-  controlFocus,
   // Background and border
-  "[&_input]:!bg-ink-900 [&_input]:!border [&_input]:!border-fog-400/40",
-  "[&_input]:data-[hover]:!border-fog-300/60",
+  "[&_input]:!bg-ink-900 [&_input]:!border [&_input]:!border-white/15 [&_input]:!rounded-lg",
+  "[&_input]:data-[hover]:!border-white/25",
   "[&_input]:focus:!border-hydro-400",
   // Text and placeholder
   "[&_input]:!text-white [&_input]:!text-base [&_input]:sm:!text-base",
@@ -56,11 +51,9 @@ const inputClasses = [
 
 // Inner <select> overrides
 const selectClasses = [
-  // Focus ring (select uses has-data-focus not focus-within)
-  "has-data-[focus]:after:!ring-2 has-data-[focus]:after:!ring-hydro-400",
   // Background and border
-  "[&_select]:!bg-ink-900 [&_select]:!border [&_select]:!border-fog-400/40",
-  "[&_select]:data-[hover]:!border-fog-300/60",
+  "[&_select]:!bg-ink-900 [&_select]:!border [&_select]:!border-white/15 [&_select]:!rounded-lg",
+  "[&_select]:data-[hover]:!border-white/25",
   "[&_select]:data-[focus]:!border-hydro-400",
   // Text
   "[&_select]:!text-white [&_select]:!text-base [&_select]:sm:!text-base",
@@ -76,9 +69,8 @@ const selectClasses = [
 
 // Inner <textarea> overrides
 const textareaClasses = [
-  controlFocus,
-  "[&_textarea]:!bg-ink-900 [&_textarea]:!border [&_textarea]:!border-fog-400/40",
-  "[&_textarea]:data-[hover]:!border-fog-300/60",
+  "[&_textarea]:!bg-ink-900 [&_textarea]:!border [&_textarea]:!border-white/15 [&_textarea]:!rounded-lg",
+  "[&_textarea]:data-[hover]:!border-white/25",
   "[&_textarea]:focus:!border-hydro-400",
   "[&_textarea]:!text-white [&_textarea]:!text-base [&_textarea]:sm:!text-base",
   "[&_textarea]:placeholder:!text-fog-300",
@@ -90,6 +82,51 @@ const textareaClasses = [
 /*  Label style: white, 15px+, medium weight                           */
 /* ------------------------------------------------------------------ */
 const labelClasses = "!text-white !text-[15px] !font-medium";
+
+const radioOptions = [
+  { value: "yes", label: "Yes" },
+  { value: "no", label: "No" },
+  { value: "unsure", label: "Not sure" },
+] as const;
+
+function RadioQuestion({
+  label,
+  caption,
+  name,
+  value,
+  onChange,
+}: {
+  label: string;
+  caption: string;
+  name: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <fieldset>
+      <legend className="text-[15px] font-medium text-white mb-1.5">
+        {label}
+      </legend>
+      <p className="text-xs text-fog-300 leading-relaxed mb-3">{caption}</p>
+      <div className="flex gap-2">
+        {radioOptions.map((opt) => (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onChange(value === opt.value ? "" : opt.value)}
+            className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all border ${
+              value === opt.value
+                ? "bg-signal-400/15 border-signal-400/60 text-signal-400"
+                : "bg-ink-900 border-white/15 text-fog-300 hover:border-white/25"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
 
 interface LeadFormProps {
   city?: string;
@@ -124,6 +161,9 @@ export default function LeadForm({ city }: LeadFormProps) {
   const [selectedCarrier, setSelectedCarrier] = useState("");
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [powerNear, setPowerNear] = useState("");
+  const [fireSprinkler, setFireSprinkler] = useState("");
+  const [wifiReach, setWifiReach] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -199,6 +239,9 @@ export default function LeadForm({ city }: LeadFormProps) {
       city: city || "",
       source: "hydrosensetx.com",
       ...utm,
+      ...(powerNear ? { power_within_12ft: powerNear } : {}),
+      ...(fireSprinkler ? { fire_sprinkler_system: fireSprinkler } : {}),
+      ...(wifiReach ? { wifi_at_install_location: wifiReach } : {}),
     };
 
     setSelectedCarrier(body.carrier);
@@ -482,6 +525,43 @@ export default function LeadForm({ city }: LeadFormProps) {
                   ))}
                 </Select>
               </Field>
+
+              {/* Qualifying questions */}
+              <div className="space-y-5 pt-2">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 font-medium">
+                  Help us prep your quote call
+                </p>
+
+                <RadioQuestion
+                  label="Is there a power outlet within 12 feet of your main water shutoff?"
+                  caption="Usually in the garage, utility room, or near the water heater. If not sure, no problem — we'll confirm on the call."
+                  name="power_within_12ft"
+                  value={powerNear}
+                  onChange={setPowerNear}
+                />
+
+                <RadioQuestion
+                  label="Does your home have a fire sprinkler system?"
+                  caption="Common in some newer Texas builds and required in some master-planned communities. Affects the install path."
+                  name="fire_sprinkler_system"
+                  value={fireSprinkler}
+                  onChange={setFireSprinkler}
+                />
+                {fireSprinkler === "yes" && (
+                  <p className="text-sm text-fog-300 -mt-2 ml-1">
+                    Got it. We will talk through the install options for
+                    sprinkler-equipped homes on the call.
+                  </p>
+                )}
+
+                <RadioQuestion
+                  label="Does your home WiFi reach the area where your main water shutoff is located?"
+                  caption="The device needs WiFi to send you alerts. If signal is weak, we include a WiFi extender at no extra cost."
+                  name="wifi_at_install_location"
+                  value={wifiReach}
+                  onChange={setWifiReach}
+                />
+              </div>
 
               <Field>
                 <Label htmlFor="message" className={labelClasses}>

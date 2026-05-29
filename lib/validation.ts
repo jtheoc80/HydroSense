@@ -24,6 +24,9 @@ export const leadSchema = z.object({
   utm_term: z.string().optional().default(""),
   referrer: z.string().optional().default(""),
   user_agent: z.string().optional().default(""),
+  power_within_12ft: z.enum(["yes", "no", "unsure"]).optional(),
+  fire_sprinkler_system: z.enum(["yes", "no", "unsure"]).optional(),
+  wifi_at_install_location: z.enum(["yes", "no", "unsure"]).optional(),
 });
 
 export type LeadInput = z.infer<typeof leadSchema>;
