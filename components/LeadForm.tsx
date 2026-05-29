@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import { estimatedSavingsForCarrier } from "@/lib/savings";
 import { Field, Label, ErrorMessage } from "@/components/catalyst/fieldset";
 import { Input } from "@/components/catalyst/input";
@@ -125,6 +125,128 @@ function RadioQuestion({
         ))}
       </div>
     </fieldset>
+  );
+}
+
+function QualifyingDisclosure({
+  powerNear,
+  setPowerNear,
+  fireSprinkler,
+  setFireSprinkler,
+  wifiReach,
+  setWifiReach,
+}: {
+  powerNear: string;
+  setPowerNear: (v: string) => void;
+  fireSprinkler: string;
+  setFireSprinkler: (v: string) => void;
+  wifiReach: string;
+  setWifiReach: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setContentHeight(contentRef.current.scrollHeight);
+    }
+  }, [open, powerNear, fireSprinkler, wifiReach]);
+
+  const answered = [powerNear, fireSprinkler, wifiReach].filter(Boolean).length;
+
+  return (
+    <div
+      className="rounded-[10px] border transition-colors"
+      style={{
+        background: "rgba(56, 189, 248, 0.05)",
+        borderColor: open
+          ? "rgba(56, 189, 248, 0.3)"
+          : "rgba(56, 189, 248, 0.2)",
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+        aria-controls="qualifying-questions"
+        className="w-full flex items-center justify-between gap-3 p-4 min-h-[48px] text-left group hover:[border-color:rgba(56,189,248,0.4)] transition-colors rounded-[10px]"
+      >
+        <div className="flex-1 min-w-0">
+          <span className="text-[15px] font-medium text-fog-100 block">
+            Speed up your install assessment{" "}
+            <span className="text-fog-400 font-normal">(optional)</span>
+          </span>
+          <span className="text-xs text-fog-300 leading-relaxed block mt-1">
+            Three quick questions help us match the right device and crew. You
+            can answer them on the call instead.
+          </span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {answered > 0 && (
+            <span className="font-mono text-xs text-signal-400">
+              {answered} of 3
+            </span>
+          )}
+          <svg
+            className="w-5 h-5 text-fog-400 transition-transform duration-250"
+            style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </button>
+
+      <div
+        id="qualifying-questions"
+        role="region"
+        style={{
+          maxHeight: open ? `${contentHeight}px` : "0px",
+          transition: "max-height 250ms ease",
+          overflow: "hidden",
+        }}
+      >
+        <div ref={contentRef} className="space-y-5 px-4 pb-4 pt-1">
+          <RadioQuestion
+            label="Is there a power outlet within 12 feet of your main water shutoff?"
+            caption="Usually in the garage, utility room, or near the water heater. If not sure, no problem — we'll confirm on the call."
+            name="power_within_12ft"
+            value={powerNear}
+            onChange={setPowerNear}
+          />
+
+          <RadioQuestion
+            label="Does your home have a fire sprinkler system?"
+            caption="Common in some newer Texas builds and required in some master-planned communities. Affects the install path."
+            name="fire_sprinkler_system"
+            value={fireSprinkler}
+            onChange={setFireSprinkler}
+          />
+          {fireSprinkler === "yes" && (
+            <p className="text-sm text-fog-300 -mt-2 ml-1">
+              Got it. We will talk through the install options for
+              sprinkler-equipped homes on the call.
+            </p>
+          )}
+
+          <RadioQuestion
+            label="Does your home WiFi reach the area where your main water shutoff is located?"
+            caption="The device needs WiFi to send you alerts. If signal is weak, we include a WiFi extender at no extra cost."
+            name="wifi_at_install_location"
+            value={wifiReach}
+            onChange={setWifiReach}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -526,42 +648,15 @@ export default function LeadForm({ city }: LeadFormProps) {
                 </Select>
               </Field>
 
-              {/* Qualifying questions */}
-              <div className="space-y-5 pt-2">
-                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 font-medium">
-                  Help us prep your quote call
-                </p>
-
-                <RadioQuestion
-                  label="Is there a power outlet within 12 feet of your main water shutoff?"
-                  caption="Usually in the garage, utility room, or near the water heater. If not sure, no problem — we'll confirm on the call."
-                  name="power_within_12ft"
-                  value={powerNear}
-                  onChange={setPowerNear}
-                />
-
-                <RadioQuestion
-                  label="Does your home have a fire sprinkler system?"
-                  caption="Common in some newer Texas builds and required in some master-planned communities. Affects the install path."
-                  name="fire_sprinkler_system"
-                  value={fireSprinkler}
-                  onChange={setFireSprinkler}
-                />
-                {fireSprinkler === "yes" && (
-                  <p className="text-sm text-fog-300 -mt-2 ml-1">
-                    Got it. We will talk through the install options for
-                    sprinkler-equipped homes on the call.
-                  </p>
-                )}
-
-                <RadioQuestion
-                  label="Does your home WiFi reach the area where your main water shutoff is located?"
-                  caption="The device needs WiFi to send you alerts. If signal is weak, we include a WiFi extender at no extra cost."
-                  name="wifi_at_install_location"
-                  value={wifiReach}
-                  onChange={setWifiReach}
-                />
-              </div>
+              {/* Collapsible qualifying questions */}
+              <QualifyingDisclosure
+                powerNear={powerNear}
+                setPowerNear={setPowerNear}
+                fireSprinkler={fireSprinkler}
+                setFireSprinkler={setFireSprinkler}
+                wifiReach={wifiReach}
+                setWifiReach={setWifiReach}
+              />
 
               <Field>
                 <Label htmlFor="message" className={labelClasses}>
