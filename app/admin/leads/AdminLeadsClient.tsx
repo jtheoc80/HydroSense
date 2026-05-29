@@ -110,6 +110,12 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
+            <div className="flex items-center gap-4 mb-1">
+              <span className="text-fog-400 font-semibold text-sm">Leads</span>
+              <a href="/admin/quotes" className="text-xs text-fog-400 hover:text-fog-200 transition-colors">
+                Quotes
+              </a>
+            </div>
             <h1 className="font-display text-2xl text-fog-50">
               HydroSense Leads
             </h1>
