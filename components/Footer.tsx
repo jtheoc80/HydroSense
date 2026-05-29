@@ -79,13 +79,13 @@ export default function Footer() {
               Quick Links
             </p>
             <div className="flex flex-col gap-2.5">
-              <a href="#savings-estimator" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+              <a href="/#savings-estimator" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Savings Calculator
               </a>
-              <a href="#the-certificate" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+              <a href="/#the-certificate" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 The Certificate
               </a>
-              <a href="#insurance-forms" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+              <a href="/#insurance-forms" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Insurance Forms Guide
               </a>
               <a href="/devices" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
@@ -97,13 +97,13 @@ export default function Footer() {
               <a href="/insurance/ho-a-vs-ho-b-ho-3" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 HO-A vs HO-B vs HO-3
               </a>
-              <a href="#pricing" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+              <a href="/#pricing" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Pricing
               </a>
-              <a href="#faq" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+              <a href="/#faq" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 FAQ
               </a>
-              <a href="/blog/smart-water-shutoff-texas-vacation-rentals" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
+              <a href="/blog" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
                 Blog
               </a>
               <a href="/privacy" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
@@ -125,7 +125,7 @@ export default function Footer() {
               in paper and digital form after final payment.
             </p>
             <a
-              href="#lead-form"
+              href="/#lead-form"
               className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-sm px-6 py-3 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 transition-all"
             >
               Get a Quote

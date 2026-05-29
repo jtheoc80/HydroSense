@@ -4,15 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 
 const navLinks = [
-  { label: "Why now", href: "#critical-statements" },
-  { label: "The certificate", href: "#the-certificate" },
-  { label: "Savings", href: "#savings-estimator" },
-  { label: "How it works", href: "#customer-journey" },
+  { label: "Why now", href: "/#critical-statements" },
+  { label: "The certificate", href: "/#the-certificate" },
+  { label: "Savings", href: "/#savings-estimator" },
+  { label: "How it works", href: "/#customer-journey" },
   { label: "Devices", href: "/devices" },
   { label: "Service area", href: "/service-area" },
   { label: "Guides", href: "/freeze-damage-texas" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 export default function Header() {
@@ -64,7 +64,7 @@ export default function Header() {
           >
             (281) 694-5754
           </a>
-          <a href="#lead-form" className="btn-primary text-sm">
+          <a href="/#lead-form" className="btn-primary text-sm">
             Get my quote
           </a>
         </div>
@@ -120,7 +120,7 @@ export default function Header() {
               (281) 694-5754
             </a>
             <a
-              href="#lead-form"
+              href="/#lead-form"
               onClick={() => setMobileOpen(false)}
               className="btn-primary text-sm text-center"
             >

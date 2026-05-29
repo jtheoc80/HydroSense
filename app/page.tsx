@@ -1,4 +1,5 @@
 import CriticalBar from "@/components/CriticalBar";
+import ScrollToHash from "@/components/ScrollToHash";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import CriticalStatements from "@/components/CriticalStatements";
@@ -17,6 +18,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
+      <ScrollToHash />
       <CriticalBar />
       <Header />
       <main>
