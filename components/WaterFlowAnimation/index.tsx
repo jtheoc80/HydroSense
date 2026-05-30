@@ -20,7 +20,8 @@ const FOG_200 = "#CBD5E1";
 const FOG_300 = "#9AA8BF";
 const FOG_400 = "#475569";
 const SURFACE_DEEP = "#0A2156";
-const SURFACE_MID = "#1E3A5F";
+const SURFACE_MID = "#3A5478";
+const HOUSE_OUTLINE = "#6B7B96";
 
 interface WaterFlowAnimationProps {
   showTitle?: boolean;
@@ -139,9 +140,9 @@ export default function WaterFlowAnimation({
 
             {/* Pipe outer gradient for 3D depth */}
             <linearGradient id="pipe-outer" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#253F6B" />
+              <stop offset="0%" stopColor="#4A6488" />
               <stop offset="50%" stopColor={SURFACE_MID} />
-              <stop offset="100%" stopColor="#152A4A" />
+              <stop offset="100%" stopColor="#2A4462" />
             </linearGradient>
 
             {/* House fill — very subtle */}
@@ -204,11 +205,11 @@ export default function WaterFlowAnimation({
           <g className={styles.scene} transform={showTitle ? undefined : `translate(0, ${titleOffset})`}>
 
             {/* Ground line with gradient fade */}
-            <line x1="60" y1="640" x2="1540" y2="640" stroke="url(#ground-line)" strokeWidth="1" />
-            <text x="80" y="660" fontFamily={FONT_MONO} fontSize="10" letterSpacing="2" fill={FOG_400} className={styles.smallLabel}>GROUND</text>
+            <line x1="60" y1="650" x2="1540" y2="650" stroke="url(#ground-line)" strokeWidth="1.5" />
+            <text x="80" y="670" fontFamily={FONT_MONO} fontSize="12" letterSpacing="2" fill={HOUSE_OUTLINE} className={styles.smallLabel}>GROUND</text>
 
             {/* ===== CITY MAIN ===== */}
-            <text x="160" y="290" fontFamily={FONT_MONO} fontSize="11" letterSpacing="2.5" fill={FOG_300} textAnchor="middle" className={styles.smallLabel}>CITY MAIN</text>
+            <text x="200" y="280" fontFamily={FONT_MONO} fontSize="15" letterSpacing="3" fill={FOG_200} textAnchor="middle" className={styles.smallLabel}>CITY MAIN</text>
             <line x1="60" y1="350" x2="340" y2="350" stroke="url(#pipe-outer)" strokeWidth="22" strokeLinecap="round" />
             <line x1="60" y1="350" x2="340" y2="350" stroke={HYDRO_CYAN} strokeWidth="14" strokeLinecap="round" className={styles.fillInlet} filter="url(#water-glow)" />
 
@@ -240,19 +241,19 @@ export default function WaterFlowAnimation({
 
               <text x="60" y="106" fontFamily={FONT_MONO} fontSize="8" letterSpacing="1.5" fill={HYDRO_CYAN} textAnchor="middle" className={styles.smallLabel}>SHUTOFF</text>
             </g>
-            <text x="400" y="270" fontFamily={FONT_MONO} fontSize="11" letterSpacing="2.5" fill={SIGNAL_GOLD} textAnchor="middle" className={styles.smallLabel}>SMART SHUTOFF</text>
+            <text x="400" y="260" fontFamily={FONT_MONO} fontSize="15" letterSpacing="3" fill={SIGNAL_GOLD} textAnchor="middle" className={styles.smallLabel}>SMART SHUTOFF</text>
 
             {/* House entry pipe */}
             <line x1="470" y1="350" x2="540" y2="350" stroke="url(#pipe-outer)" strokeWidth="20" strokeLinecap="round" />
             <line x1="470" y1="350" x2="540" y2="350" stroke={HYDRO_CYAN} strokeWidth="12" strokeLinecap="round" className={styles.fillHouseEntry} filter="url(#water-glow)" />
 
             {/* ===== HOUSE ===== */}
-            <text x="1010" y="270" fontFamily={FONT_MONO} fontSize="11" letterSpacing="2.5" fill={FOG_300} textAnchor="middle" className={styles.smallLabel}>YOUR HOME</text>
+            <text x="1010" y="240" fontFamily={FONT_MONO} fontSize="18" letterSpacing="4" fill={FOG_50} textAnchor="middle" className={styles.smallLabel}>YOUR HOME</text>
             {/* House fill for depth */}
-            <path d="M 540 350 L 540 640 L 1480 640 L 1480 350 L 1010 220 Z" fill="url(#house-fill)" />
-            <path d="M 540 350 L 540 640 L 1480 640 L 1480 350 L 1010 220 Z" fill="none" stroke={FOG_400} strokeWidth="1" strokeLinejoin="round" opacity="0.6" />
+            <path d="M 500 350 L 500 650 L 1520 650 L 1520 350 L 1010 195 Z" fill="url(#house-fill)" />
+            <path d="M 500 350 L 500 650 L 1520 650 L 1520 350 L 1010 195 Z" fill="none" stroke={HOUSE_OUTLINE} strokeWidth="2.2" strokeLinejoin="round" />
             {/* Floor divider */}
-            <line x1="540" y1="500" x2="1480" y2="500" stroke={SURFACE_MID} strokeWidth="1" strokeDasharray="2 4" opacity="0.5" />
+            <line x1="510" y1="500" x2="1510" y2="500" stroke={SURFACE_MID} strokeWidth="1" strokeDasharray="2 4" opacity="0.5" />
 
             {/* Main pipe */}
             <line x1="540" y1="350" x2="1380" y2="350" stroke="url(#pipe-outer)" strokeWidth="14" strokeLinecap="round" />
@@ -293,26 +294,26 @@ export default function WaterFlowAnimation({
 
             {/* BIG LEAK STREAMS with glow */}
             <g filter="url(#leak-glow)">
-              <path d="M 998 545 Q 1015 580, 1030 640" stroke={HYDRO_CYAN} strokeWidth="6.5" fill="none" strokeLinecap="round" className={styles.leakStream} />
-              <path d="M 998 555 Q 1025 595, 1055 640" stroke={HYDRO_CYAN} strokeWidth="6" fill="none" strokeLinecap="round" className={styles.leakStream} style={{ animationDelay: "-15.93s" }} />
-              <path d="M 1000 565 Q 1010 600, 1015 640" stroke={HYDRO_CYAN} strokeWidth="5.5" fill="none" strokeLinecap="round" className={styles.leakStream} style={{ animationDelay: "-15.87s" }} />
-              <path d="M 998 555 Q 1040 590, 1085 640" stroke={HYDRO_CYAN} strokeWidth="5" fill="none" strokeLinecap="round" className={styles.leakStream} style={{ animationDelay: "-15.81s" }} />
+              <path d="M 998 545 Q 1015 585, 1030 650" stroke={HYDRO_CYAN} strokeWidth="6.5" fill="none" strokeLinecap="round" className={styles.leakStream} />
+              <path d="M 998 555 Q 1025 600, 1055 650" stroke={HYDRO_CYAN} strokeWidth="6" fill="none" strokeLinecap="round" className={styles.leakStream} style={{ animationDelay: "-15.93s" }} />
+              <path d="M 1000 565 Q 1010 610, 1015 650" stroke={HYDRO_CYAN} strokeWidth="5.5" fill="none" strokeLinecap="round" className={styles.leakStream} style={{ animationDelay: "-15.87s" }} />
+              <path d="M 998 555 Q 1040 600, 1085 650" stroke={HYDRO_CYAN} strokeWidth="5" fill="none" strokeLinecap="round" className={styles.leakStream} style={{ animationDelay: "-15.81s" }} />
             </g>
 
             {/* Puddle with gradient reflection */}
-            <ellipse cx="1050" cy="640" rx="80" ry="8" fill="url(#puddle-grad)" className={styles.puddle} />
-            <ellipse cx="1050" cy="640" rx="50" ry="5" fill={HYDRO_LIGHT} opacity="0.5" className={styles.puddle} style={{ animationDelay: "-15.95s" }} />
+            <ellipse cx="1050" cy="650" rx="80" ry="8" fill="url(#puddle-grad)" className={styles.puddle} />
+            <ellipse cx="1050" cy="650" rx="50" ry="5" fill={HYDRO_LIGHT} opacity="0.5" className={styles.puddle} style={{ animationDelay: "-15.95s" }} />
 
             {/* Splash particles */}
             <g>
-              <circle cx="1020" cy="638" r="2.5" className={`${styles.splashParticle} ${styles.splash1}`} />
-              <circle cx="1075" cy="638" r="2.2" className={`${styles.splashParticle} ${styles.splash2}`} />
-              <circle cx="1045" cy="638" r="2.8" className={`${styles.splashParticle} ${styles.splash3}`} />
-              <circle cx="1060" cy="638" r="2" className={`${styles.splashParticle} ${styles.splash4}`} />
-              <circle cx="1030" cy="638" r="2.6" className={`${styles.splashParticle} ${styles.splash5}`} />
-              <circle cx="1080" cy="638" r="2.4" className={`${styles.splashParticle} ${styles.splash6}`} />
-              <circle cx="1035" cy="638" r="2.1" className={`${styles.splashParticle} ${styles.splash7}`} />
-              <circle cx="1068" cy="638" r="2.7" className={`${styles.splashParticle} ${styles.splash8}`} />
+              <circle cx="1020" cy="648" r="2.5" className={`${styles.splashParticle} ${styles.splash1}`} />
+              <circle cx="1075" cy="648" r="2.2" className={`${styles.splashParticle} ${styles.splash2}`} />
+              <circle cx="1045" cy="648" r="2.8" className={`${styles.splashParticle} ${styles.splash3}`} />
+              <circle cx="1060" cy="648" r="2" className={`${styles.splashParticle} ${styles.splash4}`} />
+              <circle cx="1030" cy="648" r="2.6" className={`${styles.splashParticle} ${styles.splash5}`} />
+              <circle cx="1080" cy="648" r="2.4" className={`${styles.splashParticle} ${styles.splash6}`} />
+              <circle cx="1035" cy="648" r="2.1" className={`${styles.splashParticle} ${styles.splash7}`} />
+              <circle cx="1068" cy="648" r="2.7" className={`${styles.splashParticle} ${styles.splash8}`} />
             </g>
 
             {/* ===== Branch 3: BATHROOM ===== */}
