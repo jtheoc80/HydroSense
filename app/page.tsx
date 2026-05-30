@@ -14,6 +14,7 @@ import ServiceArea from "@/components/ServiceArea";
 import FAQ from "@/components/FAQ";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
+import HowItWorks from "@/components/HowItWorks";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <HowItWorks />
         <CriticalStatements />
         <FreezeDamage />
         <InsuranceForms />

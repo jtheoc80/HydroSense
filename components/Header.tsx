@@ -7,7 +7,7 @@ const navLinks = [
   { label: "Why now", href: "/#critical-statements" },
   { label: "The certificate", href: "/#the-certificate" },
   { label: "Savings", href: "/#savings-estimator" },
-  { label: "How it works", href: "/#customer-journey" },
+  { label: "How it works", href: "/#how-it-works" },
   { label: "Devices", href: "/devices" },
   { label: "Service area", href: "/service-area" },
   { label: "Guides", href: "/freeze-damage-texas" },
