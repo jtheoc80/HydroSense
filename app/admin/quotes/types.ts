@@ -29,7 +29,33 @@ export interface Quote {
   total: number;
   notes_internal: string | null;
   notes_customer: string | null;
-  status: "draft" | "sent" | "viewed" | "accepted" | "declined" | "expired";
+  deposit_amount: number | null;
+  balance_amount: number | null;
+  deposit_paid_at: string | null;
+  balance_charged_at: string | null;
+  stripe_checkout_session_id: string | null;
+  stripe_deposit_payment_intent_id: string | null;
+  stripe_balance_payment_intent_id: string | null;
+  stripe_payment_method_id: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  has_commitment: boolean;
+  commitment_months: number;
+  commitment_end_date: string | null;
+  install_scheduled_date: string | null;
+  install_completed_at: string | null;
+  status:
+    | "draft"
+    | "sent"
+    | "viewed"
+    | "accepted"
+    | "declined"
+    | "expired"
+    | "deposit_paid"
+    | "install_scheduled"
+    | "install_complete"
+    | "deposit_refunded"
+    | "canceled";
   created_at: string;
   sent_at: string | null;
   viewed_at: string | null;

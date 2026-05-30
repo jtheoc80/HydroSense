@@ -8,11 +8,23 @@ const STATUS_COLORS: Record<string, string> = {
   sent: "bg-hydro-400/20 text-hydro-400",
   viewed: "bg-signal-400/20 text-signal-400",
   accepted: "bg-green-500/20 text-green-400",
+  deposit_paid: "bg-signal-400/20 text-signal-400",
+  install_scheduled: "bg-teal-500/20 text-teal-400",
+  install_complete: "bg-green-500/20 text-green-400",
   declined: "bg-red-500/20 text-red-400",
   expired: "bg-fog-400/15 text-fog-300",
+  deposit_refunded: "bg-amber-500/20 text-amber-400",
+  canceled: "bg-red-500/20 text-red-400",
 };
 
-const STATUSES = ["all", "draft", "sent", "viewed", "accepted", "declined", "expired"] as const;
+const STATUS_LABELS: Record<string, string> = {
+  deposit_paid: "deposit paid",
+  install_scheduled: "scheduled",
+  install_complete: "complete",
+  deposit_refunded: "refunded",
+};
+
+const STATUSES = ["all", "draft", "sent", "viewed", "deposit_paid", "install_scheduled", "install_complete", "declined", "expired"] as const;
 
 export default function QuotesListClient({ quotes }: { quotes: Quote[] }) {
   const [filter, setFilter] = useState("all");
@@ -77,7 +89,7 @@ export default function QuotesListClient({ quotes }: { quotes: Quote[] }) {
                     : "bg-ink-900 border-white/15 text-fog-300 hover:border-white/25"
                 }`}
               >
-                {s === "all" ? "All" : s.charAt(0).toUpperCase() + s.slice(1)}
+                {s === "all" ? "All" : (STATUS_LABELS[s] || s).charAt(0).toUpperCase() + (STATUS_LABELS[s] || s).slice(1)}
               </button>
             ))}
           </div>
@@ -132,7 +144,7 @@ export default function QuotesListClient({ quotes }: { quotes: Quote[] }) {
                           STATUS_COLORS[q.status] || STATUS_COLORS.draft
                         }`}
                       >
-                        {q.status}
+                        {STATUS_LABELS[q.status] || q.status}
                       </span>
                     </td>
                     <td className="py-3 pr-4 text-fog-300 text-xs">

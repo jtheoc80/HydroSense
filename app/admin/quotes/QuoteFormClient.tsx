@@ -103,6 +103,10 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
   const subtotal = lineItems.reduce((sum, li) => sum + li.line_total, 0);
   const total = subtotal;
 
+  // 50/50 deposit split (in cents)
+  const depositAmountCents = Math.round((total / 2) * 100);
+  const balanceAmountCents = Math.round(total * 100) - depositAmountCents;
+
   // Lead search with debounce
   const searchLeads = useCallback(async (q: string) => {
     if (q.length < 2) {
@@ -192,6 +196,8 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
       total,
       notes_customer: notesCustomer || null,
       notes_internal: notesInternal || null,
+      deposit_amount: depositAmountCents,
+      balance_amount: balanceAmountCents,
     };
   }
 
@@ -288,16 +294,21 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
           <div className="flex items-center gap-3 mb-8 p-4 bg-ink-900 rounded-xl border border-white/10">
             <span className="text-xs text-fog-400 uppercase tracking-wider">Status:</span>
             <span className={`px-2.5 py-1 rounded text-xs font-medium ${
-              {
+              ({
                 draft: "bg-fog-400/20 text-fog-400",
                 sent: "bg-hydro-400/20 text-hydro-400",
                 viewed: "bg-signal-400/20 text-signal-400",
                 accepted: "bg-green-500/20 text-green-400",
+                deposit_paid: "bg-signal-400/20 text-signal-400",
+                install_scheduled: "bg-teal-500/20 text-teal-400",
+                install_complete: "bg-green-500/20 text-green-400",
                 declined: "bg-red-500/20 text-red-400",
                 expired: "bg-fog-400/15 text-fog-300",
-              }[existing.status]
+                deposit_refunded: "bg-amber-500/20 text-amber-400",
+                canceled: "bg-red-500/20 text-red-400",
+              } as Record<string, string>)[existing.status] || "bg-fog-400/20 text-fog-400"
             }`}>
-              {existing.status}
+              {existing.status.replace(/_/g, " ")}
             </span>
             {existing.sent_at && (
               <span className="text-xs text-fog-400">
@@ -322,6 +333,40 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
                   className="text-xs px-3 py-1.5 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors"
                 >
                   Mark declined
+                </button>
+              </div>
+            )}
+            {(existing.status === "deposit_paid" || existing.status === "install_scheduled") && (
+              <div className="ml-auto flex gap-2">
+                <button
+                  onClick={async () => {
+                    if (!confirm("Mark install complete? This will charge the balance to the customer's card.")) return;
+                    setSaving(true);
+                    try {
+                      const res = await fetch(`/api/quotes/${existing.id}/install-complete`, { method: "POST" });
+                      const json = await res.json();
+                      if (json.ok) window.location.reload();
+                      else setMessage(`Error: ${json.error}`);
+                    } finally { setSaving(false); }
+                  }}
+                  className="text-xs px-3 py-1.5 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors"
+                >
+                  Mark install complete
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!confirm("Refund the deposit? This will refund the customer and cancel the subscription.")) return;
+                    setSaving(true);
+                    try {
+                      const res = await fetch(`/api/quotes/${existing.id}/refund-deposit`, { method: "POST" });
+                      const json = await res.json();
+                      if (json.ok) window.location.reload();
+                      else setMessage(`Error: ${json.error}`);
+                    } finally { setSaving(false); }
+                  }}
+                  className="text-xs px-3 py-1.5 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors"
+                >
+                  Refund deposit
                 </button>
               </div>
             )}
@@ -600,11 +645,23 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
               </button>
             )}
             <div className="flex justify-end pt-4 border-t border-white/10">
-              <div className="text-right">
-                <p className="text-xs text-fog-400 mb-1">Total today</p>
-                <p className="font-mono text-3xl text-fog-50">
-                  ${total.toLocaleString()}
-                </p>
+              <div className="text-right space-y-2">
+                <div>
+                  <p className="text-xs text-fog-400 mb-1">Install total</p>
+                  <p className="font-mono text-3xl text-fog-50">
+                    ${total.toLocaleString()}
+                  </p>
+                </div>
+                <div className="flex gap-6 justify-end text-sm">
+                  <div>
+                    <p className="text-xs text-fog-400">Deposit (50%)</p>
+                    <p className="font-mono text-fog-200">${(depositAmountCents / 100).toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-fog-400">Balance at install</p>
+                    <p className="font-mono text-fog-200">${(balanceAmountCents / 100).toFixed(2)}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>

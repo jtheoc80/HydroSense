@@ -75,6 +75,8 @@ export async function PUT(
       "notes_internal",
       "notes_customer",
       "lead_id",
+      "deposit_amount",
+      "balance_amount",
     ];
 
     const update: Record<string, unknown> = {};
