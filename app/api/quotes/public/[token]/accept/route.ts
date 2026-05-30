@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getStripe, getSubscriptionSku } from "@/lib/stripe";
+import { sendQuoteAcceptedEmail } from "@/lib/email-quote";
+import { sendPushNotification } from "@/lib/pushover";
+import { postWebhook } from "@/lib/webhook";
+import { submitJotformAgreement } from "@/lib/jotform";
 
 export async function POST(
   _request: NextRequest,
@@ -22,16 +25,13 @@ export async function POST(
       );
     }
 
-    // Already paid — no-op
-    if (quote.status === "deposit_paid" || quote.status === "install_complete") {
+    if (quote.status === "accepted") {
       return NextResponse.json({ ok: true, already: true });
     }
 
-    // Already accepted but not yet paid — re-create checkout session
     if (
       quote.status !== "sent" &&
-      quote.status !== "viewed" &&
-      quote.status !== "accepted"
+      quote.status !== "viewed"
     ) {
       return NextResponse.json(
         { ok: false, error: `Cannot accept quote with status '${quote.status}'` },
@@ -51,76 +51,67 @@ export async function POST(
       );
     }
 
-    // Calculate deposit (use stored value or compute 50/50)
-    const depositAmount =
-      quote.deposit_amount ?? Math.round((quote.total / 2) * 100);
-    const balanceAmount =
-      quote.balance_amount ?? Math.round(quote.total * 100) - depositAmount;
-
-    const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL || "https://hydrosensetx.com";
-
-    const stripe = getStripe();
-    const subSku = getSubscriptionSku(quote.line_items ?? []);
-
-    const serviceAddress = [
-      quote.property_address,
-      quote.property_city,
-      quote.property_zip,
-    ]
-      .filter(Boolean)
-      .join(", ");
-
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      customer_email: quote.customer_email,
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `Install deposit — HydroSense ${quote.quote_number}`,
-              description: `50% deposit for smart water shutoff install${serviceAddress ? ` at ${serviceAddress}` : ""}. Balance of $${(balanceAmount / 100).toFixed(2)} due at install completion. Professional monitoring at $19/month begins on install date.`,
-            },
-            unit_amount: depositAmount,
-          },
-          quantity: 1,
-        },
-      ],
-      payment_intent_data: {
-        setup_future_usage: "off_session",
-        description: `Deposit: ${quote.quote_number}`,
-        metadata: {
-          quote_id: quote.id,
-          quote_number: quote.quote_number,
-          payment_type: "install_deposit",
-          lead_id: quote.lead_id || "",
-        },
-      },
-      metadata: {
-        quote_id: quote.id,
-        quote_number: quote.quote_number,
-        subscription_sku: subSku || "",
-        has_commitment: quote.has_commitment ? "true" : "false",
-        commitment_months: (quote.commitment_months ?? 0).toString(),
-      },
-      success_url: `${siteUrl}/quote/${token}/confirmed?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/quote/${token}`,
-    });
-
-    // Mark accepted and save checkout session ID
-    await supabase
+    const { error } = await supabase
       .from("quotes")
       .update({
         status: "accepted",
         accepted_at: new Date().toISOString(),
-        stripe_checkout_session_id: session.id,
-        deposit_amount: depositAmount,
-        balance_amount: balanceAmount,
       })
       .eq("id", quote.id);
 
-    return NextResponse.json({ ok: true, redirect: session.url });
+    if (error) {
+      return NextResponse.json(
+        { ok: false, error: error.message },
+        { status: 500 }
+      );
+    }
+
+    // Side effects
+    await Promise.allSettled([
+      sendQuoteAcceptedEmail({
+        customer_first_name: quote.customer_first_name,
+        customer_email: quote.customer_email,
+        quote_number: quote.quote_number,
+      }).catch((err) => console.error("Accept email failed:", err)),
+
+      sendPushNotification({
+        id: quote.id,
+        first_name: `[ACCEPTED] ${quote.quote_number}`,
+        last_name: `$${quote.total} — ${quote.customer_first_name} ${quote.customer_last_name}`,
+        zip: quote.property_city || quote.property_zip || "",
+        lead_tier: "hot",
+      }).catch((err) => console.error("Pushover failed:", err)),
+
+      postWebhook({
+        event: "quote_accepted",
+        quote_id: quote.id,
+        lead_id: quote.lead_id,
+        customer: {
+          first_name: quote.customer_first_name,
+          last_name: quote.customer_last_name,
+          email: quote.customer_email,
+        },
+        total: quote.total,
+        quote_number: quote.quote_number,
+        accepted_at: new Date().toISOString(),
+      }).catch((err) => console.error("Webhook failed:", err)),
+
+      submitJotformAgreement({
+        quote_number: quote.quote_number,
+        first_name: quote.customer_first_name,
+        last_name: quote.customer_last_name,
+        email: quote.customer_email,
+        phone: quote.customer_phone || "",
+        address: quote.property_address || "",
+        city: quote.property_city || "",
+        zip: quote.property_zip || "",
+        carrier: quote.carrier || "",
+        total: quote.total ?? 0,
+        line_items: quote.line_items ?? [],
+      }).catch((err) => console.error("Jotform submission failed:", err)),
+    ]);
+
+    return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Quote accept error:", err);
     return NextResponse.json(

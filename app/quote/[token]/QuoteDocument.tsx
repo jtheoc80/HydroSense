@@ -29,10 +29,6 @@ interface QuoteData {
   line_items: LineItem[];
   subtotal: number;
   total: number;
-  deposit_amount: number | null;
-  balance_amount: number | null;
-  has_commitment: boolean;
-  commitment_months: number;
   notes_customer: string | null;
   status: string;
   created_at: string;
@@ -110,13 +106,6 @@ export default function QuoteDocument({
 
   const expiresDate = quote.expires_at ? formatDate(quote.expires_at) : null;
 
-  const depositDisplay = quote.deposit_amount
-    ? `$${(quote.deposit_amount / 100).toFixed(2)}`
-    : `$${(quote.total / 2).toFixed(2)}`;
-  const balanceDisplay = quote.balance_amount
-    ? `$${(quote.balance_amount / 100).toFixed(2)}`
-    : `$${(quote.total / 2).toFixed(2)}`;
-
   async function handleAccept() {
     setAccepting(true);
     try {
@@ -124,10 +113,6 @@ export default function QuoteDocument({
         method: "POST",
       });
       const json = await res.json();
-      if (json.redirect) {
-        window.location.href = json.redirect;
-        return;
-      }
       if (json.ok || json.already) {
         setAccepted(true);
       }
@@ -295,44 +280,26 @@ export default function QuoteDocument({
               ))}
             </div>
 
-            {/* Payment breakdown */}
-            <div style={{ paddingTop: 16, marginTop: 8, borderTop: "1px solid rgba(255,255,255,0.10)" }}>
+            {/* Total row */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingTop: 16,
+                marginTop: 8,
+                borderTop: "1px solid rgba(255,255,255,0.10)",
+              }}
+            >
               <div
                 className="font-mono"
-                style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#9AA8BF", marginBottom: 16 }}
+                style={{ fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "#9AA8BF" }}
               >
-                What you pay
+                Total today
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span className="font-sans" style={{ fontSize: 15, color: "#F8FAFC" }}>Deposit due today</span>
-                  <span className="font-mono" style={{ fontSize: 18, fontWeight: 500, color: "#F8FAFC" }}>
-                    ${quote.deposit_amount ? (quote.deposit_amount / 100).toFixed(2) : (quote.total / 2).toFixed(2)}
-                  </span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span className="font-sans" style={{ fontSize: 15, color: "#CBD5E1" }}>Balance due at install</span>
-                  <span className="font-mono" style={{ fontSize: 15, color: "#CBD5E1" }}>
-                    ${quote.balance_amount ? (quote.balance_amount / 100).toFixed(2) : (quote.total / 2).toFixed(2)}
-                  </span>
-                </div>
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 12 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                      <span className="font-sans" style={{ fontSize: 15, color: "#CBD5E1" }}>Professional monitoring, monthly</span>
-                      <div className="font-sans" style={{ fontSize: 11, color: "#6B7A93", marginTop: 2 }}>Begins at install</div>
-                    </div>
-                    <span className="font-mono" style={{ fontSize: 15, color: "#CBD5E1" }}>$19/mo</span>
-                  </div>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span className="font-sans" style={{ fontSize: 15, color: "#C9A84C" }}>Or pay annually and save</span>
-                  <span className="font-mono" style={{ fontSize: 15, fontWeight: 500, color: "#C9A84C" }}>$199/yr</span>
-                </div>
+              <div className="font-mono" style={{ fontSize: 28, fontWeight: 500, color: "#F8FAFC" }}>
+                ${formatCurrency(quote.total)}
               </div>
-              <p className="font-sans" style={{ fontSize: 12, fontStyle: "italic", color: "#6B7A93", marginTop: 16 }}>
-                Deposit is refundable until 48 hours before your scheduled install date.
-              </p>
             </div>
           </div>
 
@@ -545,7 +512,7 @@ export default function QuoteDocument({
                   transition: "opacity 0.2s",
                 }}
               >
-                {accepting ? "Processing..." : "Accept and continue to deposit payment"}
+                {accepting ? "Accepting..." : "Accept this quote"}
               </button>
               <div style={{ marginTop: 12 }}>
                 <button
@@ -564,13 +531,9 @@ export default function QuoteDocument({
                   {declining ? "..." : "Decline"}
                 </button>
               </div>
-              <p style={{ fontSize: 11, color: "#6B7A93", marginTop: 12, maxWidth: 460, margin: "12px auto 0", lineHeight: 1.6 }}>
-                By continuing, you authorize HydroSense Texas to charge your card {depositDisplay} today
-                as a 50% install deposit. The remaining {balanceDisplay} balance is charged after install
-                completion. Professional monitoring at $19/month begins on the install date.
-                {quote.has_commitment && (
-                  <> Your 24-month commitment begins at install. After month 24, cancel anytime with 30 days notice.</>
-                )}
+              <p style={{ fontSize: 12, color: "#6B7A93", marginTop: 12, maxWidth: 400, margin: "12px auto 0" }}>
+                Accepting confirms your intent to proceed. We will send a service agreement within one business day.
+                No payment is collected at this step.
               </p>
             </div>
           )}

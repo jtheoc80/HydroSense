@@ -31,15 +31,7 @@ const config: Config = {
           400: "#64748B",
         },
         alert: {
-          400: "#F97316",
           500: "#EF4444",
-        },
-        status: {
-          green: "#4ADE80",
-        },
-        surface: {
-          deep: "#0A2156",
-          mid: "#1E3A5F",
         },
       },
       fontFamily: {

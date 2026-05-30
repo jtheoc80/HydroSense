@@ -25,8 +25,6 @@ export async function POST(request: NextRequest) {
       total,
       notes_internal,
       notes_customer,
-      deposit_amount,
-      balance_amount,
     } = body;
 
     if (!customer_first_name || !customer_last_name || !customer_email) {
@@ -70,8 +68,6 @@ export async function POST(request: NextRequest) {
         total: total ?? 0,
         notes_internal: notes_internal || null,
         notes_customer: notes_customer || null,
-        deposit_amount: deposit_amount ?? null,
-        balance_amount: balance_amount ?? null,
         status: "draft",
       })
       .select()
