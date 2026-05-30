@@ -34,7 +34,7 @@
   63%       { transform: scaleX(0); transform-origin: 100% 50%; }
   100%      { transform: scaleX(0); transform-origin: 100% 50%; }
 }
-.fillInlet { transform-origin: 0% 50%; transform-box: fill-box; animation: fill-inlet 16s linear infinite; will-change: transform; }
+.fillInlet { transform-origin: 0% 50%; transform-box: fill-box; stroke-dasharray: 18 6; animation: flow-fast 1.2s linear infinite, fill-inlet 16s linear infinite; will-change: transform, stroke-dashoffset; }
 
 @keyframes fill-house-entry {
   0%, 3%    { transform: scaleX(0); }
@@ -43,7 +43,7 @@
   63%       { transform: scaleX(0); }
   100%      { transform: scaleX(0); }
 }
-.fillHouseEntry { transform-origin: 0% 50%; transform-box: fill-box; animation: fill-house-entry 16s linear infinite; will-change: transform; }
+.fillHouseEntry { transform-origin: 0% 50%; transform-box: fill-box; stroke-dasharray: 18 6; animation: flow-fast 1.2s linear infinite, fill-house-entry 16s linear infinite; will-change: transform, stroke-dashoffset; }
 
 @keyframes fill-main {
   0%, 5%    { transform: scaleX(0); }
@@ -52,7 +52,7 @@
   65%       { transform: scaleX(0); }
   100%      { transform: scaleX(0); }
 }
-.fillMain { transform-origin: 0% 50%; transform-box: fill-box; animation: fill-main 16s linear infinite; will-change: transform; }
+.fillMain { transform-origin: 0% 50%; transform-box: fill-box; stroke-dasharray: 14 8; animation: flow 1.6s linear infinite, fill-main 16s linear infinite; will-change: transform, stroke-dashoffset; }
 
 @keyframes fill-branch-1 {
   0%, 8%    { transform: scaleY(0); }
@@ -82,10 +82,10 @@
   69%       { transform: scaleY(0); }
   100%      { transform: scaleY(0); }
 }
-.fillBranch1 { transform-origin: 50% 0%; transform-box: fill-box; animation: fill-branch-1 16s linear infinite; will-change: transform; }
-.fillBranch2 { transform-origin: 50% 0%; transform-box: fill-box; animation: fill-branch-2 16s linear infinite; will-change: transform; }
-.fillBranch3 { transform-origin: 50% 0%; transform-box: fill-box; animation: fill-branch-3 16s linear infinite; will-change: transform; }
-.fillBranch4 { transform-origin: 50% 0%; transform-box: fill-box; animation: fill-branch-4 16s linear infinite; will-change: transform; }
+.fillBranch1 { transform-origin: 50% 0%; transform-box: fill-box; stroke-dasharray: 14 8; animation: flow 1.6s linear infinite, fill-branch-1 16s linear infinite; will-change: transform, stroke-dashoffset; }
+.fillBranch2 { transform-origin: 50% 0%; transform-box: fill-box; stroke-dasharray: 14 8; animation: flow 1.6s linear infinite, fill-branch-2 16s linear infinite; will-change: transform, stroke-dashoffset; }
+.fillBranch3 { transform-origin: 50% 0%; transform-box: fill-box; stroke-dasharray: 14 8; animation: flow 1.6s linear infinite, fill-branch-3 16s linear infinite; will-change: transform, stroke-dashoffset; }
+.fillBranch4 { transform-origin: 50% 0%; transform-box: fill-box; stroke-dasharray: 14 8; animation: flow 1.6s linear infinite, fill-branch-4 16s linear infinite; will-change: transform, stroke-dashoffset; }
 
 /* ===== FIXTURE WATER LEVELS ===== */
 @keyframes fixture-fill-sink {

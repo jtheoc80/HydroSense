@@ -210,7 +210,7 @@ export default function WaterFlowAnimation({
             {/* ===== CITY MAIN ===== */}
             <text x="160" y="290" fontFamily={FONT_MONO} fontSize="11" letterSpacing="2.5" fill={FOG_300} textAnchor="middle" className={styles.smallLabel}>CITY MAIN</text>
             <line x1="60" y1="350" x2="340" y2="350" stroke="url(#pipe-outer)" strokeWidth="22" strokeLinecap="round" />
-            <line x1="60" y1="350" x2="340" y2="350" stroke={HYDRO_CYAN} strokeWidth="14" strokeLinecap="round" className={`${styles.waterStreamFast} ${styles.fillInlet}`} filter="url(#water-glow)" />
+            <line x1="60" y1="350" x2="340" y2="350" stroke={HYDRO_CYAN} strokeWidth="14" strokeLinecap="round" className={styles.fillInlet} filter="url(#water-glow)" />
 
             {/* ===== SMART SHUTOFF DEVICE ===== */}
             <g transform="translate(340, 290)">
@@ -244,7 +244,7 @@ export default function WaterFlowAnimation({
 
             {/* House entry pipe */}
             <line x1="470" y1="350" x2="540" y2="350" stroke="url(#pipe-outer)" strokeWidth="20" strokeLinecap="round" />
-            <line x1="470" y1="350" x2="540" y2="350" stroke={HYDRO_CYAN} strokeWidth="12" strokeLinecap="round" className={`${styles.waterStreamFast} ${styles.fillHouseEntry}`} filter="url(#water-glow)" />
+            <line x1="470" y1="350" x2="540" y2="350" stroke={HYDRO_CYAN} strokeWidth="12" strokeLinecap="round" className={styles.fillHouseEntry} filter="url(#water-glow)" />
 
             {/* ===== HOUSE ===== */}
             <text x="1010" y="270" fontFamily={FONT_MONO} fontSize="11" letterSpacing="2.5" fill={FOG_300} textAnchor="middle" className={styles.smallLabel}>YOUR HOME</text>
@@ -256,11 +256,11 @@ export default function WaterFlowAnimation({
 
             {/* Main pipe */}
             <line x1="540" y1="350" x2="1380" y2="350" stroke="url(#pipe-outer)" strokeWidth="14" strokeLinecap="round" />
-            <line x1="540" y1="350" x2="1380" y2="350" stroke={HYDRO_CYAN} strokeWidth="9" strokeLinecap="round" className={`${styles.waterStream} ${styles.fillMain}`} filter="url(#water-glow)" />
+            <line x1="540" y1="350" x2="1380" y2="350" stroke={HYDRO_CYAN} strokeWidth="9" strokeLinecap="round" className={styles.fillMain} filter="url(#water-glow)" />
 
             {/* ===== Branch 1: KITCHEN ===== */}
             <line x1="720" y1="350" x2="720" y2="560" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
-            <line x1="720" y1="350" x2="720" y2="560" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={`${styles.waterStream} ${styles.fillBranch1}`} />
+            <line x1="720" y1="350" x2="720" y2="560" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch1} />
             <g transform="translate(680, 560)">
               <rect x="0" y="0" width="80" height="44" rx="6" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
               <ellipse cx="40" cy="22" rx="26" ry="10" fill={HYDRO_CYAN} opacity="0.6" className={styles.fixtureWaterSink} filter="url(#water-glow)" />
@@ -270,7 +270,7 @@ export default function WaterFlowAnimation({
 
             {/* ===== Branch 2: WATER HEATER (leak point) ===== */}
             <line x1="960" y1="350" x2="960" y2="480" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
-            <line x1="960" y1="350" x2="960" y2="480" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={`${styles.waterStream} ${styles.fillBranch2}`} />
+            <line x1="960" y1="350" x2="960" y2="480" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch2} />
             <g transform="translate(925, 480)">
               <rect x="0" y="0" width="70" height="100" rx="8" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
               <rect x="3" y="3" width="64" height="94" rx="6" fill={HYDRO_CYAN} opacity="0.5" className={styles.heaterWater} filter="url(#water-glow)" />
@@ -317,7 +317,7 @@ export default function WaterFlowAnimation({
 
             {/* ===== Branch 3: BATHROOM ===== */}
             <line x1="1180" y1="350" x2="1180" y2="560" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
-            <line x1="1180" y1="350" x2="1180" y2="560" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={`${styles.waterStream} ${styles.fillBranch3}`} />
+            <line x1="1180" y1="350" x2="1180" y2="560" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch3} />
             <g transform="translate(1140, 560)">
               <rect x="0" y="0" width="80" height="44" rx="6" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
               <ellipse cx="40" cy="22" rx="26" ry="10" fill={HYDRO_CYAN} opacity="0.6" className={styles.fixtureWaterSink} filter="url(#water-glow)" />
@@ -327,7 +327,7 @@ export default function WaterFlowAnimation({
 
             {/* ===== Branch 4: WASHER ===== */}
             <line x1="1360" y1="350" x2="1360" y2="540" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
-            <line x1="1360" y1="350" x2="1360" y2="540" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={`${styles.waterStream} ${styles.fillBranch4}`} />
+            <line x1="1360" y1="350" x2="1360" y2="540" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch4} />
             <g transform="translate(1320, 540)">
               <rect x="0" y="0" width="80" height="80" rx="8" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
               <circle cx="40" cy="40" r="20" fill={HYDRO_CYAN} opacity="0.5" className={styles.washerWater} filter="url(#water-glow)" />
