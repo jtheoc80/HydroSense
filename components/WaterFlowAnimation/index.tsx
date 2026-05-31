@@ -202,7 +202,8 @@ export default function WaterFlowAnimation({
           )}
 
           {/* ========== SCENE ========== */}
-          <g className={styles.scene} transform={showTitle ? undefined : `translate(0, ${titleOffset})`}>
+          <g transform={showTitle ? undefined : `translate(0, ${titleOffset})`}>
+          <g className={styles.scene}>
 
             {/* Ground line with gradient fade */}
             <line x1="60" y1="650" x2="1540" y2="650" stroke="url(#ground-line)" strokeWidth="1.5" />
@@ -336,6 +337,7 @@ export default function WaterFlowAnimation({
               <circle cx="40" cy="40" r="14" fill="none" stroke={FOG_400} strokeWidth="0.4" />
               <text x="40" y="98" fontFamily={FONT_MONO} fontSize="9" letterSpacing="1.5" fill={FOG_300} textAnchor="middle" className={styles.smallLabel}>WASHER</text>
             </g>
+          </g>
           </g>
           {/* ===== END SCENE ===== */}
 
