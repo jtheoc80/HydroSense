@@ -28,9 +28,9 @@
 
 /* ===== PIPE FILL (opacity-based — rock-solid cross-browser) ===== */
 @keyframes water-present-inlet {
-  0%        { opacity: 0; }
-  3%, 59%   { opacity: 1; }
-  63%, 100% { opacity: 0; }
+  0%, 3%    { opacity: 0; }
+  6%, 96%   { opacity: 1; }
+  99%, 100% { opacity: 0; }
 }
 .fillInlet {
   stroke-dasharray: 18 6;

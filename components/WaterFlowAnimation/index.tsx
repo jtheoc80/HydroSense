@@ -64,7 +64,7 @@ export default function WaterFlowAnimation({
 
   const captionY = showCaptions ? 900 : 720;
   const viewBoxHeight = showCaptions ? 900 : 720;
-  const titleOffset = showTitle ? 0 : -200;
+  const titleOffset = showTitle ? 0 : -160;
 
   return (
     <div ref={ref} className={className}>
