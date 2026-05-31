@@ -138,14 +138,7 @@ export default function WaterFlowAnimation({
               <stop offset="100%" stopColor={SURFACE_DEEP} />
             </linearGradient>
 
-            {/* Pipe outer gradient for 3D depth */}
-            <linearGradient id="pipe-outer" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#4A6488" />
-              <stop offset="50%" stopColor={SURFACE_MID} />
-              <stop offset="100%" stopColor="#2A4462" />
-            </linearGradient>
-
-            {/* House fill — very subtle */}
+{/* House fill — very subtle */}
             <linearGradient id="house-fill" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={RICE_BLUE} stopOpacity="0" />
               <stop offset="100%" stopColor="#000E2A" stopOpacity="0.4" />
@@ -211,8 +204,8 @@ export default function WaterFlowAnimation({
 
             {/* ===== CITY MAIN ===== */}
             <text x="200" y="280" fontFamily={FONT_MONO} fontSize="15" letterSpacing="3" fill={FOG_200} textAnchor="middle" className={styles.smallLabel}>CITY MAIN</text>
-            <line x1="60" y1="350" x2="340" y2="350" stroke="url(#pipe-outer)" strokeWidth="22" strokeLinecap="round" />
-            <line x1="60" y1="350" x2="340" y2="350" stroke={HYDRO_CYAN} strokeWidth="14" strokeLinecap="round" className={styles.fillInlet} filter="url(#water-glow)" />
+            <line x1="60" y1="350" x2="340" y2="350" stroke={SURFACE_MID} strokeWidth="22" strokeLinecap="round" />
+            <line x1="60" y1="350" x2="340" y2="350" stroke={HYDRO_CYAN} strokeWidth="14" strokeLinecap="round" className={styles.fillInlet} />
 
             {/* ===== SMART SHUTOFF DEVICE ===== */}
             <g transform="translate(340, 290)">
@@ -245,8 +238,8 @@ export default function WaterFlowAnimation({
             <text x="400" y="260" fontFamily={FONT_MONO} fontSize="15" letterSpacing="3" fill={SIGNAL_GOLD} textAnchor="middle" className={styles.smallLabel}>SMART SHUTOFF</text>
 
             {/* House entry pipe */}
-            <line x1="470" y1="350" x2="540" y2="350" stroke="url(#pipe-outer)" strokeWidth="20" strokeLinecap="round" />
-            <line x1="470" y1="350" x2="540" y2="350" stroke={HYDRO_CYAN} strokeWidth="12" strokeLinecap="round" className={styles.fillHouseEntry} filter="url(#water-glow)" />
+            <line x1="470" y1="350" x2="540" y2="350" stroke={SURFACE_MID} strokeWidth="20" strokeLinecap="round" />
+            <line x1="470" y1="350" x2="540" y2="350" stroke={HYDRO_CYAN} strokeWidth="12" strokeLinecap="round" className={styles.fillHouseEntry} />
 
             {/* ===== HOUSE ===== */}
             <text x="1010" y="240" fontFamily={FONT_MONO} fontSize="18" letterSpacing="4" fill={FOG_50} textAnchor="middle" className={styles.smallLabel}>YOUR HOME</text>
@@ -257,11 +250,11 @@ export default function WaterFlowAnimation({
             <line x1="510" y1="500" x2="1510" y2="500" stroke={SURFACE_MID} strokeWidth="1" strokeDasharray="2 4" opacity="0.5" />
 
             {/* Main pipe */}
-            <line x1="540" y1="350" x2="1380" y2="350" stroke="url(#pipe-outer)" strokeWidth="14" strokeLinecap="round" />
-            <line x1="540" y1="350" x2="1380" y2="350" stroke={HYDRO_CYAN} strokeWidth="9" strokeLinecap="round" className={styles.fillMain} filter="url(#water-glow)" />
+            <line x1="540" y1="350" x2="1380" y2="350" stroke={SURFACE_MID} strokeWidth="14" strokeLinecap="round" />
+            <line x1="540" y1="350" x2="1380" y2="350" stroke={HYDRO_CYAN} strokeWidth="9" strokeLinecap="round" className={styles.fillMain} />
 
             {/* ===== Branch 1: KITCHEN ===== */}
-            <line x1="720" y1="350" x2="720" y2="560" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
+            <line x1="720" y1="350" x2="720" y2="560" stroke={SURFACE_MID} strokeWidth="10" strokeLinecap="round" />
             <line x1="720" y1="350" x2="720" y2="560" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch1} />
             <g transform="translate(680, 560)">
               <rect x="0" y="0" width="80" height="44" rx="6" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
@@ -271,7 +264,7 @@ export default function WaterFlowAnimation({
             </g>
 
             {/* ===== Branch 2: WATER HEATER (leak point) ===== */}
-            <line x1="960" y1="350" x2="960" y2="480" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
+            <line x1="960" y1="350" x2="960" y2="480" stroke={SURFACE_MID} strokeWidth="10" strokeLinecap="round" />
             <line x1="960" y1="350" x2="960" y2="480" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch2} />
             <g transform="translate(925, 480)">
               <rect x="0" y="0" width="70" height="100" rx="8" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
@@ -318,7 +311,7 @@ export default function WaterFlowAnimation({
             </g>
 
             {/* ===== Branch 3: BATHROOM ===== */}
-            <line x1="1180" y1="350" x2="1180" y2="560" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
+            <line x1="1180" y1="350" x2="1180" y2="560" stroke={SURFACE_MID} strokeWidth="10" strokeLinecap="round" />
             <line x1="1180" y1="350" x2="1180" y2="560" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch3} />
             <g transform="translate(1140, 560)">
               <rect x="0" y="0" width="80" height="44" rx="6" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
@@ -328,7 +321,7 @@ export default function WaterFlowAnimation({
             </g>
 
             {/* ===== Branch 4: WASHER ===== */}
-            <line x1="1360" y1="350" x2="1360" y2="540" stroke="url(#pipe-outer)" strokeWidth="10" strokeLinecap="round" />
+            <line x1="1360" y1="350" x2="1360" y2="540" stroke={SURFACE_MID} strokeWidth="10" strokeLinecap="round" />
             <line x1="1360" y1="350" x2="1360" y2="540" stroke={HYDRO_CYAN} strokeWidth="7" strokeLinecap="round" className={styles.fillBranch4} />
             <g transform="translate(1320, 540)">
               <rect x="0" y="0" width="80" height="80" rx="8" fill="url(#fixture-body)" stroke={FOG_400} strokeWidth="0.8" />
