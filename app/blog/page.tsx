@@ -32,8 +32,21 @@ const posts = [
 ];
 
 export default function BlogIndex() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://hydrosensetx.com" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://hydrosensetx.com/blog" },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Header />
       <main className="bg-ink-950">
         <section className="py-16 lg:py-24">

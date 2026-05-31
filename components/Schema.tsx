@@ -1,31 +1,19 @@
-export default function Schema() {
-  const org = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "HydroSense Texas",
-    url: "https://hydrosensetx.com",
-    logo: "https://hydrosensetx.com/brand/logo-horizontal-dark.png",
-    telephone: "+12816945754",
-    description:
-      "Licensed smart water shutoff installs certified under a Texas Master Plumber license, with carrier-recognized insurance discount certification. Houston metro and surrounding Texas markets.",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Houston",
-      addressRegion: "TX",
-      addressCountry: "US",
-    },
-    ...(process.env.GOOGLE_BUSINESS_PROFILE_URL
-      ? { sameAs: [process.env.GOOGLE_BUSINESS_PROFILE_URL] }
-      : {}),
-  };
+const SITE_URL = "https://hydrosensetx.com";
 
+export default function Schema() {
   const localBusiness = {
     "@context": "https://schema.org",
     "@type": "Plumber",
+    "@id": `${SITE_URL}/#business`,
     name: "HydroSense Texas",
-    url: "https://hydrosensetx.com",
-    telephone: "+12816945754",
+    legalName: "Lead Ledger Pro LLC",
+    url: SITE_URL,
+    logo: `${SITE_URL}/brand/logo-horizontal-light.png`,
+    image: `${SITE_URL}/og-image.png`,
+    telephone: "+1-281-694-5754",
     priceRange: "$$",
+    description:
+      "Licensed smart water shutoff installation across the Houston metro. Carrier-recognized certificates that qualify Texas homeowners for homeowners insurance credits. Installed under Texas Registered Master Plumber license MPL 43057.",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Houston",
@@ -45,43 +33,80 @@ export default function Schema() {
       { "@type": "City", name: "Sugar Land" },
       { "@type": "City", name: "Spring" },
       { "@type": "City", name: "Baytown" },
+      { "@type": "City", name: "Galveston" },
+      { "@type": "City", name: "Lake Conroe" },
+      { "@type": "City", name: "Lake Livingston" },
     ],
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-      ],
-      opens: "08:00",
-      closes: "18:00",
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "license",
+      name: "Texas Registered Master Plumber",
+      identifier: "MPL 43057",
     },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+1-281-694-5754",
+      contactType: "customer service",
+      areaServed: "US-TX",
+      availableLanguage: "English",
+    },
+    // sameAs: [ add Google Business Profile URL and social profiles once live ]
+    // aggregateRating: add ONLY when real reviews exist
+    ...(process.env.GOOGLE_BUSINESS_PROFILE_URL
+      ? { sameAs: [process.env.GOOGLE_BUSINESS_PROFILE_URL] }
+      : {}),
   };
 
   const service = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${SITE_URL}/#install-service`,
     serviceType: "Smart water shutoff installation",
-    provider: {
-      "@type": "Organization",
-      name: "HydroSense Texas",
-    },
+    provider: { "@id": `${SITE_URL}/#business` },
     areaServed: {
-      "@type": "State",
-      name: "Texas",
+      "@type": "AdministrativeArea",
+      name: "Houston metro, Texas",
     },
     description:
-      "Trained, licensed technicians install carrier-recognized smart water shutoff valves (Moen Flo, Phyn, StreamLabs, Guardian) under a Texas Master Plumber license, then issue the insurance certificate required to apply a 5-15% homeowners discount.",
+      "Professional installation of a carrier-recognized smart water shutoff device (Moen Flo, Phyn, or StreamLabs) under a Texas Master Plumber license, including the insurance certificate that qualifies homeowners for water-damage premium credits.",
+    offers: [
+      {
+        "@type": "Offer",
+        name: "Standalone install",
+        price: "999",
+        priceCurrency: "USD",
+        description:
+          "Device installed and insurance certificate issued. Base price for a standard single-family home with an accessible main line.",
+      },
+      {
+        "@type": "Offer",
+        name: "Basic plan",
+        price: "99",
+        priceCurrency: "USD",
+        description:
+          "Install, certificate issued, certificate sent to your agent, email support. Billed annually.",
+      },
+      {
+        "@type": "Offer",
+        name: "Standard plan",
+        price: "199",
+        priceCurrency: "USD",
+        description:
+          "Everything in Basic plus annual certificate renewal, 24/7 leak monitoring alerts, and priority scheduling. Billed annually.",
+      },
+      {
+        "@type": "Offer",
+        name: "Premier plan",
+        price: "399",
+        priceCurrency: "USD",
+        description:
+          "Everything in Standard plus annual device inspection, insurance liaison service, warranty extension, dedicated account manager, and same-day emergency response. Billed annually.",
+      },
+    ],
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(org) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
