@@ -174,8 +174,8 @@ export default function HoustonHomeInsuranceRisingPost() {
                 average Houston household now pays approximately $6,600 annually
                 per the Rice Kinder Institute 2025 State of Housing report. Most
                 of that increase traces to catastrophic weather claims,
-                reinsurance cost increases, and water damage — the single most
-                common and preventable claim category.
+                reinsurance cost increases, and water damage. Water damage is the
+                single most common and preventable claim category.
               </p>
               <p>
                 One lever homeowners can pull back: a carrier-recognized smart
@@ -250,7 +250,7 @@ export default function HoustonHomeInsuranceRisingPost() {
                   category in Texas. More common than wind or hail by volume.
                   Each filed water claim costs the industry an average of
                   $12,000-$15,000 in payouts. The aggregate volume of water
-                  claims in Texas — tens of thousands per year — creates a loss
+                  claims in Texas (tens of thousands per year) creates a loss
                   pool that carriers must price into every policy. A burst
                   supply line in Sugar Land raises the baseline rate for a
                   policyholder in Katy. That is how pooled risk works. And
@@ -280,8 +280,8 @@ export default function HoustonHomeInsuranceRisingPost() {
                   Each one of those incidents generates a claim that goes into
                   the loss ratio that determines next year&apos;s premium for
                   every policyholder in the pool. The homeowner who files the
-                  claim sees a direct premium increase — often 20-40% at next
-                  renewal — and potential non-renewal. But every other
+                  claim sees a direct premium increase, often 20-40% at next
+                  renewal, and potential non-renewal. But every other
                   policyholder in the same carrier pool also absorbs the
                   aggregate loss through baseline rate increases. Your
                   neighbor&apos;s burst pipe costs you money even if your home
@@ -321,8 +321,8 @@ export default function HoustonHomeInsuranceRisingPost() {
                   significant.
                 </p>
                 <p>
-                  HO-A settles claims at actual cash value — the depreciated
-                  value of the damaged property. A $18,000 repair on a 15-year-old
+                  HO-A settles claims at actual cash value (the depreciated
+                  value of the damaged property). A $18,000 repair on a 15-year-old
                   home might settle at $6,000 after depreciation. HO-3 settles
                   at replacement cost, meaning the carrier pays the full cost to
                   restore the property to its pre-loss condition. The same
@@ -401,8 +401,8 @@ export default function HoustonHomeInsuranceRisingPost() {
                 <p>
                   On a typical Texas policy of $3,000-$4,100, the 10-15% credit
                   on the water-damage portion yields $300-$600 per year. On a
-                  Houston premium of $6,600 — which is the current average per
-                  the Rice Kinder Institute — the credit can be higher because
+                  Houston premium of $6,600, which is the current average per
+                  the Rice Kinder Institute, the credit can be higher because
                   the water-damage portion scales with the overall premium.
                 </p>
                 <p>
@@ -513,8 +513,8 @@ export default function HoustonHomeInsuranceRisingPost() {
                   months between install and savings.
                 </p>
                 <p>
-                  If you install in November — one month after your October
-                  renewal — you wait until the following October. That is 11
+                  If you install in November, one month after your October
+                  renewal, you wait until the following October. That is 11
                   months of paying the full premium when you could have been
                   receiving the credit. The difference between installing 8
                   weeks before renewal and 4 weeks after renewal is an entire
@@ -564,7 +564,7 @@ export default function HoustonHomeInsuranceRisingPost() {
                     How do I find out when my policy renews?
                   </h3>
                   <p className="text-fog-200 leading-relaxed">
-                    Check your declarations page — the first page of your policy
+                    Check your declarations page, the first page of your policy
                     packet. The renewal date is listed at the top, usually in
                     the header alongside your policy number and coverage dates.
                     If you cannot locate the declarations page, call your agent
@@ -585,7 +585,7 @@ export default function HoustonHomeInsuranceRisingPost() {
                     agent decisions. They are underwriting guidelines that apply
                     when the documentation is on file. The HydroSense
                     certificate is formatted to match what these carriers
-                    require — device model, installation date, property address,
+                    require, device model, installation date, property address,
                     and the Texas Master Plumber license number under which the
                     work was performed. The credit applies at your next renewal
                     after the certificate reaches your carrier.

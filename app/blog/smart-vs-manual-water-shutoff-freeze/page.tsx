@@ -183,7 +183,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                 when temperatures bottom out and no one is checking faucets. A
                 smart water shutoff monitors flow and pressure continuously,
                 detects the anomalous pattern of a burst pipe, and closes the
-                main valve automatically within approximately 8 seconds — no
+                main valve automatically within approximately 8 seconds, no
                 human intervention required. The practical difference: a manual
                 valve that requires you to find it, reach it, and turn it under
                 stress versus an automatic system that handles the crisis while
@@ -204,7 +204,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                 <p>
                   Every Houston home has a manual main shutoff valve. It is
                   typically a gate valve or ball valve located where the city
-                  supply enters the home — garage, utility closet, or exterior
+                  supply enters the home, garage, utility closet, or exterior
                   near the meter. In theory, closing this valve stops all water
                   flow to the home. In practice, the manual valve has five
                   failure points that make it unreliable as your primary defense
@@ -248,8 +248,8 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   3 a.m. during a freeze, that sequence takes 10-30 minutes
                   under realistic conditions. You wake up to the sound of water,
                   orient yourself, find a flashlight, locate the valve, clear
-                  any obstructions, and turn it. At 8 gallons per minute — a
-                  typical burst pipe flow rate — 10 minutes is 80 gallons of
+                  any obstructions, and turn it. At 8 gallons per minute, a
+                  typical burst pipe flow rate, 10 minutes is 80 gallons of
                   water on your floors, walls, and belongings. Thirty minutes is
                   240 gallons. That volume is the difference between replacing a
                   section of drywall and gutting a room.
@@ -292,8 +292,8 @@ export default function SmartVsManualWaterShutoffFreeze() {
                 </p>
                 <p>
                   When the device detects a flow pattern consistent with a
-                  burst — sudden high volume that does not match any learned
-                  pattern such as a toilet flush, shower, or irrigation cycle —
+                  burst, sudden high volume that does not match any learned
+                  pattern such as a toilet flush, shower, or irrigation cycle,
                   it closes the motorized valve automatically. Response time:
                   approximately 3-8 seconds from detection to full valve
                   closure. No app interaction required. No notification that
@@ -304,20 +304,20 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   Beyond burst detection, the device runs daily automated health
                   tests. These tests pressurize the system slightly and monitor
                   for slow pressure decay that would indicate a drip leak
-                  somewhere in the plumbing. A slow drip — too small to trigger
-                  the burst detection — can waste thousands of gallons per month
+                  somewhere in the plumbing. A slow drip, too small to trigger
+                  the burst detection, can waste thousands of gallons per month
                   and cause mold growth inside walls. The daily health test
                   catches these before they become visible damage.
                 </p>
                 <p>
-                  All major carrier-recognized devices —{" "}
+                  All major carrier-recognized devices ({" "}
                   <a
                     href="/devices/moen-flo"
                     className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors"
                   >
                     Moen Flo
                   </a>
-                  , Phyn, and StreamLabs — use this core approach with
+                  , Phyn, and StreamLabs) use this core approach with
                   variations in sensing technology. Some use mechanical flow
                   meters, others use ultrasonic sensors, and one uses
                   pressure-wave analysis. The differences matter for specific
@@ -355,7 +355,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   pipes: a dramatic rupture with water spraying across the attic
                   or garage. The smart shutoff catches this within seconds. The
                   sudden high-volume flow is unmistakable to the device&apos;s
-                  algorithm — no learned pattern matches a pipe dumping 8
+                  algorithm, no learned pattern matches a pipe dumping 8
                   gallons per minute at 3 a.m. when the household is asleep.
                   The valve closes. The alert fires. The total water released
                   before closure: less than a gallon.
@@ -383,7 +383,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   alerts and closes the valve. The homeowner with a manual valve
                   does not discover this kind of leak until they see a water
                   stain on the ceiling, feel a soft spot in the floor, or
-                  receive a water bill that is three times normal — often days
+                  receive a water bill that is three times normal, often days
                   or weeks after the thaw.
                 </p>
                 <p>
@@ -493,7 +493,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   >
                     freeze preparation checklist
                   </a>
-                  . You need it for maintenance situations — shutting off water
+                  . You need it for maintenance situations, shutting off water
                   before a renovation, isolating a section of plumbing for
                   repair, or as a physical backup if the smart device ever needs
                   servicing. But the manual valve is a backup, not a primary
@@ -543,7 +543,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   system and check for micro-leaks. The Flo app provides
                   real-time water usage data and historical consumption
                   tracking. If you are unsure which device to choose, the Moen
-                  Flo is the safest default — every carrier we work with in
+                  Flo is the safest default, every carrier we work with in
                   Texas recognizes it.
                 </p>
                 <p>
@@ -551,7 +551,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   pressure-wave analysis at 240 samples per second, the most
                   granular sensing technology of the three. This high-frequency
                   sampling allows Phyn to distinguish between individual
-                  fixtures with remarkable accuracy — it can tell the difference
+                  fixtures with remarkable accuracy, it can tell the difference
                   between a kitchen faucet and a bathroom faucet based on the
                   pressure signature alone. Best suited for older Houston homes
                   with complex plumbing layouts, multiple stories, or unusual
@@ -600,13 +600,13 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   to completion, including installation, configuration, app
                   setup, and a walkthrough of how the system works. Water is off
                   for about 45 minutes during the plumbing work itself. No
-                  drywall cuts in the majority of installs — the main line entry
+                  drywall cuts in the majority of installs, the main line entry
                   point is accessible in most Houston homes without opening
                   walls.
                 </p>
                 <p>
                   HydroSense installs under Texas Registered Master Plumber
-                  license MPL 43057. This is not a marketing detail — it is a
+                  license MPL 43057. This is not a marketing detail, it is a
                   requirement. Most carriers require documented professional
                   installation under a licensed plumber to honor the insurance
                   credit. The carrier needs to see that the device was installed
@@ -653,7 +653,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   carrier-recognized insurance certificate. Homes with
                   non-standard main line locations, multiple entry points, or
                   accessibility challenges may require additional work that
-                  affects pricing — this is covered during the phone assessment
+                  affects pricing, this is covered during the phone assessment
                   before scheduling.
                 </p>
                 <p>
@@ -664,7 +664,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
               <div className="space-y-4">
                 <div className="bg-ink-800/60 border border-ink-700/40 rounded-2xl p-7 lg:p-9">
                   <h3 className="font-display text-lg text-fog-50 mb-3">
-                    Basic — $9/mo or $99/yr
+                    Basic, $9/mo or $99/yr
                   </h3>
                   <p className="text-fog-200 leading-relaxed">
                     Installation, carrier-recognized certificate, email support.
@@ -675,19 +675,19 @@ export default function SmartVsManualWaterShutoffFreeze() {
                 </div>
                 <div className="bg-ink-800/60 border border-ink-700/40 rounded-2xl p-7 lg:p-9">
                   <h3 className="font-display text-lg text-fog-50 mb-3">
-                    Standard — $19/mo or $199/yr
+                    Standard, $19/mo or $199/yr
                   </h3>
                   <p className="text-fog-200 leading-relaxed">
                     Annual certificate renewal included, 24/7 monitoring alerts
                     with push notifications, priority scheduling for service
                     calls. The annual certificate renewal is handled
-                    automatically — HydroSense reissues the certificate and
+                    automatically, HydroSense reissues the certificate and
                     sends it to you and your carrier before expiration.
                   </p>
                 </div>
                 <div className="bg-ink-800/60 border border-ink-700/40 rounded-2xl p-7 lg:p-9">
                   <h3 className="font-display text-lg text-fog-50 mb-3">
-                    Premier — $39/mo or $399/yr
+                    Premier, $39/mo or $399/yr
                   </h3>
                   <p className="text-fog-200 leading-relaxed">
                     Everything in Standard plus annual on-site inspection,
@@ -712,7 +712,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   The math on monitoring cost versus insurance credit is
                   straightforward. Standard monitoring costs $199/year. The
                   insurance credit returns $300-$600/year. The net cost of
-                  monitoring is effectively zero or negative — the credit
+                  monitoring is effectively zero or negative, the credit
                   exceeds the subscription cost in every scenario. You are being
                   paid to have your home monitored. The device installation cost
                   pays back within 18-24 months from the insurance credit alone,
@@ -736,7 +736,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                     Yes. The smart shutoff installs on the main line and becomes
                     your primary defense. The manual valve remains as a backup
                     for maintenance situations where you want to shut off water
-                    manually — during a renovation, when replacing a fixture, or
+                    manually, during a renovation, when replacing a fixture, or
                     any scenario where you are intentionally working on the
                     plumbing and want a physical valve you can close by hand.
                     The two systems complement each other. The smart shutoff
@@ -754,7 +754,7 @@ export default function SmartVsManualWaterShutoffFreeze() {
                     once calibrated. The device distinguishes between your
                     shower, your irrigation system, a toilet refill, and a burst
                     pipe. If a false closure does occur, you reopen the valve
-                    from the app in seconds — tap the notification, confirm
+                    from the app in seconds, tap the notification, confirm
                     reopening, and water resumes. A false closure wastes 30
                     seconds of your time. A missed burst costs $35,000. The
                     asymmetry of those outcomes is why every device errs on the
@@ -787,8 +787,8 @@ export default function SmartVsManualWaterShutoffFreeze() {
                     internal moving parts exposed to water, which eliminates the
                     primary wear mechanism that limits mechanical flow meters.
                     If a device fails post-warranty, the replacement cost is
-                    lower than the initial install because the plumbing work —
-                    the cut-in, the fittings, the mounting — is already done.
+                    lower than the initial install because the plumbing work
+                    (the cut-in, the fittings, the mounting) is already done.
                     The replacement is a device swap, not a new installation.
                   </p>
                 </div>
