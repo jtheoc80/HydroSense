@@ -1,0 +1,10 @@
+{
+  "note": "PEXELS_API_KEY not available at build time. Fetch these manually from Pexels (orientation=landscape) and save as 1.jpg through 5.jpg.",
+  "queries": [
+    { "file": "1.jpg", "query": "water valve pipe", "placement": "After intro section" },
+    { "file": "2.jpg", "query": "smart home device wall", "placement": "Beside how smart shutoff works section" },
+    { "file": "3.jpg", "query": "plumber installing", "placement": "Beside installation section" },
+    { "file": "4.jpg", "query": "water meter", "placement": "Beside device options section" },
+    { "file": "5.jpg", "query": "modern home plumbing", "placement": "Beside cost and monitoring section" }
+  ]
+}

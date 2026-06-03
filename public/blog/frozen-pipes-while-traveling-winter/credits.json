@@ -1,0 +1,7 @@
+[
+  { "file": "1.jpg", "photographer": "Strange Happenings", "source": "https://www.pexels.com/photo/the-interior-of-an-abandoned-building-12786897/", "query": "empty living room" },
+  { "file": "2.jpg", "photographer": "Gustavo Fring", "source": "https://www.pexels.com/photo/man-in-red-coat-and-woman-in-red-poncho-holding-hands-and-suitcases-7446973/", "query": "suitcase winter travel" },
+  { "file": "3.jpg", "photographer": "www.kaboompics.com", "source": "https://www.pexels.com/photo/a-frosted-glass-surface-6757696/", "query": "frosted window" },
+  { "file": "4.jpg", "photographer": "Amarnath Radhakrishnan", "source": "https://www.pexels.com/photo/a-phone-s-user-interface-with-applications-5253002/", "query": "smartphone home app" },
+  { "file": "5.jpg", "photographer": "Max Vakhtbovych", "source": "https://www.pexels.com/photo/contemporary-country-house-facade-in-winter-7031406/", "query": "house exterior winter" }
+]

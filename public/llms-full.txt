@@ -78,6 +78,42 @@ A smart shutoff responds in approximately 8 seconds. The difference between a $2
 
 # Blog
 
+## Texas Freeze Survival Checklist
+
+Interactive checklist for Houston homeowners: 72 hours before a freeze (disconnect hoses, insulate pipes, open cabinet doors, set thermostat to 55F, drain irrigation), during the freeze (drip faucets, monitor pressure, maintain heat), and after the thaw (walk every pipe, meter test for hidden leaks, re-inspect at 3 and 7 days). Includes the critical point: a checklist requires a human present, but a smart shutoff monitors and responds at 3 a.m. while you sleep.
+
+URL: https://hydrosensetx.com/blog/texas-freeze-survival-checklist
+
+## Why Houston Home Insurance Keeps Rising
+
+Texas premiums rose ~46% over two years (Policygenius, 2022-2023). Average Houston household pays ~$6,600/year (Rice Kinder Institute, 2025). Three drivers: catastrophic weather claims, reinsurance cost pass-through, and water damage as the most frequent claim category. A carrier-recognized smart shutoff earns a 10-15% credit ($300-$600/year) and prevents the claim that drives the increase. Covers HO-A vs HO-B vs HO-3 implications, the certificate requirement, and timing the install before renewal.
+
+URL: https://hydrosensetx.com/blog/houston-home-insurance-rising-smart-shutoff
+
+## Frozen Pipes While Traveling This Winter
+
+The snowbird and holiday-travel risk: Houston households leave homes empty 10-20 days during prime freeze window. An empty house has no one to drip faucets, catch bursts, or find water until days later. Illustrative scenario of a 14-day trip with a day-three burst resulting in six-figure remediation. Covers vacation rentals and second homes, a pre-travel checklist, and how remote shutoff with phone alerts (Moen Flo app) limits damage to seconds of water flow.
+
+URL: https://hydrosensetx.com/blog/frozen-pipes-while-traveling-winter
+
+## The Real Cost of a Burst Pipe in Texas
+
+A single burst runs $7,000-$70,000 depending on detection time. Breakdown: pipe repair $200-$500, water extraction $1,000-$3,000, drywall $3,000-$8,000, flooring $2,000-$15,000, contents $5,000-$20,000+, mold remediation $5,000-$30,000 (if 48+ hours). Insurance consequences: deductible ($1,000-$5,000), 20-40% premium increase for 3-5 years, non-renewal risk. Comparison: caught in 8 seconds = $280 vs caught in 8 hours = $35,000.
+
+URL: https://hydrosensetx.com/blog/cost-of-burst-pipe-texas
+
+## Smart vs Manual Water Shutoff
+
+Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Installed under Texas Master Plumber license MPL 43057.
+
+URL: https://hydrosensetx.com/blog/smart-vs-manual-water-shutoff-freeze
+
+## Best $999 Home Investment in Texas
+
+One sub-$1,000 home upgrade returns money three ways: recurring insurance credit (10-15%, $300-$600/year), catastrophic loss prevention ($35,000 average unmitigated claim avoided), and resale value. Install pays for itself in 18-24 months. Full ROI math for 2026.
+
+URL: https://hydrosensetx.com/blog/best-home-investment-texas-tight-budget
+
 ## Smart Water Shutoff for Texas Vacation Rentals
 
 Pillar guide for Galveston, Lake Conroe, and Lake Livingston vacation home owners. Covers the 6-day undetected leak scenario, why vacation homes carry higher water damage risk than primary residences, insurance reality for Texas STR properties (DP-3, HO-5 with STR rider), the three vacation markets we serve, install process for beach and lake houses, and the math on a $999 install with $400-$700/yr typical credit.

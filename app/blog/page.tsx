@@ -13,6 +13,51 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "texas-freeze-survival-checklist",
+    title:
+      "The Texas Freeze Survival Checklist Every Houston Homeowner Needs Before Winter",
+    description:
+      "72 hours before, during, and after the thaw. An interactive checklist covering every step to protect your home from freeze damage, plus the one thing a checklist cannot do at 3 a.m.",
+    date: "June 3, 2026",
+    category: "Freeze protection",
+  },
+  {
+    slug: "houston-home-insurance-rising-smart-shutoff",
+    title:
+      "Why Houston Home Insurance Keeps Rising, and the Install That Pushes Back",
+    description:
+      "Texas premiums are up 46% in two years. Water damage is the leading claim category. One install earns a 10-15% carrier credit and prevents the claim that drives the increase.",
+    date: "June 3, 2026",
+    category: "Insurance savings",
+  },
+  {
+    slug: "frozen-pipes-while-traveling-winter",
+    title:
+      "Leaving Town This Winter? Frozen Pipes Don't Wait for You to Come Home",
+    description:
+      "An empty house during a freeze has no one to drip faucets, no one to catch the burst, and no one to find the water until days later. How remote shutoff changes the math.",
+    date: "June 3, 2026",
+    category: "Winter travel protection",
+  },
+  {
+    slug: "cost-of-burst-pipe-texas",
+    title:
+      "The Real Cost of a Burst Pipe in Texas (and How Fast It Adds Up)",
+    description:
+      "A single burst pipe runs $7,000 to $70,000 depending on response time. The repair cost breakdown, the insurance consequences, and the $999 install that limits damage to seconds.",
+    date: "June 3, 2026",
+    category: "Water damage costs",
+  },
+  {
+    slug: "smart-vs-manual-water-shutoff-freeze",
+    title:
+      "Smart Water Shutoff vs. Manual Shutoff: What Actually Saves Your Home in a Freeze",
+    description:
+      "A manual valve only works if you are home, awake, and fast. A smart shutoff responds in 8 seconds while you sleep. Side-by-side comparison, device options, and the insurance credit.",
+    date: "June 3, 2026",
+    category: "Device comparison",
+  },
+  {
     slug: "best-home-investment-texas-tight-budget",
     title: "The Best $999 a Texas Homeowner Can Spend in a Hard Year",
     description:

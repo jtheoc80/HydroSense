@@ -1,0 +1,7 @@
+[
+  { "file": "1.jpg", "photographer": "Tom Fisk", "source": "https://www.pexels.com/photo/destroyed-house-interior-16863840/", "query": "water damage interior" },
+  { "file": "2.jpg", "photographer": "Rıdvan ALTUNTAŞ", "source": "https://www.pexels.com/photo/serene-flooded-forest-in-samsun-turkey-34204571/", "query": "flooded floor" },
+  { "file": "3.jpg", "photographer": "Riyas Paloli", "source": "https://www.pexels.com/photo/water-splash-on-green-leaf-596710/", "query": "burst pipe water" },
+  { "file": "4.jpg", "photographer": "Valentin Ivantsov", "source": "https://www.pexels.com/photo/modern-interior-kitchen-under-renovation-36035073/", "query": "drywall renovation" },
+  { "file": "5.jpg", "photographer": "Kristian Bilanžić", "source": "https://www.pexels.com/photo/entrance-in-abandoned-ruins-17374615/", "query": "mold wall" }
+]
