@@ -26,6 +26,11 @@ const urls: string[] = [
   `${SITE}/blog`,
   `${SITE}/blog/smart-water-shutoff-texas-vacation-rentals`,
   `${SITE}/blog/best-home-investment-texas-tight-budget`,
+  `${SITE}/blog/texas-freeze-survival-checklist`,
+  `${SITE}/blog/houston-home-insurance-rising-smart-shutoff`,
+  `${SITE}/blog/frozen-pipes-while-traveling-winter`,
+  `${SITE}/blog/cost-of-burst-pipe-texas`,
+  `${SITE}/blog/smart-vs-manual-water-shutoff-freeze`,
   `${SITE}/privacy`,
   `${SITE}/terms`,
 ];
