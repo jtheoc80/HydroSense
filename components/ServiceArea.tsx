@@ -53,6 +53,27 @@ export default function ServiceArea() {
             );
           })}
         </div>
+
+        <div className="mt-8 flex flex-wrap gap-6">
+          <a
+            href="/service-area"
+            className="inline-flex items-center text-hydro-400 hover:text-hydro-300 text-base font-medium transition-colors"
+          >
+            View all service areas including Galveston and Lake Conroe
+            <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a
+            href="/devices"
+            className="inline-flex items-center text-hydro-400 hover:text-hydro-300 text-base font-medium transition-colors"
+          >
+            Compare smart shutoff devices we install
+            <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
       </div>
     </section>
   );

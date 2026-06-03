@@ -50,11 +50,13 @@ export default function Schema() {
       areaServed: "US-TX",
       availableLanguage: "English",
     },
-    // sameAs: [ add Google Business Profile URL and social profiles once live ]
     // aggregateRating: add ONLY when real reviews exist
-    ...(process.env.GOOGLE_BUSINESS_PROFILE_URL
-      ? { sameAs: [process.env.GOOGLE_BUSINESS_PROFILE_URL] }
-      : {}),
+    sameAs: [
+      "https://www.facebook.com/share/1BTbBn6UZo/",
+      ...(process.env.GOOGLE_BUSINESS_PROFILE_URL
+        ? [process.env.GOOGLE_BUSINESS_PROFILE_URL]
+        : []),
+    ],
   };
 
   const service = {

@@ -690,6 +690,38 @@ export default function BestHomeInvestmentPost() {
                 </p>
               </div>
             </section>
+            {/* Related reading */}
+            <section className="space-y-5">
+              <h2 className="font-display text-2xl sm:text-3xl text-fog-50">
+                Related reading
+              </h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a
+                  href="/blog/smart-water-shutoff-texas-vacation-rentals"
+                  className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
+                >
+                  <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Blog</p>
+                  <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Smart water shutoff for Texas vacation rentals</p>
+                  <p className="text-fog-300 text-sm">Galveston, Lake Conroe, and Lake Livingston owner&apos;s guide.</p>
+                </a>
+                <a
+                  href="/freeze-damage-texas"
+                  className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
+                >
+                  <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                  <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Freeze damage claims in Texas</p>
+                  <p className="text-fog-300 text-sm">How frozen pipe water damage claims work and why carriers reward prevention.</p>
+                </a>
+                <a
+                  href="/service-area"
+                  className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
+                >
+                  <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Service area</p>
+                  <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Houston metro service area</p>
+                  <p className="text-fog-300 text-sm">City-specific carrier data, premiums, and install details.</p>
+                </a>
+              </div>
+            </section>
           </div>
         </article>
 

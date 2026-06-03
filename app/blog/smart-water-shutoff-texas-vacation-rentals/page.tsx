@@ -151,11 +151,15 @@ export default function VacationRentalPillarPost() {
               </a>
               <span className="mx-2">/</span>
               <a
-                href="/blog/smart-water-shutoff-texas-vacation-rentals"
-                className="text-fog-200"
+                href="/blog"
+                className="hover:text-fog-200 transition-colors"
               >
                 Blog
               </a>
+              <span className="mx-2">/</span>
+              <span className="text-fog-200">
+                Vacation rentals
+              </span>
             </nav>
             <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
               Vacation home water protection
@@ -681,7 +685,32 @@ export default function VacationRentalPillarPost() {
               </div>
             </section>
 
-            {/* Cross-links */}
+            {/* Related reading */}
+            <section className="space-y-5">
+              <h2 className="font-display text-2xl sm:text-3xl text-fog-50">
+                Related reading
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <a
+                  href="/blog/best-home-investment-texas-tight-budget"
+                  className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
+                >
+                  <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Blog</p>
+                  <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">The best $999 a Texas homeowner can spend in a hard year</p>
+                  <p className="text-fog-300 text-sm">Insurance credits, loss prevention, and resale value from one sub-$1,000 upgrade.</p>
+                </a>
+                <a
+                  href="/insurance/ho-a-vs-ho-b-ho-3"
+                  className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
+                >
+                  <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
+                  <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">HO-A vs HO-B vs HO-3 in Texas</p>
+                  <p className="text-fog-300 text-sm">Your policy form determines how water damage claims settle.</p>
+                </a>
+              </div>
+            </section>
+
+            {/* Service area cross-links */}
             <section>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <a

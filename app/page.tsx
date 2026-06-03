@@ -57,6 +57,25 @@ export default function Home() {
         <CarriersSupported />
         <ServiceArea />
         <FAQ />
+
+        {/* Blog link */}
+        <section className="py-12 lg:py-16">
+          <div className="section-container text-center">
+            <p className="text-fog-300 text-lg mb-4">
+              Want more data before your call? Read our guides and analysis.
+            </p>
+            <a
+              href="/blog"
+              className="inline-flex items-center text-hydro-400 hover:text-hydro-300 text-base font-medium transition-colors"
+            >
+              Browse the HydroSense blog
+              <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </section>
+
         <LeadForm />
       </main>
       <Footer />

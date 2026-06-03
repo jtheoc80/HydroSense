@@ -244,6 +244,16 @@ export default function FreezeDamageGuide() {
                 <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Houston metro service area</p>
                 <p className="text-fog-300 text-sm">Seven cities across Greater Houston.</p>
               </a>
+              <a href="/blog/best-home-investment-texas-tight-budget" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Blog</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">The best $999 a Texas homeowner can spend</p>
+                <p className="text-fog-300 text-sm">Insurance credits, loss prevention, and resale value from one upgrade.</p>
+              </a>
+              <a href="/blog/smart-water-shutoff-texas-vacation-rentals" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Blog</p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Smart shutoff for Texas vacation rentals</p>
+                <p className="text-fog-300 text-sm">Galveston, Lake Conroe, and Lake Livingston owner&apos;s guide.</p>
+              </a>
             </div>
           </div>
         </section>
