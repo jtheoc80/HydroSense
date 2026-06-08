@@ -6,10 +6,21 @@ import { postWebhook } from "@/lib/webhook";
 import { submitJotformAgreement } from "@/lib/jotform";
 
 export async function POST(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+
+  // Parse optional body for subscription selection
+  let subscriptionSelected: boolean | null = null;
+  let acceptedTotal: number | null = null;
+  try {
+    const body = await request.json();
+    subscriptionSelected = body.subscription_selected ?? null;
+    acceptedTotal = body.accepted_total ?? null;
+  } catch {
+    // No body or invalid JSON — fine, proceed without
+  }
 
   try {
     const { data: quote } = await supabase
@@ -51,11 +62,20 @@ export async function POST(
       );
     }
 
+    // Build notes about subscription choice
+    const subNote = subscriptionSelected != null
+      ? `\nCustomer ${subscriptionSelected ? "accepted" : "declined"} subscription at acceptance.`
+      : "";
+    const updatedNotes = (quote.notes_internal || "") + subNote;
+
     const { error } = await supabase
       .from("quotes")
       .update({
         status: "accepted",
         accepted_at: new Date().toISOString(),
+        total: acceptedTotal ?? quote.total,
+        has_commitment: subscriptionSelected ?? false,
+        notes_internal: updatedNotes,
       })
       .eq("id", quote.id);
 
@@ -77,7 +97,7 @@ export async function POST(
       sendPushNotification({
         id: quote.id,
         first_name: `[ACCEPTED] ${quote.quote_number}`,
-        last_name: `$${quote.total} — ${quote.customer_first_name} ${quote.customer_last_name}`,
+        last_name: `$${acceptedTotal ?? quote.total}${subscriptionSelected ? " + sub" : ""} — ${quote.customer_first_name} ${quote.customer_last_name}`,
         zip: quote.property_city || quote.property_zip || "",
         lead_tier: "hot",
       }).catch((err) => console.error("Pushover failed:", err)),

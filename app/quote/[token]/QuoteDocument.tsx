@@ -77,6 +77,10 @@ function formatCurrency(n: number) {
   });
 }
 
+// Subscription SKU prefix — any line item starting with SUB- is treated as an optional subscription add-on
+const SUB_SKU_PREFIX = "SUB-";
+const SUBSCRIPTION_DISCOUNT = 100;
+
 export default function QuoteDocument({
   quote,
   token,
@@ -95,12 +99,29 @@ export default function QuoteDocument({
   const [accepted, setAccepted] = useState(quote.status === "accepted");
   const [declined, setDeclined] = useState(quote.status === "declined");
 
+  // Separate install line items from subscription add-ons
+  const installItems = quote.line_items.filter(
+    (li) => !li.sku.startsWith(SUB_SKU_PREFIX)
+  );
+  const subscriptionItem = quote.line_items.find((li) =>
+    li.sku.startsWith(SUB_SKU_PREFIX)
+  );
+
+  // Subscription toggle — default ON (opt-out model)
+  const [subSelected, setSubSelected] = useState(true);
+
+  const baseTotal = quote.total; // stored as full install price (e.g. 899)
+  const discountedTotal = subscriptionItem
+    ? baseTotal - SUBSCRIPTION_DISCOUNT
+    : baseTotal;
+  const displayTotal = subscriptionItem && subSelected ? discountedTotal : baseTotal;
+
   const annualCredit = quote.carrier_annual_estimate
     ? Math.round(quote.carrier_annual_estimate)
     : null;
   const paybackMonths =
     annualCredit && annualCredit > 0
-      ? Math.ceil((quote.total / annualCredit) * 12)
+      ? Math.ceil((displayTotal / annualCredit) * 12)
       : null;
   const fiveYearCredit = annualCredit ? annualCredit * 5 : null;
 
@@ -111,6 +132,11 @@ export default function QuoteDocument({
     try {
       const res = await fetch(`/api/quotes/public/${token}/accept`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subscription_selected: !!subscriptionItem && subSelected,
+          accepted_total: displayTotal,
+        }),
       });
       const json = await res.json();
       if (json.ok || json.already) {
@@ -257,7 +283,7 @@ export default function QuoteDocument({
           {/* Divider thin */}
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginBottom: 32 }} />
 
-          {/* Line items */}
+          {/* Line items — install services only */}
           <div style={{ marginBottom: 36 }}>
             <div
               className="font-mono"
@@ -266,7 +292,7 @@ export default function QuoteDocument({
               Line items
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {quote.line_items.map((li: LineItem, i: number) => (
+              {installItems.map((li: LineItem, i: number) => (
                 <div
                   key={i}
                   style={{
@@ -274,7 +300,7 @@ export default function QuoteDocument({
                     justifyContent: "space-between",
                     alignItems: "flex-start",
                     padding: "12px 0",
-                    borderBottom: i < quote.line_items.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                    borderBottom: i < installItems.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
                   }}
                 >
                   <div style={{ flex: 1 }}>
@@ -299,6 +325,26 @@ export default function QuoteDocument({
               ))}
             </div>
 
+            {/* Subscription discount row — only when sub is selected */}
+            {subscriptionItem && subSelected && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "12px 0",
+                  borderTop: "1px solid rgba(255,255,255,0.06)",
+                }}
+              >
+                <div className="font-sans" style={{ fontSize: 15, color: "#4ADE80" }}>
+                  Pro monitoring discount
+                </div>
+                <div className="font-mono" style={{ fontSize: 15, color: "#4ADE80", marginLeft: 16 }}>
+                  -${formatCurrency(SUBSCRIPTION_DISCOUNT)}
+                </div>
+              </div>
+            )}
+
             {/* Total row */}
             <div
               style={{
@@ -316,11 +362,150 @@ export default function QuoteDocument({
               >
                 Total today
               </div>
-              <div className="font-mono" style={{ fontSize: 28, fontWeight: 500, color: "#F8FAFC" }}>
-                ${formatCurrency(quote.total)}
+              <div style={{ textAlign: "right" }}>
+                {subscriptionItem && subSelected && (
+                  <div
+                    className="font-mono"
+                    style={{
+                      fontSize: 16,
+                      color: "#6B7A93",
+                      textDecoration: "line-through",
+                      marginBottom: 2,
+                    }}
+                  >
+                    ${formatCurrency(baseTotal)}
+                  </div>
+                )}
+                <div className="font-mono" style={{ fontSize: 28, fontWeight: 500, color: "#F8FAFC" }}>
+                  ${formatCurrency(displayTotal)}
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Subscription opt-in card */}
+          {subscriptionItem && isActionable && !accepted && !declined && (
+            <div
+              style={{
+                background: subSelected
+                  ? "rgba(74,222,128,0.06)"
+                  : "rgba(255,255,255,0.03)",
+                border: subSelected
+                  ? "1px solid rgba(74,222,128,0.25)"
+                  : "1px solid rgba(255,255,255,0.10)",
+                borderRadius: 12,
+                padding: "20px 24px",
+                marginBottom: 36,
+                cursor: "pointer",
+                transition: "all 0.2s",
+              }}
+              onClick={() => setSubSelected(!subSelected)}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                    {/* Toggle */}
+                    <div
+                      style={{
+                        width: 44,
+                        height: 24,
+                        borderRadius: 12,
+                        background: subSelected ? "#4ADE80" : "#334155",
+                        position: "relative",
+                        transition: "background 0.2s",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 18,
+                          height: 18,
+                          borderRadius: 9,
+                          background: "#FFF",
+                          position: "absolute",
+                          top: 3,
+                          left: subSelected ? 23 : 3,
+                          transition: "left 0.2s",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
+                        }}
+                      />
+                    </div>
+                    <div
+                      className="font-mono"
+                      style={{
+                        fontSize: 11,
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        color: subSelected ? "#4ADE80" : "#9AA8BF",
+                      }}
+                    >
+                      {subSelected ? "Included" : "Add to save $" + SUBSCRIPTION_DISCOUNT}
+                    </div>
+                  </div>
+                  <div className="font-sans" style={{ fontSize: 16, color: "#F8FAFC", fontWeight: 500 }}>
+                    {subscriptionItem.name}
+                  </div>
+                  <div className="font-sans" style={{ fontSize: 13, color: "#9AA8BF", marginTop: 4, lineHeight: 1.5 }}>
+                    24/7 leak monitoring, auto-shutoff alerts, insurance certificate renewal, priority service.
+                  </div>
+                </div>
+                <div style={{ textAlign: "right", marginLeft: 16, flexShrink: 0 }}>
+                  <div className="font-mono" style={{ fontSize: 20, color: "#F8FAFC", fontWeight: 500 }}>
+                    ${subscriptionItem.unit_price}
+                  </div>
+                  <div className="font-mono" style={{ fontSize: 11, color: "#9AA8BF" }}>/month</div>
+                </div>
+              </div>
+              {subSelected && (
+                <div
+                  style={{
+                    marginTop: 12,
+                    padding: "10px 14px",
+                    background: "rgba(74,222,128,0.08)",
+                    borderRadius: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M9 12L11 14L15 10" stroke="#4ADE80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="12" cy="12" r="10" stroke="#4ADE80" strokeWidth="1.5" opacity="0.4" />
+                  </svg>
+                  <span className="font-sans" style={{ fontSize: 13, color: "#4ADE80" }}>
+                    You save ${SUBSCRIPTION_DISCOUNT} on your install today
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Subscription shown as read-only when not actionable */}
+          {subscriptionItem && (!isActionable || accepted || declined) && (
+            <div
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.10)",
+                borderRadius: 12,
+                padding: "16px 20px",
+                marginBottom: 36,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <div className="font-sans" style={{ fontSize: 14, color: "#F8FAFC" }}>
+                    {subscriptionItem.name}
+                  </div>
+                  <div className="font-sans" style={{ fontSize: 12, color: "#9AA8BF", marginTop: 2 }}>
+                    Included with this quote
+                  </div>
+                </div>
+                <div className="font-mono" style={{ fontSize: 16, color: "#F8FAFC" }}>
+                  ${subscriptionItem.unit_price}/mo
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Insurance credit block */}
           {annualCredit && annualCredit > 0 && (
@@ -557,7 +742,11 @@ export default function QuoteDocument({
                   transition: "opacity 0.2s",
                 }}
               >
-                {accepting ? "Accepting..." : "Accept this quote"}
+                {accepting
+                  ? "Accepting..."
+                  : subscriptionItem && subSelected
+                    ? `Accept — $${formatCurrency(displayTotal)} + $${subscriptionItem.unit_price}/mo`
+                    : `Accept — $${formatCurrency(displayTotal)}`}
               </button>
               <div style={{ marginTop: 12 }}>
                 <button
