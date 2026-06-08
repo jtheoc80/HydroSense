@@ -36,32 +36,6 @@ interface QuoteData {
   accepted_at: string | null;
 }
 
-function HydroMark() {
-  return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M12 2.5C12 2.5 4.5 11 4.5 16.5C4.5 19.5 8 22 12 22C16 22 19.5 19.5 19.5 16.5C19.5 11 12 2.5 12 2.5Z"
-        fill="#38BDF8"
-        opacity="0.95"
-      />
-      <path
-        d="M9 14C9 17 11 18.5 13 18"
-        stroke="#F8FAFC"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-        opacity="0.55"
-        fill="none"
-      />
-    </svg>
-  );
-}
-
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-US", {
     month: "long",
@@ -190,22 +164,13 @@ export default function QuoteDocument({
         >
           {/* Header */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 44 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <HydroMark />
-              <div>
-                <div
-                  className="font-mono"
-                  style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#9AA8BF" }}
-                >
-                  HydroSense
-                </div>
-                <div
-                  className="font-mono"
-                  style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: "#6B7A93" }}
-                >
-                  Texas
-                </div>
-              </div>
+            <div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/logo-horizontal-light.png"
+                alt="HydroSense — Smart Home Water Defense"
+                style={{ height: 36, width: "auto" }}
+              />
             </div>
             <div style={{ textAlign: "right" }}>
               <div className="font-mono" style={{ fontSize: 12, color: "#9AA8BF" }}>

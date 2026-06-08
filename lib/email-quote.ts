@@ -53,9 +53,9 @@ export async function sendQuoteEmail(quote: {
   <tr><td align="center">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#001A4E;border-radius:14px;overflow:hidden;">
       <tr><td style="padding:32px 36px 0 36px;">
-        <div style="font-family:Georgia,'Times New Roman',serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#9AA8BF;">HydroSense Texas</div>
+        <img src="${siteUrl}/brand/logo-horizontal-light.png" alt="HydroSense — Smart Home Water Defense" height="36" style="height:36px;width:auto;" />
       </td></tr>
-      <tr><td style="padding:12px 36px 0 36px;">
+      <tr><td style="padding:16px 36px 0 36px;">
         <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.2;font-weight:400;margin:0;color:#F8FAFC;">${first}, your quote is ready.</h1>
       </td></tr>
       <tr><td style="padding:20px 36px 0 36px;">
@@ -133,9 +133,9 @@ export async function sendQuoteAcceptedEmail(quote: {
   <tr><td align="center">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#001A4E;border-radius:14px;overflow:hidden;">
       <tr><td style="padding:32px 36px 0 36px;">
-        <div style="font-family:Georgia,'Times New Roman',serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#9AA8BF;">HydroSense Texas</div>
+        <img src="https://hydrosensetx.com/brand/logo-horizontal-light.png" alt="HydroSense — Smart Home Water Defense" height="36" style="height:36px;width:auto;" />
       </td></tr>
-      <tr><td style="padding:12px 36px 0 36px;">
+      <tr><td style="padding:16px 36px 0 36px;">
         <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.2;font-weight:400;margin:0;color:#F8FAFC;">Thanks, ${first}.</h1>
       </td></tr>
       <tr><td style="padding:20px 36px 0 36px;">
