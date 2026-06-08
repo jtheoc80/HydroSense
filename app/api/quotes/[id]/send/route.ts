@@ -54,23 +54,33 @@ export async function POST(
       );
     }
 
-    // Fire side effects in parallel
-    const results = await Promise.allSettled([
-      sendQuoteEmail({
-        customer_first_name: quote.customer_first_name,
-        customer_email: quote.customer_email,
-        quote_number: quote.quote_number,
-        total: quote.total,
-        public_token: quote.public_token,
-        expires_at: updated.expires_at,
-      }).catch((err) => console.error("Quote email failed:", err)),
+    // Fire side effects in parallel — skip email if no email on file
+    const sideEffects: Promise<void>[] = [];
 
+    if (quote.customer_email) {
+      sideEffects.push(
+        sendQuoteEmail({
+          customer_first_name: quote.customer_first_name,
+          customer_email: quote.customer_email,
+          quote_number: quote.quote_number,
+          total: quote.total,
+          public_token: quote.public_token,
+          expires_at: updated.expires_at,
+        }).catch((err) => console.error("Quote email failed:", err)) as Promise<void>
+      );
+    }
+
+    sideEffects.push(
       sendQuoteSms({
         customer_first_name: quote.customer_first_name,
         customer_phone: quote.customer_phone,
         public_token: quote.public_token,
         expires_at: updated.expires_at,
-      }).catch((err) => console.error("Quote SMS failed:", err)),
+        quote_number: quote.quote_number,
+        total: quote.total,
+        line_items: quote.line_items,
+        notes_internal: quote.notes_internal,
+      }).catch((err) => console.error("Quote SMS failed:", err)) as Promise<void>,
 
       sendPushNotification({
         id: quote.id,
@@ -79,8 +89,10 @@ export async function POST(
         zip: quote.property_zip || "",
         lead_score: quote.total,
         lead_tier: "quote",
-      }).catch((err) => console.error("Pushover failed:", err)),
-    ]);
+      }).catch((err) => console.error("Pushover failed:", err)) as Promise<void>,
+    );
+
+    const results = await Promise.allSettled(sideEffects);
 
     const failed = results.filter((r) => r.status === "rejected");
     if (failed.length > 0) {

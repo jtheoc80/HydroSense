@@ -190,6 +190,25 @@ export default function QuoteDocument({
                   Valid through {expiresDate}
                 </div>
               )}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  marginTop: 8,
+                  background: "rgba(56,189,248,0.08)",
+                  border: "1px solid rgba(56,189,248,0.20)",
+                  borderRadius: 6,
+                  padding: "4px 10px",
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#38BDF8" opacity="0.9" />
+                </svg>
+                <span className="font-mono" style={{ fontSize: 10, color: "#7DD3FC", letterSpacing: "0.05em" }}>
+                  TX Master Plumber{" "}<span style={{ fontWeight: 600 }}>{mpl}</span>
+                </span>
+              </div>
             </div>
           </div>
 
@@ -427,6 +446,32 @@ export default function QuoteDocument({
               </a>
             </div>
           </div>
+
+          {/* About your installer */}
+          {isActionable && !accepted && !declined && (
+            <div
+              style={{
+                background: "rgba(56,189,248,0.04)",
+                border: "1px solid rgba(56,189,248,0.12)",
+                borderRadius: 12,
+                padding: "20px 24px",
+                marginBottom: 24,
+              }}
+            >
+              <div
+                className="font-mono"
+                style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#9AA8BF", marginBottom: 10 }}
+              >
+                About your installer
+              </div>
+              <p className="font-sans" style={{ fontSize: 14, lineHeight: 1.6, color: "#CBD5E1", margin: 0 }}>
+                Your install is performed by a Texas Registered Master Plumber — license{" "}
+                <span className="font-mono" style={{ color: "#7DD3FC", fontWeight: 600 }}>{mpl}</span>.
+                Fully insured, background-checked, and certified to issue the carrier-recognized
+                installation certificate your insurer requires for the water damage credit.
+              </p>
+            </div>
+          )}
 
           {/* Accept/Decline block */}
           {accepted && (

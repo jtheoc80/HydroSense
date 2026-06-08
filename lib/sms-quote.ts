@@ -3,6 +3,10 @@ export async function sendQuoteSms(quote: {
   customer_phone?: string | null;
   public_token: string;
   expires_at: string;
+  quote_number?: string;
+  total?: number;
+  line_items?: { sku: string; name: string; unit_price: number }[];
+  notes_internal?: string | null;
 }): Promise<void> {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
@@ -30,7 +34,35 @@ export async function sendQuoteSms(quote: {
     day: "numeric",
   });
 
-  const body = `${quote.customer_first_name}, your HydroSense quote is ready: ${quoteUrl} — valid through ${expiresDate}. Reply STOP to opt out.`;
+  // Build a richer SMS body when pricing info is available
+  let body: string;
+  if (quote.total != null && quote.line_items?.length) {
+    const installItem = quote.line_items.find(
+      (li) => li.sku !== "SUB-PRO-MO" && li.unit_price > 0
+    );
+    const subItem = quote.line_items.find((li) => li.sku === "SUB-PRO-MO");
+    const installPrice = installItem ? `$${installItem.unit_price}` : `$${quote.total}`;
+
+    const parts = [
+      `${quote.customer_first_name}, your HydroSense quote is ready: ${quoteUrl}`,
+    ];
+
+    if (subItem) {
+      // Show discounted price if subscription brings it down
+      const discountedTotal = quote.total;
+      parts.push(
+        `— ${installItem?.name || "Install"} ${installPrice}, drops to $${discountedTotal} with our Pro monitoring at $${subItem.unit_price}/mo.`
+      );
+    } else {
+      parts.push(`— ${installItem?.name || "Install"} ${installPrice}.`);
+    }
+
+    parts.push(`Valid through ${expiresDate}.`);
+    parts.push(`— Jimmy, Texas Master Plumber MPL 43057. Reply STOP to opt out.`);
+    body = parts.join(" ");
+  } else {
+    body = `${quote.customer_first_name}, your HydroSense quote is ready: ${quoteUrl} — valid through ${expiresDate}. — Jimmy, Texas Master Plumber MPL 43057. Reply STOP to opt out.`;
+  }
 
   const url = `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`;
   const params = new URLSearchParams();

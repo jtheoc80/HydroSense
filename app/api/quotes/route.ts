@@ -25,11 +25,12 @@ export async function POST(request: NextRequest) {
       total,
       notes_internal,
       notes_customer,
+      expires_in_days,
     } = body;
 
-    if (!customer_first_name || !customer_last_name || !customer_email) {
+    if (!customer_first_name || !customer_last_name) {
       return NextResponse.json(
-        { ok: false, error: "Customer name and email are required" },
+        { ok: false, error: "Customer first and last name are required" },
         { status: 400 }
       );
     }
@@ -45,6 +46,13 @@ export async function POST(request: NextRequest) {
 
     const public_token = crypto.randomBytes(16).toString("hex");
 
+    // Compute expires_at if expires_in_days is provided (default computed on send)
+    const validDays = [7, 14, 30, 60, 90];
+    const expiresAt =
+      expires_in_days && validDays.includes(Number(expires_in_days))
+        ? new Date(Date.now() + Number(expires_in_days) * 86400000).toISOString()
+        : null;
+
     const { data, error } = await supabase
       .from("quotes")
       .insert({
@@ -53,7 +61,7 @@ export async function POST(request: NextRequest) {
         lead_id: lead_id || null,
         customer_first_name,
         customer_last_name,
-        customer_email,
+        customer_email: customer_email || null,
         customer_phone: customer_phone || null,
         property_address: property_address || null,
         property_city: property_city || null,
@@ -69,6 +77,7 @@ export async function POST(request: NextRequest) {
         notes_internal: notes_internal || null,
         notes_customer: notes_customer || null,
         status: "draft",
+        ...(expiresAt ? { expires_at: expiresAt } : {}),
       })
       .select()
       .single();

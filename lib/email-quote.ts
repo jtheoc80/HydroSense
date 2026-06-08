@@ -71,9 +71,14 @@ export async function sendQuoteEmail(quote: {
       <tr><td style="padding:12px 36px 0 36px;" align="center">
         <p style="margin:0;font-size:13px;color:#9AA8BF;">No commitment required to view.</p>
       </td></tr>
-      <tr><td style="padding:32px 36px 32px 36px;">
-        <div style="border-top:1px solid #1F2C56;padding-top:20px;font-size:12px;color:#64748B;line-height:1.6;">
-          HydroSense Texas is a service of Lead Ledger Pro LLC. Texas Registered Master Plumber.<br>
+      <tr><td style="padding:24px 36px 0 36px;">
+        <div style="border-top:1px solid #1F2C56;padding-top:16px;font-size:13px;color:#CBD5E1;line-height:1.5;">
+          Jimmy Theoc, on behalf of Texas Master Plumber <span style="font-family:'SF Mono',Consolas,monospace;font-weight:600;color:#7DD3FC;">MPL 43057</span>
+        </div>
+      </td></tr>
+      <tr><td style="padding:12px 36px 32px 36px;">
+        <div style="border-top:1px solid #1F2C56;padding-top:16px;font-size:11px;color:#64748B;line-height:1.6;">
+          HydroSense Texas is a service of Lead Ledger Pro LLC. Texas Registered Master Plumber MPL 43057.<br>
           You are receiving this email because you requested a quote at hydrosensetx.com. Reply STOP to opt out.
         </div>
       </td></tr>
@@ -88,7 +93,8 @@ Quote ${quote.quote_number} for $${total} is ready for your review. Valid throug
 
 View your quote: ${quoteUrl}
 
-HydroSense Texas is a service of Lead Ledger Pro LLC. Texas Registered Master Plumber.`;
+Jimmy Theoc, on behalf of Texas Master Plumber MPL 43057
+HydroSense Texas is a service of Lead Ledger Pro LLC.`;
 
   const resend = new Resend(apiKey);
   await resend.emails.send({
@@ -142,7 +148,7 @@ export async function sendQuoteAcceptedEmail(quote: {
       </td></tr>
       <tr><td style="padding:32px 36px 32px 36px;">
         <div style="border-top:1px solid #1F2C56;padding-top:20px;font-size:12px;color:#64748B;line-height:1.6;">
-          HydroSense Texas is a service of Lead Ledger Pro LLC. Texas Registered Master Plumber.
+          HydroSense Texas is a service of Lead Ledger Pro LLC. Texas Registered Master Plumber MPL 43057.
         </div>
       </td></tr>
     </table>

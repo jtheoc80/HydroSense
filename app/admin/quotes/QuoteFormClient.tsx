@@ -638,7 +638,7 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
             {isDraft && (
               <button
                 onClick={handleSave}
-                disabled={saving || !firstName || !lastName || !email}
+                disabled={saving || !firstName || !lastName}
                 className="px-6 py-2.5 rounded-lg bg-ink-800 border border-white/15 text-sm text-fog-50 font-medium hover:border-white/25 transition-colors disabled:opacity-50"
               >
                 {saving ? "Saving..." : "Save draft"}
@@ -647,7 +647,7 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
             {mode === "edit" && isDraft && (
               <button
                 onClick={handleSend}
-                disabled={sending || !firstName || !email}
+                disabled={sending || !firstName}
                 className="px-6 py-2.5 rounded-lg bg-hydro-400 text-ink-950 text-sm font-semibold hover:bg-hydro-300 transition-colors disabled:opacity-50"
               >
                 {sending ? "Sending..." : "Send quote"}
