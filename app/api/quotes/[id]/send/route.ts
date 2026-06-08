@@ -24,7 +24,7 @@ export async function POST(
       );
     }
 
-    if (quote.status !== "draft" && quote.status !== "sent") {
+    if (quote.status !== "draft" && quote.status !== "sent" && quote.status !== "viewed") {
       return NextResponse.json(
         {
           ok: false,

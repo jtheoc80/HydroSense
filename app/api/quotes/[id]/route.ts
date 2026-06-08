@@ -44,38 +44,37 @@ export async function PUT(
       );
     }
 
-    if (existing.status !== "draft") {
-      return NextResponse.json(
-        {
-          ok: false,
-          error: "Only draft quotes can be edited",
-        },
-        { status: 400 }
-      );
-    }
-
     const body = await request.json();
 
-    const allowedFields = [
-      "customer_first_name",
-      "customer_last_name",
+    // Non-draft quotes: only allow updating contact info and notes
+    const alwaysAllowed = [
       "customer_email",
       "customer_phone",
-      "property_address",
-      "property_city",
-      "property_zip",
-      "carrier",
-      "carrier_premium_estimate",
-      "carrier_discount_pct",
-      "carrier_water_portion_pct",
-      "carrier_annual_estimate",
-      "line_items",
-      "subtotal",
-      "total",
       "notes_internal",
-      "notes_customer",
-      "lead_id",
     ];
+
+    const allowedFields = existing.status === "draft"
+      ? [
+          "customer_first_name",
+          "customer_last_name",
+          "customer_email",
+          "customer_phone",
+          "property_address",
+          "property_city",
+          "property_zip",
+          "carrier",
+          "carrier_premium_estimate",
+          "carrier_discount_pct",
+          "carrier_water_portion_pct",
+          "carrier_annual_estimate",
+          "line_items",
+          "subtotal",
+          "total",
+          "notes_internal",
+          "notes_customer",
+          "lead_id",
+        ]
+      : alwaysAllowed;
 
     const update: Record<string, unknown> = {};
     for (const field of allowedFields) {
