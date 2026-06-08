@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         lead_id: lead_id || null,
         customer_first_name,
         customer_last_name,
-        customer_email: customer_email || null,
+        customer_email: customer_email || "",
         customer_phone: customer_phone || null,
         property_address: property_address || null,
         property_city: property_city || null,

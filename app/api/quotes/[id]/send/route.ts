@@ -57,7 +57,7 @@ export async function POST(
     // Fire side effects in parallel — skip email if no email on file
     const sideEffects: Promise<void>[] = [];
 
-    if (quote.customer_email) {
+    if (quote.customer_email && quote.customer_email.includes("@")) {
       sideEffects.push(
         sendQuoteEmail({
           customer_first_name: quote.customer_first_name,
