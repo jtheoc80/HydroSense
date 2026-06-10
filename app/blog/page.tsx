@@ -13,6 +13,51 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "hidden-water-leak-damage-houston",
+    title:
+      "Hidden Water Leak Damage: What 6 Months Does to a Houston Home",
+    description:
+      "Hidden water leak damage in Houston compounds month by month: mold, rot, foundation movement, and $80,000+ in remediation. Here is the month-by-month progression.",
+    date: "June 13, 2026",
+    category: "Damage Assessment",
+  },
+  {
+    slug: "slab-leak-repair-cost-houston",
+    title:
+      "Slab Leak Repair Cost in Houston: What an Untreated Leak Costs Every Hour",
+    description:
+      "Slab leak repair cost in Houston TX ranges from $50 to $80,000 depending on detection time. Here is the hourly cost compound curve and what monitoring actually changes.",
+    date: "June 12, 2026",
+    category: "Insurance & Cost",
+  },
+  {
+    slug: "how-to-find-water-leak-home-houston",
+    title:
+      "How to Find a Water Leak in Your Home: A Houston Homeowner's 60-Minute Response Plan",
+    description:
+      "Suspect a leak? The first 60 minutes determine whether you pay $500 or $50,000. Here is exactly how to find a water leak in your home in Houston.",
+    date: "June 11, 2026",
+    category: "Emergency Response",
+  },
+  {
+    slug: "five-slab-leak-warning-signs",
+    title:
+      "5 Slab Leak Warning Signs Every Houston Homeowner Should Know",
+    description:
+      "Slab leak detection in Houston starts with knowing what to look for. Here are the 5 warning signs most homeowners miss and how to confirm a leak.",
+    date: "June 10, 2026",
+    category: "Slab Leaks",
+  },
+  {
+    slug: "slab-leaks-houston-clay-soil",
+    title:
+      "Slab Leaks in Houston: Why Our Clay Soil Makes Them Almost Inevitable",
+    description:
+      "Houston sits on expansive clay soil that moves up to 4 inches per season. Here is why the soil breaks pipes under your slab and what the math says about your risk.",
+    date: "June 9, 2026",
+    category: "Slab Leaks",
+  },
+  {
     slug: "texas-freeze-survival-checklist",
     title:
       "The Texas Freeze Survival Checklist Every Houston Homeowner Needs Before Winter",
