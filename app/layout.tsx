@@ -7,6 +7,7 @@ import Analytics from "@/components/Analytics";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Schema from "@/components/Schema";
+import MetaPixel from "@/components/meta-pixel";
 
 const instrumentSerif = Instrument_Serif({
   weight: "400",
@@ -77,6 +78,7 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${fraunces.variable} ${GeistSans.variable} ${GeistMono.variable}`}
     >
       <body>
+        <MetaPixel />
         <Schema />
         {children}
         <Analytics />

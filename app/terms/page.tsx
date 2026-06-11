@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PhoneLink from "@/components/PhoneLink";
 
 export const metadata: Metadata = {
   title: "Terms of Service | HydroSense Texas",
@@ -161,9 +162,7 @@ export default function TermsOfService() {
                   hello@hydrosensetx.com
                 </a>{" "}
                 or call{" "}
-                <a href="tel:+12816945754" className="text-hydro-400 hover:text-hydro-300 transition-colors">
-                  (281) 694-5754
-                </a>.
+                <PhoneLink className="text-hydro-400 hover:text-hydro-300 transition-colors" />.
               </p>
               <p className="mt-4 text-fog-300 text-sm">
                 Lead Ledger Pro LLC<br />

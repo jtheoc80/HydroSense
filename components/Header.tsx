@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { trackContact } from "@/lib/meta-pixel";
 
 const navLinks = [
   { label: "Why now", href: "/#critical-statements" },
@@ -60,6 +61,7 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-4">
           <a
             href="tel:+12816945754"
+            onClick={trackContact}
             className="text-sm text-fog-300 hover:text-fog-50 transition-colors"
           >
             (281) 694-5754
@@ -116,7 +118,7 @@ export default function Header() {
             </a>
           ))}
           <div className="pt-3 border-t border-ink-700/50 mt-2 flex flex-col gap-3">
-            <a href="tel:+12816945754" className="text-fog-300 text-sm">
+            <a href="tel:+12816945754" onClick={trackContact} className="text-fog-300 text-sm">
               (281) 694-5754
             </a>
             <a

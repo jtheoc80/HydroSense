@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, FormEvent } from "react";
 import { estimatedSavingsForCarrier } from "@/lib/savings";
+import { trackLead } from "@/lib/meta-pixel";
 import { Field, Label, ErrorMessage } from "@/components/catalyst/fieldset";
 import { Input } from "@/components/catalyst/input";
 import { Select } from "@/components/catalyst/select";
@@ -11,7 +12,6 @@ import { Button } from "@/components/catalyst/button";
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
-    fbq?: (...args: unknown[]) => void;
   }
 }
 
@@ -404,9 +404,7 @@ export default function LeadForm({ city }: LeadFormProps) {
         }
       }
 
-      if (window.fbq) {
-        window.fbq("track", "Lead");
-      }
+      trackLead();
     } catch {
       setError("Network error. Please check your connection and try again.");
     } finally {
