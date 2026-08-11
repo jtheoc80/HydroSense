@@ -23,41 +23,41 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title:
-    "HydroSense Texas | Smart Water Shutoff Installs, $300-$600/yr Insurance Credit",
-  description:
-    "Licensed smart water shutoff installs, Texas Master Plumber certified. Carrier-recognized certification. 5-15% homeowners insurance discount. Install from $999.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://hydrosensetx.com"
   ),
-  alternates: {
-    canonical: "https://hydrosensetx.com",
+  title: {
+    default: "Smart Water Shutoff Installation Houston | HydroSense Texas",
+    template: "%s | HydroSense Texas",
   },
+  description:
+    "Professional whole-home leak detection and automatic water shutoff installation across Greater Houston. Device setup, shutoff testing, homeowner handoff, and installation records. Call (281) 694-5754.",
   icons: {
     icon: "/favicon.png",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "HydroSense Texas | Stop Leaving $600/yr on the Table",
+    title: "Smart Water Shutoff Installation Houston | HydroSense Texas",
     description:
-      "Texas home insurance is up 46% in two years. A certified smart water shutoff install qualifies you for $300-$600 in annual credits most homeowners never collect.",
+      "Professional whole-home smart water shutoff installation, configuration, testing, and handoff across Greater Houston.",
     url: "https://hydrosensetx.com",
     siteName: "HydroSense Texas",
     type: "website",
+    locale: "en_US",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "HydroSense Texas - Smart Home Water Defense",
+        alt: "HydroSense Texas smart water shutoff installation",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "HydroSense Texas | Smart Water Shutoff Installs",
+    title: "Smart Water Shutoff Installation Houston | HydroSense Texas",
     description:
-      "Save $300-$600/yr on Texas homeowners insurance with a certified smart shutoff install. Licensed Texas Master Plumber.",
+      "Professional installation, app setup, shutoff testing, and homeowner handoff across Greater Houston.",
     images: ["/og-image.png"],
   },
   robots: { index: true, follow: true },
@@ -66,11 +66,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"

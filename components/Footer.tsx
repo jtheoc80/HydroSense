@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { MASTER_PLUMBER_LICENSE } from "@/lib/config";
+import TrackedPhoneLink from "./TrackedPhoneLink";
 
 const serviceAreas = [
   { name: "Houston", href: "/service-area/houston" },
@@ -14,164 +15,105 @@ const serviceAreas = [
   { name: "Lake Livingston", href: "/service-area/lake-livingston" },
 ];
 
+const quickLinks = [
+  { name: "How it works", href: "/#customer-journey" },
+  { name: "Devices we install", href: "/devices" },
+  { name: "Service areas", href: "/service-area" },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "FAQ", href: "/#faq" },
+  { name: "Guides", href: "/blog" },
+  { name: "Privacy policy", href: "/privacy" },
+  { name: "Terms of service", href: "/terms" },
+];
+
 export default function Footer() {
   const gbpUrl = process.env.GOOGLE_BUSINESS_PROFILE_URL;
+  const facebookUrl = process.env.FACEBOOK_URL;
 
   return (
-    <footer className="bg-ink-950 border-t border-ink-700/30">
-      {/* Accent line */}
+    <footer className="border-t border-ink-700/30 bg-ink-950">
       <div className="h-px bg-gradient-to-r from-transparent via-hydro-400/40 to-transparent" />
 
       <div className="section-container py-16 lg:py-20">
-        <div className="grid md:grid-cols-4 gap-10 lg:gap-12 mb-12">
-          {/* Brand column */}
-          <div className="md:col-span-1">
+        <div className="mb-12 grid gap-10 md:grid-cols-4 lg:gap-12">
+          <div>
             <Image
               src="/brand/logo-horizontal-light.png"
               alt="HydroSense Texas"
               width={200}
               height={50}
-              className="h-12 w-auto mb-5"
+              className="mb-5 h-12 w-auto"
             />
-            <p className="text-sm text-fog-300 leading-relaxed mb-5">
-              Licensed Texas smart water shutoff installs. Carrier-recognized
-              certificates that earn homeowners insurance credits.
+            <p className="mb-5 text-sm leading-relaxed text-fog-300">
+              Professional whole-home smart water shutoff installation,
+              configuration, testing, and homeowner handoff across Greater Houston.
             </p>
-            <a
-              href="tel:+12816945754"
-              className="text-hydro-400 hover:text-hydro-300 transition-colors text-sm font-semibold"
+            <TrackedPhoneLink
+              trackingLocation="footer"
+              className="text-sm font-semibold text-hydro-400 transition-colors hover:text-hydro-300"
             >
               (281) 694-5754
-            </a>
+            </TrackedPhoneLink>
             {gbpUrl && (
-              <a
-                href={gbpUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-sm text-fog-400 hover:text-fog-200 transition-colors mt-2"
-              >
-                Find us on Google
+              <a href={gbpUrl} target="_blank" rel="noopener noreferrer" className="mt-2 block text-sm text-fog-400 transition-colors hover:text-fog-200">
+                Find HydroSense on Google
               </a>
             )}
-
-            {/* Social */}
-            <div className="flex items-center gap-3 mt-4">
-              <p className="text-xs uppercase tracking-[0.15em] text-fog-400 font-medium">
-                Follow us
-              </p>
-              <a
-                href="https://www.facebook.com/share/1BTbBn6UZo/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="HydroSense on Facebook"
-                className="text-fog-400 hover:text-hydro-400 transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-[22px] h-[22px]"
-                  aria-hidden="true"
-                >
-                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                </svg>
+            {facebookUrl && (
+              <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="mt-2 block text-sm text-fog-400 transition-colors hover:text-fog-200">
+                Follow HydroSense on Facebook
               </a>
-            </div>
+            )}
           </div>
 
-          {/* Service Area */}
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-fog-400 font-medium mb-5">
-              <a href="/service-area" className="hover:text-fog-200 transition-colors">Service Area</a>
+            <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-fog-400">
+              <a href="/service-area" className="transition-colors hover:text-fog-200">Service areas</a>
             </p>
             <div className="flex flex-col gap-2.5">
               {serviceAreas.map((area) => (
-                <a
-                  key={area.name}
-                  href={area.href}
-                  className="text-sm text-fog-300 hover:text-fog-50 transition-colors"
-                >
+                <a key={area.name} href={area.href} className="text-sm text-fog-300 transition-colors hover:text-fog-50">
                   {area.name}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-fog-400 font-medium mb-5">
-              Quick Links
-            </p>
+            <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-fog-400">Quick links</p>
             <div className="flex flex-col gap-2.5">
-              <a href="/#savings-estimator" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Savings Calculator
-              </a>
-              <a href="/#the-certificate" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                The Certificate
-              </a>
-              <a href="/#insurance-forms" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Insurance Forms Guide
-              </a>
-              <a href="/devices" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Devices We Install
-              </a>
-              <a href="/freeze-damage-texas" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Freeze Damage Guide
-              </a>
-              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                HO-A vs HO-B vs HO-3
-              </a>
-              <a href="/#pricing" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Pricing
-              </a>
-              <a href="/#faq" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                FAQ
-              </a>
-              <a href="/blog" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Blog
-              </a>
-              <a href="/privacy" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Privacy Policy
-              </a>
-              <a href="/terms" className="text-sm text-fog-300 hover:text-fog-50 transition-colors">
-                Terms of Service
-              </a>
+              {quickLinks.map((link) => (
+                <a key={link.href} href={link.href} className="text-sm text-fog-300 transition-colors hover:text-fog-50">
+                  {link.name}
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Get Started */}
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-fog-400 font-medium mb-5">
-              Get Started
+            <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-fog-400">Get started</p>
+            <p className="mb-5 text-sm leading-relaxed text-fog-300">
+              Submit your ZIP code and contact information. We will review the
+              home requirements and provide a written proposal before scheduling.
             </p>
-            <p className="text-sm text-fog-300 leading-relaxed mb-5">
-              15-minute phone assessment, same-week install, certificate
-              in paper and digital form after final payment.
-            </p>
-            <a
-              href="/#lead-form"
-              className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-sm px-6 py-3 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 transition-all"
-            >
-              Get a Quote
+            <a href="/#lead-form" className="inline-flex items-center justify-center rounded-lg bg-hydro-400 px-6 py-3 text-sm font-semibold text-ink-950 shadow-lg shadow-hydro-400/20 transition-all hover:bg-hydro-300">
+              Check availability
             </a>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-ink-700/30 pt-8 space-y-4">
-          <p className="text-xs text-fog-400 leading-relaxed max-w-3xl">
-            Savings estimates are illustrative and based on published carrier
-            discount tiers for automatic water shutoff devices. Actual discount
-            varies by carrier, policy structure, and underwriting. HydroSense
-            Texas is a service of Lead Ledger Pro LLC.
+        <div className="space-y-4 border-t border-ink-700/30 pt-8">
+          <p className="max-w-4xl text-xs leading-relaxed text-fog-400">
+            Insurance incentives vary by insurer, policy, approved device, and
+            underwriting requirements. HydroSense does not guarantee a premium
+            discount. Confirm eligibility with your insurance agent before purchase.
           </p>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <p className="text-xs text-fog-300 font-medium">
-              Texas Registered Master Plumber. Master Plumber License {MASTER_PLUMBER_LICENSE}.
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs font-medium text-fog-300">
+              Work coordinated under Texas Master Plumber License {MASTER_PLUMBER_LICENSE}.
             </p>
             <p className="text-xs text-fog-400">
-              Copyright {new Date().getFullYear()} Lead Ledger Pro LLC. All
-              rights reserved.
+              Copyright {new Date().getFullYear()} Lead Ledger Pro LLC. All rights reserved.
             </p>
           </div>
         </div>

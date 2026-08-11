@@ -1,10 +1,11 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cities, cityKeys } from "@/lib/cities";
 import CriticalBar from "@/components/CriticalBar";
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
+import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import CityViewEvent from "./CityViewEvent";
 
 export function generateStaticParams() {
@@ -19,8 +20,8 @@ export function generateMetadata({ params }: PageProps): Metadata {
   const city = cities[params.city];
   if (!city) return {};
 
-  const title = `Smart Water Shutoff Installation in ${city.name}, TX | HydroSense Texas`;
-  const description = `${city.name} homeowners: save $300-$600/yr on insurance with a certified smart water shutoff install. Median home ${city.medianHome}. Licensed Texas Master Plumber.`;
+  const title = `Smart Water Shutoff Installation in ${city.name}, TX`;
+  const description = `Professional Flo by Moen, Phyn Plus, and StreamLabs smart water shutoff installation in ${city.name}, Texas. App setup, shutoff testing, and installation records. Call (281) 694-5754.`;
 
   return {
     title,
@@ -29,16 +30,11 @@ export function generateMetadata({ params }: PageProps): Metadata {
       canonical: `https://hydrosensetx.com/service-area/${city.slug}`,
     },
     openGraph: {
-      title,
+      title: `${title} | HydroSense Texas`,
       description,
       url: `https://hydrosensetx.com/service-area/${city.slug}`,
       siteName: "HydroSense Texas",
       type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `HydroSense ${city.name} | Smart Water Shutoff Installs`,
-      description,
     },
   };
 }
@@ -47,352 +43,201 @@ export default function CityPage({ params }: PageProps) {
   const city = cities[params.city];
   if (!city) notFound();
 
+  const localFaqs = [
+    {
+      q: `Does HydroSense install throughout ${city.name}?`,
+      a: `HydroSense serves the listed ${city.name} ZIP codes and nearby areas when crew availability and the property configuration allow. Submit the property ZIP code so we can confirm current coverage before scheduling.`,
+    },
+    {
+      q: `What is reviewed before a ${city.name} installation?`,
+      a: "We review main-line access, pipe size and material, existing valve condition, nearby power, Wi-Fi coverage, fire-sprinkler routing, and any active or previous leaks that require repair before the monitoring device can be installed.",
+    },
+    {
+      q: "Will the installation qualify for an insurance discount?",
+      a: "Some insurers offer an incentive for approved automatic water shutoff systems, but eligibility varies by insurer, policy, device, and documentation requirement. Confirm the requirement with your agent before purchasing for a discount. HydroSense does not guarantee eligibility or savings.",
+    },
+  ];
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://hydrosensetx.com",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Service Area",
-        item: "https://hydrosensetx.com/service-area",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: city.name,
-        item: `https://hydrosensetx.com/service-area/${city.slug}`,
-      },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://hydrosensetx.com" },
+      { "@type": "ListItem", position: 2, name: "Service Area", item: "https://hydrosensetx.com/service-area" },
+      { "@type": "ListItem", position: 3, name: city.name, item: `https://hydrosensetx.com/service-area/${city.slug}` },
     ],
+  };
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `Smart water shutoff installation in ${city.name}, Texas`,
+    serviceType: "Whole-home smart water shutoff installation",
+    provider: { "@id": "https://hydrosensetx.com/#business" },
+    areaServed: { "@type": "City", name: city.name },
+    url: `https://hydrosensetx.com/service-area/${city.slug}`,
+    description: `Professional smart water shutoff installation, app setup, shutoff testing, and homeowner handoff in ${city.name}, Texas.`,
   };
 
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: city.cityFaqs.map((faq) => ({
+    mainEntity: localFaqs.map((faq) => ({
       "@type": "Question",
       name: faq.q,
       acceptedAnswer: { "@type": "Answer", text: faq.a },
     })),
   };
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: `Smart Water Shutoff Installation in ${city.name}, Texas`,
-    author: {
-      "@type": "Organization",
-      name: "HydroSense Texas",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "HydroSense Texas",
-    },
-    description: `Insurance savings guide for ${city.name} homeowners. Covers carrier discounts, HO-A vs HO-B vs HO-3, freeze risk, and certified smart shutoff installation.`,
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <CityViewEvent cityName={city.name} />
       <CriticalBar />
       <Header />
+
       <main>
-        {/* Hero */}
-        <section className="relative py-16 lg:py-24 hydro-mesh">
-          <div className="dot-grid absolute inset-0 pointer-events-none" />
+        <section className="relative py-16 hydro-mesh lg:py-24">
+          <div className="dot-grid pointer-events-none absolute inset-0" />
           <div className="section-container relative">
-            <nav className="text-xs text-fog-400 mb-6" aria-label="Breadcrumb">
-              <a href="/" className="hover:text-fog-200 transition-colors">
-                Home
-              </a>
+            <nav className="mb-6 text-xs text-fog-400" aria-label="Breadcrumb">
+              <a href="/" className="transition-colors hover:text-fog-200">Home</a>
               <span className="mx-2">/</span>
-              <a href="/service-area" className="hover:text-fog-200 transition-colors">
-                Service Area
-              </a>
+              <a href="/service-area" className="transition-colors hover:text-fog-200">Service area</a>
               <span className="mx-2">/</span>
               <span className="text-fog-200">{city.name}</span>
             </nav>
-            <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
-              Licensed install, Texas Master Plumber certified
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-hydro-400">
+              Professional installation • {city.name}, Texas
             </p>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-fog-50 leading-[1.1] mb-6">
-              Smart water shutoff installation for {city.name} homeowners
+            <h1 className="mb-6 max-w-4xl font-display text-4xl leading-[1.08] text-fog-50 sm:text-5xl lg:text-6xl">
+              Smart water shutoff installation in {city.name}
             </h1>
-            <div className="grid sm:grid-cols-3 gap-4 mt-8 max-w-2xl">
-              <div className="bg-ink-800/60 border border-ink-700/50 rounded-lg p-4">
-                <p className="text-xs text-fog-400 mb-1">Median home value</p>
-                <p className="font-mono text-xl text-signal-400">
-                  {city.medianHome}
-                </p>
-              </div>
-              <div className="bg-ink-800/60 border border-ink-700/50 rounded-lg p-4">
-                <p className="text-xs text-fog-400 mb-1">Typical premium</p>
-                <p className="font-mono text-xl text-signal-400">
-                  {city.typicalPremium}
-                </p>
-              </div>
-              <div className="bg-ink-800/60 border border-ink-700/50 rounded-lg p-4">
-                <p className="text-xs text-fog-400 mb-1">County</p>
-                <p className="text-lg text-fog-100">{city.county}</p>
-              </div>
+            <p className="max-w-3xl text-lg leading-relaxed text-fog-200 sm:text-xl">
+              HydroSense installs and configures Flo by Moen, Phyn Plus, and
+              StreamLabs systems, tests automatic shutoff performance, and hands
+              over an itemized installation record.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a href="#lead-form" className="btn-primary inline-block">Check {city.name} availability</a>
+              <TrackedPhoneLink trackingLocation="city_hero" className="btn-outline inline-block">Call (281) 694-5754</TrackedPhoneLink>
             </div>
-            <p className="text-fog-300 text-sm mt-4">{city.heroNote}</p>
-            <a href="#lead-form" className="btn-primary mt-8 inline-block">
-              Get my {city.name} quote
-            </a>
           </div>
         </section>
 
-        {/* Why install */}
         <section className="py-20 lg:py-28">
           <div className="section-container">
-            <h2 className="font-display text-3xl sm:text-4xl text-fog-50 mb-8">
-              Why {city.name} homeowners install
-            </h2>
-            <div className="space-y-4 text-fog-200 leading-relaxed max-w-3xl">
-              {city.whyInstall.map((p, i) => (
-                <p key={i}>{p}</p>
+            <div className="mb-12 max-w-3xl">
+              <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-hydro-400">Before installation</p>
+              <h2 className="mb-5 font-display text-3xl text-fog-50 sm:text-4xl">What we verify at the home</h2>
+              <p className="text-lg leading-relaxed text-fog-300">
+                The device has to fit the plumbing and remain connected after the
+                crew leaves. These conditions are reviewed before a proposal is issued.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {[
+                ["Main-line access", "Location, pipe size and material, valve condition, and room to install the selected device."],
+                ["Power and Wi-Fi", "Nearby power and reliable Wi-Fi coverage at the leak-detection and shutoff location."],
+                ["Existing leaks", "Active leaks and previously damaged plumbing must be repaired before monitoring equipment is installed."],
+                ["Life-safety routing", "Fire-sprinkler and other shared-line configurations require review so the shutoff path is appropriate."],
+              ].map(([title, copy]) => (
+                <article key={title} className="rounded-xl border border-ink-700/40 bg-ink-800/45 p-6">
+                  <h3 className="mb-3 font-semibold text-fog-50">{title}</h3>
+                  <p className="text-sm leading-relaxed text-fog-300">{copy}</p>
+                </article>
               ))}
             </div>
-            <a href="#lead-form" className="btn-outline mt-8 inline-block text-sm">
-              See what your carrier credits in {city.name}
-            </a>
           </div>
         </section>
 
-        {/* Freeze risk */}
-        <section className="py-16 lg:py-20 bg-ink-950/50">
-          <div className="section-container">
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
-              Freeze risk in {city.name}
-            </h2>
-            <p className="text-fog-200 leading-relaxed max-w-3xl">
-              {city.freezeRisk}
-            </p>
-            <p className="text-fog-300 text-sm mt-4 max-w-3xl">
-              {city.homeAge}
-            </p>
-          </div>
-        </section>
+        <section className="bg-ink-950/50 py-20 lg:py-28">
+          <div className="section-container grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-hydro-400">Included handoff</p>
+              <h2 className="mb-6 font-display text-3xl text-fog-50 sm:text-4xl">A working system, not an unfinished device install</h2>
+              <ul className="space-y-4 text-fog-200">
+                {[
+                  "Written device recommendation, scope, and price before scheduling",
+                  "Plumbing installation and manufacturer-app connection",
+                  "Automatic shutoff test and homeowner operating walkthrough",
+                  "Itemized installation record with responsible license details",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <svg className="mt-0.5 h-5 w-5 shrink-0 text-hydro-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        {/* Carriers in city */}
-        <section className="py-20 lg:py-28">
-          <div className="section-container">
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-8">
-              Carriers active in {city.name}
-            </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {city.carriers.map((c) => (
-                <div
-                  key={c.name}
-                  className="bg-ink-800 border border-ink-700 rounded-lg p-4"
-                >
-                  <p className="text-fog-50 font-semibold">{c.name}</p>
-                  <p className="font-mono text-hydro-400 text-sm mt-1">
-                    Typical discount: {c.typicalDiscount}
-                  </p>
+            <div className="rounded-2xl border border-ink-700/40 bg-ink-800/50 p-7 lg:p-9">
+              <p className="mb-2 text-xs uppercase tracking-[0.18em] text-fog-400">Local coverage</p>
+              <h2 className="mb-5 font-display text-2xl text-fog-50">{city.name} service details</h2>
+              <dl className="space-y-5 text-sm">
+                <div>
+                  <dt className="mb-1 text-fog-400">County coverage</dt>
+                  <dd className="text-fog-100">{city.county}</dd>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* HO forms */}
-        <section className="py-16 lg:py-20 bg-ink-950/50">
-          <div className="section-container">
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
-              HO-A vs HO-B vs HO-3 in {city.name}
-            </h2>
-            <div className="bg-ink-800 border-l-4 border-l-signal-400 rounded-r-lg p-6 max-w-3xl">
-              <p className="text-fog-200 leading-relaxed">
-                {city.hoFormScenario}
+                <div>
+                  <dt className="mb-2 text-fog-400">ZIP codes listed</dt>
+                  <dd className="flex flex-wrap gap-2">
+                    {city.zips.map((zip) => (
+                      <span key={zip} className="rounded-full border border-ink-700 bg-ink-900 px-3 py-1.5 font-mono text-fog-200">{zip}</span>
+                    ))}
+                  </dd>
+                </div>
+              </dl>
+              <p className="mt-6 text-sm leading-relaxed text-fog-400">
+                Coverage and scheduling can change. Submit the property ZIP code
+                for a current availability check.
               </p>
             </div>
-            <a href="#lead-form" className="btn-primary mt-6 inline-block text-sm">
-              Check your policy form and carrier discount
-            </a>
           </div>
         </section>
 
-        {/* Case study */}
-        <section className="py-20 lg:py-28">
-          <div className="section-container">
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-8">
-              Case study: {city.caseStudy.neighborhood}
-            </h2>
-            <div className="bg-ink-800 border border-ink-700 rounded-xl p-6 lg:p-8 max-w-3xl">
-              <p className="text-xs uppercase tracking-widest text-fog-400 mb-4">
-                Illustrative scenario based on comparable claims data
-              </p>
-              <h3 className="text-lg font-semibold text-fog-50 mb-1">
-                {city.caseStudy.name}
-              </h3>
-              <p className="text-sm text-fog-300 mb-4">
-                {city.caseStudy.neighborhood} | Premium:{" "}
-                <span className="font-mono text-signal-400">
-                  {city.caseStudy.premium}
-                </span>
-              </p>
-              <div className="space-y-3 text-sm text-fog-200 leading-relaxed">
-                <p>
-                  <span className="text-fog-400 font-semibold">Event:</span>{" "}
-                  {city.caseStudy.event}
-                </p>
-                <p>
-                  <span className="text-fog-400 font-semibold">
-                    Device response:
-                  </span>{" "}
-                  {city.caseStudy.deviceCaught}
-                </p>
-                <p>
-                  <span className="text-fog-400 font-semibold">Outcome:</span>{" "}
-                  {city.caseStudy.outcome}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ZIP codes */}
-        <section className="py-16 lg:py-20 bg-ink-950/50">
-          <div className="section-container">
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
-              ZIP codes served in {city.name}
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {city.zips.map((zip) => (
-                <span
-                  key={zip}
-                  className="px-3 py-1.5 bg-ink-800 border border-ink-700 rounded-full text-sm font-mono text-fog-200"
-                >
-                  {zip}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* City FAQ */}
         <section className="py-20 lg:py-28">
           <div className="section-container max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-8">
-              {city.name} FAQ
-            </h2>
+            <h2 className="mb-8 font-display text-2xl text-fog-50 sm:text-3xl">{city.name} installation FAQ</h2>
             <div className="divide-y divide-ink-700">
-              {city.cityFaqs.map((faq, i) => (
-                <details key={i} className="group">
-                  <summary className="flex items-center justify-between py-5 cursor-pointer text-fog-50 font-medium hover:text-hydro-400 transition-colors list-none">
+              {localFaqs.map((faq) => (
+                <details key={faq.q} className="group">
+                  <summary className="flex cursor-pointer list-none items-center justify-between py-5 font-medium text-fog-50 transition-colors hover:text-hydro-400">
                     <span className="pr-4">{faq.q}</span>
-                    <svg
-                      className="w-5 h-5 text-fog-300 shrink-0 transition-transform duration-200 group-open:rotate-180"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19 9l-7 7-7-7"
-                      />
+                    <svg className="h-5 w-5 shrink-0 text-fog-300 transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
                     </svg>
                   </summary>
-                  <p className="pb-5 text-fog-300 leading-relaxed text-sm">
-                    {faq.a}
-                  </p>
+                  <p className="pb-5 text-sm leading-relaxed text-fog-300">{faq.a}</p>
                 </details>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Cross-links */}
-        <section className="py-16 lg:py-20 bg-ink-950/50">
+        <section className="bg-ink-950/50 py-16 lg:py-20">
           <div className="section-container">
-            <div className="space-y-5 text-fog-200 leading-relaxed max-w-3xl mb-8">
-              <p>
-                We install{" "}
-                <a href="/devices/moen-flo" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">Flo by Moen</a>,{" "}
-                <a href="/devices/phyn-plus" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">Phyn Plus</a>,{" "}
-                <a href="/devices/streamlabs" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">StreamLabs Control</a>, and{" "}
-                <a href="/devices/guardian" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">Guardian by Elexa</a>{" "}
-                across {city.name}. We match the device to your home during the 15-minute assessment.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
-                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
-                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">HO-A vs HO-B vs HO-3 in Texas</p>
-                <p className="text-fog-300 text-sm">Your policy form determines how water damage claims settle.</p>
+            <div className="grid gap-6 sm:grid-cols-3">
+              <a href="/devices" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Devices</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Compare smart shutoff systems</p>
               </a>
-              <a href="/freeze-damage-texas" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
-                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
-                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Freeze damage claims in Texas</p>
-                <p className="text-fog-300 text-sm">How frozen pipe water damage claims work and why carriers reward prevention.</p>
+              <a href="/service-area" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Coverage</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">View all service areas</p>
               </a>
-              <a href="/devices" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
-                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Devices</p>
-                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Smart water shutoff devices we install</p>
-                <p className="text-fog-300 text-sm">Compare Flo by Moen, Phyn Plus, StreamLabs, and Guardian.</p>
+              <a href="/blog" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Guides</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Read homeowner resources</p>
               </a>
             </div>
           </div>
         </section>
 
-        {/* Vacation rental cross-links */}
-        {city.vacationRental && (
-          <section className="py-16 lg:py-20">
-            <div className="section-container">
-              <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
-                Other vacation home markets we serve
-              </h2>
-              <p className="text-fog-200 leading-relaxed max-w-3xl mb-8">
-                Second homes and vacation properties face elevated risk because
-                no one is on-site when a pipe fails. We install across all three
-                Texas vacation home markets.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-6">
-                {Object.values(cities)
-                  .filter((c) => c.vacationRental && c.slug !== city.slug)
-                  .map((c) => (
-                    <a
-                      key={c.slug}
-                      href={`/service-area/${c.slug}`}
-                      className="group bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all"
-                    >
-                      <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">
-                        Vacation home market
-                      </p>
-                      <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">
-                        {c.name}
-                      </p>
-                      <p className="text-fog-300 text-sm">{c.heroNote}</p>
-                    </a>
-                  ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Lead form */}
         <LeadForm city={city.name} />
       </main>
       <Footer />

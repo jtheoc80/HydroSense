@@ -1,53 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-const faqs = [
-  {
-    q: "Will my carrier actually accept the certificate?",
-    a: "Yes. The HydroSense certificate documents a licensed installation of a carrier-recognized automatic water shutoff device, certified under a Texas Master Plumber license. We format it to match what underwriters expect. State Farm, USAA, Allstate, Farmers, Travelers, and every other major Texas carrier has published discount tiers for this class of device. If your agent needs a specific format, we accommodate it.",
-  },
-  {
-    q: "What is the typical discount?",
-    a: "Published tiers range from 4% to 15% off your homeowners premium, applied to the water-damage portion of your policy. On an average Houston premium of $6,600, that works out to $264 to $990 per year. Your actual credit depends on your carrier and policy structure.",
-  },
-  {
-    q: "What is the difference between HO-A, HO-B, and HO-3?",
-    a: "HO-A is named-peril, actual cash value (depreciated). HO-B is open-peril on the dwelling with replacement cost, historically the Texas gold standard but now phased out by many carriers. HO-3 is open-peril on the dwelling, named-peril on contents, replacement cost, and the form most Texas carriers default to today. The smart shutoff discount applies on all three forms, but the device protection is most critical on HO-A where claim settlements are depreciated.",
-  },
-  {
-    q: "Can freeze damage show up weeks after the event?",
-    a: "Yes. This is the most common pattern. A hard freeze creates hairline cracks in supply lines that hold under normal pressure but fail days or weeks later when conditions shift. By the time the homeowner notices, water has been running behind walls for hours. The smart shutoff catches these failures at onset, not after damage accumulates.",
-  },
-  {
-    q: "Why do I need the subscription?",
-    a: "You don't. The standalone install at $999 includes the device and the certificate. The subscription adds annual certificate renewal (so the discount stays applied at each policy renewal), 24/7 leak monitoring alerts, and insurance liaison service. Most homeowners choose Standard because the annual renewal alone is worth it. Miss one renewal and the credit drops off your policy.",
-  },
-  {
-    q: "What device will you install?",
-    a: "We install carrier-recognized devices: Moen Flo, Phyn, or StreamLabs. During the phone assessment we recommend the best fit based on your home's plumbing configuration, water pressure, and pipe material. All three qualify for the same insurance credits.",
-  },
-  {
-    q: "How long does the install take?",
-    a: "Approximately two hours on site. Our trained, licensed technicians perform the installation at your main water line under the supervision of our Texas Registered Master Plumber, whose license certifies the work. No drywall cuts, no damage, no mess. Your water is off for roughly 30 minutes during the swap.",
-  },
-  {
-    q: "Who performs the installation?",
-    a: "Your install is performed by trained, licensed technicians. Our Texas Registered Master Plumber trains and supervises the install team and holds the license that certifies every installation for your insurer. This is the standard structure for licensed plumbing work in Texas, and it is what lets us schedule installs quickly across the Houston metro while keeping every job certified.",
-  },
-  {
-    q: "When do I get my certificate?",
-    a: "After your final payment, we issue the certificate in both paper and digital form. The digital copy is emailed to you and, with your permission, to your agent. You keep the paper copy for your records. We reissue it annually so the discount stays applied at each renewal.",
-  },
-  {
-    q: "What does $999+ really mean?",
-    a: "The base install is $999 for a standard single-family home with accessible main line. Homes with non-standard configurations (slab foundation access, recirculation systems, or dual mains) may require additional work. We quote the exact price during the 15-minute phone assessment before scheduling anything.",
-  },
-  {
-    q: "Do you monitor my home 24/7?",
-    a: "The device monitors water flow continuously and will automatically shut off the main if it detects a leak pattern. With a Standard or Premier subscription, you also receive real-time alerts on your phone. Without a subscription, the device still operates autonomously. It just won't push notifications to you.",
-  },
-];
+import { homeFaqs } from "@/lib/home-faqs";
+import TrackedPhoneLink from "./TrackedPhoneLink";
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -56,69 +11,43 @@ export default function FAQ() {
     <section id="faq" className="py-20 lg:py-28">
       <div className="section-container max-w-3xl">
         <div className="mb-14">
-          <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-hydro-400">
             Common questions
           </p>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] text-fog-50">
-            Frequently asked questions
+          <h2 className="font-display text-3xl text-fog-50 sm:text-4xl lg:text-[2.75rem]">
+            Smart shutoff installation FAQ
           </h2>
         </div>
 
         <div className="divide-y divide-ink-700/50">
-          {faqs.map((faq, i) => (
-            <div key={i}>
+          {homeFaqs.map((faq, index) => (
+            <div key={faq.q}>
               <button
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between py-6 text-left group"
-                aria-expanded={openIndex === i}
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="group flex w-full items-center justify-between py-6 text-left"
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
               >
-                <span className="text-fog-50 font-medium text-base pr-6 group-hover:text-hydro-400 transition-colors leading-snug">
+                <span className="pr-6 text-base font-medium leading-snug text-fog-50 transition-colors group-hover:text-hydro-400">
                   {faq.q}
                 </span>
-                <span
-                  className={`w-8 h-8 rounded-lg bg-ink-800/60 border border-ink-700/40 flex items-center justify-center shrink-0 transition-all ${
-                    openIndex === i
-                      ? "bg-hydro-400/10 border-hydro-400/30"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className={`w-4 h-4 text-fog-300 transition-transform duration-200 ${
-                      openIndex === i ? "rotate-180 text-hydro-400" : ""
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-ink-700/40 bg-ink-800/60 transition-all ${openIndex === index ? "border-hydro-400/30 bg-hydro-400/10" : ""}`}>
+                  <svg className={`h-4 w-4 text-fog-300 transition-transform duration-200 ${openIndex === index ? "rotate-180 text-hydro-400" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
                   </svg>
                 </span>
               </button>
-              <div
-                className={`overflow-hidden transition-all duration-200 ${
-                  openIndex === i ? "max-h-96 pb-6" : "max-h-0"
-                }`}
-              >
-                <p className="text-fog-300 leading-relaxed pr-12">
-                  {faq.a}
-                </p>
+              <div id={`faq-answer-${index}`} className={`overflow-hidden transition-all duration-200 ${openIndex === index ? "max-h-[32rem] pb-6" : "max-h-0"}`}>
+                <p className="pr-12 leading-relaxed text-fog-300">{faq.a}</p>
               </div>
             </div>
           ))}
         </div>
 
         <div className="mt-12 text-center">
-          <a
-            href="#lead-form"
-            className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-sm px-8 py-3.5 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 transition-all"
-          >
-            Still have questions? We will call you.
-          </a>
+          <TrackedPhoneLink trackingLocation="faq" className="inline-flex items-center justify-center rounded-lg bg-hydro-400 px-8 py-3.5 text-sm font-semibold text-ink-950 shadow-lg shadow-hydro-400/20 transition-all hover:bg-hydro-300">
+            Still have questions? Call (281) 694-5754
+          </TrackedPhoneLink>
         </div>
       </div>
     </section>

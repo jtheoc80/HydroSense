@@ -1,11 +1,11 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { devices, deviceSlugs, deviceList } from "@/lib/devices";
 import CriticalBar from "@/components/CriticalBar";
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
-import MechanismVisual from "@/components/MechanismVisual";
+import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import LiteYouTube from "@/components/LiteYouTube";
 
 export function generateStaticParams() {
@@ -20,8 +20,9 @@ export function generateMetadata({ params }: PageProps): Metadata {
   const device = devices[params.slug];
   if (!device) return {};
 
-  const title = `${device.name} Installation in Houston | HydroSense Texas`;
-  const description = `${device.name}: ${device.tagline} Licensed install, Texas Master Plumber certified. Carrier-recognized certificate. Save $300-$600/yr on insurance.`;
+  const title = `${device.name} Installation in Houston`;
+  const socialTitle = `${title} | HydroSense Texas`;
+  const description = `${device.name} installation for Houston-area homes. Review plumbing, power, Wi-Fi, valve, and site requirements before receiving a written HydroSense proposal.`;
 
   return {
     title,
@@ -30,7 +31,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
       canonical: `https://hydrosensetx.com/devices/${device.slug}`,
     },
     openGraph: {
-      title,
+      title: socialTitle,
       description,
       url: `https://hydrosensetx.com/devices/${device.slug}`,
       siteName: "HydroSense Texas",
@@ -38,17 +39,32 @@ export function generateMetadata({ params }: PageProps): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${device.name} | HydroSense Texas`,
+      title: socialTitle,
       description,
     },
   };
 }
 
+const processSteps = [
+  {
+    title: "Compatibility review",
+    body: "We confirm the main-line position, pipe size and material, existing valve condition, power, Wi-Fi, installation space, and any fire-sprinkler routing.",
+  },
+  {
+    title: "Written proposal",
+    body: "The proposal identifies the exact model, device source, fittings, labor, included setup, exclusions, and fixed project price before scheduling.",
+  },
+  {
+    title: "Install, test, and handoff",
+    body: "The device is installed, connected to the manufacturer app, tested for shutoff operation, and documented for the homeowner's records.",
+  },
+];
+
 export default function DevicePage({ params }: PageProps) {
   const device = devices[params.slug];
   if (!device) notFound();
 
-  const otherDevices = deviceList.filter((d) => d.slug !== device.slug);
+  const otherDevices = deviceList.filter((item) => item.slug !== device.slug);
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -75,28 +91,19 @@ export default function DevicePage({ params }: PageProps) {
     ],
   };
 
-  const productSchema = {
+  const serviceSchema = {
     "@context": "https://schema.org",
-    "@type": "Product",
-    name: device.name,
-    description: device.howItWorks,
-    brand: {
-      "@type": "Brand",
-      name: device.name.split(" by ").pop() || device.name,
+    "@type": "Service",
+    name: `${device.name} installation`,
+    serviceType: "Smart water shutoff installation",
+    provider: { "@id": "https://hydrosensetx.com/#business" },
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Greater Houston, Texas",
     },
+    url: `https://hydrosensetx.com/devices/${device.slug}`,
+    description: device.howItWorks,
   };
-
-  const videoSchema = device.video.youtubeId
-    ? {
-        "@context": "https://schema.org",
-        "@type": "VideoObject",
-        name: device.video.videoTitle,
-        description: `Official ${device.name} product video.`,
-        thumbnailUrl: `https://i.ytimg.com/vi/${device.video.youtubeId}/hqdefault.jpg`,
-        contentUrl: `https://www.youtube.com/watch?v=${device.video.youtubeId}`,
-        embedUrl: `https://www.youtube.com/embed/${device.video.youtubeId}`,
-      }
-    : null;
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -115,45 +122,24 @@ export default function DevicePage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(productSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      {videoSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(videoSchema),
-          }}
-        />
-      )}
 
       <CriticalBar />
       <Header />
 
       <main>
-        {/* Breadcrumb */}
         <div className="section-container pt-8">
-          <nav
-            aria-label="Breadcrumb"
-            className="text-sm text-fog-400"
-          >
-            <a
-              href="/"
-              className="hover:text-fog-200 transition-colors"
-            >
+          <nav aria-label="Breadcrumb" className="text-sm text-fog-400">
+            <a href="/" className="hover:text-fog-200 transition-colors">
               Home
             </a>
             <span className="mx-2">/</span>
@@ -168,59 +154,86 @@ export default function DevicePage({ params }: PageProps) {
           </nav>
         </div>
 
-        {/* Hero */}
         <section className="py-16 lg:py-24">
-          <div className="section-container max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
-              Device we install
-            </p>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08] text-fog-50 mb-5">
-              {device.name}
-            </h1>
-            <p className="text-xl text-fog-200 leading-relaxed mb-4">
-              {device.tagline}
-            </p>
-            <p className="text-fog-300 mb-8">
-              We install this across the Houston metro. Licensed
-              technicians, Texas Master Plumber certified. Carrier-recognized
-              certificate in paper and digital form after final payment.
-            </p>
+          <div className="section-container">
+            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-16 items-start">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
+                  Houston-area installation
+                </p>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08] text-fog-50 mb-5">
+                  {device.name} installation
+                </h1>
+                <p className="text-xl text-fog-200 leading-relaxed mb-5">
+                  {device.tagline}
+                </p>
+                <p className="text-fog-300 leading-relaxed max-w-2xl mb-8">
+                  HydroSense scopes the exact installation after reviewing the
+                  home's plumbing, main-line access, power, Wi-Fi, valve layout,
+                  and any fire-sprinkler connection. Product features and
+                  manufacturer requirements are confirmed again in the written
+                  proposal.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="#lead-form" className="btn-primary text-center">
+                    Check {device.name} compatibility
+                  </a>
+                  <TrackedPhoneLink
+                    trackingLocation="device_detail_hero"
+                    className="btn-outline text-center"
+                  >
+                    Call (281) 694-5754
+                  </TrackedPhoneLink>
+                </div>
+              </div>
 
-            {/* Part 1: Lead visual -- mechanism animation */}
-            <div className="mb-8">
-              <MechanismVisual />
+              <aside className="bg-ink-800/50 border border-ink-700/40 rounded-2xl p-7 lg:p-8">
+                <p className="text-xs uppercase tracking-[0.18em] text-fog-400 mb-5">
+                  Installation profile
+                </p>
+                <dl className="space-y-5">
+                  <div>
+                    <dt className="text-xs text-fog-400 mb-1">Detection</dt>
+                    <dd className="text-fog-50 font-medium">
+                      {device.detectionMethod}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs text-fog-400 mb-1">Site setup</dt>
+                    <dd className="text-fog-50 font-medium">
+                      {device.setupProfile}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs text-fog-400 mb-1">Install type</dt>
+                    <dd className="text-fog-50 font-medium">
+                      {device.installType}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs text-fog-400 mb-1">Best fit</dt>
+                    <dd className="text-fog-200 leading-relaxed">
+                      {device.bestFor}
+                    </dd>
+                  </div>
+                </dl>
+              </aside>
             </div>
-
-            <a
-              href="#lead-form"
-              className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-base px-8 py-4 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 hover:-translate-y-0.5 transition-all"
-            >
-              Get a quote for {device.name}
-            </a>
           </div>
         </section>
 
-        {/* How it works */}
         <section className="py-16 lg:py-20 bg-ink-950/50">
-          <div className="section-container max-w-3xl">
+          <div className="section-container max-w-4xl">
             <p className="text-xs uppercase tracking-[0.2em] text-signal-400 font-medium mb-4">
-              How it works
+              How the system works
             </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
-              What {device.name} does inside your home
+            <h2 className="font-display text-3xl text-fog-50 mb-6">
+              What {device.name} is designed to do
             </h2>
-            <p className="text-lg text-fog-200 leading-relaxed">
+            <p className="text-lg text-fog-200 leading-relaxed mb-10">
               {device.howItWorks}
             </p>
-          </div>
-        </section>
 
-        {/* Part 2: Official manufacturer video */}
-        <section className="py-16 lg:py-20">
-          <div className="section-container max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-fog-300 font-medium mb-4">
-              Official {device.name} video
-            </p>
             {device.video.youtubeId ? (
               <LiteYouTube
                 videoId={device.video.youtubeId}
@@ -238,6 +251,7 @@ export default function DevicePage({ params }: PageProps) {
                     className="w-7 h-7 text-hydro-400 ml-0.5"
                     fill="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path d="M8 5v14l11-7z" />
                   </svg>
@@ -247,9 +261,7 @@ export default function DevicePage({ params }: PageProps) {
                     {device.video.fallbackLabel}
                   </p>
                   <p className="text-fog-400 text-sm">
-                    {device.video.fallbackUrl
-                      .replace("https://", "")
-                      .replace(/\/$/, "")}
+                    Manufacturer website opens in a new tab
                   </p>
                 </div>
               </a>
@@ -257,24 +269,39 @@ export default function DevicePage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Key facts */}
-        <section className="py-16 lg:py-20 bg-ink-950/50">
-          <div className="section-container max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
-              Verified facts
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-8">
-              What you need to know about {device.name}
-            </h2>
+        <section className="py-16 lg:py-20">
+          <div className="section-container max-w-4xl">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-8">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-3">
+                  Installation-relevant details
+                </p>
+                <h2 className="font-display text-3xl text-fog-50">
+                  What we verify before proposing {device.name}
+                </h2>
+              </div>
+              <a
+                href={device.officialSite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-hydro-400 hover:text-hydro-300 transition-colors"
+              >
+                Review the manufacturer website
+              </a>
+            </div>
             <div className="space-y-4">
-              {device.keyFacts.map((fact, i) => (
-                <div key={i} className="flex gap-4 items-start">
+              {device.keyFacts.map((fact) => (
+                <div
+                  key={fact}
+                  className="flex gap-4 items-start bg-ink-800/35 border border-ink-700/30 rounded-xl p-5"
+                >
                   <svg
                     className="w-5 h-5 text-hydro-400 mt-0.5 shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     strokeWidth={2}
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -282,226 +309,187 @@ export default function DevicePage({ params }: PageProps) {
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  <p className="text-fog-200 leading-relaxed">
-                    {fact}
-                  </p>
+                  <p className="text-fog-200 leading-relaxed">{fact}</p>
                 </div>
+              ))}
+            </div>
+            <p className="text-xs text-fog-400 leading-relaxed mt-6">
+              Product capabilities, app services, and model specifications can
+              change. The final proposal confirms the current manufacturer
+              requirements and exact device model.
+            </p>
+          </div>
+        </section>
+
+        <section className="py-16 lg:py-20 bg-ink-950/50">
+          <div className="section-container max-w-4xl">
+            <div className="bg-ink-800/40 border-l-4 border-l-signal-400 rounded-r-2xl p-7 lg:p-10">
+              <p className="text-xs uppercase tracking-[0.2em] text-signal-400 font-medium mb-3">
+                Insurance qualification
+              </p>
+              <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-5">
+                An installation record is not a guarantee of an insurance credit.
+              </h2>
+              <div className="space-y-4 text-fog-200 leading-relaxed">
+                <p>
+                  Some insurers may offer a credit or underwriting consideration
+                  for an approved automatic water shutoff, but the insurer decides
+                  which models, installation methods, and documents qualify under
+                  a specific policy.
+                </p>
+                <p>
+                  Confirm the requirement with your agent before purchasing for a
+                  discount. HydroSense provides an itemized installation record
+                  and helps locate available manufacturer verification documents.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 lg:py-20">
+          <div className="section-container">
+            <div className="mb-10 max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-3">
+                Installation process
+              </p>
+              <h2 className="font-display text-3xl text-fog-50">
+                From assessment to tested handoff
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {processSteps.map((step, index) => (
+                <article
+                  key={step.title}
+                  className="bg-ink-800/40 border border-ink-700/40 rounded-2xl p-7"
+                >
+                  <p className="font-mono text-xs text-hydro-400 mb-4">
+                    0{index + 1}
+                  </p>
+                  <h3 className="text-lg font-semibold text-fog-50 mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="text-fog-300 leading-relaxed">
+                    {step.body}
+                  </p>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Best for callout */}
-        <section className="py-16 lg:py-20">
-          <div className="section-container max-w-3xl">
-            <div className="bg-ink-800/40 border-l-4 border-l-signal-400 rounded-r-xl p-7 lg:p-9">
-              <p className="text-xs uppercase tracking-[0.2em] text-signal-400 font-medium mb-3">
-                Best for
-              </p>
-              <p className="font-display text-xl lg:text-2xl text-fog-50 leading-snug">
-                {device.bestFor}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Insurance note */}
         <section className="py-16 lg:py-20 bg-ink-950/50">
-          <div className="section-container max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
-              Brand-agnostic
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
-              The discount comes from the install, not the brand
+          <div className="section-container max-w-4xl">
+            <h2 className="font-display text-3xl text-fog-50 mb-8">
+              {device.name} frequently asked questions
             </h2>
-            <p className="text-lg text-fog-200 leading-relaxed mb-4">
-              Every device we install is carrier recognized. The discount
-              comes from the certified install and the documentation, not
-              the brand. We match the device to your home, your plumbing,
-              and your carrier's approved list during the 15-minute
-              assessment.
-            </p>
-            <p className="text-fog-200 leading-relaxed">
-              Understanding{" "}
-              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="text-hydro-400 hover:text-hydro-300 underline underline-offset-2 transition-colors">
-                which insurance form you carry (HO-A, HO-B, or HO-3)
-              </a>{" "}
-              matters because the form determines whether your claim settles at replacement cost or depreciated value.
-            </p>
-          </div>
-        </section>
-
-        {/* How HydroSense installs it */}
-        <section className="py-16 lg:py-20">
-          <div className="section-container max-w-3xl">
-            <p className="text-xs uppercase tracking-[0.2em] text-signal-400 font-medium mb-4">
-              Our process
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-6">
-              How HydroSense installs {device.name}
-            </h2>
-            <p className="text-lg text-fog-200 leading-relaxed">
-              Trained, licensed technicians install the device at your
-              main water line under our Texas Master Plumber license,
-              configure the app on your phone, and test the shutoff. After
-              final payment, we issue the carrier-recognized certificate
-              in paper and digital form. The on-site visit takes
-              approximately two hours.
-            </p>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="py-16 lg:py-20 bg-ink-950/50">
-          <div className="section-container max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl text-fog-50 mb-8">
-              Frequently asked questions
-            </h2>
-            <div className="space-y-6">
-              {device.faqs.map((faq, i) => (
-                <div
-                  key={i}
-                  className="bg-ink-800/40 rounded-xl p-6 lg:p-8"
+            <div className="space-y-5">
+              {device.faqs.map((faq) => (
+                <article
+                  key={faq.q}
+                  className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 lg:p-8"
                 >
                   <h3 className="text-fog-50 font-semibold text-lg mb-3">
                     {faq.q}
                   </h3>
-                  <p className="text-fog-200 leading-relaxed">
-                    {faq.a}
-                  </p>
-                </div>
+                  <p className="text-fog-200 leading-relaxed">{faq.a}</p>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Comparison strip */}
         <section className="py-16 lg:py-20">
           <div className="section-container">
             <div className="text-center mb-10">
-              <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
-                Compare all four
+              <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-3">
+                Compare options
               </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-fog-50">
-                How {device.name} compares
+              <h2 className="font-display text-3xl text-fog-50">
+                How {device.name} differs from the other systems
               </h2>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
+            <div className="overflow-x-auto rounded-xl border border-ink-700/40">
+              <table className="w-full min-w-[760px] text-left text-sm">
+                <thead className="bg-ink-800/70">
                   <tr className="border-b border-ink-700/50">
-                    <th className="py-4 px-4 text-fog-400 font-medium text-xs uppercase tracking-wider">
+                    <th className="py-4 px-5 text-fog-300 font-medium text-xs uppercase tracking-wider">
                       Device
                     </th>
-                    <th className="py-4 px-4 text-fog-400 font-medium text-xs uppercase tracking-wider">
+                    <th className="py-4 px-5 text-fog-300 font-medium text-xs uppercase tracking-wider">
                       Detection
                     </th>
-                    <th className="py-4 px-4 text-fog-400 font-medium text-xs uppercase tracking-wider">
-                      Learning
+                    <th className="py-4 px-5 text-fog-300 font-medium text-xs uppercase tracking-wider">
+                      Setup
                     </th>
-                    <th className="py-4 px-4 text-fog-400 font-medium text-xs uppercase tracking-wider">
-                      Insurer recognition
-                    </th>
-                    <th className="py-4 px-4 text-fog-400 font-medium text-xs uppercase tracking-wider">
+                    <th className="py-4 px-5 text-fog-300 font-medium text-xs uppercase tracking-wider">
                       Install
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {deviceList.map((d) => (
+                  {deviceList.map((item) => (
                     <tr
-                      key={d.slug}
-                      className={`border-b border-ink-700/30 ${
-                        d.slug === device.slug
-                          ? "bg-hydro-400/5"
-                          : ""
+                      key={item.slug}
+                      className={`border-b border-ink-700/30 last:border-b-0 ${
+                        item.slug === device.slug ? "bg-hydro-400/5" : ""
                       }`}
                     >
-                      <td className="py-4 px-4">
-                        {d.slug === device.slug ? (
+                      <td className="py-5 px-5">
+                        {item.slug === device.slug ? (
                           <span className="text-fog-50 font-semibold">
-                            {d.name}
+                            {item.name}
                           </span>
                         ) : (
                           <a
-                            href={`/devices/${d.slug}`}
+                            href={`/devices/${item.slug}`}
                             className="text-hydro-400 hover:text-hydro-300 transition-colors font-medium"
                           >
-                            {d.name}
+                            {item.name}
                           </a>
                         )}
                       </td>
-                      <td className="py-4 px-4 text-fog-200">
-                        {d.detectionMethod}
+                      <td className="py-5 px-5 text-fog-200">
+                        {item.detectionMethod}
                       </td>
-                      <td className="py-4 px-4 text-fog-200">
-                        {d.learningPeriod}
+                      <td className="py-5 px-5 text-fog-200">
+                        {item.setupProfile}
                       </td>
-                      <td className="py-4 px-4 text-fog-200">
-                        {d.insurerRecognition}
-                      </td>
-                      <td className="py-4 px-4 text-fog-200">
-                        {d.installType}
+                      <td className="py-5 px-5 text-fog-200">
+                        {item.installType}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="text-center mt-8">
-              <a
-                href="/devices"
-                className="inline-flex items-center justify-center rounded-lg border border-fog-300/20 text-fog-100 font-medium text-sm px-8 py-3.5 hover:bg-white/5 hover:border-fog-300/30 transition-all"
-              >
-                Compare all four smart water shutoff devices
-              </a>
-            </div>
           </div>
         </section>
 
-        {/* Cross-links */}
         <section className="py-16 lg:py-20 bg-ink-950/50">
           <div className="section-container">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Other devices */}
-              {otherDevices.map((d) => (
+              {otherDevices.map((item) => (
                 <a
-                  key={d.slug}
-                  href={`/devices/${d.slug}`}
+                  key={item.slug}
+                  href={`/devices/${item.slug}`}
                   className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
                 >
                   <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">
-                    Device
+                    Other device
                   </p>
                   <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">
-                    {d.name}
+                    {item.name}
                   </p>
                   <p className="text-fog-300 text-sm line-clamp-2">
-                    {d.tagline}
+                    {item.tagline}
                   </p>
                 </a>
               ))}
-              {/* Guide links */}
-              <a href="/insurance/ho-a-vs-ho-b-ho-3" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
-                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
-                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">HO-A vs HO-B vs HO-3 in Texas</p>
-                <p className="text-fog-300 text-sm">Your policy form determines how water damage claims settle.</p>
-              </a>
-              <a href="/freeze-damage-texas" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
-                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Guide</p>
-                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Freeze damage claims in Texas</p>
-                <p className="text-fog-300 text-sm">How frozen pipe claims work and why carriers reward prevention.</p>
-              </a>
-              <a href="/service-area" className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group">
-                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">Service area</p>
-                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">Houston metro service area</p>
-                <p className="text-fog-300 text-sm">Seven cities across Greater Houston.</p>
-              </a>
             </div>
           </div>
         </section>
 
-        {/* Lead form */}
         <LeadForm />
       </main>
 
