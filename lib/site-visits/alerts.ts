@@ -1,5 +1,6 @@
 import type { SiteVisit } from "./types";
 import { siteUrl } from "./format";
+import { siteVisitProviderMode } from "./provider-mode";
 
 export async function sendSiteVisitAlert(
   visit: Pick<SiteVisit, "id" | "customer_first_name" | "customer_last_name" | "property_address">,
@@ -7,6 +8,7 @@ export async function sendSiteVisitAlert(
   detail: string,
   priority = 0
 ): Promise<void> {
+  if (siteVisitProviderMode() === "mock") return;
   const userKey = process.env.PUSHOVER_USER_KEY;
   const appToken = process.env.PUSHOVER_APP_TOKEN;
   if (!userKey || !appToken) throw new Error("Pushover is not configured");

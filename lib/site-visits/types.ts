@@ -18,7 +18,9 @@ export type AppointmentStatus =
   | "in_progress"
   | "completed"
   | "no_show"
-  | "recheck_requested";
+  | "recheck_requested"
+  | "recheck_scheduled"
+  | "recheck_closed";
 
 export type PrevisitStatus = "not_sent" | "pending" | "complete";
 
@@ -71,6 +73,8 @@ export interface BathroomAssessment {
 export interface SiteAssessment {
   permissionToInspect: boolean | null;
   homeownerPresent: boolean | null;
+  homeHasNoBathrooms: boolean;
+  noBathroomsReason?: string;
   exterior: {
     meterAccessible: InspectionResult;
     mainShutoffAccessible: InspectionResult;
@@ -82,6 +86,7 @@ export interface SiteAssessment {
     unexplainedMeterMovement: YesNoUnsure;
     visibleExteriorLeak: InspectionResult;
     fireSprinklerBranchConcern: YesNoUnsure;
+    sprinklerBypassRequired: YesNoUnsure;
     irrigationOrPoolBranchPresent: YesNoUnsure;
     proposedInstallLocationSuitable: YesNoUnsure;
     proposedDeviceLocation?: string;
@@ -136,8 +141,12 @@ export interface CorrectiveAction {
   reason: string;
   owner: ActionOwner;
   severity: "blocking" | "conditional";
-  completed: boolean;
+  status: "open" | "customer_reported_complete" | "verified_complete" | "not_applicable";
   targetDate?: string;
+  customerCompletedAt?: string;
+  verifiedAt?: string;
+  verifiedBy?: string;
+  verificationNote?: string;
 }
 
 export interface ReadinessResult {
@@ -161,6 +170,10 @@ export interface SiteVisit {
   estimated_duration_minutes: number;
   timezone: string;
   schedule_version: number;
+  assessment_version: number;
+  assessment_revision: number;
+  parent_site_visit_id: string | null;
+  supersedes_site_visit_id: string | null;
   assigned_rep_name: string;
   assigned_rep_phone: string | null;
   source: string | null;
@@ -186,6 +199,7 @@ export interface SiteVisit {
   summary_sent_at: string | null;
   customer_acknowledged_at: string | null;
   recheck_requested_at: string | null;
+  recheck_closed_at: string | null;
   follow_up_at: string | null;
   created_at: string;
   updated_at: string;
@@ -234,7 +248,10 @@ export interface SiteVisitMessage {
   status: "pending" | "sending" | "sent" | "failed" | "skipped";
   attempt_count: number;
   provider_message_id: string | null;
+  provider_status: "accepted" | null;
   last_error: string | null;
+  claimed_at: string | null;
+  claim_token: string | null;
   sent_at: string | null;
   created_at: string;
   updated_at: string;

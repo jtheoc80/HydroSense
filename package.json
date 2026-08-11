@@ -10,7 +10,8 @@
     "lint": "next lint",
     "indexnow:seed": "tsx scripts/indexnow-seed.ts",
     "jotform:discover": "tsx scripts/discover-jotform-fields.ts",
-    "test": "tsx --test lib/site-visits/readiness.test.ts lib/site-visits/risk.test.ts lib/site-visits/workflow.test.ts"
+    "test": "tsx --test \"lib/site-visits/*.test.ts\" lib/quotes.test.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
@@ -30,11 +31,14 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.61.1",
     "@types/node": "^22.15.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "@types/sharp": "^0.31.1",
     "autoprefixer": "^10.4.21",
+    "eslint": "8.57.1",
+    "eslint-config-next": "14.2.35",
     "postcss": "^8.5.4",
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.17",

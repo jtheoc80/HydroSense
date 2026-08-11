@@ -1,18 +1,12 @@
 import { Resend } from "resend";
+import crypto from "crypto";
 import { supabase } from "@/lib/supabase";
 import { sendSms } from "@/lib/twilio";
-import { customerPortalUrl, formatVisitDate, formatVisitTime, shortAddress, siteVisitMessageKey } from "./format";
+import { customerPortalUrl, formatVisitDate, formatVisitTime, shortAddress } from "./format";
+import { isMessageClaimAvailable, MESSAGE_BINDING, messageKeyFor, type SiteVisitMessageKind } from "./message-policy";
+import { mockProviderMessageId, siteVisitProviderMode } from "./provider-mode";
+export { messageKeyFor } from "./message-policy";
 import type { SiteVisit, SiteVisitMessage } from "./types";
-
-export type SiteVisitMessageKind =
-  | "confirmation"
-  | "confirmation-receipt"
-  | "previsit-complete"
-  | "reminder-24h"
-  | "reminder-3h"
-  | "en-route"
-  | "completion"
-  | "recheck-receipt";
 
 export interface DeliveryResult {
   channel: "sms" | "email";
@@ -28,13 +22,6 @@ interface MessageContent {
   html: string;
 }
 
-const SCHEDULE_BOUND = new Set<SiteVisitMessageKind>([
-  "confirmation", "reminder-24h", "reminder-3h", "en-route",
-]);
-
-export function messageKeyFor(kind: SiteVisitMessageKind, visit: Pick<SiteVisit, "schedule_version">): string {
-  return SCHEDULE_BOUND.has(kind) ? siteVisitMessageKey(kind, visit.schedule_version) : kind;
-}
 
 export async function sendSiteVisitCommunication(
   visit: SiteVisit,
@@ -45,12 +32,25 @@ export async function sendSiteVisitCommunication(
   const channels = options.channels || ["sms", "email"];
   const tasks: Array<Promise<DeliveryResult>> = [];
   if (channels.includes("sms") && visit.customer_phone) {
+
     tasks.push(deliver(visit, kind, "sms", visit.customer_phone, content, options.maxAttempts, options.messageKey));
   }
   if (channels.includes("email") && visit.customer_email) {
     tasks.push(deliver(visit, kind, "email", visit.customer_email, content, options.maxAttempts, options.messageKey));
   }
   return Promise.all(tasks);
+}
+
+export async function retrySiteVisitMessage(messageId: string): Promise<DeliveryResult[]> {
+  const { data, error } = await supabase.from("site_visit_messages").select("*").eq("id", messageId).maybeSingle();
+  if (error || !data) throw new Error("Communication record not found");
+  const message = data as SiteVisitMessage;
+  if (!(message.template in MESSAGE_BINDING)) throw new Error("Communication type cannot be retried");
+  const { data: visit, error: visitError } = await supabase.from("site_visits").select("*").eq("id", message.site_visit_id).maybeSingle();
+  if (visitError || !visit) throw new Error("Site visit not found");
+  return sendSiteVisitCommunication(visit as SiteVisit, message.template as SiteVisitMessageKind, {
+    channels: [message.channel], messageKey: message.message_key,
+  });
 }
 
 async function deliver(
@@ -84,34 +84,44 @@ async function deliver(
     .single();
   if (loadError || !existing) return { channel, status: "failed", error: "Unable to create delivery record" };
   const message = existing as SiteVisitMessage;
-  if (message.status === "sent" || message.status === "sending") return { channel, status: "skipped", messageId: message.id };
+  if (message.status === "sent" || !isMessageClaimAvailable(message)) return { channel, status: "skipped", messageId: message.id };
   if (message.attempt_count >= maxAttempts) return { channel, status: "skipped", messageId: message.id, error: "Retry limit reached" };
 
-  const { data: claimed } = await supabase
+  const claimToken = crypto.randomUUID();
+  const claimedAt = new Date().toISOString();
+  let claimQuery = supabase
     .from("site_visit_messages")
-    .update({ status: "sending", attempt_count: message.attempt_count + 1, last_error: null })
+    .update({ status: "sending", attempt_count: message.attempt_count + 1, last_error: null, claimed_at: claimedAt, claim_token: claimToken })
     .eq("id", message.id)
     .eq("attempt_count", message.attempt_count)
-    .in("status", ["pending", "failed"])
-    .select("id")
-    .maybeSingle();
+    .eq("status", message.status);
+  claimQuery = message.claimed_at === null
+    ? claimQuery.is("claimed_at", null)
+    : claimQuery.eq("claimed_at", message.claimed_at);
+  const { data: claimed } = await claimQuery.select("id").maybeSingle();
   if (!claimed) return { channel, status: "skipped", messageId: message.id };
 
   try {
-    const providerMessageId = channel === "sms"
-      ? await sendSms({ to: recipient, body: content.sms })
-      : await sendEmail({ to: recipient, subject: content.subject, html: content.html, text: content.text });
+    const providerMessageId = siteVisitProviderMode() === "mock"
+      ? mockProviderMessageId(channel, message.id)
+      : channel === "sms"
+        ? await sendSms({ to: recipient, body: content.sms })
+        : await sendEmail({ to: recipient, subject: content.subject, html: content.html, text: content.text });
 
     await supabase.from("site_visit_messages").update({
       status: "sent",
       provider_message_id: providerMessageId,
+      provider_status: "accepted",
       sent_at: new Date().toISOString(),
       last_error: null,
-    }).eq("id", message.id);
+      claimed_at: null,
+      claim_token: null,
+    }).eq("id", message.id).eq("claim_token", claimToken);
     return { channel, status: "sent", messageId: message.id };
   } catch (error) {
     const safeError = error instanceof Error ? error.message.slice(0, 500) : "Delivery failed";
-    await supabase.from("site_visit_messages").update({ status: "failed", last_error: safeError }).eq("id", message.id);
+    await supabase.from("site_visit_messages").update({ status: "failed", last_error: safeError, claimed_at: null, claim_token: null })
+      .eq("id", message.id).eq("claim_token", claimToken);
     return { channel, status: "failed", messageId: message.id, error: safeError };
   }
 }

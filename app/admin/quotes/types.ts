@@ -1,3 +1,5 @@
+import type { QuoteStatus } from "@/lib/quotes";
+
 export interface LineItem {
   sku: string;
   name: string;
@@ -30,7 +32,7 @@ export interface Quote {
   total: number;
   notes_internal: string | null;
   notes_customer: string | null;
-  status: "draft" | "sent" | "viewed" | "accepted" | "declined" | "expired";
+  status: QuoteStatus;
   created_at: string;
   sent_at: string | null;
   viewed_at: string | null;

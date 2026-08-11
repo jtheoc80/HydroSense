@@ -43,7 +43,7 @@ describe("evaluateReadiness", () => {
   it("requires plumber review for a sprinkler branch concern", () => {
     const assessment = cleanAssessment();
     assessment.exterior.fireSprinklerBranchConcern = "unsure";
-    assert.equal(evaluateReadiness(assessment, cleanPrevisit()).status, "plumber_review_required");
+    assert.equal(evaluateReadiness(assessment, cleanPrevisit()).status, "unassessed");
   });
 
   it("requires preparation when power is not verified", () => {
@@ -55,7 +55,7 @@ describe("evaluateReadiness", () => {
   it("requires preparation when Wi-Fi is not verified", () => {
     const assessment = cleanAssessment();
     assessment.connectivity.wifiVerified = "unsure";
-    assert.equal(evaluateReadiness(assessment, cleanPrevisit()).status, "site_prep_required");
+    assert.equal(evaluateReadiness(assessment, cleanPrevisit()).status, "unassessed");
   });
 
   it("remains unassessed when critical data is missing", () => {

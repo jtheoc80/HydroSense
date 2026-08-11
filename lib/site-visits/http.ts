@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { SiteVisitValidationError } from "./service";
+import { SiteVisitConflictError, SiteVisitValidationError } from "./service";
 
 export function noStoreJson(body: unknown, init: ResponseInit = {}) {
   const headers = new Headers(init.headers);
@@ -11,6 +11,9 @@ export function siteVisitRouteError(error: unknown) {
   if (error instanceof SiteVisitValidationError) {
     return noStoreJson({ ok: false, error: error.message, details: error.details }, { status: 400 });
   }
+  if (error instanceof SiteVisitConflictError) {
+    return noStoreJson({ ok: false, error: error.message, details: error.details }, { status: 409 });
+  }
   return noStoreJson({ ok: false, error: "Unable to complete the site-visit request" }, { status: 500 });
 }
 
@@ -21,6 +24,9 @@ export function publicSiteVisitRouteError(error: unknown) {
       { ok: false, error: unavailable ? "Appointment link is invalid or unavailable" : error.message, details: unavailable ? undefined : error.details },
       { status: unavailable ? 404 : 400 }
     );
+  }
+  if (error instanceof SiteVisitConflictError) {
+    return noStoreJson({ ok: false, error: error.message, details: error.details }, { status: 409 });
   }
   return noStoreJson({ ok: false, error: "Unable to complete the appointment request" }, { status: 500 });
 }

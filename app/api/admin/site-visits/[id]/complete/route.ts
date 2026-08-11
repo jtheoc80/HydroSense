@@ -5,7 +5,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   try {
     const { id } = await params;
     const body = await request.json();
-    return noStoreJson({ ok: true, ...(await completeAssessment(id, body.assessment)) });
+    return noStoreJson({ ok: true, ...(await completeAssessment(id, body.assessment, body.revision)) });
   } catch (error) {
     return siteVisitRouteError(error);
   }

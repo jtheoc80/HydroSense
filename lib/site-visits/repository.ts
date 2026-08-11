@@ -145,3 +145,83 @@ export async function confirmationChannelsFailed(siteVisitId: string, scheduleVe
   if (!data || data.length === 0) return false;
   return data.every((row) => row.status === "failed" || row.status === "skipped");
 }
+
+export async function updateAssessmentWithRevision(
+  id: string,
+  expectedRevision: number,
+  patch: Record<string, unknown>
+): Promise<SiteVisit | null> {
+  const { data, error } = await supabase
+    .from("site_visits")
+    .update({ ...patch, assessment_revision: expectedRevision + 1 })
+    .eq("id", id)
+    .eq("assessment_revision", expectedRevision)
+    .select("*")
+    .maybeSingle();
+  if (error) throw new Error(`Unable to save assessment: ${error.message}`);
+  return (data as SiteVisit | null) || null;
+}
+
+export async function listSiteVisitCycle(visit: SiteVisit): Promise<SiteVisit[]> {
+  const rootId = visit.parent_site_visit_id || visit.id;
+  const { data, error } = await supabase
+    .from("site_visits")
+    .select("*")
+    .or(`id.eq.${rootId},parent_site_visit_id.eq.${rootId}`)
+    .order("assessment_version", { ascending: true });
+  if (error) throw new Error(`Unable to load assessment history: ${error.message}`);
+  return (data || []) as SiteVisit[];
+}
+
+export async function getLatestVisitInCycle(visit: SiteVisit): Promise<SiteVisit> {
+  const cycle = await listSiteVisitCycle(visit);
+  return cycle.at(-1) || visit;
+}
+
+export async function createLinkedRecheckVisit(
+  original: SiteVisit,
+  input: {
+    scheduledStart: string;
+    arrivalWindowMinutes: number;
+    assignedRepName: string;
+    assignedRepPhone?: string;
+  }
+): Promise<SiteVisit> {
+  const token = crypto.randomBytes(32).toString("hex");
+  const rootId = original.parent_site_visit_id || original.id;
+  const { data, error } = await supabase.from("site_visits").insert({
+    lead_id: original.lead_id,
+    customer_first_name: original.customer_first_name,
+    customer_last_name: original.customer_last_name,
+    customer_phone: original.customer_phone,
+    customer_email: original.customer_email,
+    property_address: original.property_address,
+    property_city: original.property_city,
+    property_zip: original.property_zip,
+    scheduled_start: input.scheduledStart,
+    arrival_window_minutes: input.arrivalWindowMinutes,
+    estimated_duration_minutes: original.estimated_duration_minutes,
+    timezone: original.timezone,
+    assessment_version: original.assessment_version + 1,
+    parent_site_visit_id: rootId,
+    supersedes_site_visit_id: original.id,
+    assigned_rep_name: input.assignedRepName,
+    assigned_rep_phone: input.assignedRepPhone || original.assigned_rep_phone,
+    source: "recheck",
+    internal_notes: original.internal_notes,
+    customer_portal_token: token,
+    appointment_status: "awaiting_confirmation",
+    previsit_status: original.previsit_status,
+    previsit_answers: original.previsit_answers,
+    previsit_completed_at: original.previsit_completed_at,
+  }).select("*").single();
+  if (error || !data) throw new Error(`Unable to create linked recheck: ${error?.message || "unknown database error"}`);
+  return data as SiteVisit;
+}
+
+export async function setCorrectiveActions(
+  id: string,
+  correctiveActions: SiteVisit["corrective_actions"]
+): Promise<SiteVisit> {
+  return updateSiteVisit(id, { corrective_actions: correctiveActions });
+}

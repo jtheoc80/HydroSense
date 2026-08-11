@@ -18,22 +18,36 @@ export default function AssessmentClient({ visit, initialAssessment }: { visit: 
   const [ready, setReady] = useState(false);
   const [syncNonce, setSyncNonce] = useState(0);
   const initialized = useRef(false);
+  const revisionRef = useRef(visit.assessment_revision);
+  const latestAssessmentRef = useRef(initialAssessment);
+  const saveChain = useRef<Promise<void>>(Promise.resolve());
   const localKey = `hydrosense:site-visit-assessment:${visit.id}`;
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(localKey);
       if (stored) {
-        const parsed = JSON.parse(stored) as { savedAt: string; assessment: SiteAssessment };
+        const parsed = JSON.parse(stored) as { savedAt: string; revision: number; assessment: SiteAssessment };
         if (new Date(parsed.savedAt).getTime() > new Date(visit.updated_at).getTime()) {
-          setAssessment(parsed.assessment);
-          setMessage("Recovered a newer local field draft. It will sync automatically.");
+          const divergent = parsed.revision !== visit.assessment_revision;
+          const useLocal = !divergent || window.confirm(
+            "This device has a newer local draft from a different server revision. Select OK to reconcile with the local draft, or Cancel to keep the server draft."
+          );
+          if (useLocal) {
+            setAssessment(parsed.assessment);
+            latestAssessmentRef.current = parsed.assessment;
+            setMessage(divergent ? "Local draft selected. It will reconcile against the latest server revision." : "Recovered a newer local field draft. It will sync automatically.");
+          }
         }
       }
     } catch { /* Ignore an unreadable local draft. */ }
     initialized.current = true;
     setReady(true);
-  }, [localKey, visit.updated_at]);
+  }, [localKey, visit.updated_at, visit.assessment_revision]);
+
+  useEffect(() => {
+    latestAssessmentRef.current = assessment;
+  }, [assessment]);
 
   useEffect(() => {
     const online = () => { setSaveState("saving"); setSyncNonce((value) => value + 1); };
@@ -45,36 +59,51 @@ export default function AssessmentClient({ visit, initialAssessment }: { visit: 
 
   useEffect(() => {
     if (!ready || !initialized.current) return;
-    window.localStorage.setItem(localKey, JSON.stringify({ savedAt: new Date().toISOString(), assessment }));
+    window.localStorage.setItem(localKey, JSON.stringify({ savedAt: new Date().toISOString(), revision: revisionRef.current, assessment }));
     if (!navigator.onLine) { setSaveState("offline"); return; }
     setSaveState("saving");
-    const timer = window.setTimeout(() => { void saveDraft(); }, 850);
+    const timer = window.setTimeout(() => { void saveDraft().catch(() => undefined); }, 850);
     return () => window.clearTimeout(timer);
     // syncNonce intentionally retries the latest draft after reconnecting.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assessment, ready, syncNonce]);
 
-  async function saveDraft() {
-    try {
+  function saveDraft(): Promise<void> {
+    const draft = structuredClone(latestAssessmentRef.current);
+    const task = saveChain.current.catch(() => undefined).then(async () => {
+      setSaveState("saving");
+      try {
       const response = await fetch(`/api/admin/site-visits/${visit.id}/assessment`, {
         method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ assessment, actorLabel: visit.assigned_rep_name }),
+        body: JSON.stringify({ assessment: draft, revision: revisionRef.current, actorLabel: visit.assigned_rep_name }),
       });
       const body = await response.json();
-      if (!response.ok || !body.ok) throw new Error(body.error || "Save failed");
-      window.localStorage.setItem(localKey, JSON.stringify({ savedAt: new Date().toISOString(), assessment }));
+      if (!response.ok || !body.ok) {
+        if (response.status === 409) setMessage("This assessment changed in another session. Reload and explicitly reconcile the server and local drafts.");
+        throw new Error(body.error || "Save failed");
+      }
+      revisionRef.current = body.visit.assessment_revision;
+      window.localStorage.setItem(localKey, JSON.stringify({
+        savedAt: new Date().toISOString(), revision: revisionRef.current, assessment: draft,
+      }));
       setSaveState("saved");
     } catch (error) {
       setSaveState(navigator.onLine ? "error" : "offline");
       setMessage(error instanceof Error ? error.message : "Save failed. The local draft is retained.");
-    }
+      throw error;
+      }
+    });
+    saveChain.current = task;
+    return task;
   }
 
   async function complete() {
     setMessage(""); setSaveState("saving");
     try {
+      await saveDraft();
+      const latestAssessment = latestAssessmentRef.current;
       const response = await fetch(`/api/admin/site-visits/${visit.id}/complete`, {
-        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ assessment }),
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ assessment: latestAssessment, revision: revisionRef.current }),
       });
       const body = await response.json();
       if (!response.ok || !body.ok) {
@@ -113,7 +142,7 @@ export default function AssessmentClient({ visit, initialAssessment }: { visit: 
         </section>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-ink-950/95 px-4 py-3 backdrop-blur"><div className="mx-auto flex max-w-4xl items-center justify-between gap-3"><button disabled={step === 0} onClick={() => setStep((value) => Math.max(0, value - 1))} className="min-h-11 rounded-lg border border-white/20 px-4 text-sm font-semibold disabled:opacity-30">Previous</button><button onClick={() => void saveDraft()} className="hidden min-h-11 rounded-lg border border-hydro-400/50 px-4 text-sm font-semibold text-hydro-300 sm:block">Save now</button>{step < steps.length - 1 ? <button onClick={() => setStep((value) => Math.min(steps.length - 1, value + 1))} className="btn-primary min-h-11">Next section</button> : <button disabled={saveState === "saving"} onClick={() => void complete()} className="min-h-11 rounded-lg bg-green-400 px-5 text-sm font-bold text-ink-950 disabled:opacity-50">Complete visit</button>}</div></div>
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-ink-950/95 px-4 py-3 backdrop-blur"><div className="mx-auto flex max-w-4xl items-center justify-between gap-3"><button disabled={step === 0} onClick={() => setStep((value) => Math.max(0, value - 1))} className="min-h-11 rounded-lg border border-white/20 px-4 text-sm font-semibold disabled:opacity-30">Previous</button><button onClick={() => void saveDraft().catch(() => undefined)} className="hidden min-h-11 rounded-lg border border-hydro-400/50 px-4 text-sm font-semibold text-hydro-300 sm:block">Save now</button>{step < steps.length - 1 ? <button onClick={() => setStep((value) => Math.min(steps.length - 1, value + 1))} className="btn-primary min-h-11">Next section</button> : <button disabled={saveState === "saving"} onClick={() => void complete()} className="min-h-11 rounded-lg bg-green-400 px-5 text-sm font-bold text-ink-950 disabled:opacity-50">Complete visit</button>}</div></div>
     </main>
   );
 }
@@ -124,7 +153,7 @@ function ArrivalStep({ assessment, setAssessment, visit }: { assessment: SiteAss
 
 function ExteriorStep({ value, onChange }: { value: SiteAssessment["exterior"]; onChange: (value: SiteAssessment["exterior"]) => void }) {
   const set = <K extends keyof typeof value>(key: K, next: (typeof value)[K]) => onChange({ ...value, [key]: next });
-  return <div className="space-y-5"><p className="text-sm leading-relaxed text-fog-300">Trace the service from meter and main shutoff to the proposed monitoring position. Record only what was observed.</p><InspectionField label="Meter accessibility" value={value.meterAccessible} notes={value.notes} onChange={(next) => set("meterAccessible", next)} /><InspectionField label="Main shutoff accessibility" value={value.mainShutoffAccessible} onChange={(next) => set("mainShutoffAccessible", next)} /><InspectionField label="Main valve condition" value={value.mainValveCondition} onChange={(next) => set("mainValveCondition", next)} /><TextField label="Water-entry route" value={value.waterEntryRoute || ""} onChange={(next) => set("waterEntryRoute", next)} /><div className="grid gap-4 sm:grid-cols-2"><TextField label="Pipe material" value={value.pipeMaterial || ""} onChange={(next) => set("pipeMaterial", next)} /><TextField label="Approximate pipe diameter" value={value.approximatePipeDiameter || ""} onChange={(next) => set("approximatePipeDiameter", next)} /></div><label className="block text-xs text-fog-300">Optional static pressure (PSI)<input type="number" min="0" max="300" value={value.staticPressurePsi ?? ""} onChange={(event) => set("staticPressurePsi", event.target.value ? Number(event.target.value) : undefined)} className={`${inputClass} mt-1`} /></label><YesNoField label="Unexplained meter movement with fixtures believed off" value={value.unexplainedMeterMovement} onChange={(next) => set("unexplainedMeterMovement", next)} /><InspectionField label="Visible exterior leakage" value={value.visibleExteriorLeak} onChange={(next) => set("visibleExteriorLeak", next)} /><YesNoField label="Fire-sprinkler branch concern" value={value.fireSprinklerBranchConcern} onChange={(next) => set("fireSprinklerBranchConcern", next)} /><YesNoField label="Irrigation or pool branch present" value={value.irrigationOrPoolBranchPresent} onChange={(next) => set("irrigationOrPoolBranchPresent", next)} /><YesNoField label="Proposed device location suitable" value={value.proposedInstallLocationSuitable} onChange={(next) => set("proposedInstallLocationSuitable", next)} /><TextField label="Proposed device location" value={value.proposedDeviceLocation || ""} onChange={(next) => set("proposedDeviceLocation", next)} /><YesNoField label="Service clearance adequate" value={value.serviceClearanceAdequate} onChange={(next) => set("serviceClearanceAdequate", next)} /><TextArea label="Weather / freeze exposure notes" value={value.weatherExposureNotes || ""} onChange={(next) => set("weatherExposureNotes", next)} /><TextArea label="Exterior notes" value={value.notes || ""} onChange={(next) => set("notes", next)} /></div>;
+  return <div className="space-y-5"><p className="text-sm leading-relaxed text-fog-300">Trace the service from meter and main shutoff to the proposed monitoring position. Record only what was observed.</p><InspectionField label="Meter accessibility" value={value.meterAccessible} notes={value.notes} onChange={(next) => set("meterAccessible", next)} /><InspectionField label="Main shutoff accessibility" value={value.mainShutoffAccessible} onChange={(next) => set("mainShutoffAccessible", next)} /><InspectionField label="Main valve condition" value={value.mainValveCondition} onChange={(next) => set("mainValveCondition", next)} /><TextField label="Water-entry route" value={value.waterEntryRoute || ""} onChange={(next) => set("waterEntryRoute", next)} /><div className="grid gap-4 sm:grid-cols-2"><TextField label="Pipe material" value={value.pipeMaterial || ""} onChange={(next) => set("pipeMaterial", next)} /><TextField label="Approximate pipe diameter" value={value.approximatePipeDiameter || ""} onChange={(next) => set("approximatePipeDiameter", next)} /></div><label className="block text-xs text-fog-300">Optional static pressure (PSI)<input type="number" min="0" max="300" value={value.staticPressurePsi ?? ""} onChange={(event) => set("staticPressurePsi", event.target.value ? Number(event.target.value) : undefined)} className={`${inputClass} mt-1`} /></label><YesNoField label="Unexplained meter movement with fixtures believed off" value={value.unexplainedMeterMovement} onChange={(next) => set("unexplainedMeterMovement", next)} /><InspectionField label="Visible exterior leakage" value={value.visibleExteriorLeak} onChange={(next) => set("visibleExteriorLeak", next)} /><YesNoField label="Unresolved fire-sprinkler branch concern" value={value.fireSprinklerBranchConcern} onChange={(next) => set("fireSprinklerBranchConcern", next)} /><YesNoField label="Verified installation requires approved sprinkler bypass" value={value.sprinklerBypassRequired} onChange={(next) => set("sprinklerBypassRequired", next)} /><YesNoField label="Irrigation or pool branch present" value={value.irrigationOrPoolBranchPresent} onChange={(next) => set("irrigationOrPoolBranchPresent", next)} /><YesNoField label="Proposed device location suitable" value={value.proposedInstallLocationSuitable} onChange={(next) => set("proposedInstallLocationSuitable", next)} /><TextField label="Proposed device location" value={value.proposedDeviceLocation || ""} onChange={(next) => set("proposedDeviceLocation", next)} /><YesNoField label="Service clearance adequate" value={value.serviceClearanceAdequate} onChange={(next) => set("serviceClearanceAdequate", next)} /><TextArea label="Weather / freeze exposure notes" value={value.weatherExposureNotes || ""} onChange={(next) => set("weatherExposureNotes", next)} /><TextArea label="Exterior notes" value={value.notes || ""} onChange={(next) => set("notes", next)} /></div>;
 }
 
 function FixtureSection<T extends Record<string, FixtureCheck>>({ title, value, onChange, labels }: { title: string; value: T; onChange: (value: T) => void; labels: Record<keyof T, string> }) {
@@ -133,7 +162,7 @@ function FixtureSection<T extends Record<string, FixtureCheck>>({ title, value, 
 
 function BathroomsStep({ assessment, setAssessment }: { assessment: SiteAssessment; setAssessment: React.Dispatch<React.SetStateAction<SiteAssessment>> }) {
   function updateBathroom(index: number, patch: Partial<SiteAssessment["bathrooms"][number]>) { setAssessment((current) => ({ ...current, bathrooms: current.bathrooms.map((bathroom, i) => i === index ? { ...bathroom, ...patch } : bathroom) })); }
-  return <div className="space-y-5"><div className="flex items-center justify-between gap-3"><p className="text-sm text-fog-300">Customer reported {assessment.bathrooms.length} bathroom{assessment.bathrooms.length === 1 ? "" : "s"}. Add, rename, or remove cards to match the home.</p><button type="button" onClick={() => setAssessment((current) => ({ ...current, bathrooms: [...current.bathrooms, { id: crypto.randomUUID(), label: `Bathroom ${current.bathrooms.length + 1}`, toilet: emptyFixture(), sinkSupplyAndDrain: emptyFixture(), tubOrShower: emptyFixture(), visibleMoisture: emptyFixture() }] }))} className="min-h-11 shrink-0 rounded-lg border border-hydro-400/50 px-3 text-xs font-semibold text-hydro-300">Add bathroom</button></div>{assessment.bathrooms.map((bathroom, index) => <div key={bathroom.id} className="rounded-xl border border-white/10 bg-ink-800/60 p-4"><div className="flex items-center gap-3"><input aria-label={`Bathroom ${index + 1} name`} value={bathroom.label} onChange={(event) => updateBathroom(index, { label: event.target.value })} className={inputClass} /><button type="button" onClick={() => setAssessment((current) => ({ ...current, bathrooms: current.bathrooms.filter((_, i) => i !== index) }))} className="min-h-11 rounded-lg border border-alert-500/30 px-3 text-xs text-red-300">Remove</button></div><div className="mt-4 space-y-3">{([['toilet', 'Toilet'], ['sinkSupplyAndDrain', 'Sink supply and drain'], ['tubOrShower', 'Tub or shower'], ['visibleMoisture', 'Visible moisture']] as const).map(([key, label]) => <FixtureCard key={key} label={label} value={bathroom[key]} onChange={(next) => updateBathroom(index, { [key]: next })} />)}</div></div>)}{assessment.bathrooms.length === 0 && <div className="rounded-xl border border-signal-400/30 bg-signal-400/10 p-4 text-sm text-signal-400">No bathrooms are listed. Confirm this is accurate before completion.</div>}</div>;
+  return <div className="space-y-5"><div className="flex items-center justify-between gap-3"><p className="text-sm text-fog-300">Customer reported {assessment.bathrooms.length} bathroom{assessment.bathrooms.length === 1 ? "" : "s"}. Add, rename, or remove cards to match the home.</p><button type="button" onClick={() => setAssessment((current) => ({ ...current, homeHasNoBathrooms: false, noBathroomsReason: "", bathrooms: [...current.bathrooms, { id: crypto.randomUUID(), label: `Bathroom ${current.bathrooms.length + 1}`, toilet: emptyFixture(), sinkSupplyAndDrain: emptyFixture(), tubOrShower: emptyFixture(), visibleMoisture: emptyFixture() }] }))} className="min-h-11 shrink-0 rounded-lg border border-hydro-400/50 px-3 text-xs font-semibold text-hydro-300">Add bathroom</button></div>{assessment.bathrooms.map((bathroom, index) => <div key={bathroom.id} className="rounded-xl border border-white/10 bg-ink-800/60 p-4"><div className="flex items-center gap-3"><input aria-label={`Bathroom ${index + 1} name`} value={bathroom.label} onChange={(event) => updateBathroom(index, { label: event.target.value })} className={inputClass} /><button type="button" onClick={() => setAssessment((current) => ({ ...current, bathrooms: current.bathrooms.filter((_, i) => i !== index) }))} className="min-h-11 rounded-lg border border-alert-500/30 px-3 text-xs text-red-300">Remove</button></div><div className="mt-4 space-y-3">{([['toilet', 'Toilet'], ['sinkSupplyAndDrain', 'Sink supply and drain'], ['tubOrShower', 'Tub or shower'], ['visibleMoisture', 'Visible moisture']] as const).map(([key, label]) => <FixtureCard key={key} label={label} value={bathroom[key]} onChange={(next) => updateBathroom(index, { [key]: next })} />)}</div></div>)}{assessment.bathrooms.length === 0 && <div className="rounded-xl border border-signal-400/30 bg-signal-400/10 p-4 text-sm text-signal-400"><label className="flex min-h-11 items-center gap-3"><input type="checkbox" checked={assessment.homeHasNoBathrooms} onChange={(event) => setAssessment((current) => ({ ...current, homeHasNoBathrooms: event.target.checked }))} className="h-5 w-5 accent-sky-400" />Admin verified that this home has no bathrooms</label>{assessment.homeHasNoBathrooms && <TextArea label="Required verification reason" value={assessment.noBathroomsReason || ""} onChange={(noBathroomsReason) => setAssessment((current) => ({ ...current, noBathroomsReason }))} />}</div>}</div>;
 }
 
 function OtherAreasStep({ assessment, setAssessment }: { assessment: SiteAssessment; setAssessment: React.Dispatch<React.SetStateAction<SiteAssessment>> }) {

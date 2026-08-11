@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import type { CustomerSummary, PrevisitAnswers } from "@/lib/site-visits/types";
+import type { CustomerSummary, PrevisitAnswers, ReadinessBlocker } from "@/lib/site-visits/types";
 
 interface PortalVisit {
   id: string;
@@ -25,6 +25,13 @@ interface PortalVisit {
   completedAt: string | null;
   canceledAt: string | null;
   recheckRequestedAt: string | null;
+  assessmentVersion: number;
+  priorResults: Array<{
+    assessmentVersion: number;
+    readinessStatus: string;
+    completedAt: string | null;
+    blockers: ReadinessBlocker[];
+  }>;
   quoteUrl: string | null;
 }
 
@@ -39,6 +46,8 @@ const fieldClass = "min-h-12 w-full rounded-xl border border-white/15 bg-ink-800
 const ynu = [{ value: "yes", label: "Yes" }, { value: "no", label: "No" }, { value: "unsure", label: "Unsure" }];
 
 export default function CustomerPortal({ token, initialVisit }: { token: string; initialVisit: PortalVisit }) {
+  const phone = process.env.NEXT_PUBLIC_HYDROSENSE_PHONE || "(281) 694-5754";
+  const phoneHref = `tel:+1${phone.replace(/\D/g, "").replace(/^1/, "")}`;
   const [visit, setVisit] = useState(initialVisit);
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
@@ -83,9 +92,8 @@ export default function CustomerPortal({ token, initialVisit }: { token: string;
   async function submitReschedule() {
     try {
       const payload = {
-        option1: new Date(reschedule.option1).toISOString(),
-        option2: new Date(reschedule.option2).toISOString(),
-        ...(reschedule.option3 ? { option3: new Date(reschedule.option3).toISOString() } : {}),
+        option1: reschedule.option1, option2: reschedule.option2,
+        ...(reschedule.option3 ? { option3: reschedule.option3 } : {}),
         note: reschedule.note,
       };
       await post("reschedule", "reschedule", payload);
@@ -93,7 +101,7 @@ export default function CustomerPortal({ token, initialVisit }: { token: string;
   }
 
   if (visit.canceledAt || visit.appointmentStatus === "canceled") {
-    return <PortalShell><StateCard eyebrow="Appointment canceled" title="We recorded your cancellation"><p>Your appointment for {date} at {time} is canceled. If circumstances change, call HydroSense and we will help find another time.</p><a href="tel:+12816945754" className="btn-primary mt-5 min-h-12">Call (281) 694-5754</a></StateCard></PortalShell>;
+    return <PortalShell><StateCard eyebrow="Appointment canceled" title="We recorded your cancellation"><p>Your appointment for {date} at {time} is canceled. If circumstances change, call HydroSense and we will help find another time.</p><a href={phoneHref} className="btn-primary mt-5 min-h-12">Call {phone}</a></StateCard></PortalShell>;
   }
   if (visit.completedAt && visit.customerSummary) {
     return <PortalShell><CompletedView visit={visit} token={token} busy={busy} message={message} onRecheck={() => void post("recheck", "recheck")} /></PortalShell>;
@@ -120,7 +128,7 @@ export default function CustomerPortal({ token, initialVisit }: { token: string;
       {visit.previsitStatus === "complete" && <StateCard eyebrow="Preparation complete" title="Thank you—we have what we need"><p>Your answers are connected to this appointment. The representative will verify Wi-Fi, nearby power, and field conditions during the visit.</p></StateCard>}
       {message && <div role="alert" className="rounded-xl border border-alert-500/30 bg-alert-500/10 p-4 text-sm text-red-200">{message}</div>}
 
-      <section className="rounded-2xl border border-white/10 bg-ink-900 p-5"><h2 className="text-sm font-semibold text-fog-100">Need help?</h2><p className="mt-2 text-sm text-fog-300">Call <a href="tel:+12816945754" className="font-semibold text-hydro-300">(281) 694-5754</a>. Rescheduling is usually the fastest way to preserve your assessment.</p><button onClick={() => { setCancelOpen((value) => !value); setRescheduleOpen(false); }} className="mt-5 text-sm text-fog-400 underline underline-offset-4 hover:text-red-300">Cancel appointment</button>{cancelOpen && <div className="mt-4 rounded-xl border border-alert-500/20 bg-alert-500/5 p-4"><label className="text-xs font-medium text-fog-300">Cancellation reason<textarea value={cancelReason} onChange={(event) => setCancelReason(event.target.value)} rows={3} className={`${fieldClass} mt-1`} /></label><button disabled={busy === "cancel" || cancelReason.trim().length < 3} onClick={() => void post("cancel", "cancel", { reason: cancelReason })} className="mt-3 min-h-12 rounded-xl bg-alert-500 px-4 text-sm font-bold text-white disabled:opacity-40">Confirm cancellation</button></div>}</section>
+      <section className="rounded-2xl border border-white/10 bg-ink-900 p-5"><h2 className="text-sm font-semibold text-fog-100">Need help?</h2><p className="mt-2 text-sm text-fog-300">Call <a href={phoneHref} className="font-semibold text-hydro-300">{phone}</a>. Rescheduling is usually the fastest way to preserve your assessment.</p><button onClick={() => { setCancelOpen((value) => !value); setRescheduleOpen(false); }} className="mt-5 text-sm text-fog-400 underline underline-offset-4 hover:text-red-300">Cancel appointment</button>{cancelOpen && <div className="mt-4 rounded-xl border border-alert-500/20 bg-alert-500/5 p-4"><label className="text-xs font-medium text-fog-300">Cancellation reason<textarea value={cancelReason} onChange={(event) => setCancelReason(event.target.value)} rows={3} className={`${fieldClass} mt-1`} /></label><button disabled={busy === "cancel" || cancelReason.trim().length < 3} onClick={() => void post("cancel", "cancel", { reason: cancelReason })} className="mt-3 min-h-12 rounded-xl bg-alert-500 px-4 text-sm font-bold text-white disabled:opacity-40">Confirm cancellation</button></div>}</section>
     </PortalShell>
   );
 }
@@ -135,4 +143,4 @@ function Question({ label, value, onChange }: { label: string; value: string; on
 function SmallText({ label, value, onChange, rows = 2 }: { label: string; value: string; onChange: (value: string) => void; rows?: number }) { return <label className="block text-sm font-semibold text-fog-100">{label}<textarea rows={rows} value={value} onChange={(event) => onChange(event.target.value)} className={`${fieldClass} mt-2`} /></label>; }
 function Callout({ children }: { children: React.ReactNode }) { return <div className="rounded-xl border border-signal-400/30 bg-signal-400/10 p-4 text-sm leading-relaxed text-signal-400">{children}</div>; }
 
-function CompletedView({ visit, busy, message, onRecheck }: { visit: PortalVisit; token: string; busy: string; message: string; onRecheck: () => void }) { const summary = visit.customerSummary!; const blocked = visit.readinessStatus !== "ready_for_proposal"; return <><StateCard eyebrow="Assessment complete" title={summary.outcomeTitle}><p>{summary.outcomeDetail}</p><div className="mt-5 rounded-xl border border-white/10 bg-ink-800 p-4"><div className="text-xs font-bold uppercase tracking-wide text-fog-400">HydroSense next step</div><p className="mt-2">{summary.hydrosenseNextStep}</p><div className="mt-4 text-xs font-bold uppercase tracking-wide text-fog-400">Your next step</div><p className="mt-2">{summary.customerNextStep}</p></div></StateCard><section className="rounded-3xl border border-white/10 bg-ink-900 p-6"><h2 className="text-xl font-semibold text-fog-50">Areas reviewed</h2><ul className="mt-3 grid gap-2 text-sm text-fog-300">{summary.areasReviewed.map((area) => <li key={area} className="rounded-lg bg-ink-800 px-3 py-2">{area}</li>)}</ul></section>{summary.correctiveActions.length > 0 && <section className="rounded-3xl border border-signal-400/20 bg-ink-900 p-6"><h2 className="text-xl font-semibold text-fog-50">Required actions</h2><div className="mt-4 space-y-3">{summary.correctiveActions.map((action) => <div key={action.id} className="rounded-xl border border-white/10 bg-ink-800 p-4"><div className="font-semibold text-signal-400">{action.action}</div><p className="mt-2 text-sm leading-relaxed text-fog-300">{action.reason}</p><div className="mt-3 text-[10px] font-bold uppercase tracking-wide text-fog-400">Owner: {action.owner} · {action.severity}</div></div>)}</div></section>}{visit.quoteUrl && <a href={visit.quoteUrl} className="flex min-h-14 items-center justify-center rounded-xl bg-hydro-400 px-5 text-base font-bold text-ink-950">Review your HydroSense quote</a>}{blocked && <section className="rounded-3xl border border-white/10 bg-ink-900 p-6"><h2 className="text-xl font-semibold text-fog-50">Completed the required work?</h2><p className="mt-2 text-sm leading-relaxed text-fog-300">Tell HydroSense when the listed work is complete. This requests a recheck; it does not automatically change the home to ready.</p>{visit.recheckRequestedAt ? <div className="mt-4 rounded-xl border border-green-500/30 bg-green-500/10 p-4 text-sm font-semibold text-green-200">Recheck requested. HydroSense will follow up.</div> : <button disabled={busy === "recheck"} onClick={onRecheck} className="mt-5 min-h-12 w-full rounded-xl bg-hydro-400 px-4 text-sm font-bold text-ink-950 disabled:opacity-50">{busy === "recheck" ? "Sending…" : "I completed the required work"}</button>}</section>}{message && <div role="alert" className="rounded-xl border border-alert-500/30 bg-alert-500/10 p-4 text-sm text-red-200">{message}</div>}</>; }
+function CompletedView({ visit, busy, message, onRecheck }: { visit: PortalVisit; token: string; busy: string; message: string; onRecheck: () => void }) { const summary = visit.customerSummary!; const blocked = visit.readinessStatus !== "ready_for_proposal"; return <><StateCard eyebrow="Assessment complete" title={summary.outcomeTitle}><p>{summary.outcomeDetail}</p><div className="mt-5 rounded-xl border border-white/10 bg-ink-800 p-4"><div className="text-xs font-bold uppercase tracking-wide text-fog-400">HydroSense next step</div><p className="mt-2">{summary.hydrosenseNextStep}</p><div className="mt-4 text-xs font-bold uppercase tracking-wide text-fog-400">Your next step</div><p className="mt-2">{summary.customerNextStep}</p></div></StateCard><section className="rounded-3xl border border-white/10 bg-ink-900 p-6"><h2 className="text-xl font-semibold text-fog-50">Areas reviewed</h2><ul className="mt-3 grid gap-2 text-sm text-fog-300">{summary.areasReviewed.map((area) => <li key={area} className="rounded-lg bg-ink-800 px-3 py-2">{area}</li>)}</ul></section>{visit.priorResults.length > 0 && <section className="rounded-3xl border border-white/10 bg-ink-900 p-6"><h2 className="text-xl font-semibold text-fog-50">Assessment history</h2><p className="mt-2 text-sm text-fog-400">The latest verified result is shown above. Earlier outcomes remain preserved below.</p><ul className="mt-4 space-y-2">{visit.priorResults.map((result) => <li key={result.assessmentVersion} className="rounded-xl bg-ink-800 p-4 text-sm text-fog-200">Assessment {result.assessmentVersion} · {result.readinessStatus.replaceAll("_", " ")}{result.completedAt ? <span className="mt-1 block text-xs text-fog-400">Completed {new Date(result.completedAt).toLocaleDateString("en-US", { timeZone: "America/Chicago" })}</span> : null}</li>)}</ul></section>}{summary.correctiveActions.length > 0 && <section className="rounded-3xl border border-signal-400/20 bg-ink-900 p-6"><h2 className="text-xl font-semibold text-fog-50">Required actions</h2><div className="mt-4 space-y-3">{summary.correctiveActions.map((action) => <div key={action.id} className="rounded-xl border border-white/10 bg-ink-800 p-4"><div className="font-semibold text-signal-400">{action.action}</div><p className="mt-2 text-sm leading-relaxed text-fog-300">{action.reason}</p><div className="mt-3 text-[10px] font-bold uppercase tracking-wide text-fog-400">Owner: {action.owner} · {action.severity}</div></div>)}</div></section>}{visit.quoteUrl && <a href={visit.quoteUrl} className="flex min-h-14 items-center justify-center rounded-xl bg-hydro-400 px-5 text-base font-bold text-ink-950">Review your HydroSense quote</a>}{blocked && <section className="rounded-3xl border border-white/10 bg-ink-900 p-6"><h2 className="text-xl font-semibold text-fog-50">Completed the required work?</h2><p className="mt-2 text-sm leading-relaxed text-fog-300">Tell HydroSense when the listed work is complete. This requests a recheck; it does not automatically change the home to ready.</p>{visit.recheckRequestedAt ? <div className="mt-4 rounded-xl border border-green-500/30 bg-green-500/10 p-4 text-sm font-semibold text-green-200">Recheck requested. HydroSense will follow up.</div> : <button disabled={busy === "recheck"} onClick={onRecheck} className="mt-5 min-h-12 w-full rounded-xl bg-hydro-400 px-4 text-sm font-bold text-ink-950 disabled:opacity-50">{busy === "recheck" ? "Sending…" : "I completed the required work"}</button>}</section>}{message && <div role="alert" className="rounded-xl border border-alert-500/30 bg-alert-500/10 p-4 text-sm text-red-200">{message}</div>}</>; }

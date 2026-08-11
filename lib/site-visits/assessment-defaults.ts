@@ -7,6 +7,8 @@ export function createEmptyAssessment(bathroomCount = 1): SiteAssessment {
   return {
     permissionToInspect: null,
     homeownerPresent: null,
+    homeHasNoBathrooms: false,
+    noBathroomsReason: "",
     exterior: {
       meterAccessible: "not_tested",
       mainShutoffAccessible: "not_tested",
@@ -17,6 +19,7 @@ export function createEmptyAssessment(bathroomCount = 1): SiteAssessment {
       unexplainedMeterMovement: "unsure",
       visibleExteriorLeak: "not_tested",
       fireSprinklerBranchConcern: "unsure",
+      sprinklerBypassRequired: "no",
       irrigationOrPoolBranchPresent: "unsure",
       proposedInstallLocationSuitable: "unsure",
       proposedDeviceLocation: "",

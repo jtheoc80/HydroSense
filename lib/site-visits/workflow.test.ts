@@ -36,7 +36,7 @@ describe("closed-loop workflow safeguards", () => {
   it("requires at least one appointment contact method", () => {
     const result = createSiteVisitSchema.safeParse({
       customerFirstName: "A", customerLastName: "Customer", customerPhone: "", customerEmail: "",
-      propertyAddress: "123 Main Street", scheduledStart: "2026-08-12T15:00:00.000Z",
+      propertyAddress: "123 Main Street", scheduledStart: "2026-08-12T10:00",
       arrivalWindowMinutes: 30, estimatedDurationMinutes: 60, timezone: "America/Chicago",
       assignedRepName: "HydroSense Rep", sendConfirmation: true,
     });
@@ -51,15 +51,15 @@ describe("closed-loop workflow safeguards", () => {
     assert.equal(result.success, false);
   });
 
-  it("versions appointment-time message keys and leaves completion stable", () => {
-    assert.equal(messageKeyFor("confirmation", { schedule_version: 3 }), "confirmation:v3");
-    assert.equal(messageKeyFor("reminder-24h", { schedule_version: 3 }), "reminder-24h:v3");
-    assert.equal(messageKeyFor("completion", { schedule_version: 3 }), "completion");
+  it("versions schedule-bound and assessment-bound message keys", () => {
+    assert.equal(messageKeyFor("confirmation", { schedule_version: 3, assessment_version: 2 }), "confirmation:v3");
+    assert.equal(messageKeyFor("reminder-24h", { schedule_version: 3, assessment_version: 2 }), "reminder-24h:v3");
+    assert.equal(messageKeyFor("completion", { schedule_version: 3, assessment_version: 2 }), "completion:assessment-v2");
   });
 
   it("escapes customer content in site-visit email HTML", () => {
     const visit = {
-      id: "visit", schedule_version: 1, customer_first_name: "<script>alert(1)</script>",
+      id: "visit", schedule_version: 1, assessment_version: 1, customer_first_name: "<script>alert(1)</script>",
       customer_last_name: "Customer", customer_phone: "+12816945754", customer_email: "test@example.com",
       property_address: "123 <b>Main</b>", scheduled_start: "2026-08-12T15:00:00.000Z",
       timezone: "America/Chicago", arrival_window_minutes: 30, assigned_rep_name: "HydroSense <Rep>",

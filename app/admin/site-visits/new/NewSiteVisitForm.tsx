@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { AdminNav } from "@/components/site-visits/AdminNav";
 
 interface LeadOption {
   id: string;
@@ -28,6 +27,13 @@ export default function NewSiteVisitForm() {
     arrivalWindowMinutes: 30, estimatedDurationMinutes: 60, assignedRepName: "",
     assignedRepPhone: "", internalNotes: "",
   });
+
+  useEffect(() => {
+    const preferredRep = window.localStorage.getItem("hydrosense:preferred-site-visit-rep")
+      || process.env.NEXT_PUBLIC_SITE_VISIT_REP_NAME
+      || "";
+    if (preferredRep) setForm((current) => ({ ...current, assignedRepName: preferredRep }));
+  }, []);
 
   const searchLeads = useCallback(async (query: string) => {
     if (query.trim().length < 2) return setLeadResults([]);
@@ -63,15 +69,14 @@ export default function NewSiteVisitForm() {
     setSaving(true);
     setMessage("");
     try {
-      const scheduled = new Date(form.scheduledStart);
-      if (Number.isNaN(scheduled.getTime())) throw new Error("Choose a valid appointment date and time");
+      if (!form.scheduledStart) throw new Error("Choose a valid America/Chicago appointment date and time");
       const response = await fetch("/api/admin/site-visits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           leadId: selectedLead?.id || null,
           ...form,
-          scheduledStart: scheduled.toISOString(),
+          scheduledStart: form.scheduledStart,
           timezone: "America/Chicago",
           sendConfirmation,
         }),
@@ -82,6 +87,7 @@ export default function NewSiteVisitForm() {
       window.location.href = `/admin/site-visits/${body.visit.id}${failed ? "?delivery=failed" : ""}`;
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to schedule site visit");
+      window.localStorage.setItem("hydrosense:preferred-site-visit-rep", form.assignedRepName);
       setSaving(false);
     }
   }
@@ -89,7 +95,6 @@ export default function NewSiteVisitForm() {
   return (
     <main className="min-h-screen bg-ink-950 text-fog-100">
       <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
-        <AdminNav current="site-visits" />
         <div className="mt-6 flex items-center gap-2 text-xs text-fog-400"><Link href="/admin/site-visits" className="hover:text-hydro-300">Site visits</Link><span>/</span><span>New appointment</span></div>
         <h1 className="mt-3 font-display text-3xl text-fog-50">Schedule a site visit</h1>
         <p className="mt-2 text-sm text-fog-300">Start with what HydroSense already knows. Confirmation, preparation, reminders, and assessment will remain connected to this record.</p>

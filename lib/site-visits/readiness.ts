@@ -36,6 +36,12 @@ export function evaluateReadiness(
 
   if (assessment.permissionToInspect === null) missingRequiredFields.push("permissionToInspect");
   if (assessment.homeownerPresent === null) missingRequiredFields.push("homeownerPresent");
+  if (assessment.bathrooms.length === 0) {
+    if (!assessment.homeHasNoBathrooms) missingRequiredFields.push("homeHasNoBathrooms");
+    if (assessment.homeHasNoBathrooms && !assessment.noBathroomsReason?.trim()) {
+      missingRequiredFields.push("noBathroomsReason");
+    }
+  }
   if (assessment.permissionToInspect === false) {
     blockers.push(blocker("permission-denied", "Permission not granted", "HydroSense cannot complete an assessment without the homeowner's permission.", "customer"));
   }
@@ -51,19 +57,46 @@ export function evaluateReadiness(
     if (result === "not_accessible" && !assessment.exterior.notes?.trim()) {
       missingRequiredFields.push(`${path}.notes`);
     }
+    if (result === "not_accessible") {
+      blockers.push(blocker(`access-${path}`, "Critical exterior access required", assessment.exterior.notes?.trim() || `${path} was not accessible.`, "plumber"));
+    }
+    if (result === "active_leak" && !["exterior.mainValveCondition", "exterior.visibleExteriorLeak"].includes(path)) {
+      blockers.push(blocker(`active-leak-${path}`, "Active exterior leak observed", assessment.exterior.notes?.trim() || `${path} has an active leak.`, "plumber"));
+    }
+    if (result === "not_present") {
+      blockers.push(blocker(`access-${path}-not-present`, "Critical exterior component not identified", `${path} must be identified or reviewed before installation.`, "plumber"));
+    }
   }
-  if (!assessment.exterior.unexplainedMeterMovement || assessment.exterior.unexplainedMeterMovement === "unsure") missingRequiredFields.push("exterior.unexplainedMeterMovement");
-  if (!assessment.exterior.fireSprinklerBranchConcern) missingRequiredFields.push("exterior.fireSprinklerBranchConcern");
-  if (!assessment.exterior.proposedInstallLocationSuitable) missingRequiredFields.push("exterior.proposedInstallLocationSuitable");
-  if (!assessment.exterior.serviceClearanceAdequate) missingRequiredFields.push("exterior.serviceClearanceAdequate");
-  if (!assessment.connectivity.wifiVerified) missingRequiredFields.push("connectivity.wifiVerified");
-  if (!assessment.connectivity.powerVerified) missingRequiredFields.push("connectivity.powerVerified");
+  const mandatoryDecisions = [
+    ["exterior.unexplainedMeterMovement", assessment.exterior.unexplainedMeterMovement],
+    ["exterior.fireSprinklerBranchConcern", assessment.exterior.fireSprinklerBranchConcern],
+    ["exterior.sprinklerBypassRequired", assessment.exterior.sprinklerBypassRequired],
+    ["exterior.proposedInstallLocationSuitable", assessment.exterior.proposedInstallLocationSuitable],
+    ["exterior.serviceClearanceAdequate", assessment.exterior.serviceClearanceAdequate],
+    ["connectivity.wifiVerified", assessment.connectivity.wifiVerified],
+    ["connectivity.powerVerified", assessment.connectivity.powerVerified],
+  ] as const;
+  mandatoryDecisions.forEach(([path, value]) => {
+    if (!value || value === "unsure") missingRequiredFields.push(path);
+  });
+  if (!assessment.exterior.proposedDeviceLocation?.trim()) missingRequiredFields.push("exterior.proposedDeviceLocation");
+  if (!assessment.exterior.pipeMaterial?.trim()) missingRequiredFields.push("exterior.pipeMaterial");
+  if (!assessment.exterior.approximatePipeDiameter?.trim()) missingRequiredFields.push("exterior.approximatePipeDiameter");
+  if (assessment.connectivity.powerVerified === "yes" && assessment.connectivity.outletDistanceFeet === undefined) {
+    missingRequiredFields.push("connectivity.outletDistanceFeet");
+  }
 
   for (const [path, getFixture] of fixturePaths) {
     const fixture = getFixture(assessment);
     if (fixture.result === "not_tested") missingRequiredFields.push(path);
     if (fixture.result === "not_accessible" && !fixture.notes?.trim()) {
       missingRequiredFields.push(`${path}.notes`);
+    }
+    if (fixture.result === "not_accessible") {
+      blockers.push(blocker(`access-${path}`, "Interior access required", fixture.notes?.trim() || `${path} was not accessible.`, "customer"));
+    }
+    if (fixture.result === "needs_attention") {
+      blockers.push(blocker(`attention-${path}`, "Interior condition needs attention", fixture.notes?.trim() || `${path} needs attention before installation.`, "plumber", "conditional"));
     }
   }
   assessment.bathrooms.forEach((bathroom, index) => {
@@ -78,7 +111,23 @@ export function evaluateReadiness(
       if (fixture.result === "not_accessible" && !fixture.notes?.trim()) {
         missingRequiredFields.push(`bathrooms.${index}.${name}.notes`);
       }
+      if (fixture.result === "not_accessible") {
+        blockers.push(blocker(`access-bathrooms.${index}.${name}`, `${bathroom.label} access required`, fixture.notes?.trim() || "This fixture was not accessible.", "customer"));
+      }
+      if (fixture.result === "needs_attention") {
+        blockers.push(blocker(`attention-bathrooms.${index}.${name}`, `${bathroom.label} condition needs attention`, fixture.notes?.trim() || "This fixture needs attention before installation.", "plumber", "conditional"));
+      }
     });
+  });
+  assessment.otherWaterAreas.forEach((area, index) => {
+    if (area.result === "not_tested") missingRequiredFields.push(`otherWaterAreas.${index}.result`);
+    if (area.result === "not_accessible" && !area.notes?.trim()) missingRequiredFields.push(`otherWaterAreas.${index}.notes`);
+    if (area.result === "not_accessible") {
+      blockers.push(blocker(`access-other-${area.id}`, `${area.label} access required`, area.notes?.trim() || "This water-connected area was not accessible.", "customer"));
+    }
+    if (area.result === "needs_attention") {
+      blockers.push(blocker(`attention-other-${area.id}`, `${area.label} needs attention`, area.notes?.trim() || "This water-connected area needs attention.", "plumber", "conditional"));
+    }
   });
 
   if (previsit.activeLeak === "yes") {
@@ -116,14 +165,23 @@ export function evaluateReadiness(
   if ([assessment.exterior.mainValveCondition, assessment.exterior.mainShutoffAccessible].includes("needs_attention")) {
     blockers.push(blocker("main-valve-concern", "Main valve requires review", "The main valve or shutoff condition requires a licensed plumber's review.", "plumber"));
   }
+  if (assessment.exterior.meterAccessible === "needs_attention") {
+    blockers.push(blocker("meter-needs-attention", "Water meter requires review", "The meter condition requires review before installation planning.", "plumber"));
+  }
+  if (assessment.exterior.visibleExteriorLeak === "needs_attention") {
+    blockers.push(blocker("exterior-needs-attention", "Exterior water condition requires review", "The observed exterior condition requires review before installation.", "plumber"));
+  }
   if (assessment.exterior.mainShutoffAccessible === "not_accessible") {
     blockers.push(blocker("main-not-accessible", "Main water entry is not accessible", "Safe access to the main water entry must be established before installation.", "plumber"));
   }
-  if (assessment.exterior.fireSprinklerBranchConcern !== "no") {
   if (assessment.exterior.meterAccessible === "not_accessible") {
     blockers.push(blocker("meter-not-accessible", "Water meter is not accessible", "Safe access to the water meter is required for installation planning.", "plumber"));
   }
+  if (assessment.exterior.fireSprinklerBranchConcern === "yes") {
     blockers.push(blocker("sprinkler-branch-concern", "Fire-sprinkler arrangement requires review", "The branch arrangement must be verified before a shutoff device is selected.", "plumber"));
+  }
+  if (assessment.exterior.sprinklerBypassRequired === "yes" && assessment.exterior.fireSprinklerBranchConcern === "no") {
+    blockers.push(blocker("sprinkler-bypass-required", "Verified sprinkler bypass required", "The verified arrangement requires an approved bypass during installation.", "plumber", "conditional"));
   }
   if (assessment.exterior.proposedInstallLocationSuitable !== "yes") {
     blockers.push(blocker("location-unsuitable", "Proposed location is not yet suitable", "HydroSense or a licensed plumber must approve a safe alternative location.", "hydrosense"));
@@ -146,7 +204,9 @@ export function evaluateReadiness(
   const codes = new Set(blockers.map((item) => item.code));
   const hasLeak = Array.from(codes).some((code) => code.includes("leak") || code === "meter-movement");
   const hasPlumber = blockers.some((item) =>
-    ["main-valve-concern", "main-not-accessible", "sprinkler-branch-concern", "location-unsuitable"].includes(item.code)
+    ["main-valve-concern", "main-not-accessible", "meter-not-accessible", "meter-needs-attention",
+      "exterior-needs-attention", "sprinkler-branch-concern", "location-unsuitable"].includes(item.code)
+      || item.code.startsWith("access-")
   );
   const hasPrep = blockers.some((item) => item.severity === "conditional");
 
@@ -170,7 +230,7 @@ export function buildCorrectiveActions(blockers: ReadinessBlocker[]) {
     reason: item.detail,
     owner: item.owner,
     severity: item.severity,
-    completed: false,
+    status: "open" as const,
   }));
 }
 
@@ -184,6 +244,7 @@ function actionForBlocker(item: ReadinessBlocker): string {
     "main-not-accessible": "Provide safe access to the main water entry and shutoff.",
     "sprinkler-branch-concern": "Have a licensed plumber verify the fire-sprinkler branch arrangement.",
     "location-unsuitable": "Coordinate an approved alternative monitoring location with HydroSense.",
+    "sprinkler-bypass-required": "Include the verified fire-sprinkler bypass in the installation plan.",
     "wifi-not-verified": "Provide reliable Wi-Fi coverage near the proposed monitoring location.",
     "power-not-verified": "Provide a standard power outlet within the supported installation distance.",
     "clearance-insufficient": "Clear the required working space around the proposed installation location.",

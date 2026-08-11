@@ -12,6 +12,7 @@ const inspectionResult = z.enum([
   "not_accessible",
   "not_tested",
 ]);
+const chicagoLocalDateTime = z.string().trim().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/, "Use an America/Chicago date and time");
 
 export const createSiteVisitSchema = z
   .object({
@@ -23,7 +24,7 @@ export const createSiteVisitSchema = z
     propertyAddress: z.string().trim().min(4).max(300),
     propertyCity: z.string().trim().max(100).optional().or(z.literal("")),
     propertyZip: z.string().trim().max(12).optional().or(z.literal("")),
-    scheduledStart: z.string().datetime({ offset: true }),
+    scheduledStart: chicagoLocalDateTime,
     arrivalWindowMinutes: z.number().int().min(0).max(240).default(30),
     estimatedDurationMinutes: z.number().int().min(15).max(480).default(60),
     timezone: z.string().trim().default("America/Chicago"),
@@ -43,11 +44,13 @@ export const createSiteVisitSchema = z
   });
 
 export const rescheduleSiteVisitSchema = z.object({
-  scheduledStart: z.string().datetime({ offset: true }),
+  scheduledStart: chicagoLocalDateTime.optional(),
+  selectedOption: z.enum(["option1", "option2", "option3", "custom"]).optional(),
+  reason: z.string().trim().max(1000).optional(),
   arrivalWindowMinutes: z.number().int().min(0).max(240).optional(),
   assignedRepName: z.string().trim().min(1).max(150).optional(),
-  actorLabel: z.string().trim().max(150).optional(),
-});
+  actorLabel: z.string().trim().min(1).max(150),
+}).refine((value) => Boolean(value.scheduledStart || (value.selectedOption && value.selectedOption !== "custom")), "Choose a customer option or another time");
 
 export const previsitAnswersSchema = z
   .object({
@@ -85,6 +88,8 @@ const fixtureCheckSchema = z.object({
 export const siteAssessmentSchema = z.object({
   permissionToInspect: z.boolean().nullable(),
   homeownerPresent: z.boolean().nullable(),
+  homeHasNoBathrooms: z.boolean().default(false),
+  noBathroomsReason: optionalText,
   exterior: z.object({
     meterAccessible: inspectionResult,
     mainShutoffAccessible: inspectionResult,
@@ -96,6 +101,7 @@ export const siteAssessmentSchema = z.object({
     unexplainedMeterMovement: yesNoUnsure,
     visibleExteriorLeak: inspectionResult,
     fireSprinklerBranchConcern: yesNoUnsure,
+    sprinklerBypassRequired: yesNoUnsure,
     irrigationOrPoolBranchPresent: yesNoUnsure,
     proposedInstallLocationSuitable: yesNoUnsure,
     proposedDeviceLocation: optionalText,
@@ -148,9 +154,9 @@ export const siteAssessmentSchema = z.object({
 });
 
 export const customerRescheduleSchema = z.object({
-  option1: z.string().datetime({ offset: true }),
-  option2: z.string().datetime({ offset: true }),
-  option3: z.string().datetime({ offset: true }).optional().or(z.literal("")),
+  option1: chicagoLocalDateTime,
+  option2: chicagoLocalDateTime,
+  option3: chicagoLocalDateTime.optional().or(z.literal("")),
   note: optionalText,
 });
 
@@ -160,4 +166,30 @@ export const customerCancellationSchema = z.object({
 
 export const enRouteSchema = z.object({
   etaMinutes: z.number().int().min(0).max(240).optional(),
+});
+
+export const declineRescheduleSchema = z.object({
+  reason: z.string().trim().min(3).max(1000),
+  actorLabel: z.string().trim().min(1).max(150),
+});
+
+export const scheduleRecheckSchema = z.object({
+  scheduledStart: chicagoLocalDateTime,
+  arrivalWindowMinutes: z.number().int().min(0).max(240).default(30),
+  assignedRepName: z.string().trim().min(1).max(150),
+  assignedRepPhone: z.string().trim().max(32).optional().or(z.literal("")),
+  actorLabel: z.string().trim().min(1).max(150),
+});
+
+export const closeRecheckSchema = z.object({
+  reason: z.string().trim().min(3).max(1000),
+  actorLabel: z.string().trim().min(1).max(150),
+});
+
+export const correctiveActionSchema = z.object({
+  actionId: z.string().trim().min(1).max(200),
+  status: z.enum(["verified_complete", "not_applicable"]),
+  actorLabel: z.string().trim().min(1).max(150),
+  note: z.string().trim().min(3).max(2000),
+  targetDate: z.string().date().optional(),
 });

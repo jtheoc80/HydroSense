@@ -18,6 +18,8 @@ export function cleanAssessment(): SiteAssessment {
   return {
     permissionToInspect: true,
     homeownerPresent: true,
+    homeHasNoBathrooms: false,
+    noBathroomsReason: "",
     exterior: {
       meterAccessible: "clear",
       mainShutoffAccessible: "clear",
@@ -28,6 +30,7 @@ export function cleanAssessment(): SiteAssessment {
       unexplainedMeterMovement: "no",
       visibleExteriorLeak: "clear",
       fireSprinklerBranchConcern: "no",
+      sprinklerBypassRequired: "no",
       irrigationOrPoolBranchPresent: "no",
       proposedInstallLocationSuitable: "yes",
       proposedDeviceLocation: "Garage main entry",

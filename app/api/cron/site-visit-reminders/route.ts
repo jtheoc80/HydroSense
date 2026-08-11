@@ -23,9 +23,11 @@ export async function GET(request: Request) {
     .order("scheduled_start", { ascending: true });
   if (error) return noStoreJson({ ok: false, error: "Unable to select reminders" }, { status: 500 });
 
-  const counts = { selected: data?.length || 0, sent: 0, skipped: 0, failed: 0, riskAlerts: 0 };
+  const counts = { selected: data?.length || 0, sent: 0, skipped: 0, failed: 0, riskAlerts: 0, visitFailures: 0 };
+  const errors: Array<{ siteVisitId: string; error: string }> = [];
   for (const row of data || []) {
     const visit = row as SiteVisit;
+    try {
     const hoursUntil = (new Date(visit.scheduled_start).getTime() - now.getTime()) / 3_600_000;
     const kind = hoursUntil >= 23 && hoursUntil <= 25
       ? "reminder-24h"
@@ -76,7 +78,18 @@ export async function GET(request: Request) {
         }
       }
     }
+    } catch (processingError) {
+      counts.failed += 1;
+      counts.visitFailures += 1;
+      const safeError = processingError instanceof Error ? processingError.message.slice(0, 200) : "Reminder processing failed";
+      errors.push({ siteVisitId: visit.id, error: safeError });
+      try {
+        await appendSiteVisitEvent(visit.id, "reminder_processing_failed", "system", null, { error: safeError });
+      } catch {
+        // Preserve per-visit isolation even if audit persistence also fails.
+      }
+    }
   }
 
-  return noStoreJson({ ok: counts.failed === 0, ...counts });
+  return noStoreJson({ ok: counts.failed === 0, ...counts, errors });
 }

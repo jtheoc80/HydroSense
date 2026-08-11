@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import crypto from "crypto";
+import { allocateQuoteNumber } from "@/lib/quotes";
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,14 +36,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate quote number: Q-YYYY-NNNN
-    const year = new Date().getFullYear();
-    const { count } = await supabase
-      .from("quotes")
-      .select("*", { count: "exact", head: true })
-      .like("quote_number", `Q-${year}-%`);
-    const seq = String((count ?? 0) + 1).padStart(4, "0");
-    const quote_number = `Q-${year}-${seq}`;
+    // Database-backed allocation is atomic across all quote creation paths.
+    const quote_number = await allocateQuoteNumber();
 
     const public_token = crypto.randomBytes(16).toString("hex");
 
