@@ -1,3 +1,8 @@
+import {
+  compatibilityReviewScope,
+  installationScopeDisclosure,
+} from "./installation-scope";
+
 export interface HomeFaq {
   q: string;
   a: string;
@@ -14,7 +19,7 @@ export const homeFaqs: HomeFaq[] = [
   },
   {
     q: "Which smart water shutoff devices do you install?",
-    a: "HydroSense installs and configures Flo by Moen, Phyn Plus, and StreamLabs systems. We recommend a model after reviewing your pipe size and material, main-line access, available power, Wi-Fi coverage, and any fire-sprinkler connection.",
+    a: `HydroSense installs and configures Flo by Moen, Phyn Plus, and StreamLabs systems. ${compatibilityReviewScope}`,
   },
   {
     q: "What is included in a professional installation?",
@@ -22,7 +27,7 @@ export const homeFaqs: HomeFaq[] = [
   },
   {
     q: "How long does installation take?",
-    a: "Many standard installations can be completed in one visit. Actual timing depends on main-line accessibility, pipe size and material, valve condition, electrical availability, device selection, and whether the home has a fire-sprinkler system. Your water will be turned off for part of the work, and the expected duration is stated in the proposal.",
+    a: "Many standard installations can be completed in one visit. Actual timing depends on domestic-line accessibility, pipe size and material, valve condition, electrical availability, device selection, and the time needed to identify and exclude any fire-sprinkler or fire-suppression piping. Your domestic water will be turned off for part of the work, and the expected duration is stated in the proposal.",
   },
   {
     q: "Who performs the plumbing work?",
@@ -42,6 +47,6 @@ export const homeFaqs: HomeFaq[] = [
   },
   {
     q: "Can you install a shutoff in a home with fire sprinklers?",
-    a: "Possibly, but the plumbing configuration must be reviewed first. A smart shutoff should not unintentionally isolate a life-safety system. Tell us about the sprinkler system during the assessment so the correct installation path can be confirmed before a proposal is issued.",
+    a: `Yes, when a compatible domestic water line can be identified and isolated from the life-safety system. The form asks about fire sprinklers so that piping can be identified and excluded during the assessment. ${installationScopeDisclosure}`,
   },
 ];

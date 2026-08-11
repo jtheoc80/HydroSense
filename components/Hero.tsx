@@ -4,11 +4,12 @@ import Image from "next/image";
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import TrackedPhoneLink from "./TrackedPhoneLink";
+import { installationScopeDisclosure } from "@/lib/installation-scope";
 
 const assuranceItems = [
   {
     title: "Compatibility reviewed",
-    body: "Pipe, valve, power, Wi-Fi, and sprinkler routing checked first.",
+    body: "Domestic-line routing, pipe, valve, power, and Wi-Fi checked first.",
   },
   {
     title: "Written proposal",
@@ -96,7 +97,16 @@ export default function Hero() {
               ))}
             </div>
 
-            <p className="mt-6 text-xs leading-5 text-slate-500">
+            <div className="mt-6 rounded-2xl border border-sky-100 bg-sky-50/80 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sky-700">
+                Domestic water scope
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {installationScopeDisclosure}
+              </p>
+            </div>
+
+            <p className="mt-4 text-xs leading-5 text-slate-500">
               Insurance eligibility and incentives vary by insurer and policy.
               Confirm eligibility with your insurance agent before purchasing for a discount.
             </p>
@@ -135,7 +145,7 @@ export default function Hero() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-slate-950">Readiness checked first</p>
-                  <p className="mt-0.5 text-xs leading-5 text-slate-500">Main line, power, Wi-Fi, valve, and prior leaks.</p>
+                  <p className="mt-0.5 text-xs leading-5 text-slate-500">Domestic line, power, Wi-Fi, valve, and prior leaks.</p>
                 </div>
               </div>
             </div>

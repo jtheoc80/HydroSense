@@ -10,6 +10,7 @@ import {
 } from "react";
 import { Button } from "./catalyst/button";
 import {
+  Description,
   ErrorMessage,
   Field,
   Label,
@@ -18,6 +19,7 @@ import { Input } from "./catalyst/input";
 import { Select } from "./catalyst/select";
 import { Textarea } from "./catalyst/textarea";
 import TrackedPhoneLink from "./TrackedPhoneLink";
+import { fireSprinklerFieldHelper } from "@/lib/installation-scope";
 
 type AnalyticsWindow = Window & {
   gtag?: (...args: unknown[]) => void;
@@ -83,7 +85,8 @@ const labelClass = "!text-[15px] !font-semibold !text-slate-800";
 
 const assessmentPoints = [
   "Confirm service availability for your ZIP code",
-  "Review the main line, power, Wi-Fi, and sprinkler routing",
+  "Review the domestic water line, power, Wi-Fi, and valve location",
+  "Identify and exclude fire-sprinkler and fire-suppression piping",
   "Recommend a compatible device and issue a written proposal",
 ];
 
@@ -530,13 +533,22 @@ export default function LeadForm({ city }: LeadFormProps) {
                 </div>
 
                 <Field>
-                  <Label htmlFor="fire_sprinkler_system" className={labelClass}>Fire-sprinkler system</Label>
-                  <Select id="fire_sprinkler_system" name="fire_sprinkler_system" defaultValue="" className={selectControlClass}>
+                  <Label htmlFor="fire_sprinkler_system" className={labelClass}>Does the home have a fire-sprinkler system?</Label>
+                  <Select
+                    id="fire_sprinkler_system"
+                    name="fire_sprinkler_system"
+                    defaultValue=""
+                    aria-describedby="fire_sprinkler_system_help"
+                    className={selectControlClass}
+                  >
                     <option value="">Not answered</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                     <option value="unsure">Not sure</option>
                   </Select>
+                  <Description id="fire_sprinkler_system_help" className="!mt-2 !text-sm !leading-6 !text-slate-600">
+                    {fireSprinklerFieldHelper}
+                  </Description>
                 </Field>
 
                 <Field>

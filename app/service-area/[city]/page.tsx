@@ -7,6 +7,7 @@ import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import CityViewEvent from "./CityViewEvent";
+import { installationScopeDisclosure } from "@/lib/installation-scope";
 
 export function generateStaticParams() {
   return cityKeys.map((city) => ({ city }));
@@ -50,7 +51,7 @@ export default function CityPage({ params }: PageProps) {
     },
     {
       q: `What is reviewed before a ${city.name} installation?`,
-      a: "We review main-line access, pipe size and material, existing valve condition, nearby power, Wi-Fi coverage, fire-sprinkler routing, and any active or previous leaks that require repair before the monitoring device can be installed.",
+      a: `We review domestic-line access, pipe size and material, valve condition, nearby power, Wi-Fi coverage, and any leaks that require repair before installation. ${installationScopeDisclosure}`,
     },
     {
       q: "Will the installation qualify for an insurance discount?",
@@ -72,11 +73,11 @@ export default function CityPage({ params }: PageProps) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: `Smart water shutoff installation in ${city.name}, Texas`,
-    serviceType: "Whole-home smart water shutoff installation",
+    serviceType: "Whole-home domestic water shutoff installation",
     provider: { "@id": "https://hydrosensetx.com/#business" },
     areaServed: { "@type": "City", name: city.name },
     url: `https://hydrosensetx.com/service-area/${city.slug}`,
-    description: `Professional smart water shutoff installation, app setup, shutoff testing, and homeowner handoff in ${city.name}, Texas.`,
+    description: `Professional smart water shutoff installation on the home's domestic water line, app setup, shutoff testing, and homeowner handoff in ${city.name}, Texas. Fire-sprinkler and fire-suppression piping are excluded.`,
   };
 
   const faqSchema = {
@@ -120,6 +121,14 @@ export default function CityPage({ params }: PageProps) {
               StreamLabs systems, tests automatic shutoff performance, and hands
               over an itemized installation record.
             </p>
+            <div className="mt-8 max-w-3xl rounded-2xl border border-hydro-400/25 bg-ink-900/65 p-5">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-hydro-400">
+                Installation boundary
+              </p>
+              <p className="text-sm leading-6 text-fog-200">
+                {installationScopeDisclosure}
+              </p>
+            </div>
             <div className="mt-8 flex flex-wrap gap-4">
               <a href="#lead-form" className="btn-primary inline-block">Check {city.name} availability</a>
               <TrackedPhoneLink trackingLocation="city_hero" className="btn-outline inline-block">Call (281) 694-5754</TrackedPhoneLink>
@@ -139,10 +148,10 @@ export default function CityPage({ params }: PageProps) {
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {[
-                ["Main-line access", "Location, pipe size and material, valve condition, and room to install the selected device."],
+                ["Domestic-line access", "Location, pipe size and material, valve condition, and room to install the selected device on the household water line."],
                 ["Power and Wi-Fi", "Nearby power and reliable Wi-Fi coverage at the leak-detection and shutoff location."],
                 ["Existing leaks", "Active leaks and previously damaged plumbing must be repaired before monitoring equipment is installed."],
-                ["Life-safety routing", "Fire-sprinkler and other shared-line configurations require review so the shutoff path is appropriate."],
+                ["Life-safety exclusion", "Fire-sprinkler and fire-suppression piping are identified and excluded from leak detection, monitoring, and automatic shutoff control."],
               ].map(([title, copy]) => (
                 <article key={title} className="rounded-xl border border-ink-700/40 bg-ink-800/45 p-6">
                   <h3 className="mb-3 font-semibold text-fog-50">{title}</h3>

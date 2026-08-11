@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import TrackedPhoneLink from "@/components/TrackedPhoneLink";
+import { installationScopeDisclosure } from "@/lib/installation-scope";
 
 export const metadata: Metadata = {
   title: "Smart Water Shutoff Devices Installed in Houston",
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
 const fitFactors = [
   {
     title: "Plumbing configuration",
-    body: "We confirm the main-line location, pipe size and material, existing valve condition, available working space, pressure-reducing valve, and any shared fire-sprinkler routing.",
+    body: "We identify the domestic water line, pipe size and material, valve condition, working space, and pressure-reducing valve while excluding fire-sprinkler and fire-suppression piping.",
   },
   {
     title: "Power and connectivity",
@@ -40,7 +41,7 @@ const fitFactors = [
   },
   {
     title: "Protection approach",
-    body: "Inline systems analyze whole-home water activity. Retrofit systems use point sensors and a compatible existing valve. The right fit depends on the home and the owner's priorities.",
+    body: "Inline systems analyze domestic-water activity. Retrofit systems use point sensors and a compatible domestic-line valve. Irrigation requires a separate, requested scope review.",
   },
 ];
 
@@ -76,7 +77,7 @@ export default function DevicesPage() {
     },
     url: "https://hydrosensetx.com/devices",
     description:
-      "HydroSense evaluates plumbing, power, Wi-Fi, and device requirements before installing compatible whole-home water monitoring and shutoff systems.",
+      `HydroSense evaluates plumbing, power, Wi-Fi, and device requirements before installing compatible domestic-water monitoring and shutoff systems. ${installationScopeDisclosure}`,
   };
 
   return (
@@ -118,6 +119,14 @@ export default function DevicesPage() {
               verifies those conditions before issuing a written installation
               proposal.
             </p>
+            <div className="mb-8 max-w-3xl rounded-2xl border border-hydro-400/25 bg-hydro-400/[0.06] p-5">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-hydro-400">
+                Installation boundary
+              </p>
+              <p className="text-sm leading-6 text-fog-200">
+                {installationScopeDisclosure}
+              </p>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#lead-form" className="btn-primary text-center">
                 Check my home compatibility

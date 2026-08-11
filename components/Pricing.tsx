@@ -50,7 +50,7 @@ export default function Pricing() {
           </Heading>
           <p className="mt-6 text-lg leading-8 text-slate-300">
             The final proposal is based on the selected device, pipe size and material,
-            main-line access, electrical availability, fittings, and corrective plumbing.
+            domestic-line access, electrical availability, fittings, and corrective plumbing.
           </p>
         </div>
 

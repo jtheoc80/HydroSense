@@ -89,7 +89,7 @@ export default function FrozenPipesWhileTravelingPost() {
         name: "Can I just turn off the water at the main before I leave?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "You can, but then you have no fire protection, no water for a house sitter, and if the power goes out and you lose heat the stagnant water in lines can still freeze and crack pipes. A smart shutoff keeps water available for normal use but closes automatically if it detects a leak.",
+          text: "Before closing any valve, identify which valve serves domestic water and follow all life-safety requirements. HydroSense devices are installed only on the domestic water line and never control fire-sprinkler or fire-suppression piping. Closing the domestic main does not drain the household lines; a smart shutoff on that domestic line keeps household water available for normal use and closes if it detects a configured leak event.",
         },
       },
       {
@@ -655,13 +655,14 @@ export default function FrozenPipesWhileTravelingPost() {
                     Can I just turn off the water at the main before I leave?
                   </h3>
                   <p className="text-fog-200 leading-relaxed">
-                    You can, but then you have no fire protection from your sprinkler system (if
-                    equipped), no water for a house sitter who checks the property, and if the
-                    power goes out and you lose heat, the stagnant water remaining in the lines can
-                    still freeze and crack pipes. Turning off the main does not drain the lines. A
-                    smart shutoff keeps water available for normal use but closes automatically if
-                    it detects a leak. It provides protection without requiring you to choose
-                    between water availability and water safety.
+                    Before closing any valve, identify which valve serves domestic water and
+                    follow all life-safety requirements. HydroSense devices are installed only
+                    on the domestic water line and never control fire-sprinkler or
+                    fire-suppression piping. Closing the domestic main does not drain the
+                    household lines, so stagnant water can still freeze if the home loses heat.
+                    A smart shutoff on the domestic line keeps household water available for
+                    normal use and closes that line if it detects a configured leak event. It
+                    does not change or replace the home&apos;s fire-protection system.
                   </p>
                 </div>
                 <div className="bg-ink-800/40 rounded-xl p-6 lg:p-8">

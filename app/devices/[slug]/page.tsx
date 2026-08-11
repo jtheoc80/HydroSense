@@ -7,6 +7,7 @@ import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import LiteYouTube from "@/components/LiteYouTube";
+import { installationScopeDisclosure } from "@/lib/installation-scope";
 
 export function generateStaticParams() {
   return deviceSlugs.map((slug) => ({ slug }));
@@ -48,7 +49,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
 const processSteps = [
   {
     title: "Compatibility review",
-    body: "We confirm the main-line position, pipe size and material, existing valve condition, power, Wi-Fi, installation space, and any fire-sprinkler routing.",
+    body: "We confirm the domestic-line position, pipe size and material, valve condition, power, Wi-Fi, and installation space while excluding all fire-suppression piping.",
   },
   {
     title: "Written proposal",
@@ -102,7 +103,7 @@ export default function DevicePage({ params }: PageProps) {
       name: "Greater Houston, Texas",
     },
     url: `https://hydrosensetx.com/devices/${device.slug}`,
-    description: device.howItWorks,
+    description: `${device.howItWorks} ${installationScopeDisclosure}`,
   };
 
   const faqSchema = {
@@ -169,11 +170,19 @@ export default function DevicePage({ params }: PageProps) {
                 </p>
                 <p className="text-fog-300 leading-relaxed max-w-2xl mb-8">
                   HydroSense scopes the exact installation after reviewing the
-                  home's plumbing, main-line access, power, Wi-Fi, valve layout,
-                  and any fire-sprinkler connection. Product features and
-                  manufacturer requirements are confirmed again in the written
-                  proposal.
+                  home&apos;s domestic water line, power, Wi-Fi, valve layout, and
+                  separation from any fire-sprinkler or fire-suppression piping.
+                  Product features and manufacturer requirements are confirmed
+                  again in the written proposal.
                 </p>
+                <div className="mb-8 max-w-2xl rounded-2xl border border-hydro-400/25 bg-hydro-400/[0.06] p-5">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-hydro-400">
+                    Installation boundary
+                  </p>
+                  <p className="text-sm leading-6 text-fog-200">
+                    {installationScopeDisclosure}
+                  </p>
+                </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a href="#lead-form" className="btn-primary text-center">
                     Check {device.name} compatibility

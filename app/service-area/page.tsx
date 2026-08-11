@@ -4,6 +4,7 @@ import CriticalBar from "@/components/CriticalBar";
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
+import { installationScopeDisclosure } from "@/lib/installation-scope";
 
 export const metadata: Metadata = {
   title: "Greater Houston Smart Water Shutoff Service Area",
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Greater Houston Service Area | HydroSense Texas",
     description:
-      "Professional whole-home smart water shutoff installation, configuration, and testing across Greater Houston and selected Texas second-home markets.",
+      "Professional whole-home domestic-water shutoff installation, configuration, and testing across Greater Houston and selected Texas second-home markets.",
     url: "https://hydrosensetx.com/service-area",
     siteName: "HydroSense Texas",
     type: "website",
@@ -89,6 +90,14 @@ export default function ServiceAreaHub() {
               properties across the Houston metro and selected Gulf Coast and lake
               markets. Submit your ZIP code to confirm current appointment coverage.
             </p>
+            <div className="mt-8 rounded-2xl border border-hydro-400/25 bg-hydro-400/[0.06] p-5">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-hydro-400">
+                Installation boundary
+              </p>
+              <p className="text-sm leading-6 text-fog-200">
+                {installationScopeDisclosure}
+              </p>
+            </div>
           </div>
         </section>
 

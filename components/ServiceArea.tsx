@@ -56,7 +56,7 @@ export default function ServiceArea() {
               </span>
               <h3 className="mt-6 font-display text-5xl leading-none">Houston</h3>
               <p className="mt-4 max-w-md text-base leading-7 text-slate-300">
-                Whole-home smart shutoff installation across Houston and the surrounding metro,
+                Whole-home domestic-water shutoff installation across Houston and the surrounding metro,
                 subject to site access and current scheduling capacity.
               </p>
 

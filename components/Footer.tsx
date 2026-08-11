@@ -65,7 +65,7 @@ export default function Footer() {
               className="mb-5 h-11 w-auto"
             />
             <p className="text-sm leading-7 text-slate-400">
-              Professional whole-home smart water shutoff installation,
+              Professional whole-home domestic-water shutoff installation,
               configuration, testing, and homeowner handoff across Greater Houston.
             </p>
             <TrackedPhoneLink trackingLocation="footer" className="mt-5 inline-flex text-sm font-semibold text-sky-300 transition hover:text-white">
@@ -110,8 +110,9 @@ export default function Footer() {
             <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
               <p className="text-sm font-semibold text-white">Scope before scheduling</p>
               <p className="mt-2 text-sm leading-6 text-slate-400">
-                Main-line access, pipe size, valve condition, nearby power, Wi-Fi reach,
-                sprinkler routing, and existing leaks are reviewed before installation.
+                The domestic water line is the standard scope. Fire-sprinkler and
+                fire-suppression piping are excluded. Irrigation is included only when
+                specifically requested, reviewed, and quoted in the written proposal.
               </p>
             </div>
           </div>

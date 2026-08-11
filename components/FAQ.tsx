@@ -38,7 +38,7 @@ export default function FAQ() {
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-200">Speak with HydroSense</p>
               <p className="mt-3 font-display text-3xl leading-tight">A real conversation before a real proposal.</p>
               <p className="mt-4 text-sm leading-6 text-slate-300">
-                Call to discuss the property, main-line location, device preference,
+                Call to discuss the property, domestic-line location, device preference,
                 power, Wi-Fi, prior leaks, and appointment timing.
               </p>
               <TrackedPhoneLink

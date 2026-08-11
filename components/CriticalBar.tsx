@@ -11,7 +11,7 @@ export default function CriticalBar() {
             Greater Houston
           </span>
           <p className="truncate text-xs text-slate-200 sm:text-sm">
-            Whole-home smart water shutoff installation
+            Whole-home domestic-water shutoff installation
             <span className="hidden lg:inline">
               {" "}• Work coordinated under Texas Master Plumber License MPL 43057
             </span>

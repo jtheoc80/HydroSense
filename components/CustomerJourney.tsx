@@ -1,21 +1,22 @@
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import { Heading } from "./catalyst/heading";
+import { compatibilityReviewScope } from "@/lib/installation-scope";
 
 const steps = [
   {
     number: "01",
     eyebrow: "Before a price is issued",
     title: "We assess the home",
-    body: "We review the main water line, pipe size and material, nearby power, Wi-Fi reach, valve condition, fire-sprinkler routing, and any existing leaks that must be corrected first.",
-    detail: "No blind scheduling. No surprise change order caused by a missed site condition.",
+    body: compatibilityReviewScope,
+    detail: "The domestic water line is the standard scope; fire-suppression piping stays outside the installation.",
   },
   {
     number: "02",
     eyebrow: "Before work is scheduled",
     title: "You receive a written proposal",
     body: "The proposal identifies the recommended device, exact installation scope, required fittings, price, exclusions, and expected appointment duration.",
-    detail: "You approve the scope before anyone begins cutting into the main line.",
+    detail: "Any irrigation work must be specifically requested and quoted; the proposal confirms whether separate equipment is required.",
   },
   {
     number: "03",
@@ -54,7 +55,7 @@ export default function CustomerJourney() {
                 <div>
                   <p className="text-sm font-semibold text-[#001a4e]">Typical site visit</p>
                   <p className="mt-1 text-sm leading-6 text-slate-600">
-                    Main-line review, interior water-fixture walkthrough, power and Wi-Fi check,
+                    Domestic-line review, interior water-fixture walkthrough, power and Wi-Fi check,
                     installation location review, and next-step confirmation.
                   </p>
                 </div>
