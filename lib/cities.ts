@@ -2,18 +2,18 @@ export interface CityData {
   name: string;
   slug: string;
   county: string;
-  medianHome: string;
-  medianHomeNum: number;
-  typicalPremium: string;
+  medianHome?: string;
+  medianHomeNum?: number;
+  typicalPremium?: string;
   zips: string[];
-  heroNote: string;
-  schoolDistrict: string;
-  freezeRisk: string;
-  homeAge: string;
-  hoaNote: string;
-  carriers: { name: string; typicalDiscount: string }[];
-  hoFormScenario: string;
-  caseStudy: {
+  heroNote?: string;
+  schoolDistrict?: string;
+  freezeRisk?: string;
+  homeAge?: string;
+  hoaNote?: string;
+  carriers?: { name: string; typicalDiscount: string }[];
+  hoFormScenario?: string;
+  caseStudy?: {
     name: string;
     neighborhood: string;
     premium: string;
@@ -21,8 +21,8 @@ export interface CityData {
     deviceCaught: string;
     outcome: string;
   };
-  cityFaqs: { q: string; a: string }[];
-  whyInstall: string[];
+  cityFaqs?: { q: string; a: string }[];
+  whyInstall?: string[];
   vacationRental?: boolean;
 }
 
@@ -193,6 +193,24 @@ export const cities: Record<string, CityData> = {
       "The Woodlands has some of the highest median home values in the Houston metro, which means higher premiums and larger absolute dollar savings from the water-damage discount. A 10% credit on a $7,000 premium is $700/yr, paying back the install in under 18 months.",
       "Older Woodlands neighborhoods built in the 1980s and 1990s have aging copper and CPVC supply lines. These homes face both freeze risk and general age-related failure risk. The smart shutoff addresses both vectors with a single install.",
     ],
+  },
+  "league-city": {
+    name: "League City",
+    slug: "league-city",
+    county: "Galveston / Harris",
+    zips: ["77573"],
+  },
+  pearland: {
+    name: "Pearland",
+    slug: "pearland",
+    county: "Brazoria / Harris / Fort Bend",
+    zips: ["77581", "77584"],
+  },
+  friendswood: {
+    name: "Friendswood",
+    slug: "friendswood",
+    county: "Galveston / Harris",
+    zips: ["77546"],
   },
   "sugar-land": {
     name: "Sugar Land",

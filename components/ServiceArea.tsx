@@ -8,6 +8,9 @@ const cityList = [
   "katy",
   "cypress",
   "the-woodlands",
+  "league-city",
+  "pearland",
+  "friendswood",
   "sugar-land",
   "spring",
   "baytown",
@@ -62,7 +65,7 @@ export default function ServiceArea() {
 
               <div className="mt-8 grid grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
-                  <p className="text-2xl font-semibold text-white">7+</p>
+                  <p className="text-2xl font-semibold text-white">10</p>
                   <p className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-400">Core metro markets</p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">

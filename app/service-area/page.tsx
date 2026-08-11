@@ -9,7 +9,7 @@ import { installationScopeDisclosure } from "@/lib/installation-scope";
 export const metadata: Metadata = {
   title: "Greater Houston Smart Water Shutoff Service Area",
   description:
-    "HydroSense provides professional smart water shutoff installation across Houston, Katy, Cypress, The Woodlands, Sugar Land, Spring, Baytown, Galveston, Lake Conroe, and Lake Livingston.",
+    "HydroSense provides professional smart water shutoff installation across Houston, Katy, Cypress, The Woodlands, League City, Pearland, Friendswood, Sugar Land, Spring, Baytown, Galveston, Lake Conroe, and Lake Livingston.",
   alternates: {
     canonical: "https://hydrosensetx.com/service-area",
   },
