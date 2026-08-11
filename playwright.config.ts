@@ -1,4 +1,9 @@
+import crypto from "node:crypto";
 import { defineConfig, devices } from "@playwright/test";
+
+const e2eCredentialSeed = crypto.createHash("sha256").update("HydroSense Playwright local-only authentication").digest("hex");
+const e2eAdminUsername = `e2e-${e2eCredentialSeed.slice(0, 12)}`;
+const e2eAdminPassword = e2eCredentialSeed;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -10,7 +15,7 @@ export default defineConfig({
   outputDir: "test-results",
   use: {
     baseURL: "http://127.0.0.1:3100",
-    httpCredentials: { username: "admin", password: "playwright-only" },
+    httpCredentials: { username: e2eAdminUsername, password: e2eAdminPassword },
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
@@ -24,8 +29,8 @@ export default defineConfig({
       PLAYWRIGHT_TEST_MODE: "1",
       NODE_OPTIONS: "--use-system-ca",
       SITE_VISIT_PROVIDER_MODE: "mock",
-      ADMIN_USERNAME: "admin",
-      ADMIN_PASSWORD: "playwright-only",
+      ADMIN_USERNAME: e2eAdminUsername,
+      ADMIN_PASSWORD: e2eAdminPassword,
       NEXT_PUBLIC_HYDROSENSE_PHONE: "(281) 555-0199",
     },
   },
