@@ -8,6 +8,16 @@ import {
   useRef,
   useState,
 } from "react";
+import { Button } from "./catalyst/button";
+import {
+  ErrorMessage,
+  Field,
+  Label,
+} from "./catalyst/fieldset";
+import { Input } from "./catalyst/input";
+import { Select } from "./catalyst/select";
+import { Textarea } from "./catalyst/textarea";
+import TrackedPhoneLink from "./TrackedPhoneLink";
 
 type AnalyticsWindow = Window & {
   gtag?: (...args: unknown[]) => void;
@@ -45,13 +55,39 @@ const carriers = [
   "Not sure",
 ];
 
-const inputClass =
-  "mt-2 w-full rounded-lg border border-white/15 bg-ink-900 px-4 py-3 text-base text-white outline-none transition placeholder:text-fog-400 hover:border-white/25 focus:border-hydro-400 focus:ring-2 focus:ring-hydro-400/15";
+const fieldControlClass = [
+  "[&_input]:!rounded-xl [&_input]:!border-slate-200 [&_input]:!bg-white",
+  "[&_input]:!px-4 [&_input]:!py-3.5 [&_input]:!text-base [&_input]:!text-slate-950",
+  "[&_input]:placeholder:!text-slate-400 [&_input]:hover:!border-slate-300",
+  "[&_input]:focus:!border-sky-500 [&_input]:focus:!ring-4 [&_input]:focus:!ring-sky-500/10",
+  "[&_input]:data-[invalid]:!border-red-400",
+].join(" ");
 
-const labelClass = "text-[15px] font-medium text-white";
+const selectControlClass = [
+  "[&_select]:!rounded-xl [&_select]:!border-slate-200 [&_select]:!bg-white",
+  "[&_select]:!px-4 [&_select]:!py-3.5 [&_select]:!text-base [&_select]:!text-slate-950",
+  "[&_select]:hover:!border-slate-300 [&_select]:focus:!border-sky-500",
+  "[&_select]:focus:!ring-4 [&_select]:focus:!ring-sky-500/10",
+  "[&_select_option]:!bg-white [&_select_option]:!text-slate-950",
+  "[&_svg]:!stroke-slate-500",
+].join(" ");
+
+const textareaControlClass = [
+  "[&_textarea]:!rounded-xl [&_textarea]:!border-slate-200 [&_textarea]:!bg-white",
+  "[&_textarea]:!px-4 [&_textarea]:!py-3.5 [&_textarea]:!text-base [&_textarea]:!text-slate-950",
+  "[&_textarea]:placeholder:!text-slate-400 [&_textarea]:hover:!border-slate-300",
+  "[&_textarea]:focus:!border-sky-500 [&_textarea]:focus:!ring-4 [&_textarea]:focus:!ring-sky-500/10",
+].join(" ");
+
+const labelClass = "!text-[15px] !font-semibold !text-slate-800";
+
+const assessmentPoints = [
+  "Confirm service availability for your ZIP code",
+  "Review the main line, power, Wi-Fi, and sprinkler routing",
+  "Recommend a compatible device and issue a written proposal",
+];
 
 export default function LeadForm({ city }: LeadFormProps) {
-  const formRef = useRef<HTMLFormElement>(null);
   const formStarted = useRef(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [submitting, setSubmitting] = useState(false);
@@ -93,7 +129,10 @@ export default function LeadForm({ city }: LeadFormProps) {
   function trackFormStart() {
     if (formStarted.current) return;
     formStarted.current = true;
-    track("form_start", { form_name: "installation_assessment", city: city || "" });
+    track("form_start", {
+      form_name: "installation_assessment",
+      city: city || "",
+    });
   }
 
   function validateField(name: string, value: string) {
@@ -162,7 +201,10 @@ export default function LeadForm({ city }: LeadFormProps) {
     }
 
     setSubmitting(true);
-    track("form_submit", { form_name: "installation_assessment", city: city || "" });
+    track("form_submit", {
+      form_name: "installation_assessment",
+      city: city || "",
+    });
 
     const powerNear = String(data.get("power_within_12ft") || "");
     const fireSprinkler = String(data.get("fire_sprinkler_system") || "");
@@ -229,24 +271,38 @@ export default function LeadForm({ city }: LeadFormProps) {
 
   if (success) {
     return (
-      <section id="lead-form" className="scroll-mt-32 bg-ink-950/50 py-20 lg:py-28">
-        <div className="section-container max-w-2xl text-center">
-          <div className="rounded-2xl border border-hydro-400/20 bg-ink-800/80 p-10 backdrop-blur-sm lg:p-14">
-            <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-hydro-400/10">
-              <svg className="h-10 w-10 text-hydro-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+      <section id="lead-form" className="scroll-mt-32 bg-[#001a4e] py-20 lg:py-28">
+        <div className="section-container max-w-3xl text-center">
+          <div className="rounded-[2rem] border border-white/20 bg-white p-10 shadow-2xl shadow-black/20 lg:p-14">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
               </svg>
             </div>
-            <h2 className="mb-4 font-display text-3xl text-fog-50 lg:text-4xl">Request received</h2>
-            <p className="mx-auto mb-8 max-w-lg text-lg leading-relaxed text-fog-200">
-              We will contact you within one business day to confirm the service
-              area, review the installation conditions, and explain the next step.
+            <h2 className="mt-6 font-display text-4xl tracking-tight text-[#001a4e]">
+              Your assessment request is in.
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-lg leading-8 text-slate-600">
+              We will contact you within one business day to confirm the service area,
+              review the installation conditions, and explain the next step.
             </p>
-            {process.env.NEXT_PUBLIC_BOOKING_URL && (
-              <a href={process.env.NEXT_PUBLIC_BOOKING_URL} className="inline-flex items-center justify-center rounded-lg bg-hydro-400 px-8 py-4 text-base font-semibold text-ink-950 shadow-lg shadow-hydro-400/20 transition-all hover:-translate-y-0.5 hover:bg-hydro-300">
-                Choose a call time
-              </a>
-            )}
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              {process.env.NEXT_PUBLIC_BOOKING_URL && (
+                <Button
+                  href={process.env.NEXT_PUBLIC_BOOKING_URL}
+                  color="cyan"
+                  className="!rounded-full !border-transparent !bg-hydro-400 !px-6 !py-3.5 !text-base !font-semibold !text-ink-950 hover:!bg-hydro-300"
+                >
+                  Choose a call time
+                </Button>
+              )}
+              <TrackedPhoneLink
+                trackingLocation="lead_success"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3.5 text-base font-semibold text-[#001a4e] transition hover:bg-slate-50"
+              >
+                Call (281) 694-5754
+              </TrackedPhoneLink>
+            </div>
           </div>
         </div>
       </section>
@@ -254,147 +310,284 @@ export default function LeadForm({ city }: LeadFormProps) {
   }
 
   return (
-    <section id="lead-form" className="scroll-mt-32 bg-ink-950/50 py-20 lg:py-28">
-      <div className="section-container">
-        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-20">
-          <div className="flex flex-col justify-center lg:sticky lg:top-32">
-            <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-hydro-400">Installation assessment</p>
-            <h2 className="mb-6 font-display text-3xl leading-[1.15] text-fog-50 sm:text-4xl lg:text-[2.75rem]">
-              Check availability for your home
+    <section id="lead-form" className="relative scroll-mt-32 overflow-hidden bg-[#001a4e] py-20 lg:py-28">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-48 top-0 h-[30rem] w-[30rem] rounded-full bg-sky-400/10 blur-3xl" />
+        <div className="absolute -right-40 bottom-0 h-[28rem] w-[28rem] rounded-full bg-cyan-300/10 blur-3xl" />
+      </div>
+
+      <div className="section-container relative">
+        <div className="grid items-start gap-12 lg:grid-cols-[0.84fr_1.16fr] lg:gap-20">
+          <div className="lg:sticky lg:top-36">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">
+              Installation assessment
+            </p>
+            <h2 className="mt-5 max-w-xl font-display text-4xl leading-tight tracking-[-0.025em] text-white sm:text-5xl">
+              Let us confirm the right installation path for your home.
             </h2>
-            <p className="mb-8 text-lg leading-relaxed text-fog-200">
-              Tell us where the home is and how to reach you. We will confirm the
-              service area, review the main-line conditions, and provide a written
-              proposal before scheduling installation.
+            <p className="mt-6 max-w-xl text-lg leading-8 text-blue-100/75">
+              Start with your ZIP code and contact details. We will review the site
+              conditions, recommend a compatible system, and provide a written proposal
+              before anything is scheduled.
             </p>
 
-            <div className="space-y-4 rounded-xl border border-ink-700/40 bg-ink-800/50 p-6">
-              {[
-                "Confirm your ZIP code and preferred contact details",
-                "Review main-line access, power, Wi-Fi, and sprinkler routing",
-                "Recommend a compatible device and issue a written proposal",
-              ].map((item, index) => (
-                <div key={item} className="flex items-start gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-hydro-400/10 font-mono text-xs text-hydro-400">{index + 1}</span>
-                  <p className="text-sm leading-relaxed text-fog-300">{item}</p>
+            <div className="mt-9 space-y-5">
+              {assessmentPoints.map((item, index) => (
+                <div key={item} className="flex items-start gap-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sky-300/30 bg-sky-300/10 font-mono text-xs font-semibold text-sky-200">
+                    0{index + 1}
+                  </span>
+                  <p className="pt-1 text-sm leading-6 text-blue-100/80">{item}</p>
                 </div>
               ))}
             </div>
+
+            <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-5">
+              <p className="text-sm font-semibold text-white">Prefer to talk first?</p>
+              <TrackedPhoneLink
+                trackingLocation="lead_form_sidebar"
+                className="mt-2 inline-flex items-center gap-2 text-lg font-semibold text-sky-300 transition hover:text-sky-200"
+              >
+                (281) 694-5754
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m7 5 5 5-5 5" />
+                </svg>
+              </TrackedPhoneLink>
+            </div>
           </div>
 
-          <div className="rounded-2xl border border-ink-700/40 bg-ink-800/60 p-6 backdrop-blur-sm sm:p-8 lg:p-10">
-            <div className="mb-7 flex items-center justify-between gap-4">
+          <div className="rounded-[2rem] border border-white/15 bg-white p-6 shadow-[0_35px_100px_-40px_rgba(0,0,0,0.7)] sm:p-8 lg:p-10">
+            <div className="mb-8 flex items-center justify-between gap-5 border-b border-slate-200 pb-6">
               <div>
-                <p className="text-sm font-semibold text-fog-50">Step {step} of 2</p>
-                <p className="mt-1 text-sm text-fog-400">{step === 1 ? "Contact and service area" : "Optional home details"}</p>
+                <p className="text-sm font-semibold text-[#001a4e]">Step {step} of 2</p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {step === 1 ? "Contact and service area" : "Optional home details"}
+                </p>
               </div>
-              <div className="flex gap-2" aria-hidden="true">
-                <span className="h-1.5 w-10 rounded-full bg-hydro-400" />
-                <span className={`h-1.5 w-10 rounded-full ${step === 2 ? "bg-hydro-400" : "bg-ink-700"}`} />
+              <div className="flex items-center gap-2" aria-hidden="true">
+                <span className="h-2 w-12 rounded-full bg-sky-500" />
+                <span className={`h-2 w-12 rounded-full ${step === 2 ? "bg-sky-500" : "bg-slate-200"}`} />
               </div>
             </div>
 
-            <form ref={formRef} onSubmit={handleSubmit} onFocus={trackFormStart} className="space-y-6" noValidate>
+            <form onSubmit={handleSubmit} onFocus={trackFormStart} className="space-y-6" noValidate>
               <div className={step === 1 ? "space-y-6" : "hidden"} aria-hidden={step !== 1}>
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <label className={labelClass}>
-                    First name <span className="text-hydro-400">*</span>
-                    <input name="first_name" type="text" autoComplete="given-name" required placeholder="Jane" onBlur={handleBlur} onChange={handleChange} className={inputClass} />
-                    {fieldErrors.first_name && <span className="mt-2 block text-sm text-red-400">{fieldErrors.first_name}</span>}
-                  </label>
-                  <label className={labelClass}>
-                    Last name <span className="text-hydro-400">*</span>
-                    <input name="last_name" type="text" autoComplete="family-name" required placeholder="Smith" onBlur={handleBlur} onChange={handleChange} className={inputClass} />
-                    {fieldErrors.last_name && <span className="mt-2 block text-sm text-red-400">{fieldErrors.last_name}</span>}
-                  </label>
+                  <Field>
+                    <Label htmlFor="first_name" className={labelClass}>
+                      First name <span className="text-sky-600">*</span>
+                    </Label>
+                    <Input
+                      id="first_name"
+                      name="first_name"
+                      type="text"
+                      autoComplete="given-name"
+                      required
+                      placeholder="Jane"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      invalid={Boolean(fieldErrors.first_name)}
+                      className={fieldControlClass}
+                    />
+                    {fieldErrors.first_name && (
+                      <ErrorMessage className="!text-sm !text-red-600">{fieldErrors.first_name}</ErrorMessage>
+                    )}
+                  </Field>
+
+                  <Field>
+                    <Label htmlFor="last_name" className={labelClass}>
+                      Last name <span className="text-sky-600">*</span>
+                    </Label>
+                    <Input
+                      id="last_name"
+                      name="last_name"
+                      type="text"
+                      autoComplete="family-name"
+                      required
+                      placeholder="Smith"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      invalid={Boolean(fieldErrors.last_name)}
+                      className={fieldControlClass}
+                    />
+                    {fieldErrors.last_name && (
+                      <ErrorMessage className="!text-sm !text-red-600">{fieldErrors.last_name}</ErrorMessage>
+                    )}
+                  </Field>
                 </div>
 
-                <label className={labelClass}>
-                  Email <span className="text-hydro-400">*</span>
-                  <input name="email" type="email" autoComplete="email" required placeholder="jane@example.com" onBlur={handleBlur} onChange={handleChange} className={inputClass} />
-                  {fieldErrors.email && <span className="mt-2 block text-sm text-red-400">{fieldErrors.email}</span>}
-                </label>
+                <Field>
+                  <Label htmlFor="email" className={labelClass}>
+                    Email <span className="text-sky-600">*</span>
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    placeholder="jane@example.com"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    invalid={Boolean(fieldErrors.email)}
+                    className={fieldControlClass}
+                  />
+                  {fieldErrors.email && (
+                    <ErrorMessage className="!text-sm !text-red-600">{fieldErrors.email}</ErrorMessage>
+                  )}
+                </Field>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <label className={labelClass}>
-                    Phone
-                    <input name="phone" type="tel" autoComplete="tel" placeholder="(281) 555-0100" className={inputClass} />
-                  </label>
-                  <label className={labelClass}>
-                    ZIP code <span className="text-hydro-400">*</span>
-                    <input name="zip" type="text" inputMode="numeric" autoComplete="postal-code" required maxLength={10} placeholder="77449" onBlur={handleBlur} onChange={handleChange} className={`${inputClass} font-mono`} />
-                    {fieldErrors.zip && <span className="mt-2 block text-sm text-red-400">{fieldErrors.zip}</span>}
-                  </label>
+                  <Field>
+                    <Label htmlFor="phone" className={labelClass}>Phone</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      placeholder="(281) 555-0100"
+                      className={fieldControlClass}
+                    />
+                  </Field>
+
+                  <Field>
+                    <Label htmlFor="zip" className={labelClass}>
+                      ZIP code <span className="text-sky-600">*</span>
+                    </Label>
+                    <Input
+                      id="zip"
+                      name="zip"
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="postal-code"
+                      required
+                      maxLength={10}
+                      placeholder="77449"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      invalid={Boolean(fieldErrors.zip)}
+                      className={`${fieldControlClass} [&_input]:!font-mono`}
+                    />
+                    {fieldErrors.zip && (
+                      <ErrorMessage className="!text-sm !text-red-600">{fieldErrors.zip}</ErrorMessage>
+                    )}
+                  </Field>
                 </div>
               </div>
 
-              <div id="assessment-details" tabIndex={-1} className={step === 2 ? "space-y-6 outline-none" : "hidden"} aria-hidden={step !== 2}>
-                <label className={labelClass}>
-                  Property address <span className="font-normal text-fog-400">(optional)</span>
-                  <input name="address" type="text" autoComplete="street-address" placeholder="123 Main St, Katy, TX" className={inputClass} />
-                </label>
+              <div
+                id="assessment-details"
+                tabIndex={-1}
+                className={step === 2 ? "space-y-6 outline-none" : "hidden"}
+                aria-hidden={step !== 2}
+              >
+                <Field>
+                  <Label htmlFor="address" className={labelClass}>
+                    Property address <span className="font-normal text-slate-400">(optional)</span>
+                  </Label>
+                  <Input
+                    id="address"
+                    name="address"
+                    type="text"
+                    autoComplete="street-address"
+                    placeholder="123 Main St, Katy, TX"
+                    className={fieldControlClass}
+                  />
+                </Field>
 
-                <label className={labelClass}>
-                  Insurance carrier <span className="font-normal text-fog-400">(optional)</span>
-                  <select name="carrier" className={inputClass} defaultValue="">
+                <Field>
+                  <Label htmlFor="carrier" className={labelClass}>
+                    Insurance carrier <span className="font-normal text-slate-400">(optional)</span>
+                  </Label>
+                  <Select id="carrier" name="carrier" defaultValue="" className={selectControlClass}>
                     <option value="">Select a carrier</option>
-                    {carriers.map((carrier) => <option key={carrier} value={carrier}>{carrier}</option>)}
-                  </select>
-                </label>
+                    {carriers.map((carrier) => (
+                      <option key={carrier} value={carrier}>{carrier}</option>
+                    ))}
+                  </Select>
+                </Field>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <label className={labelClass}>
-                    Power near main shutoff
-                    <select name="power_within_12ft" className={inputClass} defaultValue="">
+                  <Field>
+                    <Label htmlFor="power_within_12ft" className={labelClass}>Power near main shutoff</Label>
+                    <Select id="power_within_12ft" name="power_within_12ft" defaultValue="" className={selectControlClass}>
                       <option value="">Not answered</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
                       <option value="unsure">Not sure</option>
-                    </select>
-                  </label>
-                  <label className={labelClass}>
-                    Wi-Fi reaches shutoff area
-                    <select name="wifi_at_install_location" className={inputClass} defaultValue="">
+                    </Select>
+                  </Field>
+
+                  <Field>
+                    <Label htmlFor="wifi_at_install_location" className={labelClass}>Wi-Fi reaches shutoff area</Label>
+                    <Select id="wifi_at_install_location" name="wifi_at_install_location" defaultValue="" className={selectControlClass}>
                       <option value="">Not answered</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
                       <option value="unsure">Not sure</option>
-                    </select>
-                  </label>
+                    </Select>
+                  </Field>
                 </div>
 
-                <label className={labelClass}>
-                  Fire-sprinkler system
-                  <select name="fire_sprinkler_system" className={inputClass} defaultValue="">
+                <Field>
+                  <Label htmlFor="fire_sprinkler_system" className={labelClass}>Fire-sprinkler system</Label>
+                  <Select id="fire_sprinkler_system" name="fire_sprinkler_system" defaultValue="" className={selectControlClass}>
                     <option value="">Not answered</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                     <option value="unsure">Not sure</option>
-                  </select>
-                </label>
+                  </Select>
+                </Field>
 
-                <label className={labelClass}>
-                  Anything we should know <span className="font-normal text-fog-400">(optional)</span>
-                  <textarea name="message" rows={4} maxLength={2000} placeholder="Device already purchased, previous leaks, access limitations, or timing needs" className={inputClass} />
-                </label>
+                <Field>
+                  <Label htmlFor="message" className={labelClass}>
+                    Anything we should know <span className="font-normal text-slate-400">(optional)</span>
+                  </Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    maxLength={2000}
+                    placeholder="Device already purchased, previous leaks, access limitations, or timing needs"
+                    className={textareaControlClass}
+                  />
+                </Field>
               </div>
 
-              {error && <div role="alert" className="rounded-lg border border-red-400/30 bg-red-400/10 p-4 text-sm font-medium text-red-300">{error}</div>}
+              {error && (
+                <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
+                  {error}
+                </div>
+              )}
 
-              <div className="flex flex-col-reverse gap-3 sm:flex-row">
+              <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row">
                 {step === 2 && (
-                  <button type="button" onClick={() => setStep(1)} className="rounded-lg border border-fog-300/20 px-6 py-4 text-sm font-semibold text-fog-100 transition-all hover:bg-white/5 sm:w-auto">
+                  <Button
+                    type="button"
+                    outline
+                    onClick={() => setStep(1)}
+                    className="!rounded-full !border-slate-300 !px-6 !py-3.5 !text-sm !font-semibold !text-slate-700 hover:!bg-slate-50"
+                  >
                     Back
-                  </button>
+                  </Button>
                 )}
-                <button type="submit" disabled={submitting} className="w-full rounded-lg bg-hydro-400 px-6 py-4 text-base font-semibold text-ink-950 shadow-lg shadow-hydro-400/25 transition-all hover:bg-hydro-300 disabled:cursor-not-allowed disabled:opacity-50">
-                  {step === 1 ? "Continue" : submitting ? "Submitting..." : "Request installation assessment"}
-                </button>
+                <Button
+                  type="submit"
+                  color="cyan"
+                  disabled={submitting}
+                  className="!w-full !rounded-full !border-transparent !bg-hydro-400 !px-6 !py-3.5 !text-base !font-semibold !text-ink-950 !shadow-lg !shadow-sky-500/10 hover:!bg-hydro-300 disabled:!opacity-50"
+                >
+                  {step === 1
+                    ? "Continue"
+                    : submitting
+                      ? "Submitting..."
+                      : "Request installation assessment"}
+                </Button>
               </div>
 
-              <p className="text-center text-sm leading-relaxed text-fog-300">
+              <p className="text-center text-xs leading-5 text-slate-500">
                 We use this information only to respond to your installation request.
-                Insurance discounts are determined by your insurer and are not guaranteed.
+                Insurance incentives are determined by your insurer and are not guaranteed.
               </p>
             </form>
           </div>
