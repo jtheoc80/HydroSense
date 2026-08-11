@@ -12,6 +12,7 @@ export interface Quote {
   quote_number: string;
   public_token: string;
   lead_id: string | null;
+  site_visit_id: string | null;
   customer_first_name: string;
   customer_last_name: string;
   customer_email: string;
