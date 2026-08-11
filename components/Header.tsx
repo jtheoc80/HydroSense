@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import { useState } from "react";
+import { Button } from "./catalyst/button";
+import {
+  Navbar,
+  NavbarSection,
+  NavbarSpacer,
+} from "./catalyst/navbar";
+import TrackedPhoneLink from "./TrackedPhoneLink";
 
 const navLinks = [
-  { label: "Why now", href: "/#critical-statements" },
-  { label: "The certificate", href: "/#the-certificate" },
-  { label: "Savings", href: "/#savings-estimator" },
-  { label: "How it works", href: "/#how-it-works" },
+  { label: "How it works", href: "/#customer-journey" },
   { label: "Devices", href: "/devices" },
-  { label: "Service area", href: "/service-area" },
-  { label: "Guides", href: "/freeze-damage-texas" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Service areas", href: "/service-area" },
+  { label: "Guides", href: "/blog" },
   { label: "FAQ", href: "/#faq" },
 ];
 
@@ -19,115 +22,136 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-[42px] z-40 bg-ink-900/95 backdrop-blur-md border-b border-ink-700/50">
-      <div className="section-container flex items-center justify-between h-16">
-        <a href="/" className="flex items-center" aria-label="HydroSense home">
-          {/* Desktop: horizontal lockup */}
+    <header className="sticky top-[42px] z-40 border-b border-slate-200/80 bg-white/95 shadow-[0_1px_0_rgba(15,23,42,0.03)] backdrop-blur-xl">
+      <div className="section-container flex h-[76px] items-center gap-6">
+        <a
+          href="/"
+          className="flex shrink-0 items-center"
+          aria-label="HydroSense home"
+        >
           <Image
-            src="/brand/logo-horizontal-light.png"
+            src="/brand/logo-horizontal-dark.png"
             alt="HydroSense"
-            width={160}
-            height={40}
-            className="hidden sm:block h-10 w-auto"
+            width={180}
+            height={45}
+            className="hidden h-10 w-auto sm:block"
             priority
           />
-          {/* Mobile: white icon mark only */}
           <Image
-            src="/brand/logo-mark-light.png"
+            src="/brand/logo-mark-clean.png"
             alt="HydroSense"
-            width={32}
-            height={32}
-            className="sm:hidden h-8 w-8"
+            width={36}
+            height={36}
+            className="h-9 w-9 sm:hidden"
             priority
           />
         </a>
 
-        <nav
-          className="hidden lg:flex items-center gap-7"
-          aria-label="Main navigation"
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm text-fog-300 hover:text-fog-50 transition-colors"
+        <Navbar className="hidden !py-0 lg:flex">
+          <NavbarSection className="!gap-1">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-950"
+              >
+                {link.label}
+              </a>
+            ))}
+          </NavbarSection>
+          <NavbarSpacer />
+          <NavbarSection className="!gap-3">
+            <TrackedPhoneLink
+              trackingLocation="desktop_header"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-[#001a4e] transition-colors hover:bg-slate-100"
             >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+              (281) 694-5754
+            </TrackedPhoneLink>
+            <Button
+              href="/#lead-form"
+              color="cyan"
+              className="!rounded-full !border-transparent !bg-hydro-400 !px-5 !py-2.5 !text-sm !font-semibold !text-ink-950 !shadow-md !shadow-sky-500/10 hover:!bg-hydro-300"
+            >
+              Check availability
+            </Button>
+          </NavbarSection>
+        </Navbar>
 
-        <div className="hidden md:flex items-center gap-4">
-          <a
-            href="tel:+12816945754"
-            className="text-sm text-fog-300 hover:text-fog-50 transition-colors"
+        <div className="ml-auto flex items-center gap-2 lg:hidden">
+          <TrackedPhoneLink
+            trackingLocation="mobile_header"
+            className="hidden rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-[#001a4e] sm:inline-flex"
           >
-            (281) 694-5754
-          </a>
-          <a href="/#lead-form" className="btn-primary text-sm">
-            Get my quote
-          </a>
+            Call
+          </TrackedPhoneLink>
+          <button
+            type="button"
+            onClick={() => setMobileOpen((open) => !open)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50"
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              {mobileOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 7h16M4 12h16M4 17h16"
+                />
+              )}
+            </svg>
+          </button>
         </div>
-
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden p-2 text-fog-300 hover:text-fog-50"
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            {mobileOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
       </div>
 
       {mobileOpen && (
-        <nav
-          className="lg:hidden bg-ink-800 border-t border-ink-700/50 px-4 pb-4 pt-2"
-          aria-label="Mobile navigation"
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="block py-2.5 text-fog-200 hover:text-fog-50 transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="pt-3 border-t border-ink-700/50 mt-2 flex flex-col gap-3">
-            <a href="tel:+12816945754" className="text-fog-300 text-sm">
-              (281) 694-5754
-            </a>
-            <a
-              href="/#lead-form"
-              onClick={() => setMobileOpen(false)}
-              className="btn-primary text-sm text-center"
-            >
-              Get my quote
-            </a>
-          </div>
-        </nav>
+        <div className="border-t border-slate-200 bg-white px-4 pb-5 pt-3 shadow-xl lg:hidden">
+          <nav className="section-container !px-0" aria-label="Mobile navigation">
+            <div className="grid gap-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-xl px-4 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <div className="mt-4 grid gap-3 border-t border-slate-200 pt-4 sm:grid-cols-2">
+              <TrackedPhoneLink
+                trackingLocation="mobile_menu"
+                onClick={() => setMobileOpen(false)}
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-[#001a4e]"
+              >
+                Call (281) 694-5754
+              </TrackedPhoneLink>
+              <Button
+                href="/#lead-form"
+                color="cyan"
+                onClick={() => setMobileOpen(false)}
+                className="!w-full !rounded-full !border-transparent !bg-hydro-400 !px-5 !py-3 !text-sm !font-semibold !text-ink-950 hover:!bg-hydro-300"
+              >
+                Check availability
+              </Button>
+            </div>
+          </nav>
+        </div>
       )}
     </header>
   );

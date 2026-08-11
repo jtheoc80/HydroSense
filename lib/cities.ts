@@ -2,18 +2,18 @@ export interface CityData {
   name: string;
   slug: string;
   county: string;
-  medianHome: string;
-  medianHomeNum: number;
-  typicalPremium: string;
+  medianHome?: string;
+  medianHomeNum?: number;
+  typicalPremium?: string;
   zips: string[];
-  heroNote: string;
-  schoolDistrict: string;
-  freezeRisk: string;
-  homeAge: string;
-  hoaNote: string;
-  carriers: { name: string; typicalDiscount: string }[];
-  hoFormScenario: string;
-  caseStudy: {
+  heroNote?: string;
+  schoolDistrict?: string;
+  freezeRisk?: string;
+  homeAge?: string;
+  hoaNote?: string;
+  carriers?: { name: string; typicalDiscount: string }[];
+  hoFormScenario?: string;
+  caseStudy?: {
     name: string;
     neighborhood: string;
     premium: string;
@@ -21,8 +21,8 @@ export interface CityData {
     deviceCaught: string;
     outcome: string;
   };
-  cityFaqs: { q: string; a: string }[];
-  whyInstall: string[];
+  cityFaqs?: { q: string; a: string }[];
+  whyInstall?: string[];
   vacationRental?: boolean;
 }
 
@@ -67,7 +67,7 @@ export const cities: Record<string, CityData> = {
     cityFaqs: [
       {
         q: "Is this available in the Cinco Ranch master-planned community?",
-        a: "Yes. We install throughout Cinco Ranch, Elyson, Cane Island, and all Katy ISD neighborhoods. The install is at the main water line and does not require HOA approval in any Katy community we have serviced.",
+        a: "Yes. We install throughout Cinco Ranch, Elyson, Cane Island, and all Katy ISD neighborhoods. The standard install is on the home's domestic water line and does not require HOA approval in any Katy community we have serviced.",
       },
       {
         q: "My home was built after Uri. Do I still qualify for the discount?",
@@ -123,7 +123,7 @@ export const cities: Record<string, CityData> = {
     cityFaqs: [
       {
         q: "Do you service the Bridgeland and Towne Lake communities?",
-        a: "Yes. Both communities are in our primary service area. We install at the main water line, which does not require HOA architectural approval.",
+        a: "Yes. Both communities are in our primary service area. We install on the home's domestic water line, which does not require HOA architectural approval.",
       },
       {
         q: "My home is new construction in Cypress. Is it worth it?",
@@ -194,6 +194,24 @@ export const cities: Record<string, CityData> = {
       "Older Woodlands neighborhoods built in the 1980s and 1990s have aging copper and CPVC supply lines. These homes face both freeze risk and general age-related failure risk. The smart shutoff addresses both vectors with a single install.",
     ],
   },
+  "league-city": {
+    name: "League City",
+    slug: "league-city",
+    county: "Galveston / Harris",
+    zips: ["77573"],
+  },
+  pearland: {
+    name: "Pearland",
+    slug: "pearland",
+    county: "Brazoria / Harris / Fort Bend",
+    zips: ["77581", "77584"],
+  },
+  friendswood: {
+    name: "Friendswood",
+    slug: "friendswood",
+    county: "Galveston / Harris",
+    zips: ["77546"],
+  },
   "sugar-land": {
     name: "Sugar Land",
     slug: "sugar-land",
@@ -237,7 +255,7 @@ export const cities: Record<string, CityData> = {
       },
       {
         q: "My home is slab-on-grade. Does that affect the install?",
-        a: "No. Slab-on-grade is the standard construction type we install on. The device goes on the main water line, typically at the meter or where the main enters the home. Install takes approximately 2 hours.",
+        a: "No. Slab-on-grade is the standard construction type we install on. The device goes on the domestic water line, typically at the meter or where that line enters the home. Install takes approximately 2 hours.",
       },
       {
         q: "Is Fort Bend ISD zone eligible for higher discounts?",
@@ -404,7 +422,7 @@ export const cities: Record<string, CityData> = {
       },
       {
         q: "My home is pier-and-beam construction. Does that change the install?",
-        a: "No. The device installs at the main water line regardless of foundation type. Pier-and-beam homes actually benefit more from the shutoff because crawl-space supply lines have higher freeze exposure than slab-routed lines.",
+        a: "No. The device installs on the domestic water line regardless of foundation type. Pier-and-beam homes actually benefit more from the shutoff because crawl-space supply lines have higher freeze exposure than slab-routed lines.",
       },
       {
         q: "Which Houston ZIP codes do you serve?",
@@ -461,7 +479,7 @@ export const cities: Record<string, CityData> = {
       },
       {
         q: "Does salt air affect the device?",
-        a: "The device installs on the main water line inside the home or in a utility closet, not in direct salt-air exposure. All four devices we install are rated for indoor residential use. The salt-air environment does accelerate pipe corrosion, which is one more reason a shutoff device is valuable on the island.",
+        a: "The device installs on the domestic water line inside the home or in a utility closet, not in direct salt-air exposure. All four devices we install are rated for indoor residential use. The salt-air environment does accelerate pipe corrosion, which is one more reason a shutoff device is valuable on the island.",
       },
       {
         q: "Can I monitor my Galveston property from Houston?",
@@ -577,11 +595,11 @@ export const cities: Record<string, CityData> = {
       },
       {
         q: "My cabin is pier-and-beam with exposed plumbing underneath. Does that work?",
-        a: "Yes. The device installs at the main water line regardless of foundation type. Pier-and-beam homes with exposed underfloor plumbing actually benefit the most from the shutoff because those pipes have the highest freeze exposure.",
+        a: "Yes. The device installs on the domestic water line regardless of foundation type. Pier-and-beam homes with exposed underfloor plumbing actually benefit the most from the shutoff because those pipes have the highest freeze exposure.",
       },
       {
         q: "My lake house has well water, not city water. Can you still install?",
-        a: "Yes. The device can be installed on well systems after the pressure tank on the main supply line into the home. The installation is similar to city water but positioned downstream of the well equipment.",
+        a: "Yes. The device can be installed on well systems after the pressure tank on the domestic supply line into the home. The installation is similar to city water but positioned downstream of the well equipment.",
       },
     ],
     whyInstall: [

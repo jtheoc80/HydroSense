@@ -47,7 +47,7 @@ export default function FreezeDamage() {
               <p>
                 A smart shutoff valve monitors flow and pressure continuously.
                 When it detects an anomaly consistent with a leak, it closes
-                the main water line within seconds. No human intervention
+                the domestic water line within seconds. No human intervention
                 required. The difference between a{" "}
                 <span className="font-mono text-hydro-400">$280</span> drywall
                 patch and a{" "}

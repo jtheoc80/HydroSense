@@ -40,8 +40,8 @@ const SUGGESTED_ADDONS: {
   {
     condition: (l) => l.fire_sprinkler_system === "yes",
     sku: "INST-SPRINK",
-    name: "Sprinkler bypass install",
-    description: "Shutoff routed around fire sprinkler system",
+    name: "Domestic-line routing review",
+    description: "Domestic-line shutoff scope only; fire-sprinkler and fire-suppression piping excluded",
     price: 350,
   },
   {
