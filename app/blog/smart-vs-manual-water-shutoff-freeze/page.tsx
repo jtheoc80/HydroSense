@@ -282,18 +282,22 @@ export default function SmartVsManualWaterShutoffFreeze() {
               </h2>
               <div className="space-y-5 text-fog-200 text-lg leading-relaxed">
                 <p>
-                  A smart shutoff device installs on the main water line and
+                  A smart shutoff device installs on the domestic water line and
                   monitors two things continuously: flow rate and pressure.
                   Machine learning establishes a baseline of your home&apos;s normal
                   water usage patterns over a 3-7 day calibration period. The
-                  device learns when you shower, when the irrigation runs, when
-                  the washing machine cycles, and when the house is typically
-                  idle. It maps every fixture&apos;s flow signature.
+                  device learns when you shower, when the washing machine cycles,
+                  and when the house is typically idle. Irrigation is monitored
+                  only when it is specifically requested, technically reviewed,
+                  and included in the written installation scope. The proposal
+                  confirms the plumbing configuration and any separate equipment;
+                  one device is not assumed to control both systems. Fire-sprinkler
+                  and fire-suppression piping are always excluded.
                 </p>
                 <p>
                   When the device detects a flow pattern consistent with a
                   burst, sudden high volume that does not match any learned
-                  pattern such as a toilet flush, shower, or irrigation cycle,
+                  pattern such as a toilet flush, shower, or washing-machine cycle,
                   it closes the motorized valve automatically. Response time:
                   approximately 3-8 seconds from detection to full valve
                   closure. No app interaction required. No notification that
@@ -751,9 +755,9 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   <p className="text-fog-200 leading-relaxed">
                     Modern devices learn your usage patterns over a 3-7 day
                     calibration period and have very low false-positive rates
-                    once calibrated. The device distinguishes between your
-                    shower, your irrigation system, a toilet refill, and a burst
-                    pipe. If a false closure does occur, you reopen the valve
+                    once calibrated. The device distinguishes normal domestic-water
+                    patterns, such as a shower or toilet refill, from a burst pipe.
+                    If a false closure does occur, you reopen the valve
                     from the app in seconds, tap the notification, confirm
                     reopening, and water resumes. A false closure wastes 30
                     seconds of your time. A missed burst costs $35,000. The
@@ -772,8 +776,8 @@ export default function SmartVsManualWaterShutoffFreeze() {
                     operate at 50-70 PSI from the city supply. A 1-3 PSI
                     reduction is within the range of normal daily pressure
                     fluctuation from the municipal system. You will not notice a
-                    difference in shower pressure, fixture performance, or
-                    irrigation coverage.
+                    difference in shower pressure or other domestic fixture
+                    performance.
                   </p>
                 </div>
                 <div className="bg-ink-800/40 rounded-xl p-6 lg:p-8">

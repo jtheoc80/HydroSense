@@ -88,7 +88,7 @@ function buildConfirmationHtml(
           <div style="font-family:Georgia,serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#9AA8BF;margin-bottom:14px;">What happens next</div>
           ${step("1", "15-minute quote call", "We confirm your carrier's discount tier, your plumbing layout, and a real install price.")}
           ${step("2", "Service agreement", "Plain-language one-page agreement. Install price locked, scheduled window confirmed.")}
-          ${step("3", "Professional install", "Trained, licensed technicians install at your main water line. About two hours on site. No drywall cuts.")}
+          ${step("3", "Professional install", "Trained, licensed technicians install on your domestic water line. Fire-suppression piping is excluded; any irrigation scope must be specifically requested and quoted. About two hours on site. No drywall cuts.")}
           ${step("4", "App handoff", "Real-time flow data on your phone. Anomaly alerts. Freeze-mode auto-engagement.")}
           ${step("5", "Certificate to insurance", "After final payment, you receive your certificate in paper and digital form, ready for your agent.")}
         </div>

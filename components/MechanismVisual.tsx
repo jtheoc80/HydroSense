@@ -37,7 +37,7 @@ export default function MechanismVisual() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-auto"
-        aria-label="Smart water shutoff mechanism: water flows through the main line, sensor detects a leak, valve closes automatically"
+        aria-label="Smart water shutoff mechanism: domestic water flows through the monitored line, a sensor detects a leak, and the valve closes automatically"
         role="img"
       >
         {/* Main water pipe */}

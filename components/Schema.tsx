@@ -1,6 +1,11 @@
 const SITE_URL = "https://hydrosensetx.com";
 
 export default function Schema() {
+  const sameAs = [
+    process.env.GOOGLE_BUSINESS_PROFILE_URL,
+    process.env.FACEBOOK_URL,
+  ].filter((value): value is string => Boolean(value));
+
   const localBusiness = {
     "@context": "https://schema.org",
     "@type": "Plumber",
@@ -13,18 +18,7 @@ export default function Schema() {
     telephone: "+1-281-694-5754",
     priceRange: "$$",
     description:
-      "Licensed smart water shutoff installation across the Houston metro. Carrier-recognized certificates that qualify Texas homeowners for homeowners insurance credits. Installed under Texas Registered Master Plumber license MPL 43057.",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Houston",
-      addressRegion: "TX",
-      addressCountry: "US",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 29.7604,
-      longitude: -95.3698,
-    },
+      "Professional whole-home smart water shutoff installation across Greater Houston, including device selection, plumbing installation, app setup, shutoff testing, and an itemized installation record. Work coordinated under Texas Master Plumber License MPL 43057.",
     areaServed: [
       { "@type": "City", name: "Houston" },
       { "@type": "City", name: "Katy" },
@@ -34,13 +28,13 @@ export default function Schema() {
       { "@type": "City", name: "Spring" },
       { "@type": "City", name: "Baytown" },
       { "@type": "City", name: "Galveston" },
-      { "@type": "City", name: "Lake Conroe" },
-      { "@type": "City", name: "Lake Livingston" },
+      { "@type": "City", name: "Conroe" },
+      { "@type": "City", name: "Livingston" },
     ],
     hasCredential: {
       "@type": "EducationalOccupationalCredential",
       credentialCategory: "license",
-      name: "Texas Registered Master Plumber",
+      name: "Texas Master Plumber License",
       identifier: "MPL 43057",
     },
     contactPoint: {
@@ -50,61 +44,22 @@ export default function Schema() {
       areaServed: "US-TX",
       availableLanguage: "English",
     },
-    // aggregateRating: add ONLY when real reviews exist
-    sameAs: [
-      "https://www.facebook.com/share/1BTbBn6UZo/",
-      ...(process.env.GOOGLE_BUSINESS_PROFILE_URL
-        ? [process.env.GOOGLE_BUSINESS_PROFILE_URL]
-        : []),
-    ],
+    ...(sameAs.length > 0 ? { sameAs } : {}),
   };
 
   const service = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": `${SITE_URL}/#install-service`,
-    serviceType: "Smart water shutoff installation",
+    "@id": `${SITE_URL}/#smart-water-shutoff-installation`,
+    name: "Smart Water Shutoff Installation",
+    serviceType: "Whole-home smart water shutoff installation",
     provider: { "@id": `${SITE_URL}/#business` },
     areaServed: {
       "@type": "AdministrativeArea",
-      name: "Houston metro, Texas",
+      name: "Greater Houston, Texas",
     },
     description:
-      "Professional installation of a carrier-recognized smart water shutoff device (Moen Flo, Phyn, or StreamLabs) under a Texas Master Plumber license, including the insurance certificate that qualifies homeowners for water-damage premium credits.",
-    offers: [
-      {
-        "@type": "Offer",
-        name: "Standalone install",
-        price: "999",
-        priceCurrency: "USD",
-        description:
-          "Device installed and insurance certificate issued. Base price for a standard single-family home with an accessible main line.",
-      },
-      {
-        "@type": "Offer",
-        name: "Basic plan",
-        price: "99",
-        priceCurrency: "USD",
-        description:
-          "Install, certificate issued, certificate sent to your agent, email support. Billed annually.",
-      },
-      {
-        "@type": "Offer",
-        name: "Standard plan",
-        price: "199",
-        priceCurrency: "USD",
-        description:
-          "Everything in Basic plus annual certificate renewal, 24/7 leak monitoring alerts, and priority scheduling. Billed annually.",
-      },
-      {
-        "@type": "Offer",
-        name: "Premier plan",
-        price: "399",
-        priceCurrency: "USD",
-        description:
-          "Everything in Standard plus annual device inspection, insurance liaison service, warranty extension, dedicated account manager, and same-day emergency response. Billed annually.",
-      },
-    ],
+      "Professional installation and configuration of compatible Flo by Moen, Phyn Plus, and StreamLabs whole-home water monitoring and automatic shutoff systems. Service includes a written scope, plumbing installation, app setup, shutoff testing, homeowner handoff, and an itemized installation record.",
   };
 
   return (

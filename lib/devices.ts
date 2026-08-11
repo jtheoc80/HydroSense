@@ -1,24 +1,16 @@
+import { installationScopeDisclosure } from "./installation-scope";
+
 /**
- * Video embed verification status (2026-05-27):
- *
- * EMBEDDED (HIGH confidence, verified official channel):
- *   - moen-flo:    youtube.com/@FloTechnologies → lLdCoFjWcr0
- *   - streamlabs:  youtube.com/@streamlabswater1549 → IOsW1SvFp2g
- *   - guardian:    youtube.com/@guardianbyelexa9545 → 4NXKJxAwkF8
- *
- * LINK CARD FALLBACK (MEDIUM confidence, channel not linked from official site):
- *   - phyn-plus:   Phyn primarily uses Vimeo; YouTube @phyn6361 not linked
- *                  from phyn.com. Fallback links to official product page.
+ * Device details are intentionally limited to installation-relevant facts from
+ * manufacturer documentation. Product capabilities, app services, and model
+ * specifications can change; verify the current manufacturer requirements before
+ * issuing a final proposal.
  */
 
 export interface DeviceVideo {
-  /** If set, embed via lite-youtube-embed. Must be from verified official channel. */
   youtubeId?: string;
-  /** Title for the embed / link card */
   videoTitle: string;
-  /** Fallback URL if youtubeId is not set */
   fallbackUrl: string;
-  /** Display label for fallback link */
   fallbackLabel: string;
 }
 
@@ -31,175 +23,173 @@ export interface Device {
   bestFor: string;
   officialSite: string;
   detectionMethod: string;
-  learningPeriod: string;
-  insurerRecognition: string;
+  setupProfile: string;
   installType: string;
   faqs: { q: string; a: string }[];
   video: DeviceVideo;
 }
 
+const insuranceAnswer = (deviceName: string) =>
+  `Some insurers may offer an incentive for an approved automatic water shutoff such as ${deviceName}, but eligibility varies by insurer, policy, model, installation, and documentation requirement. Confirm the requirement with your insurance agent before purchasing for a discount. HydroSense provides an installation record and helps locate manufacturer verification documents when available; neither the device nor the documentation guarantees a credit.`;
+
 export const devices: Record<string, Device> = {
   "moen-flo": {
     slug: "moen-flo",
     name: "Flo by Moen",
-    tagline:
-      "The insurance default. Fastest to calibrate, most widely recognized.",
+    tagline: "Inline flow-and-pressure monitoring with automatic shutoff control.",
     howItWorks:
-      "Installs at your main water line. Monitors flow and pressure continuously, runs a daily automated health test, and closes the valve when it detects an anomaly.",
+      "The Moen Flo Shutoff installs on the home's domestic potable-water line and monitors water activity through the manufacturer platform. Depending on device settings and conditions, it can alert the homeowner and close the valve automatically.",
     keyFacts: [
-      "MicroLeak detection down to one drop per minute",
-      "One-week learning period, the fastest in the category",
-      "Most frequently listed device on insurer approved lists",
-      "Optional FloProtect plan adds a warranty covering up to $5,000 in water damage",
-      "UL-listed, professional install recommended",
+      "Designed for installation on compatible potable-water service lines, including copper, PEX, and PVC",
+      "Requires standard 120V power and 2.4 GHz Wi-Fi for setup, updates, app alerts, and remote control",
+      "The manufacturer says the device can continue local monitoring and store data during a Wi-Fi interruption, while real-time alerts and remote control require connectivity",
+      "Galvanized piping at or near the installation point requires evaluation and may need replacement or filtration before installation",
+      "Moen states that core device features and data do not require a monthly fee",
     ],
     bestFor:
-      "Homeowners who want the broadest carrier acceptance and protection calibrated within days, not a month.",
+      "Homes suited to an inline device where the owner wants whole-home domestic-water flow-and-pressure monitoring, app visibility, and automatic valve control.",
     officialSite: "https://www.moen.com/flo",
-    detectionMethod: "Flow + pressure monitoring",
-    learningPeriod: "1 week",
-    insurerRecognition: "Broadest acceptance",
-    installType: "Inline, main line",
+    detectionMethod: "Flow and pressure monitoring",
+    setupProfile: "120V power + 2.4 GHz Wi-Fi",
+    installType: "Inline on the potable main",
     video: {
       youtubeId: "lLdCoFjWcr0",
       videoTitle: "Never Miss A Drip with the Flo by Moen Smart Water Shutoff",
       fallbackUrl: "https://www.moen.com/flo/how-it-works",
-      fallbackLabel: "Watch the official Flo by Moen demo on moen.com",
+      fallbackLabel: "View the official Flo by Moen overview",
     },
     faqs: [
       {
-        q: "Does Flo by Moen qualify for an insurance discount in Texas?",
-        a: "Yes. Flo by Moen is the most frequently listed device on insurer approved lists. When installed and certified by a licensed plumber, it qualifies for the carrier-recognized water damage credit.",
+        q: "Can Flo by Moen qualify for an insurance discount?",
+        a: insuranceAnswer("Flo by Moen"),
       },
       {
-        q: "How long does the Flo by Moen learning period take?",
-        a: "Approximately one week. Flo by Moen has the fastest calibration period of any whole-home shutoff device in the category.",
+        q: "Does Flo by Moen require a HydroSense subscription?",
+        a: "No. A HydroSense care plan is optional and is not required for the device's manufacturer-provided core functions. Moen states that core Flo device features and data are available without a monthly fee. Connectivity, app-account, and manufacturer-service requirements still apply.",
       },
       {
-        q: "Does Flo by Moen require a subscription?",
-        a: "Core monitoring and shutoff functionality works without a subscription. The optional FloProtect plan adds a warranty covering up to $5,000 in water damage.",
+        q: "What does HydroSense verify before a Flo installation?",
+        a: `We verify the domestic potable-water line, pipe size and material, nearby galvanized piping, valve condition, installation space, power, and 2.4 GHz Wi-Fi reach. ${installationScopeDisclosure}`,
       },
     ],
   },
   "phyn-plus": {
     slug: "phyn-plus",
     name: "Phyn Plus",
-    tagline:
-      "The accuracy leader. Independently ranked first for leak detection.",
+    tagline: "Pressure-wave analysis with whole-home domestic-water monitoring and automatic shutoff.",
     howItWorks:
-      "Installs at your main. Uses pressure wave analysis to read your plumbing 240 times per second, detecting leaks without separate sensors placed around the house.",
+      "Phyn Plus installs on the domestic water supply after the primary shutoff and before downstream household branches. It uses pressure-based analysis through the manufacturer platform to identify water events, provide alerts, and control the integrated shutoff valve.",
     keyFacts: [
-      "Ranked first for leak detection accuracy in an independent Utah State University study",
-      "Pressure wave analysis, no separate leak sensors required",
-      "Real-time water pressure monitoring, useful for older homes on aging city mains",
-      "Roughly fifteen insurer partnerships",
-      "No ongoing subscription fees required for core function",
-      "Thirty-day learning period",
+      "Installed on the domestic water supply immediately after the main shutoff and before downstream household branches or fixtures",
+      "Manufacturer guidance requires installation within 11 feet of a 120V outlet and strongly recommends GFCI protection",
+      "Requires reliable broadband internet and a strong 2.4 GHz Wi-Fi signal at the installation location",
+      "The Phyn app can generate a Proof of Activation document, but the insurer determines whether that document satisfies a policy requirement",
+      "Outdoor installation is possible only when the location meets the manufacturer's mounting, spray, and environmental requirements",
     ],
     bestFor:
-      "Older Houston homes, complex plumbing, and owners who want the most sensitive detection available.",
+      "Homes suited to an inline device where the owner wants pressure-based whole-home domestic-water monitoring, plumbing insights, and automatic valve control.",
     officialSite: "https://www.phyn.com",
-    detectionMethod: "Pressure wave analysis (240x/sec)",
-    learningPeriod: "30 days",
-    insurerRecognition: "~15 insurer partnerships",
-    installType: "Inline, main line",
+    detectionMethod: "Pressure-wave analysis",
+    setupProfile: "120V power + reliable 2.4 GHz Wi-Fi",
+    installType: "Inline on the domestic water supply",
     video: {
-      // MEDIUM confidence: Phyn uses Vimeo on their site, YouTube channel
-      // @phyn6361 is not linked from phyn.com. Using fallback link card.
       videoTitle: "The Phyn Plus Smart Water Assistant",
       fallbackUrl: "https://phyn.com/products/phyn-plus-smart-water-assistant-shutoff-v2",
-      fallbackLabel: "Watch the official Phyn Plus demo on phyn.com",
+      fallbackLabel: "View the official Phyn Plus product page",
     },
     faqs: [
       {
-        q: "Does Phyn Plus qualify for an insurance discount in Texas?",
-        a: "Yes. Phyn Plus has roughly fifteen insurer partnerships. When installed and certified by a licensed plumber, it qualifies for the carrier-recognized water damage credit.",
+        q: "Can Phyn Plus qualify for an insurance discount?",
+        a: insuranceAnswer("Phyn Plus"),
       },
       {
-        q: "Why does Phyn Plus have a 30-day learning period?",
-        a: "Phyn reads your plumbing 240 times per second using pressure wave analysis. The 30-day period lets it build a detailed profile of your home's unique water signature for the most accurate leak detection.",
+        q: "What Wi-Fi does Phyn Plus require?",
+        a: "Current manufacturer guidance requires a strong 2.4 GHz Wi-Fi signal and an always-on broadband connection at the installation location. Some mesh or band-steering networks may require a dedicated 2.4 GHz or guest-network setup.",
       },
       {
-        q: "Is Phyn Plus good for older homes?",
-        a: "Yes. The pressure wave analysis is especially useful in older Houston homes with complex plumbing and aging city mains, where traditional flow-only monitoring may miss slow leaks.",
+        q: "What does HydroSense verify before a Phyn Plus installation?",
+        a: `We verify the domestic-line position, pipe size and material, mounting environment, outlet distance, Wi-Fi strength, internet availability, and valve condition. ${installationScopeDisclosure}`,
       },
     ],
   },
   streamlabs: {
     slug: "streamlabs",
     name: "StreamLabs Control",
-    tagline:
-      "The durability pick. Fewer moving parts, fewer failure points.",
+    tagline: "Ultrasonic flow measurement with configurable alerts and automatic shutoff.",
     howItWorks:
-      "Installs inline on your main water line. Uses an ultrasonic flow meter with no internal turbine, monitors flow over Wi-Fi, and shuts off on a detected leak.",
+      "StreamLabs Control installs inline on the domestic water entry line, uses ultrasonic measurement to monitor household flow, and controls an integrated shutoff valve through device settings and the StreamLabs app.",
     keyFacts: [
-      "Ultrasonic flow meter with no internal turbine, fewer moving parts",
-      "Inline install on the main line",
-      "Competitively priced against Phyn and Flo",
-      "Carrier recognized, though listed by fewer insurers than Moen or Phyn",
+      "Manufacturer guidance lists compatibility with 3/4-inch, 1-inch, and 1-1/4-inch pipe diameters",
+      "Installed after the main shutoff and pressure-reducing valve, when present, and before downstream branches",
+      "Requires 2.4 GHz Wi-Fi and power within reach of the manufacturer power supply",
+      "The manufacturer says automatic shutoff can still operate without Wi-Fi when Auto-Shut is enabled, while app reporting and remote control require connectivity",
+      "Fire-sprinkler and fire-suppression piping are excluded from HydroSense installations; the unit should be installed indoors or in a covered, protected location",
+      "Optional Smart Alerts learn normal water use over a seven-day period",
     ],
     bestFor:
-      "Homeowners who prioritize mechanical simplicity and long-term reliability.",
-    officialSite: "https://www.streamlabswater.com",
-    detectionMethod: "Ultrasonic flow meter",
-    learningPeriod: "Varies",
-    insurerRecognition: "Recognized, narrower list",
-    installType: "Inline, main line",
+      "Homes suited to an inline device where the owner wants ultrasonic flow measurement, configurable leak thresholds, and automatic valve control.",
+    officialSite: "https://streamlabswater.com/pages/streamlabs-control",
+    detectionMethod: "Ultrasonic flow measurement",
+    setupProfile: "Power + 2.4 GHz Wi-Fi + protected location",
+    installType: "Inline on the domestic water entry line",
     video: {
       youtubeId: "IOsW1SvFp2g",
-      videoTitle: "How The StreamLabs Water Control Works",
-      fallbackUrl: "https://streamlabswater.com/pages/how-it-works-1",
-      fallbackLabel: "Watch the official StreamLabs demo on streamlabswater.com",
+      videoTitle: "How the StreamLabs Water Control Works",
+      fallbackUrl: "https://streamlabswater.com/pages/streamlabs-control",
+      fallbackLabel: "View the official StreamLabs Control page",
     },
     faqs: [
       {
-        q: "Does StreamLabs Control qualify for an insurance discount in Texas?",
-        a: "Yes. StreamLabs Control is carrier recognized. The discount comes from the certified install and documentation, not the specific brand.",
+        q: "Can StreamLabs Control qualify for an insurance discount?",
+        a: insuranceAnswer("StreamLabs Control"),
       },
       {
-        q: "What makes StreamLabs different from Moen Flo or Phyn?",
-        a: "StreamLabs uses an ultrasonic flow meter with no internal turbine. Fewer moving parts means fewer mechanical failure points over the life of the device.",
+        q: "Will StreamLabs Control shut off water if Wi-Fi is down?",
+        a: "The manufacturer says the Control can still close the valve after detecting a leak without an active Wi-Fi connection when Auto-Shut is enabled. App reporting, notifications, and remote control are unavailable until connectivity returns.",
+      },
+      {
+        q: "What does HydroSense verify before a StreamLabs installation?",
+        a: `We verify domestic-line pipe diameter, installation order relative to the shutoff and pressure-reducing valve, protected placement, outlet reach, and 2.4 GHz Wi-Fi. ${installationScopeDisclosure}`,
       },
     ],
   },
   guardian: {
     slug: "guardian",
     name: "Guardian by Elexa",
-    tagline:
-      "The retrofit option. No plumbing replacement required.",
+    tagline: "A sensor-based retrofit controller for compatible quarter-turn ball valves.",
     howItWorks:
-      "A motorized actuator mounts onto your existing main shutoff valve and physically turns the handle when wireless leak sensors detect water. No cutting into the line.",
+      "Guardian uses point leak detectors that communicate with a motorized controller mounted over an existing compatible quarter-turn valve on the domestic water line. When a detector senses water or a configured freezing condition, the controller can close that valve without cutting into the pipe.",
     keyFacts: [
-      "Mounts on your existing valve, no plumbing replacement",
-      "Wireless leak sensors placed at vulnerable points",
-      "Ideal for older homes, condos, or where cutting the main is impractical",
-      "Battery backup keeps it working during power loss",
+      "The manufacturer lists compatibility with existing 1/2-inch to 1-1/4-inch quarter-turn metal ball valves",
+      "The valve controller mounts over the existing valve without cutting into the water line",
+      "Leak detectors must be placed at the fixtures or locations the homeowner wants to monitor",
+      "The manufacturer describes offline shutoff functionality and offers an optional battery backup",
+      "This is domestic-water point-sensor protection rather than whole-home flow or pressure analysis",
     ],
     bestFor:
-      "Older homes and situations where replacing or cutting into the main line is not an option.",
+      "Homes with a compatible, accessible domestic-line quarter-turn ball valve where a sensor-based retrofit is preferable to cutting an inline device into the pipe.",
     officialSite: "https://getguardian.com",
-    detectionMethod: "Wireless leak sensors",
-    learningPeriod: "None",
-    insurerRecognition: "Recognized",
-    installType: "Retrofit, mounts on existing valve",
+    detectionMethod: "Point leak and temperature sensors",
+    setupProfile: "Compatible ball valve + planned sensor locations",
+    installType: "Retrofit over an existing domestic-line valve",
     video: {
       youtubeId: "4NXKJxAwkF8",
-      videoTitle: "Meet Guardian, by Elexa - Prevent Water Damage",
+      videoTitle: "Meet Guardian by Elexa",
       fallbackUrl: "https://getguardian.com/pages/how-it-works",
-      fallbackLabel: "Watch the official Guardian demo on getguardian.com",
+      fallbackLabel: "View the official Guardian overview",
     },
     faqs: [
       {
-        q: "Does Guardian work if I cannot cut into my main water line?",
-        a: "Yes. Guardian mounts a motorized actuator onto your existing shutoff valve. No plumbing replacement or cutting into the line is required.",
+        q: "Can Guardian be installed without cutting the domestic water line?",
+        a: "Yes, when the home has a compatible and accessible quarter-turn metal ball valve. The Guardian controller mounts over the existing valve. The valve type, handle clearance, mounting room, and ability to fully operate the valve must be verified first.",
       },
       {
-        q: "Does Guardian by Elexa qualify for an insurance discount in Texas?",
-        a: "Yes. Guardian is carrier recognized. When installed and certified by a licensed plumber, it qualifies for the water damage credit.",
+        q: "Can Guardian qualify for an insurance discount?",
+        a: insuranceAnswer("Guardian by Elexa"),
       },
       {
-        q: "Does Guardian work during a power outage?",
-        a: "Yes. Guardian includes battery backup that keeps the valve controller and leak sensors operational during power loss.",
+        q: "How is Guardian different from an inline monitor?",
+        a: "Guardian relies on point sensors placed near toilets, appliances, water heaters, drains, and other domestic-water risk areas. It does not analyze household water flow or pressure through the domestic line in the same way as an inline whole-home monitor.",
       },
     ],
   },

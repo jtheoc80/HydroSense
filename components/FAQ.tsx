@@ -1,124 +1,88 @@
 "use client";
 
-import { useState } from "react";
-
-const faqs = [
-  {
-    q: "Will my carrier actually accept the certificate?",
-    a: "Yes. The HydroSense certificate documents a licensed installation of a carrier-recognized automatic water shutoff device, certified under a Texas Master Plumber license. We format it to match what underwriters expect. State Farm, USAA, Allstate, Farmers, Travelers, and every other major Texas carrier has published discount tiers for this class of device. If your agent needs a specific format, we accommodate it.",
-  },
-  {
-    q: "What is the typical discount?",
-    a: "Published tiers range from 4% to 15% off your homeowners premium, applied to the water-damage portion of your policy. On an average Houston premium of $6,600, that works out to $264 to $990 per year. Your actual credit depends on your carrier and policy structure.",
-  },
-  {
-    q: "What is the difference between HO-A, HO-B, and HO-3?",
-    a: "HO-A is named-peril, actual cash value (depreciated). HO-B is open-peril on the dwelling with replacement cost, historically the Texas gold standard but now phased out by many carriers. HO-3 is open-peril on the dwelling, named-peril on contents, replacement cost, and the form most Texas carriers default to today. The smart shutoff discount applies on all three forms, but the device protection is most critical on HO-A where claim settlements are depreciated.",
-  },
-  {
-    q: "Can freeze damage show up weeks after the event?",
-    a: "Yes. This is the most common pattern. A hard freeze creates hairline cracks in supply lines that hold under normal pressure but fail days or weeks later when conditions shift. By the time the homeowner notices, water has been running behind walls for hours. The smart shutoff catches these failures at onset, not after damage accumulates.",
-  },
-  {
-    q: "Why do I need the subscription?",
-    a: "You don't. The standalone install at $999 includes the device and the certificate. The subscription adds annual certificate renewal (so the discount stays applied at each policy renewal), 24/7 leak monitoring alerts, and insurance liaison service. Most homeowners choose Standard because the annual renewal alone is worth it. Miss one renewal and the credit drops off your policy.",
-  },
-  {
-    q: "What device will you install?",
-    a: "We install carrier-recognized devices: Moen Flo, Phyn, or StreamLabs. During the phone assessment we recommend the best fit based on your home's plumbing configuration, water pressure, and pipe material. All three qualify for the same insurance credits.",
-  },
-  {
-    q: "How long does the install take?",
-    a: "Approximately two hours on site. Our trained, licensed technicians perform the installation at your main water line under the supervision of our Texas Registered Master Plumber, whose license certifies the work. No drywall cuts, no damage, no mess. Your water is off for roughly 30 minutes during the swap.",
-  },
-  {
-    q: "Who performs the installation?",
-    a: "Your install is performed by trained, licensed technicians. Our Texas Registered Master Plumber trains and supervises the install team and holds the license that certifies every installation for your insurer. This is the standard structure for licensed plumbing work in Texas, and it is what lets us schedule installs quickly across the Houston metro while keeping every job certified.",
-  },
-  {
-    q: "When do I get my certificate?",
-    a: "After your final payment, we issue the certificate in both paper and digital form. The digital copy is emailed to you and, with your permission, to your agent. You keep the paper copy for your records. We reissue it annually so the discount stays applied at each renewal.",
-  },
-  {
-    q: "What does $999+ really mean?",
-    a: "The base install is $999 for a standard single-family home with accessible main line. Homes with non-standard configurations (slab foundation access, recirculation systems, or dual mains) may require additional work. We quote the exact price during the 15-minute phone assessment before scheduling anything.",
-  },
-  {
-    q: "Do you monitor my home 24/7?",
-    a: "The device monitors water flow continuously and will automatically shut off the main if it detects a leak pattern. With a Standard or Premier subscription, you also receive real-time alerts on your phone. Without a subscription, the device still operates autonomously. It just won't push notifications to you.",
-  },
-];
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
+import { Badge } from "./catalyst/badge";
+import { Button } from "./catalyst/button";
+import { Heading } from "./catalyst/heading";
+import { homeFaqs } from "@/lib/home-faqs";
+import TrackedPhoneLink from "./TrackedPhoneLink";
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   return (
-    <section id="faq" className="py-20 lg:py-28">
-      <div className="section-container max-w-3xl">
-        <div className="mb-14">
-          <p className="text-xs uppercase tracking-[0.2em] text-hydro-400 font-medium mb-4">
-            Common questions
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] text-fog-50">
-            Frequently asked questions
-          </h2>
-        </div>
+    <section id="faq" className="bg-white py-20 sm:py-24 lg:py-28">
+      <div className="section-container">
+        <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+          <div>
+            <Badge
+              color="sky"
+              className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]"
+            >
+              Common questions
+            </Badge>
+            <Heading
+              level={2}
+              className="!mt-5 !font-display !text-4xl !leading-[1.05] !tracking-[-0.025em] !text-[#001a4e] sm:!text-5xl"
+            >
+              Understand the installation before you schedule.
+            </Heading>
+            <p className="mt-6 text-lg leading-8 text-slate-600">
+              The most important questions are about compatibility, site conditions,
+              who performs the work, what is included, and what happens after handoff.
+            </p>
 
-        <div className="divide-y divide-ink-700/50">
-          {faqs.map((faq, i) => (
-            <div key={i}>
-              <button
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between py-6 text-left group"
-                aria-expanded={openIndex === i}
+            <div className="mt-9 overflow-hidden rounded-[1.75rem] bg-[#001a4e] p-7 text-white shadow-[0_28px_70px_-45px_rgba(0,26,78,0.8)] sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-200">Speak with HydroSense</p>
+              <p className="mt-3 font-display text-3xl leading-tight">A real conversation before a real proposal.</p>
+              <p className="mt-4 text-sm leading-6 text-slate-300">
+                Call to discuss the property, domestic-line location, device preference,
+                power, Wi-Fi, prior leaks, and appointment timing.
+              </p>
+              <TrackedPhoneLink
+                trackingLocation="faq"
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#001a4e] transition hover:bg-sky-50"
               >
-                <span className="text-fog-50 font-medium text-base pr-6 group-hover:text-hydro-400 transition-colors leading-snug">
-                  {faq.q}
-                </span>
-                <span
-                  className={`w-8 h-8 rounded-lg bg-ink-800/60 border border-ink-700/40 flex items-center justify-center shrink-0 transition-all ${
-                    openIndex === i
-                      ? "bg-hydro-400/10 border-hydro-400/30"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className={`w-4 h-4 text-fog-300 transition-transform duration-200 ${
-                      openIndex === i ? "rotate-180 text-hydro-400" : ""
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </span>
-              </button>
-              <div
-                className={`overflow-hidden transition-all duration-200 ${
-                  openIndex === i ? "max-h-96 pb-6" : "max-h-0"
-                }`}
+                <svg className="h-4 w-4 text-sky-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.28 6.72 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.37c0-.52-.35-.97-.85-1.09l-4.42-1.11c-.44-.11-.9.06-1.17.42l-.97 1.29c-.28.38-.77.54-1.21.38a12.04 12.04 0 0 1-7.14-7.14c-.16-.44 0-.93.38-1.21l1.29-.97c.36-.27.53-.73.42-1.17L6.96 3.1A1.13 1.13 0 0 0 5.87 2.25H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                </svg>
+                (281) 694-5754
+              </TrackedPhoneLink>
+              <Button
+                href="#lead-form"
+                outline
+                className="!mt-3 !w-full !rounded-full !border-white/20 !px-5 !py-3 !text-sm !font-semibold !text-white hover:!bg-white/10"
               >
-                <p className="text-fog-300 leading-relaxed pr-12">
-                  {faq.a}
-                </p>
-              </div>
+                Request an assessment
+              </Button>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="mt-12 text-center">
-          <a
-            href="#lead-form"
-            className="inline-flex items-center justify-center rounded-lg bg-hydro-400 text-ink-950 font-semibold text-sm px-8 py-3.5 shadow-lg shadow-hydro-400/20 hover:bg-hydro-300 transition-all"
-          >
-            Still have questions? We will call you.
-          </a>
+          <div className="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-[#f8fafc] px-5 shadow-[0_24px_70px_-50px_rgba(15,23,42,0.6)] sm:px-7">
+            {homeFaqs.map((faq) => (
+              <Disclosure key={faq.q} as="div" className="border-b border-slate-200 last:border-b-0">
+                {({ open }) => (
+                  <>
+                    <DisclosureButton className="group flex w-full items-center justify-between gap-6 py-6 text-left focus:outline-none sm:py-7">
+                      <span className="text-base font-semibold leading-7 text-slate-950 transition-colors group-hover:text-sky-700 sm:text-lg">
+                        {faq.q}
+                      </span>
+                      <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition ${open ? "border-sky-200 bg-sky-50 text-sky-700" : "border-slate-200 bg-white text-slate-500 group-hover:border-slate-300"}`}>
+                        <svg className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-45" : ""}`} fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                          <path strokeLinecap="round" d="M10 4v12M4 10h12" />
+                        </svg>
+                      </span>
+                    </DisclosureButton>
+                    <DisclosurePanel className="pb-7 pr-10 text-base leading-7 text-slate-600 sm:pr-16">
+                      {faq.a}
+                    </DisclosurePanel>
+                  </>
+                )}
+              </Disclosure>
+            ))}
+          </div>
         </div>
       </div>
     </section>

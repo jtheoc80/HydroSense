@@ -3,7 +3,7 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-# Explicitly allow all major AI crawlers for visibility in AI search results
+# Explicitly allow major AI crawlers to access public pages.
 User-agent: GPTBot
 Allow: /
 
@@ -53,4 +53,3 @@ User-agent: Bytespider
 Allow: /
 
 Sitemap: https://hydrosensetx.com/sitemap.xml
-Sitemap: https://hydrosensetx.com/llms.txt
