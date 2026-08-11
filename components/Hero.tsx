@@ -30,8 +30,8 @@ export default function Hero() {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
       </div>
 
-      <div className="section-container relative py-16 sm:py-20 lg:py-24">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:gap-20">
+      <div className="section-container relative py-14 sm:py-16 lg:py-20 xl:py-24">
+        <div className="grid gap-y-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-20 lg:gap-y-0">
           <div>
             <Badge
               color="sky"
@@ -87,7 +87,20 @@ export default function Hero() {
                 Call (281) 694-5754
               </TrackedPhoneLink>
             </div>
+          </div>
 
+          <div className="relative mx-1 aspect-[4/3] w-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-slate-200 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.32)] sm:mx-auto sm:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:aspect-[5/6] lg:max-w-none">
+            <Image
+              src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1400"
+              alt="Plumber tightening residential water-line fittings during an installation"
+              fill
+              priority
+              sizes="(min-width: 1280px) 560px, (min-width: 1024px) 44vw, (min-width: 640px) 576px, calc(100vw - 40px)"
+              className="object-cover object-[54%_center]"
+            />
+          </div>
+
+          <div className="lg:col-start-1 lg:row-start-2">
             <div className="mt-10 grid gap-4 border-t border-slate-200 pt-7 sm:grid-cols-3">
               {assuranceItems.map((item) => (
                 <div key={item.title}>
@@ -110,50 +123,6 @@ export default function Hero() {
               Insurance eligibility and incentives vary by insurer and policy.
               Confirm eligibility with your insurance agent before purchasing for a discount.
             </p>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border-[10px] border-white bg-slate-200 shadow-[0_35px_90px_-35px_rgba(0,26,78,0.5)]">
-              <Image
-                src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1400"
-                alt="Professional plumber installing pipe fittings during a residential plumbing project"
-                fill
-                priority
-                sizes="(min-width: 1024px) 46vw, 92vw"
-                className="object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#001a4e]/75 via-transparent to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6 pb-28 sm:p-8">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-200">
-                  Professional installation
-                </p>
-                <p className="mt-2 max-w-sm font-display text-3xl leading-tight text-white">
-                  The device is only one part of a reliable system.
-                </p>
-              </div>
-              <p className="absolute right-3 top-3 rounded-full bg-black/35 px-2 py-1 text-[10px] text-white/75 backdrop-blur-sm">
-                Photo: Anıl Karakaya / Pexels
-              </p>
-            </div>
-
-            <div className="absolute -left-3 top-8 max-w-[15rem] rounded-2xl border border-white/70 bg-white/95 p-4 shadow-xl shadow-slate-900/10 backdrop-blur sm:-left-8 sm:p-5">
-              <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-slate-950">Readiness checked first</p>
-                  <p className="mt-0.5 text-xs leading-5 text-slate-500">Domestic line, power, Wi-Fi, valve, and prior leaks.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute -bottom-5 right-3 rounded-2xl border border-white/20 bg-[#001a4e] px-5 py-4 text-white shadow-2xl shadow-blue-950/25 sm:-right-5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-sky-200">Systems supported</p>
-              <p className="mt-1 text-sm font-semibold">Flo • Phyn • StreamLabs</p>
-            </div>
           </div>
         </div>
       </div>
