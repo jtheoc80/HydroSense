@@ -84,9 +84,10 @@ const textareaControlClass = [
 const labelClass = "!text-[15px] !font-semibold !text-slate-800";
 
 const assessmentPoints = [
-  "Domestic-line compatibility",
-  "Power and Wi-Fi readiness",
-  "Device recommendation and written scope",
+  "Confirm service availability for your ZIP code",
+  "Review the domestic water line, power, Wi-Fi, and valve location",
+  "Identify and exclude fire-sprinkler and fire-suppression piping",
+  "Recommend a compatible device and issue a written proposal",
 ];
 
 export default function LeadForm({ city }: LeadFormProps) {
@@ -273,7 +274,7 @@ export default function LeadForm({ city }: LeadFormProps) {
 
   if (success) {
     return (
-      <section id="lead-form" className="scroll-mt-32 bg-[#001a4e] py-16 sm:py-20 lg:py-24 xl:py-28">
+      <section id="lead-form" className="scroll-mt-32 bg-[#001a4e] py-20 lg:py-28">
         <div className="section-container max-w-3xl text-center">
           <div className="rounded-[2rem] border border-white/20 bg-white p-10 shadow-2xl shadow-black/20 lg:p-14">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
@@ -312,23 +313,25 @@ export default function LeadForm({ city }: LeadFormProps) {
   }
 
   return (
-    <section id="lead-form" className="relative scroll-mt-32 overflow-hidden bg-[#001a4e] py-16 sm:py-20 lg:py-24 xl:py-28">
+    <section id="lead-form" className="relative scroll-mt-32 overflow-hidden bg-[#001a4e] py-20 lg:py-28">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -left-48 top-0 h-[30rem] w-[30rem] rounded-full bg-sky-400/10 blur-3xl" />
         <div className="absolute -right-40 bottom-0 h-[28rem] w-[28rem] rounded-full bg-cyan-300/10 blur-3xl" />
       </div>
 
       <div className="section-container relative">
-        <div className="grid items-start gap-12 lg:grid-cols-[0.84fr_1.16fr] lg:gap-20 xl:gap-24">
+        <div className="grid items-start gap-12 lg:grid-cols-[0.84fr_1.16fr] lg:gap-20">
           <div className="lg:sticky lg:top-36">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-300">
               Installation assessment
             </p>
-            <h2 className="mt-5 max-w-xl text-balance font-display text-4xl leading-tight tracking-[-0.025em] text-white sm:text-5xl">
-              Tell us where the home is.
+            <h2 className="mt-5 max-w-xl font-display text-4xl leading-tight tracking-[-0.025em] text-white sm:text-5xl">
+              Let us confirm the right installation path for your home.
             </h2>
-            <p data-lead-intro="true" className="mt-6 max-w-xl text-lg leading-8 text-blue-100/75">
-              We will confirm availability, review site conditions, and prepare a written proposal.
+            <p className="mt-6 max-w-xl text-lg leading-8 text-blue-100/75">
+              Start with your ZIP code and contact details. We will review the site
+              conditions, recommend a compatible system, and provide a written proposal
+              before anything is scheduled.
             </p>
 
             <div className="mt-9 space-y-5">
@@ -342,15 +345,18 @@ export default function LeadForm({ city }: LeadFormProps) {
               ))}
             </div>
 
-            <p className="mt-9 text-sm leading-6 text-blue-100/80">
-              Prefer to talk first?{" "}
+            <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-5">
+              <p className="text-sm font-semibold text-white">Prefer to talk first?</p>
               <TrackedPhoneLink
                 trackingLocation="lead_form_sidebar"
-                className="font-semibold text-sky-300 transition hover:text-sky-200"
+                className="mt-2 inline-flex items-center gap-2 text-lg font-semibold text-sky-300 transition hover:text-sky-200"
               >
-                Call (281) 694-5754.
+                (281) 694-5754
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m7 5 5 5-5 5" />
+                </svg>
               </TrackedPhoneLink>
-            </p>
+            </div>
           </div>
 
           <div className="rounded-[2rem] border border-white/15 bg-white p-6 shadow-[0_35px_100px_-40px_rgba(0,0,0,0.7)] sm:p-8 lg:p-10">
