@@ -295,6 +295,11 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
                 accepted: "bg-green-500/20 text-green-400",
                 declined: "bg-red-500/20 text-red-400",
                 expired: "bg-fog-400/15 text-fog-300",
+                deposit_paid: "bg-green-500/20 text-green-300",
+                install_scheduled: "bg-hydro-400/20 text-hydro-300",
+                install_complete: "bg-green-500/20 text-green-300",
+                deposit_refunded: "bg-signal-400/20 text-signal-400",
+                canceled: "bg-red-500/20 text-red-300",
               }[existing.status]
             }`}>
               {existing.status}
