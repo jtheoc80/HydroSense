@@ -4,16 +4,15 @@ import Image from "next/image";
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import TrackedPhoneLink from "./TrackedPhoneLink";
-import { installationScopeDisclosure } from "@/lib/installation-scope";
 
 const assuranceItems = [
   {
     title: "Compatibility reviewed",
-    body: "Domestic-line routing, pipe, valve, power, and Wi-Fi checked first.",
+    body: "Domestic line, valve, pipe, power, and Wi-Fi checked before scheduling.",
   },
   {
     title: "Written proposal",
-    body: "Device, scope, price, exclusions, and timing documented before work.",
+    body: "Device, installation scope, exclusions, price, and timing documented first.",
   },
   {
     title: "Tested handoff",
@@ -23,35 +22,37 @@ const assuranceItems = [
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#f5f8fc]">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-36 top-12 h-80 w-80 rounded-full bg-sky-200/40 blur-3xl" />
-        <div className="absolute right-0 top-0 h-[34rem] w-[34rem] rounded-full bg-blue-100/60 blur-3xl" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent" />
-      </div>
-
-      <div className="section-container relative py-14 sm:py-16 lg:py-20 xl:py-24">
-        <div className="grid gap-y-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-x-20 lg:gap-y-0">
-          <div>
+    <section className="bg-white">
+      <div className="mx-auto max-w-[90rem] px-5 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-14 lg:px-8 lg:pt-16 xl:pt-[4.5rem]">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:gap-14 xl:gap-20">
+          <div className="min-w-0">
             <Badge
               color="sky"
               className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]"
             >
-              MPL 43057 • Greater Houston
+              SMART WATER PROTECTION · GREATER HOUSTON
             </Badge>
 
-            <h1 className="mt-6 max-w-3xl text-balance font-display text-5xl leading-[0.98] tracking-[-0.035em] text-[#001a4e] sm:text-6xl lg:text-[3.5rem] xl:text-[4.6rem]">
-              Smart water shutoff installation,
-              <span className="block text-sky-600">done the right way.</span>
+            <h1 className="mt-5 font-display text-[3.25rem] leading-[0.98] tracking-[-0.045em] text-[#001a4e] sm:text-[3.75rem] lg:text-[3.5rem] xl:text-[3.75rem]">
+              <span data-heading-line="primary" className="block">
+                Smart water shutoff installation,
+              </span>
+              {" "}
+              <span data-heading-line="accent" className="block text-sky-600">
+                done the right way.
+              </span>
             </h1>
 
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 lg:text-xl">
-              HydroSense installs and configures Flo by Moen, Phyn Plus, and
-              StreamLabs systems for Houston-area homes, then tests the shutoff
-              and walks the homeowner through the finished system.
+            <p
+              data-hero-body="true"
+              className="mt-6 max-w-[660px] text-lg leading-8 text-slate-600 lg:text-xl"
+            >
+              HydroSense installs and configures Flo by Moen, Phyn Plus, and StreamLabs
+              systems for Houston-area homes, tests automatic shutoff operation, and walks
+              the homeowner through the finished system.
             </p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
               <Button
                 href="#lead-form"
                 color="cyan"
@@ -87,43 +88,62 @@ export default function Hero() {
                 Call (281) 694-5754
               </TrackedPhoneLink>
             </div>
-          </div>
 
-          <div className="relative mx-1 aspect-[4/3] w-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-slate-200 shadow-[0_22px_50px_-30px_rgba(15,23,42,0.32)] sm:mx-auto sm:w-full lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:aspect-[5/6] lg:max-w-none">
-            <Image
-              src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1400"
-              alt="Plumber tightening residential water-line fittings during an installation"
-              fill
-              priority
-              sizes="(min-width: 1280px) 560px, (min-width: 1024px) 44vw, (min-width: 640px) 576px, calc(100vw - 40px)"
-              className="object-cover object-[54%_center]"
-            />
-          </div>
+            <p
+              data-hero-scope="true"
+              className="mt-5 max-w-[660px] text-sm font-medium leading-6 text-slate-600"
+            >
+              Domestic household water is the standard scope. Irrigation is optional when
+              requested and quoted. Fire-sprinkler and fire-suppression piping are excluded.
+            </p>
 
-          <div className="lg:col-start-1 lg:row-start-2">
-            <div className="mt-10 grid gap-4 border-t border-slate-200 pt-7 sm:grid-cols-3">
-              {assuranceItems.map((item) => (
-                <div key={item.title}>
-                  <p className="text-sm font-semibold text-[#001a4e]">{item.title}</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-500">{item.body}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 rounded-2xl border border-sky-100 bg-sky-50/80 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sky-700">
-                Domestic water scope
-              </p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {installationScopeDisclosure}
-              </p>
-            </div>
-
-            <p className="mt-4 text-xs leading-5 text-slate-500">
-              Insurance eligibility and incentives vary by insurer and policy.
-              Confirm eligibility with your insurance agent before purchasing for a discount.
+            <p className="mt-3 max-w-[620px] text-xs leading-5 text-slate-500">
+              Insurance eligibility and incentives vary by insurer and policy. Confirm
+              eligibility with your insurance agent before purchasing for a discount.
             </p>
           </div>
+
+          <figure className="m-0 w-full max-w-[660px] justify-self-center lg:justify-self-end">
+            <Image
+              src="/images/hero/moen-flo-product-hero.jpg"
+              alt="Flo by Moen smart water shutoff device beside its mobile app interface"
+              width={996}
+              height={765}
+              priority
+              sizes="(min-width: 1280px) 600px, (min-width: 1024px) 46vw, 92vw"
+              className="h-auto w-full object-contain"
+            />
+            <figcaption className="mx-auto mt-2 max-w-xl text-center text-xs leading-5 text-slate-500">
+              Flo by Moen shown. Final device selection depends on the home&apos;s plumbing
+              and installation conditions.
+            </figcaption>
+          </figure>
+        </div>
+
+        <div
+          data-hero-proof="true"
+          className="mt-12 grid divide-y divide-slate-200 border-y border-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:mt-14"
+        >
+          {assuranceItems.map((item) => (
+            <div key={item.title} className="flex gap-3 px-1 py-5 sm:px-5 sm:first:pl-0 sm:last:pr-0 lg:py-6">
+              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-600">
+                <svg
+                  className="h-3.5 w-3.5"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m5.5 10 3 3 6-6" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-[#001a4e]">{item.title}</p>
+                <p className="mt-1 text-sm leading-6 text-slate-500">{item.body}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

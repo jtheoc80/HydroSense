@@ -12,15 +12,6 @@ const legacyEditorialAuditPaths = [
 ];
 
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.pexels.com",
-      },
-    ],
-  },
-
   async redirects() {
     return [
       {
