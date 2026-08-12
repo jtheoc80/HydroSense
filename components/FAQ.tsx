@@ -13,7 +13,7 @@ import TrackedPhoneLink from "./TrackedPhoneLink";
 
 export default function FAQ() {
   return (
-    <section id="faq" className="bg-white py-20 sm:py-24 lg:py-28">
+    <section id="faq" className="bg-white py-16 sm:py-20 lg:py-24 xl:py-28">
       <div className="section-container">
         <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <div>
@@ -21,39 +21,32 @@ export default function FAQ() {
               color="sky"
               className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]"
             >
-              Common questions
+              COMMON QUESTIONS
             </Badge>
             <Heading
               level={2}
-              className="!mt-5 !font-display !text-4xl !leading-[1.05] !tracking-[-0.025em] !text-[#001a4e] sm:!text-5xl"
+              className="!mt-5 !text-balance !font-display !text-4xl !leading-[1.05] !tracking-[-0.025em] !text-[#001a4e] sm:!text-5xl"
             >
-              Understand the installation before you schedule.
+              Questions before you schedule.
             </Heading>
-            <p className="mt-6 text-lg leading-8 text-slate-600">
-              The most important questions are about compatibility, site conditions,
-              who performs the work, what is included, and what happens after handoff.
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+              Review compatibility, scope, pricing, installation, and handoff.
             </p>
 
-            <div className="mt-9 overflow-hidden rounded-[1.75rem] bg-[#001a4e] p-7 text-white shadow-[0_28px_70px_-45px_rgba(0,26,78,0.8)] sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-200">Speak with HydroSense</p>
-              <p className="mt-3 font-display text-3xl leading-tight">A real conversation before a real proposal.</p>
-              <p className="mt-4 text-sm leading-6 text-slate-300">
-                Call to discuss the property, domestic-line location, device preference,
-                power, Wi-Fi, prior leaks, and appointment timing.
-              </p>
+            <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <TrackedPhoneLink
                 trackingLocation="faq"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#001a4e] transition hover:bg-sky-50"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-[#001a4e] shadow-sm transition hover:border-slate-400 hover:bg-slate-50"
               >
                 <svg className="h-4 w-4 text-sky-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.28 6.72 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.37c0-.52-.35-.97-.85-1.09l-4.42-1.11c-.44-.11-.9.06-1.17.42l-.97 1.29c-.28.38-.77.54-1.21.38a12.04 12.04 0 0 1-7.14-7.14c-.16-.44 0-.93.38-1.21l1.29-.97c.36-.27.53-.73.42-1.17L6.96 3.1A1.13 1.13 0 0 0 5.87 2.25H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
                 </svg>
-                (281) 694-5754
+                Call (281) 694-5754
               </TrackedPhoneLink>
               <Button
                 href="#lead-form"
                 outline
-                className="!mt-3 !w-full !rounded-full !border-white/20 !px-5 !py-3 !text-sm !font-semibold !text-white hover:!bg-white/10"
+                className="!rounded-full !border-slate-300 !bg-white !px-5 !py-3 !text-sm !font-semibold !text-[#001a4e] !shadow-sm hover:!border-slate-400 hover:!bg-slate-50"
               >
                 Request an assessment
               </Button>

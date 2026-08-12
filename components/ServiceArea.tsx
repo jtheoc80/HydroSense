@@ -18,19 +18,24 @@ const cityList = [
 
 export default function ServiceArea() {
   return (
-    <section id="service-area" className="bg-[#f4f7fb] py-20 sm:py-24 lg:py-28">
+    <section id="service-area" className="bg-[#f4f7fb] py-16 sm:py-20 lg:py-24 xl:py-28">
       <div className="section-container">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
-            <Badge color="sky" className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]">
-              Greater Houston coverage
+            <Badge
+              color="sky"
+              className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]"
+            >
+              GREATER HOUSTON COVERAGE
             </Badge>
-            <Heading level={2} className="!mt-5 !text-balance !font-display !text-4xl !leading-[1.05] !tracking-[-0.025em] !text-[#001a4e] sm:!text-5xl">
-              Local installation with a clear service boundary.
+            <Heading
+              level={2}
+              className="!mt-5 !text-balance !font-display !text-4xl !leading-[1.05] !tracking-[-0.025em] !text-[#001a4e] sm:!text-5xl"
+            >
+              Serving Greater Houston.
             </Heading>
-            <p className="mt-6 text-lg leading-8 text-slate-600">
-              Submit the property ZIP code so HydroSense can confirm current appointment availability,
-              travel requirements, and the right installation path for the home.
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+              Enter your ZIP code to confirm availability and travel requirements.
             </p>
           </div>
           <Button
@@ -45,7 +50,10 @@ export default function ServiceArea() {
           </Button>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:gap-8">
+        <div
+          data-service-grid="true"
+          className="mt-12 grid gap-6 lg:grid-cols-[0.72fr_1.28fr] lg:gap-8"
+        >
           <div className="relative overflow-hidden rounded-[2rem] bg-[#001a4e] p-7 text-white shadow-[0_30px_80px_-45px_rgba(0,26,78,0.8)] sm:p-9 lg:p-10">
             <div className="pointer-events-none absolute inset-0 opacity-25">
               <div className="absolute -right-16 -top-20 h-64 w-64 rounded-full border border-sky-200/40" />
@@ -53,30 +61,14 @@ export default function ServiceArea() {
               <div className="absolute bottom-0 left-0 h-56 w-56 -translate-x-1/3 translate-y-1/3 rounded-full bg-sky-400/20 blur-3xl" />
             </div>
 
-            <div className="relative">
-              <span className="inline-flex rounded-full border border-sky-200/20 bg-sky-200/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-sky-200">
-                Primary market
-              </span>
-              <h3 className="mt-6 font-display text-5xl leading-none">Houston</h3>
-              <p className="mt-4 max-w-md text-base leading-7 text-slate-300">
-                Whole-home domestic-water shutoff installation across Houston and the surrounding metro,
-                subject to site access and current scheduling capacity.
+            <div className="relative flex h-full flex-col items-start">
+              <h3 className="font-display text-5xl leading-none">Houston</h3>
+              <p className="mt-5 max-w-md text-base leading-7 text-slate-300">
+                Domestic-water shutoff installation across Houston and the surrounding metro, subject to site access and scheduling.
               </p>
-
-              <div className="mt-8 grid grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
-                  <p className="text-2xl font-semibold text-white">10</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-400">Core metro markets</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
-                  <p className="text-2xl font-semibold text-white">1 process</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-400">Consistent scope</p>
-                </div>
-              </div>
-
               <a
                 href="/service-area/houston"
-                className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-sky-200 transition hover:text-white"
+                className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-sky-200 transition hover:text-white lg:mt-auto lg:pt-10"
               >
                 Houston installation details
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -86,14 +78,14 @@ export default function ServiceArea() {
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {cityList.filter((slug) => slug !== "houston").map((slug) => {
               const city = cities[slug];
               return (
                 <a
                   key={slug}
                   href={`/service-area/${slug}`}
-                  className="group rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.45)] transition duration-200 hover:-translate-y-1 hover:border-sky-200 hover:shadow-[0_24px_55px_-32px_rgba(2,132,199,0.28)]"
+                  className="group rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.45)] transition duration-200 hover:-translate-y-1 hover:border-sky-200 hover:shadow-[0_24px_55px_-32px_rgba(2,132,199,0.28)] sm:p-6"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -108,11 +100,10 @@ export default function ServiceArea() {
                   </div>
                   <div className="mt-5 flex flex-wrap gap-2">
                     {city.zips.slice(0, 3).map((zip) => (
-                      <span key={zip} className="rounded-full bg-slate-100 px-2.5 py-1 font-mono text-xs text-slate-600">{zip}</span>
+                      <span key={zip} className="rounded-full bg-slate-100 px-2.5 py-1 font-mono text-xs text-slate-600">
+                        {zip}
+                      </span>
                     ))}
-                    {city.zips.length > 3 && (
-                      <span className="rounded-full bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-700">+ nearby</span>
-                    )}
                   </div>
                 </a>
               );

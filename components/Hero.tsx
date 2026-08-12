@@ -8,24 +8,33 @@ import TrackedPhoneLink from "./TrackedPhoneLink";
 const assuranceItems = [
   {
     title: "Compatibility reviewed",
-    body: "Domestic line, valve, pipe, power, and Wi-Fi checked before scheduling.",
+    body: "Line, valve, pipe, power, and Wi-Fi.",
   },
   {
     title: "Written proposal",
-    body: "Device, installation scope, exclusions, price, and timing documented first.",
+    body: "Scope, price, exclusions, and timing.",
   },
   {
     title: "Tested handoff",
-    body: "App setup, shutoff-cycle testing, and homeowner guidance included.",
+    body: "App setup, shutoff test, and guidance.",
   },
+];
+
+const scopeLabels = [
+  "Domestic water standard",
+  "Irrigation quoted separately",
+  "Fire systems excluded",
 ];
 
 export default function Hero() {
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-[90rem] px-5 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-14 lg:px-8 lg:pt-16 xl:pt-[4.5rem]">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:gap-14 xl:gap-20">
-          <div className="min-w-0">
+      <div className="mx-auto max-w-[96rem] px-6 pb-16 pt-[4.5rem] sm:pb-20 sm:pt-20 lg:px-8 xl:pb-[5.5rem] xl:pt-24">
+        <div
+          data-hero-grid="true"
+          className="grid items-center gap-14 xl:grid-cols-[minmax(0,1.12fr)_minmax(420px,0.88fr)] xl:gap-20 2xl:gap-24"
+        >
+          <div data-hero-copy="true" className="min-w-0 max-w-[760px]">
             <Badge
               color="sky"
               className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]"
@@ -33,11 +42,10 @@ export default function Hero() {
               SMART WATER PROTECTION · GREATER HOUSTON
             </Badge>
 
-            <h1 className="mt-5 font-display text-[3.25rem] leading-[0.98] tracking-[-0.045em] text-[#001a4e] sm:text-[3.75rem] lg:text-[3.5rem] xl:text-[3.75rem]">
+            <h1 className="mt-7 font-display text-[3.25rem] leading-[1.04] tracking-[-0.025em] text-[#001a4e] sm:text-[4rem] xl:text-[3.5rem] min-[1400px]:text-[4rem] 2xl:text-[4.5rem]">
               <span data-heading-line="primary" className="block">
                 Smart water shutoff installation,
-              </span>
-              {" "}
+              </span>{" "}
               <span data-heading-line="accent" className="block text-sky-600">
                 done the right way.
               </span>
@@ -45,14 +53,14 @@ export default function Hero() {
 
             <p
               data-hero-body="true"
-              className="mt-6 max-w-[660px] text-lg leading-8 text-slate-600 lg:text-xl"
+              className="mt-7 max-w-[660px] text-lg leading-8 text-slate-600 sm:mt-8 lg:text-xl"
             >
-              HydroSense installs and configures Flo by Moen, Phyn Plus, and StreamLabs
-              systems for Houston-area homes, tests automatic shutoff operation, and walks
-              the homeowner through the finished system.
+              HydroSense installs Flo by Moen, Phyn Plus, and StreamLabs for
+              Houston-area homes. Every project includes app setup, shutoff testing, and
+              homeowner handoff.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button
                 href="#lead-form"
                 color="cyan"
@@ -89,43 +97,52 @@ export default function Hero() {
               </TrackedPhoneLink>
             </div>
 
-            <p
+            <div
               data-hero-scope="true"
-              className="mt-5 max-w-[660px] text-sm font-medium leading-6 text-slate-600"
+              className="mt-7 flex max-w-[720px] flex-wrap gap-2.5"
             >
-              Domestic household water is the standard scope. Irrigation is optional when
-              requested and quoted. Fire-sprinkler and fire-suppression piping are excluded.
-            </p>
-
-            <p className="mt-3 max-w-[620px] text-xs leading-5 text-slate-500">
-              Insurance eligibility and incentives vary by insurer and policy. Confirm
-              eligibility with your insurance agent before purchasing for a discount.
-            </p>
+              {scopeLabels.map((label) => (
+                <span
+                  key={label}
+                  className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
+                  {label}
+                </span>
+              ))}
+              <span className="sr-only">
+                HydroSense installs on the domestic household water line. Irrigation is
+                optional when requested and quoted. Fire-sprinkler and fire-suppression
+                piping are excluded.
+              </span>
+            </div>
           </div>
 
-          <figure className="m-0 w-full max-w-[660px] justify-self-center lg:justify-self-end">
+          <figure className="m-0 w-full max-w-[660px] justify-self-center xl:max-w-[640px] xl:justify-self-end">
             <Image
               src="/images/hero/moen-flo-product-hero.jpg"
               alt="Flo by Moen smart water shutoff device beside its mobile app interface"
               width={996}
               height={765}
               priority
-              sizes="(min-width: 1280px) 600px, (min-width: 1024px) 46vw, 92vw"
+              sizes="(min-width: 1280px) 600px, (min-width: 768px) 660px, calc(100vw - 48px)"
               className="h-auto w-full object-contain"
             />
             <figcaption className="mx-auto mt-2 max-w-xl text-center text-xs leading-5 text-slate-500">
-              Flo by Moen shown. Final device selection depends on the home&apos;s plumbing
-              and installation conditions.
+              Flo by Moen shown.
             </figcaption>
           </figure>
         </div>
 
         <div
           data-hero-proof="true"
-          className="mt-12 grid divide-y divide-slate-200 border-y border-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:mt-14"
+          className="mt-14 grid divide-y divide-slate-200 border-y border-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0 xl:mt-16"
         >
           {assuranceItems.map((item) => (
-            <div key={item.title} className="flex gap-3 px-1 py-5 sm:px-5 sm:first:pl-0 sm:last:pr-0 lg:py-6">
+            <div
+              key={item.title}
+              className="flex gap-3 px-1 py-6 sm:px-6 sm:first:pl-0 sm:last:pr-0 xl:py-7"
+            >
               <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-600">
                 <svg
                   className="h-3.5 w-3.5"

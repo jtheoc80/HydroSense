@@ -1,105 +1,93 @@
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import { Heading } from "./catalyst/heading";
-import { compatibilityReviewScope } from "@/lib/installation-scope";
 
 const steps = [
   {
     number: "01",
-    eyebrow: "Before a price is issued",
-    title: "We assess the home",
-    body: compatibilityReviewScope,
-    detail: "The domestic water line is the standard scope; fire-suppression piping stays outside the installation.",
+    title: "Assess the home",
+    body: "We check the domestic line, valve, pipe, power, Wi-Fi, and installation location.",
   },
   {
     number: "02",
-    eyebrow: "Before work is scheduled",
-    title: "You receive a written proposal",
-    body: "The proposal identifies the recommended device, exact installation scope, required fittings, price, exclusions, and expected appointment duration.",
-    detail: "Any irrigation work must be specifically requested and quoted; the proposal confirms whether separate equipment is required.",
+    title: "Approve the scope",
+    body: "You receive the device recommendation, final price, exclusions, and timing in writing.",
   },
   {
     number: "03",
-    eyebrow: "Before we leave",
-    title: "We install, test, and hand off",
-    body: "The system is installed, connected to the manufacturer app, tested through a shutoff cycle, and handed over with operating guidance and an itemized installation record.",
-    detail: "The homeowner sees the system operate and knows what to do next.",
+    title: "Install and test",
+    body: "We configure the app, run a shutoff test, and complete the homeowner handoff.",
   },
 ];
 
 export default function CustomerJourney() {
   return (
-    <section id="customer-journey" className="bg-white py-20 sm:py-24 lg:py-28">
+    <section id="customer-journey" className="bg-[#f8fafc] py-16 sm:py-20 lg:py-24 xl:py-28">
       <div className="section-container">
-        <div className="grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
-          <div className="lg:sticky lg:top-36 lg:self-start">
-            <Badge color="sky" className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]">
-              A controlled installation process
-            </Badge>
-            <Heading level={2} className="!mt-5 !text-balance !font-display !text-4xl !leading-[1.05] !tracking-[-0.025em] !text-[#001a4e] sm:!text-5xl">
-              Clear decisions before the water is turned off.
-            </Heading>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-              HydroSense treats the installation like a small residential project,
-              not an impulse service call. Site conditions are understood first,
-              the price is documented second, and the work is tested before handoff.
-            </p>
+        <div className="max-w-3xl">
+          <Badge
+            color="sky"
+            className="!rounded-full !px-3 !py-1 !text-[11px] !font-semibold !uppercase !tracking-[0.15em]"
+          >
+            HOW IT WORKS
+          </Badge>
+          <Heading
+            level={2}
+            className="!mt-5 !text-balance !font-display !text-4xl !leading-[1.05] !tracking-[-0.025em] !text-[#001a4e] sm:!text-5xl"
+          >
+            From assessment to tested handoff.
+          </Heading>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+            We assess the home, document the scope, then install and test the system.
+          </p>
+        </div>
 
-            <div className="mt-8 rounded-2xl border border-sky-100 bg-sky-50 p-5">
-              <div className="flex gap-3">
-                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-sky-600 shadow-sm">
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-[#001a4e]">Typical site visit</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    Domestic-line review, interior water-fixture walkthrough, power and Wi-Fi check,
-                    installation location review, and next-step confirmation.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <Button
-              href="#lead-form"
-              outline
-              className="!mt-8 !rounded-full !border-slate-300 !bg-white !px-5 !py-3 !text-sm !font-semibold !text-[#001a4e] !shadow-sm hover:!border-slate-400 hover:!bg-slate-50"
+        <ol
+          data-process-timeline="true"
+          className="mt-12 divide-y divide-slate-200 border-y border-slate-200 lg:mt-14 lg:grid lg:grid-cols-3 lg:divide-x lg:divide-y-0"
+        >
+          {steps.map((step) => (
+            <li
+              key={step.number}
+              className="grid grid-cols-[3.5rem_1fr] gap-5 py-8 lg:block lg:px-8 lg:py-10 lg:first:pl-0 lg:last:pr-0"
             >
-              Start with the assessment
-              <svg data-slot="icon" className="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m7 5 5 5-5 5" />
-              </svg>
-            </Button>
-          </div>
+              <span className="font-mono text-sm font-semibold tracking-[0.14em] text-sky-600">
+                {step.number}
+              </span>
+              <div>
+                <h3 className="text-xl font-semibold tracking-[-0.015em] text-[#001a4e] lg:text-2xl">
+                  {step.title}
+                </h3>
+                <p className="mt-3 max-w-md text-base leading-7 text-slate-600">
+                  {step.body}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
 
-          <ol className="relative space-y-5 before:absolute before:bottom-12 before:left-7 before:top-12 before:w-px before:bg-slate-200 sm:before:left-9">
-            {steps.map((step) => (
-              <li
-                key={step.number}
-                className="relative rounded-[1.75rem] border border-slate-200 bg-[#f8fafc] p-6 shadow-[0_18px_50px_-35px_rgba(15,23,42,0.45)] sm:p-8"
-              >
-                <div className="flex gap-5 sm:gap-7">
-                  <span className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#001a4e] font-mono text-sm font-semibold text-white shadow-lg shadow-blue-950/15 sm:h-[4.5rem] sm:w-[4.5rem] sm:text-base">
-                    {step.number}
-                  </span>
-                  <div className="min-w-0 pt-1">
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600">
-                      {step.eyebrow}
-                    </p>
-                    <h3 className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-slate-950">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 text-base leading-7 text-slate-600">{step.body}</p>
-                    <p className="mt-4 border-l-2 border-sky-300 pl-4 text-sm font-medium leading-6 text-slate-700">
-                      {step.detail}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ol>
+        <div className="mt-8 flex flex-col items-start gap-7 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-2xl text-sm font-medium leading-6 text-slate-600">
+            Irrigation is optional when quoted. Fire-suppression piping is excluded.
+          </p>
+          <Button
+            href="#lead-form"
+            outline
+            className="!shrink-0 !rounded-full !border-slate-300 !bg-white !px-5 !py-3 !text-sm !font-semibold !text-[#001a4e] !shadow-sm hover:!border-slate-400 hover:!bg-slate-50"
+          >
+            Start with the assessment
+            <svg
+              data-slot="icon"
+              className="h-5 w-5 shrink-0"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m7 5 5 5-5 5" />
+            </svg>
+          </Button>
         </div>
       </div>
     </section>
