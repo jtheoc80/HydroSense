@@ -6,6 +6,8 @@ import {
   protectedNoindexPaths,
 } from "../../lib/seo/indexable-pages";
 
+type JsonLd = Record<string, unknown>;
+
 const browserRoutes = [
   "/",
   "/pricing",
@@ -18,6 +20,77 @@ const browserRoutes = [
   "/service-area/katy",
   "/agent-ready",
 ] as const;
+
+const rawHtmlRoutes = [
+  "/",
+  "/pricing",
+  "/devices/moen-flo",
+  "/service-area/houston",
+  "/agent-ready",
+] as const;
+
+function parseRawJsonLd(html: string): JsonLd[] {
+  return Array.from(
+    html.matchAll(
+      /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
+    ),
+    (match) => JSON.parse(match[1]) as JsonLd,
+  );
+}
+
+test("structured data is present in raw server HTML before hydration", async ({ request }) => {
+  const structuredDataByRoute = new Map<string, JsonLd[]>();
+
+  for (const route of rawHtmlRoutes) {
+    const response = await request.get(route);
+    expect(response.status(), route).toBe(200);
+    expect(response.headers()["content-type"], route).toContain("text/html");
+
+    const html = await response.text();
+    expect(html, `${route} JSON-LD marker`).toContain("application/ld+json");
+
+    const jsonLd = parseRawJsonLd(html);
+    expect(jsonLd.length, `${route} raw JSON-LD blocks`).toBeGreaterThan(0);
+    structuredDataByRoute.set(route, jsonLd);
+  }
+
+  const homepageJsonLd = structuredDataByRoute.get("/") ?? [];
+  const businessEntities = homepageJsonLd.filter(
+    (item) => item["@id"] === BUSINESS_ENTITY_ID,
+  );
+  expect(businessEntities).toHaveLength(1);
+  expect(businessEntities[0]["@type"]).toEqual(["LocalBusiness", "Plumber"]);
+  expect(businessEntities[0]).toMatchObject({
+    name: "HydroSense Texas",
+    hasCredential: { identifier: "MPL 43057" },
+  });
+
+  const pricingJsonLd = structuredDataByRoute.get("/pricing") ?? [];
+  const pricingService = pricingJsonLd.find(
+    (item) => item["@type"] === "Service" && item.hasOfferCatalog,
+  );
+  expect(pricingService).toBeDefined();
+  expect(pricingService?.provider).toEqual({ "@id": BUSINESS_ENTITY_ID });
+  const offerCatalog = pricingService?.hasOfferCatalog as
+    | { "@type"?: unknown; itemListElement?: unknown[] }
+    | undefined;
+  expect(offerCatalog?.["@type"]).toBe("OfferCatalog");
+  expect(offerCatalog?.itemListElement).toHaveLength(9);
+
+  for (const route of [
+    "/pricing",
+    "/devices/moen-flo",
+    "/service-area/houston",
+    "/agent-ready",
+  ]) {
+    expect(
+      (structuredDataByRoute.get(route) ?? []).some(
+        (item) => item["@type"] === "BreadcrumbList",
+      ),
+      `${route} raw BreadcrumbList`,
+    ).toBe(true);
+  }
+});
 
 for (const route of browserRoutes) {
   test(`${route} exposes canonical intent without viewport overflow`, async ({ page }) => {

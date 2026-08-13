@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Script from "next/script";
 import { absoluteSearchUrl } from "@/lib/seo/indexable-pages";
 
 export interface BreadcrumbItem {
@@ -39,10 +38,12 @@ export default function Breadcrumbs({
 
   return (
     <>
-      <Script
+      <script
         id={`breadcrumb-${trailId}`}
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+        }}
       />
       <nav aria-label="Breadcrumb" className={`text-sm ${className}`.trim()}>
         <ol className="flex flex-wrap items-center gap-y-1">

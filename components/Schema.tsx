@@ -1,4 +1,3 @@
-import Script from "next/script";
 import {
   BUSINESS_ENTITY_ID,
   SITE_ORIGIN,
@@ -60,15 +59,19 @@ export default function Schema() {
 
   return (
     <>
-      <Script
+      <script
         id="hydrosense-business-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusiness).replace(/</g, "\\u003c"),
+        }}
       />
-      <Script
+      <script
         id="hydrosense-service-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(service).replace(/</g, "\\u003c"),
+        }}
       />
     </>
   );
