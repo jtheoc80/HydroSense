@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { devices, deviceSlugs, deviceList } from "@/lib/devices";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import CriticalBar from "@/components/CriticalBar";
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
@@ -67,31 +69,6 @@ export default function DevicePage({ params }: PageProps) {
 
   const otherDevices = deviceList.filter((item) => item.slug !== device.slug);
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://hydrosensetx.com",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Devices",
-        item: "https://hydrosensetx.com/devices",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: device.name,
-        item: `https://hydrosensetx.com/devices/${device.slug}`,
-      },
-    ],
-  };
-
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -123,10 +100,6 @@ export default function DevicePage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       <script
@@ -139,20 +112,14 @@ export default function DevicePage({ params }: PageProps) {
 
       <main>
         <div className="section-container pt-8">
-          <nav aria-label="Breadcrumb" className="text-sm text-fog-400">
-            <a href="/" className="hover:text-fog-200 transition-colors">
-              Home
-            </a>
-            <span className="mx-2">/</span>
-            <a
-              href="/devices"
-              className="hover:text-fog-200 transition-colors"
-            >
-              Devices
-            </a>
-            <span className="mx-2">/</span>
-            <span className="text-fog-200">{device.name}</span>
-          </nav>
+          <Breadcrumbs
+            trailId={`device-${device.slug}`}
+            items={[
+              { name: "Home", href: "/" },
+              { name: "Devices", href: "/devices" },
+              { name: device.name, href: `/devices/${device.slug}` },
+            ]}
+          />
         </div>
 
         <section className="py-16 lg:py-24">
@@ -163,7 +130,7 @@ export default function DevicePage({ params }: PageProps) {
                   Houston-area installation
                 </p>
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08] text-fog-50 mb-5">
-                  {device.name} installation
+                  {device.name} installation in Houston
                 </h1>
                 <p className="text-xl text-fog-200 leading-relaxed mb-5">
                   {device.tagline}
@@ -495,6 +462,25 @@ export default function DevicePage({ params }: PageProps) {
                   </p>
                 </a>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 lg:py-20">
+          <div className="section-container">
+            <div className="grid gap-6 sm:grid-cols-3">
+              <Link href="/pricing" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Published pricing</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">See device-and-install rates by line size</p>
+              </Link>
+              <Link href="#lead-form" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Compatibility assessment</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Request a home and device fit review</p>
+              </Link>
+              <Link href="/service-area" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Greater Houston coverage</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Check smart shutoff installation areas</p>
+              </Link>
             </div>
           </div>
         </section>

@@ -332,7 +332,7 @@ export default function DevicesPage() {
                 </p>
               </a>
               <a
-                href="/#pricing"
+                href="/pricing"
                 className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
               >
                 <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">

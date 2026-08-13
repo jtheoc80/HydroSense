@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cities, cityKeys } from "@/lib/cities";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import CriticalBar from "@/components/CriticalBar";
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
@@ -59,16 +61,6 @@ export default function CityPage({ params }: PageProps) {
     },
   ];
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://hydrosensetx.com" },
-      { "@type": "ListItem", position: 2, name: "Service Area", item: "https://hydrosensetx.com/service-area" },
-      { "@type": "ListItem", position: 3, name: city.name, item: `https://hydrosensetx.com/service-area/${city.slug}` },
-    ],
-  };
-
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -92,7 +84,6 @@ export default function CityPage({ params }: PageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <CityViewEvent cityName={city.name} />
@@ -103,13 +94,15 @@ export default function CityPage({ params }: PageProps) {
         <section className="relative py-16 hydro-mesh lg:py-24">
           <div className="dot-grid pointer-events-none absolute inset-0" />
           <div className="section-container relative">
-            <nav className="mb-6 text-xs text-fog-400" aria-label="Breadcrumb">
-              <a href="/" className="transition-colors hover:text-fog-200">Home</a>
-              <span className="mx-2">/</span>
-              <a href="/service-area" className="transition-colors hover:text-fog-200">Service area</a>
-              <span className="mx-2">/</span>
-              <span className="text-fog-200">{city.name}</span>
-            </nav>
+            <Breadcrumbs
+              trailId={`city-${city.slug}`}
+              className="mb-6 text-xs"
+              items={[
+                { name: "Home", href: "/" },
+                { name: "Service area", href: "/service-area" },
+                { name: city.name, href: `/service-area/${city.slug}` },
+              ]}
+            />
             <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-hydro-400">
               Professional installation • {city.name}, Texas
             </p>
@@ -231,18 +224,18 @@ export default function CityPage({ params }: PageProps) {
         <section className="bg-ink-950/50 py-16 lg:py-20">
           <div className="section-container">
             <div className="grid gap-6 sm:grid-cols-3">
-              <a href="/devices" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
-                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Devices</p>
-                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Compare smart shutoff systems</p>
-              </a>
-              <a href="/service-area" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
-                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Coverage</p>
-                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">View all service areas</p>
-              </a>
-              <a href="/blog" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
-                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Guides</p>
-                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Read homeowner resources</p>
-              </a>
+              <Link href="/pricing" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Published pricing</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">See device-and-install rates by line size</p>
+              </Link>
+              <Link href="/devices" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Smart shutoff devices</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Compare compatible installation options</p>
+              </Link>
+              <Link href="#lead-form" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Compatibility assessment</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">Request a {city.name} home assessment</p>
+              </Link>
             </div>
           </div>
         </section>
