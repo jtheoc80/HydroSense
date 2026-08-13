@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import { Heading } from "./catalyst/heading";
+import { formatUsd, getFixedService, installationServices } from "@/lib/service-catalog/catalog";
 
 const installFeatures = [
   "Compatible smart shutoff device",
@@ -18,6 +19,16 @@ const careFeatures = [
   "Power and Wi-Fi connectivity check",
   "Documentation assistance",
 ];
+
+const lineSizeLabels = {
+  "0.75": "3/4 in",
+  "1.00": "1 in",
+  "1.25": "1 1/4 in",
+  "1.50": "1 1/2 in",
+  "2.00": "2 in",
+} as const;
+
+const careService = getFixedService("HS-CARE-ANNUAL-001");
 
 function CheckItem({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
@@ -63,8 +74,8 @@ export default function Pricing() {
                 <h3 className="mt-3 font-display text-3xl text-[#001a4e] sm:text-4xl">Professional installation</h3>
               </div>
               <div className="sm:text-right">
-                <p className="font-mono text-4xl font-semibold tracking-[-0.04em] text-[#001a4e]">$999</p>
-                <p className="mt-1 text-sm text-slate-500">starting price</p>
+                <p className="font-mono text-4xl font-semibold tracking-[-0.04em] text-[#001a4e]">5 rates</p>
+                <p className="mt-1 text-sm text-slate-500">by incoming line size</p>
               </div>
             </div>
 
@@ -74,6 +85,17 @@ export default function Pricing() {
               or required repairs are priced in the written proposal.
             </p>
 
+            <div className="mt-7 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 sm:grid-cols-5">
+              {installationServices.map((service) => (
+                <div key={service.id} className="bg-slate-50 px-3 py-4 text-center">
+                  <p className="text-xs font-semibold text-slate-500">{lineSizeLabels[service.incomingLineSize]}</p>
+                  <p className="mt-1 font-mono text-base font-semibold text-[#001a4e]">
+                    {service.price.type === "fixed" ? formatUsd(service.price.amount) : null}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             <ul className="mt-8 grid gap-4 sm:grid-cols-2">
               {installFeatures.map((feature) => (
                 <CheckItem key={feature} light>{feature}</CheckItem>
@@ -81,11 +103,11 @@ export default function Pricing() {
             </ul>
 
             <Button
-              href="#lead-form"
+              href="/pricing"
               color="cyan"
               className="!mt-9 !w-full !rounded-full !border-transparent !bg-hydro-400 !px-6 !py-3.5 !text-sm !font-semibold !text-ink-950 !shadow-lg !shadow-sky-500/15 hover:!bg-hydro-300 sm:!w-auto"
             >
-              Request a written proposal
+              See all published pricing
             </Button>
           </article>
 
@@ -96,8 +118,8 @@ export default function Pricing() {
                 <h3 className="mt-3 font-display text-3xl text-white">Annual system care</h3>
               </div>
               <div className="text-right">
-                <p className="font-mono text-3xl font-semibold tracking-[-0.03em] text-white">$99</p>
-                <p className="mt-1 text-xs text-slate-400">per year</p>
+                <p className="font-mono text-3xl font-semibold tracking-[-0.03em] text-white">{formatUsd(careService.price.amount)}</p>
+                <p className="mt-1 text-xs text-slate-400">per {careService.price.unit}</p>
               </div>
             </div>
 

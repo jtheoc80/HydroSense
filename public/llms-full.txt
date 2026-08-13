@@ -41,10 +41,23 @@ The certificate is the product. The device is the hardware. A smart water shutof
 
 ## Pricing
 
-- Basic: $9/mo or $99/yr (install + certificate)
-- Standard: $19/mo or $199/yr (+ annual renewal + monitoring)
-- Premier: $39/mo or $399/yr (+ inspection + liaison + warranty)
-- Standalone install from $999
+Catalog version: 2026-08-12.1
+Effective date: 2026-08-12
+Currency: USD
+
+- HS-INSTALL-075-001: 3/4-inch smart shutoff installation — $999 per project
+- HS-INSTALL-100-001: 1-inch smart shutoff installation — $1,450 per project
+- HS-INSTALL-125-001: 1 1/4-inch smart shutoff installation — $1,875 per project
+- HS-INSTALL-150-001: 1 1/2-inch smart shutoff installation — $2,638 per project
+- HS-INSTALL-200-001: 2-inch commercial-grade smart shutoff installation — $3,425 per project
+- HS-SENSOR-ADD-001: Additional compatible sensor — $75 per each
+- HS-BATTERY-ADD-001: Compatible battery backup — $475 per system
+- HS-CARE-ANNUAL-001: Annual system care — $99 per year
+- HS-SITE-ASSESS-001: Installation compatibility assessment — $0 per assessment
+- HS-IRRIGATION-ADD-001: Irrigation shutoff scope — Quote required
+- HS-CORRECTIVE-001: Corrective plumbing — Quote required
+
+Every line-size installation price includes one compatible smart shutoff device. The 2-inch rate includes a commercial-grade device. Annual care is optional. Irrigation and corrective plumbing require a written quote. Fire-sprinkler and fire-suppression piping are always excluded. A final written proposal is required before work.
 
 ## Carriers
 
@@ -482,5 +495,9 @@ A: Yes, Livingston, Onalaska, Coldspring, and surrounding communities.
 
 - Phone: (281) 694-5754
 - Website: https://hydrosensetx.com
+- Public pricing: https://hydrosensetx.com/pricing
+- Service catalog: https://hydrosensetx.com/service-catalog.json
+- OpenAPI: https://hydrosensetx.com/openapi.json
+- A2A Agent Card: https://hydrosensetx.com/.well-known/agent-card.json
 - License: Texas Registered Master Plumber
 - Company: Lead Ledger Pro LLC
