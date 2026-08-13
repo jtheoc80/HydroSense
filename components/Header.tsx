@@ -13,6 +13,7 @@ import TrackedPhoneLink from "./TrackedPhoneLink";
 const navLinks = [
   { label: "How it works", href: "/#customer-journey" },
   { label: "Devices", href: "/devices" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Service areas", href: "/service-area" },
   { label: "Guides", href: "/blog" },
   { label: "FAQ", href: "/#faq" },

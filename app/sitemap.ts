@@ -5,6 +5,8 @@ import { deviceSlugs } from "@/lib/devices";
 const staticPaths = [
   "",
   "/devices",
+  "/pricing",
+  "/agent-ready",
   "/service-area",
   "/blog",
   "/blog/slab-leaks-houston-clay-soil",
