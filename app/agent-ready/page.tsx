@@ -69,7 +69,7 @@ export default function AgentReadyPage() {
                 ["Exact standard prices", "Five incoming-line rates include one compatible device and standard installation."],
                 ["Explicit scope", "Domestic water is standard; irrigation is quoted; fire-suppression piping is excluded."],
                 ["Deterministic ZIP checks", "Known ZIPs match markets; unknown ZIPs request manual review, never automatic rejection."],
-                ["Deterministic estimates", "Only confirmed fixed items enter the total; missing and exceptional conditions stay visible."],
+                ["Separated totals", "Installation, confirmed sensors, and confirmed battery form the one-time total. Optional annual care is returned separately as $99 every P1Y."],
               ].map(([title, copy]) => (
                 <article key={title} className="bg-white p-7">
                   <h3 className="font-semibold text-[#001a4e]">{title}</h3>
@@ -77,6 +77,9 @@ export default function AgentReadyPage() {
                 </article>
               ))}
             </div>
+            <p className="mt-6 text-sm leading-6 text-slate-600">
+              <code>oneTimeCatalogTotal</code> never includes annual care. <code>recurringSelections</code> carries the optional $99 annual service, while <code>publishedCatalogTotal</code> remains a backward-compatible alias for the one-time total only.
+            </p>
           </div>
         </section>
 
@@ -125,7 +128,7 @@ export default function AgentReadyPage() {
                 {[
                   ["get_service_catalog", "Return active public services and scope."],
                   ["check_serviceability", "Match a ZIP or request manual service-area review."],
-                  ["estimate_standard_installation", "Calculate confirmed catalog items and expose review conditions."],
+                  ["estimate_standard_installation", "Calculate a one-time catalog total, return recurring selections separately, and expose review conditions."],
                 ].map(([skill, copy], index) => (
                   <li key={skill} className="grid grid-cols-[2rem_1fr] gap-3">
                     <span className="font-mono text-sm text-sky-300">0{index + 1}</span>

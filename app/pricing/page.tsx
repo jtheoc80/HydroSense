@@ -106,7 +106,7 @@ export default function PricingPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700">Published options</p>
               <h2 className="mt-3 font-display text-4xl tracking-[-0.025em] text-[#001a4e]">Fixed add-ons and a free first step.</h2>
               <p className="mt-5 text-base leading-7 text-slate-600">
-                Add-ons enter a total only when request and compatibility rules are confirmed. Annual care is optional.
+                Confirmed sensors and battery backup may enter the one-time project total. Optional annual care is recurring at $99/year and is always shown separately.
               </p>
             </div>
             <div className="divide-y divide-slate-200 border-y border-slate-200">

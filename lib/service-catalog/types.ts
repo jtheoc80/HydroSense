@@ -84,3 +84,38 @@ export interface ConditionalAddOn {
   readonly possibleUnitPrice: number;
   readonly reason: string;
 }
+
+export interface RecurringSelection {
+  readonly serviceId: "HS-CARE-ANNUAL-001";
+  readonly name: string;
+  readonly amount: number;
+  readonly currency: Currency;
+  readonly billingDuration: "P1Y";
+}
+
+export interface EstimateResponse {
+  readonly apiVersion: "v1";
+  readonly catalogVersion: ServiceCatalog["catalogVersion"];
+  readonly currency: Currency;
+  readonly serviceability: ServiceabilityResult;
+  readonly baseService: EstimateLineItem | null;
+  readonly confirmedFixedAddOns: readonly EstimateLineItem[];
+  readonly conditionalAddOns: readonly ConditionalAddOn[];
+  readonly oneTimeCatalogTotal: number | null;
+  /**
+   * Backward-compatible alias for oneTimeCatalogTotal.
+   * Recurring selections are never included.
+   */
+  readonly publishedCatalogTotal: number | null;
+  readonly recurringSelections: readonly RecurringSelection[];
+  readonly estimateStatus: EstimateStatus;
+  readonly missingInputs: readonly string[];
+  readonly reviewReasons: readonly string[];
+  readonly scope: {
+    readonly included: readonly string[];
+    readonly quoteRequired: readonly string[];
+    readonly excluded: readonly string[];
+  };
+  readonly finalWrittenProposalRequired: true;
+  readonly bookingAuthority: "assessment_only";
+}

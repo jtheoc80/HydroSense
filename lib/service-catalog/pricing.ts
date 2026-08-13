@@ -10,7 +10,9 @@ import { checkServiceability } from "./serviceability";
 import type {
   ConditionalAddOn,
   EstimateLineItem,
+  EstimateResponse,
   EstimateStatus,
+  RecurringSelection,
 } from "./types";
 
 export const incomingLineSizeSchema = z.enum(["0.75", "1.00", "1.25", "1.50", "2.00"]);
@@ -66,13 +68,14 @@ function addMissingIfUndefined(
   if (input[field] === undefined) missingInputs.push(field);
 }
 
-export function calculateEstimate(rawInput: EstimateRequest) {
+export function calculateEstimate(rawInput: EstimateRequest): EstimateResponse {
   const input = estimateRequestSchema.parse(rawInput);
   const serviceability = checkServiceability(input.postalCode);
   const missingInputs: string[] = [];
   const reviewReasons: string[] = [];
   const confirmedFixedAddOns: EstimateLineItem[] = [];
   const conditionalAddOns: ConditionalAddOn[] = [];
+  const recurringSelections: RecurringSelection[] = [];
 
   const requiredStandardFields = [
     "incomingLineSize",
@@ -152,7 +155,14 @@ export function calculateEstimate(rawInput: EstimateRequest) {
   }
 
   if (input.annualCareRequested) {
-    confirmedFixedAddOns.push(lineItem("HS-CARE-ANNUAL-001"));
+    const annualCare = getFixedService("HS-CARE-ANNUAL-001");
+    recurringSelections.push({
+      serviceId: "HS-CARE-ANNUAL-001",
+      name: annualCare.name,
+      amount: annualCare.price.amount,
+      currency: serviceCatalog.currency,
+      billingDuration: "P1Y",
+    });
   }
 
   let estimateStatus: EstimateStatus = "catalog_exact_standard_scope";
@@ -162,9 +172,10 @@ export function calculateEstimate(rawInput: EstimateRequest) {
     estimateStatus = "conditional";
   }
 
-  const publishedCatalogTotal = baseService
+  const oneTimeCatalogTotal = baseService
     ? [baseService, ...confirmedFixedAddOns].reduce((sum, item) => sum + item.total, 0)
     : null;
+  const publishedCatalogTotal = oneTimeCatalogTotal;
 
   const quoteRequiredScope = [
     ...(input.irrigationRequested ? ["Irrigation scope requires technical review and a written quote."] : []),
@@ -179,7 +190,9 @@ export function calculateEstimate(rawInput: EstimateRequest) {
     baseService,
     confirmedFixedAddOns,
     conditionalAddOns,
+    oneTimeCatalogTotal,
     publishedCatalogTotal,
+    recurringSelections,
     estimateStatus,
     missingInputs: Array.from(new Set(missingInputs)),
     reviewReasons: Array.from(new Set(reviewReasons)),
@@ -193,5 +206,5 @@ export function calculateEstimate(rawInput: EstimateRequest) {
     },
     finalWrittenProposalRequired: serviceCatalog.policies.finalWrittenProposalRequired,
     bookingAuthority: serviceCatalog.policies.bookingAuthority,
-  } as const;
+  };
 }

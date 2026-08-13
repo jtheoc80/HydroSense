@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
 
-const baseUrl = "http://127.0.0.1:3200";
+const baseUrl = process.env.VERIFY_BASE_URL ?? "http://127.0.0.1:3200";
 const widths = [375, 768, 1024, 1440, 1792];
 const routes = [
   ["pricing", "/pricing", "Device-included pricing"],
@@ -74,6 +74,9 @@ try {
   assert.ok(structuredData, "pricing Service JSON-LD");
   assert.equal(structuredData["@type"], "Service");
   assert.equal(structuredData.hasOfferCatalog.itemListElement.length, 9);
+  assert.deepEqual(structuredData.provider, { "@id": "https://hydrosensetx.com/#business" });
+  assert.equal(JSON.stringify(structuredData).includes("#organization"), false);
+  assert.equal("@type" in structuredData.provider, false);
   await pricing.close();
 } finally {
   await browser.close();
@@ -162,6 +165,29 @@ const battery = await post("/api/public/v1/estimate", {
 });
 assert.equal(battery.body.publishedCatalogTotal, 1925);
 
+const recurring = await post("/api/public/v1/estimate", {
+  ...standardInput,
+  sensorQuantity: 2,
+  sensorCompatibilityConfirmed: true,
+  batteryRequested: true,
+  batteryCompatibilityConfirmed: true,
+  annualCareRequested: true,
+});
+assert.equal(recurring.body.oneTimeCatalogTotal, 2075);
+assert.equal(recurring.body.publishedCatalogTotal, 2075);
+assert.notEqual(recurring.body.oneTimeCatalogTotal, 2174);
+assert.deepEqual(recurring.body.recurringSelections, [
+  {
+    serviceId: "HS-CARE-ANNUAL-001",
+    name: "Annual system care",
+    amount: 99,
+    currency: "USD",
+    billingDuration: "P1Y",
+  },
+]);
+assert.equal(recurring.body.finalWrittenProposalRequired, true);
+assert.equal(recurring.body.bookingAuthority, "assessment_only");
+
 const conditionalBattery = await post("/api/public/v1/estimate", {
   ...standardInput,
   batteryRequested: true,
@@ -200,7 +226,14 @@ const a2aEstimateRequest = {
         {
           data: {
             skill: "estimate_standard_installation",
-            input: { ...standardInput, sensorQuantity: 2, sensorCompatibilityConfirmed: true },
+            input: {
+              ...standardInput,
+              sensorQuantity: 2,
+              sensorCompatibilityConfirmed: true,
+              batteryRequested: true,
+              batteryCompatibilityConfirmed: true,
+              annualCareRequested: true,
+            },
           },
           mediaType: "application/json",
         },
@@ -210,7 +243,10 @@ const a2aEstimateRequest = {
 };
 const a2aEstimate = await post("/api/a2a", a2aEstimateRequest);
 assert.equal(a2aEstimate.body.result.message.role, "ROLE_AGENT");
-assert.equal(a2aEstimate.body.result.message.parts[0].data.publishedCatalogTotal, 1600);
+const a2aData = a2aEstimate.body.result.message.parts[0].data;
+assert.equal(a2aData.oneTimeCatalogTotal, 2075);
+assert.equal(a2aData.publishedCatalogTotal, 2075);
+assert.equal(a2aData.recurringSelections[0].amount, 99);
 
 for (const path of ["/", "/devices", "/service-area", "/robots.txt", "/sitemap.xml"]) {
   const response = await fetch(`${baseUrl}${path}`);

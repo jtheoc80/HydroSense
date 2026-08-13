@@ -1,4 +1,5 @@
 import { CATALOG_VERSION, PUBLIC_API_VERSION, serviceCatalog } from "./catalog";
+import { calculateEstimate } from "./pricing";
 
 const standardEstimateExample = {
   postalCode: "77494",
@@ -16,7 +17,12 @@ const standardEstimateExample = {
   fireSprinklerPresent: false,
   sensorQuantity: 2,
   sensorCompatibilityConfirmed: true,
-};
+  batteryRequested: true,
+  batteryCompatibilityConfirmed: true,
+  annualCareRequested: true,
+} as const;
+
+const standardEstimateResponseExample = calculateEstimate(standardEstimateExample);
 
 export function buildOpenApiDocument() {
   return {
@@ -158,7 +164,7 @@ export function buildOpenApiDocument() {
           operationId: "estimateStandardInstallation",
           summary: "Calculate published standard-scope pricing",
           description:
-            "A catalog-exact result confirms arithmetic only. It does not waive the final written proposal or grant scheduling authority.",
+            "The one-time catalog total includes only installation and confirmed one-time add-ons. Recurring selections are returned separately. A catalog-exact result does not waive the final written proposal or grant scheduling authority.",
           requestBody: {
             required: true,
             content: {
@@ -171,7 +177,12 @@ export function buildOpenApiDocument() {
           responses: {
             "200": {
               description: "Deterministic estimate, conditions, missing inputs, and scope",
-              content: { "application/json": { schema: { $ref: "#/components/schemas/EstimateResponse" } } },
+              content: {
+                "application/json": {
+                  schema: { $ref: "#/components/schemas/EstimateResponse" },
+                  example: standardEstimateResponseExample,
+                },
+              },
             },
             "400": {
               description: "Malformed or invalid request",
@@ -228,7 +239,28 @@ export function buildOpenApiDocument() {
             "200": {
               description: "Synchronous agent message or JSON-RPC method-not-found error",
               headers: { "A2A-Version": { schema: { type: "string", const: "1.0" } } },
-              content: { "application/json": { schema: { type: "object" } } },
+              content: {
+                "application/json": {
+                  schema: { type: "object" },
+                  example: {
+                    jsonrpc: "2.0",
+                    id: "req-1",
+                    result: {
+                      message: {
+                        messageId: "msg-response-1",
+                        contextId: "ctx-1",
+                        role: "ROLE_AGENT",
+                        parts: [
+                          {
+                            data: standardEstimateResponseExample,
+                            mediaType: "application/json",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
             },
             "400": { description: "JSON parse, envelope, or parameter error" },
             "413": { description: "Request body exceeds 16 KiB" },
@@ -364,6 +396,36 @@ export function buildOpenApiDocument() {
             annualCareRequested: { type: "boolean", default: false },
           },
         },
+        EstimateLineItem: {
+          type: "object",
+          additionalProperties: false,
+          required: ["serviceId", "name", "quantity", "unitPrice", "total"],
+          properties: {
+            serviceId: { type: "string" },
+            name: { type: "string" },
+            quantity: { type: "integer", minimum: 1 },
+            unitPrice: { type: "number", minimum: 0 },
+            total: { type: "number", minimum: 0 },
+          },
+        },
+        RecurringSelection: {
+          type: "object",
+          additionalProperties: false,
+          required: [
+            "serviceId",
+            "name",
+            "amount",
+            "currency",
+            "billingDuration",
+          ],
+          properties: {
+            serviceId: { type: "string", const: "HS-CARE-ANNUAL-001" },
+            name: { type: "string", const: "Annual system care" },
+            amount: { type: "number", const: 99 },
+            currency: { type: "string", const: "USD" },
+            billingDuration: { type: "string", const: "P1Y" },
+          },
+        },
         EstimateResponse: {
           allOf: [
             { $ref: "#/components/schemas/ResponseMetadata" },
@@ -375,7 +437,9 @@ export function buildOpenApiDocument() {
                 "baseService",
                 "confirmedFixedAddOns",
                 "conditionalAddOns",
+                "oneTimeCatalogTotal",
                 "publishedCatalogTotal",
+                "recurringSelections",
                 "estimateStatus",
                 "missingInputs",
                 "reviewReasons",
@@ -386,10 +450,19 @@ export function buildOpenApiDocument() {
               properties: {
                 currency: { type: "string", const: "USD" },
                 serviceability: { $ref: "#/components/schemas/Serviceability" },
-                baseService: { oneOf: [{ type: "null" }, { type: "object" }] },
-                confirmedFixedAddOns: { type: "array", items: { type: "object" } },
+                baseService: { oneOf: [{ type: "null" }, { $ref: "#/components/schemas/EstimateLineItem" }] },
+                confirmedFixedAddOns: { type: "array", description: "Confirmed one-time sensor and battery add-ons only.", items: { $ref: "#/components/schemas/EstimateLineItem" } },
                 conditionalAddOns: { type: "array", items: { type: "object" } },
-                publishedCatalogTotal: { oneOf: [{ type: "null" }, { type: "number", minimum: 0 }] },
+                oneTimeCatalogTotal: {
+                  description: "Installation plus confirmed one-time sensor and battery add-ons. Recurring selections are never included.",
+                  oneOf: [{ type: "null" }, { type: "number", minimum: 0 }],
+                },
+                publishedCatalogTotal: {
+                  description: "Backward-compatible alias for oneTimeCatalogTotal. It never includes recurring selections.",
+                  deprecated: true,
+                  oneOf: [{ type: "null" }, { type: "number", minimum: 0 }],
+                },
+                recurringSelections: { type: "array", description: "Recurring selections reported separately from the one-time total.", items: { $ref: "#/components/schemas/RecurringSelection" } },
                 estimateStatus: {
                   type: "string",
                   enum: ["catalog_exact_standard_scope", "conditional", "review_required"],

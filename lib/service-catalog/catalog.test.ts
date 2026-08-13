@@ -8,6 +8,7 @@ import {
   serviceCatalog,
 } from "./catalog";
 import { createAgentCard, processA2ARequest } from "./a2a";
+import { buildOpenApiDocument } from "./openapi";
 import { buildPricingJsonLd } from "./schema";
 
 const expectedFixedPrices: Record<string, number> = {
@@ -60,14 +61,45 @@ test("public projection excludes unpublished policy variables", () => {
 test("pricing structured data matches fixed catalog records without invented quote prices", () => {
   const jsonLd = buildPricingJsonLd();
   const offers = jsonLd.hasOfferCatalog.itemListElement;
+  assert.deepEqual(jsonLd.provider, { "@id": "https://hydrosensetx.com/#business" });
+  assert.equal("@type" in jsonLd.provider, false);
   assert.equal(offers.length, Object.keys(expectedFixedPrices).length);
   for (const offer of offers) {
     assert.equal(offer.price, expectedFixedPrices[offer.sku]);
     assert.equal(offer.priceCurrency, "USD");
   }
   const serialized = JSON.stringify(jsonLd);
+  assert.doesNotMatch(serialized, /#organization/);
   assert.doesNotMatch(serialized, /HS-IRRIGATION-ADD-001[^}]*"price"/);
   assert.doesNotMatch(serialized, /HS-CORRECTIVE-001[^}]*"price"/);
+});
+
+test("OpenAPI separates one-time totals and recurring selections in schemas and examples", () => {
+  const document = buildOpenApiDocument() as any;
+  const schema = document.components.schemas.EstimateResponse.allOf[1];
+  assert.ok(schema.required.includes("oneTimeCatalogTotal"));
+  assert.ok(schema.required.includes("recurringSelections"));
+  assert.match(schema.properties.oneTimeCatalogTotal.description, /never included/i);
+  assert.match(schema.properties.publishedCatalogTotal.description, /alias/i);
+  const restExample =
+    document.paths["/api/public/v1/estimate"]
+      .post
+      .responses["200"]
+      .content["application/json"]
+      .example;
+  assert.equal(restExample.oneTimeCatalogTotal, 2075);
+  assert.equal(restExample.publishedCatalogTotal, 2075);
+  assert.equal(restExample.recurringSelections[0].amount, 99);
+  assert.equal(restExample.recurringSelections[0].billingDuration, "P1Y");
+  const a2aExample =
+    document.paths["/api/a2a"]
+      .post
+      .responses["200"]
+      .content["application/json"]
+      .example;
+  const a2aData = a2aExample.result.message.parts[0].data;
+  assert.equal(a2aData.oneTimeCatalogTotal, 2075);
+  assert.equal(a2aData.recurringSelections[0].amount, 99);
 });
 
 function a2aRequest(skill: string, input: unknown = {}) {
@@ -109,7 +141,7 @@ test("A2A serviceability skill returns a known market", () => {
   assert.equal(serviceability.status, "serviceable");
 });
 
-test("A2A estimate skill uses catalog arithmetic", () => {
+test("A2A estimate skill separates one-time and recurring pricing", () => {
   const data = a2aResultData(
     processA2ARequest(
       a2aRequest("estimate_standard_installation", {
@@ -117,10 +149,20 @@ test("A2A estimate skill uses catalog arithmetic", () => {
         incomingLineSize: "1.00",
         sensorQuantity: 2,
         sensorCompatibilityConfirmed: true,
+        batteryRequested: true,
+        batteryCompatibilityConfirmed: true,
+        annualCareRequested: true,
       }),
     ),
   );
-  assert.equal(data.publishedCatalogTotal, 1600);
+  assert.equal(data.oneTimeCatalogTotal, 2075);
+  assert.equal(data.publishedCatalogTotal, 2075);
+  assert.notEqual(data.oneTimeCatalogTotal, 2174);
+  assert.deepEqual(data.recurringSelections, [
+    {
+      serviceId: "HS-CARE-ANNUAL-001", name: "Annual system care", amount: 99, currency: "USD", billingDuration: "P1Y",
+    },
+  ]);
   assert.equal(data.estimateStatus, "review_required");
 });
 

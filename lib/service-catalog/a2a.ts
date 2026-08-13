@@ -201,7 +201,7 @@ export function createAgentCard() {
       {
         id: "estimate_standard_installation",
         name: "Estimate standard installation",
-        description: "Calculate a deterministic published-catalog total while identifying missing inputs, conditions, and quote-required scope.",
+        description: "Calculate a deterministic one-time published-catalog total, return recurring selections separately, and identify missing inputs, conditions, and quote-required scope.",
         tags: ["estimate", "pricing", "scope", "read-only"],
         examples: ["Estimate a standard 1-inch installation in postal code 77494."],
         inputModes: ["application/json"],

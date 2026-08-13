@@ -41,10 +41,7 @@ export function buildPricingJsonLd() {
     description:
       "Published line-size pricing for compatible smart shutoff devices and standard domestic-water installation in Greater Houston.",
     provider: {
-      "@type": "LocalBusiness",
-      "@id": `${SITE_URL}/#organization`,
-      name: "HydroSense Texas",
-      url: SITE_URL,
+      "@id": "https://hydrosensetx.com/#business",
     },
     areaServed: "Greater Houston, Texas",
     hasOfferCatalog: {

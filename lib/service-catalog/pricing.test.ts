@@ -21,7 +21,9 @@ const standardInput: EstimateRequest = {
 test("standard confirmed inputs return a catalog-exact estimate", () => {
   const estimate = calculateEstimate(standardInput);
   assert.equal(estimate.estimateStatus, "catalog_exact_standard_scope");
+  assert.equal(estimate.oneTimeCatalogTotal, 1450);
   assert.equal(estimate.publishedCatalogTotal, 1450);
+  assert.deepEqual(estimate.recurringSelections, []);
   assert.deepEqual(estimate.missingInputs, []);
   assert.deepEqual(estimate.reviewReasons, []);
   assert.equal(estimate.finalWrittenProposalRequired, true);
@@ -46,6 +48,54 @@ test("confirmed compatible battery adds $475", () => {
   });
   assert.equal(estimate.publishedCatalogTotal, 1925);
   assert.equal(estimate.confirmedFixedAddOns[0].serviceId, "HS-BATTERY-ADD-001");
+});
+
+test("annual care stays separate from the one-time installation total", () => {
+  const estimate = calculateEstimate({
+    ...standardInput,
+    sensorQuantity: 2,
+    sensorCompatibilityConfirmed: true,
+    batteryRequested: true,
+    batteryCompatibilityConfirmed: true,
+    annualCareRequested: true,
+  });
+  assert.equal(estimate.oneTimeCatalogTotal, 2075);
+  assert.equal(estimate.publishedCatalogTotal, 2075);
+  assert.notEqual(estimate.oneTimeCatalogTotal, 2174);
+  assert.deepEqual(
+    estimate.confirmedFixedAddOns.map((item) => item.serviceId),
+    ["HS-SENSOR-ADD-001", "HS-BATTERY-ADD-001"],
+  );
+  assert.deepEqual(estimate.recurringSelections, [
+    {
+      serviceId: "HS-CARE-ANNUAL-001",
+      name: "Annual system care",
+      amount: 99,
+      currency: "USD",
+      billingDuration: "P1Y",
+    },
+  ]);
+  assert.equal(estimate.finalWrittenProposalRequired, true);
+  assert.equal(estimate.bookingAuthority, "assessment_only");
+});
+
+test("annual care by itself has no one-time catalog total", () => {
+  const estimate = calculateEstimate({
+    postalCode: "77494",
+    annualCareRequested: true,
+  });
+  assert.equal(estimate.oneTimeCatalogTotal, null);
+  assert.equal(estimate.publishedCatalogTotal, null);
+  assert.deepEqual(estimate.confirmedFixedAddOns, []);
+  assert.deepEqual(estimate.recurringSelections, [
+    {
+      serviceId: "HS-CARE-ANNUAL-001",
+      name: "Annual system care",
+      amount: 99,
+      currency: "USD",
+      billingDuration: "P1Y",
+    },
+  ]);
 });
 
 test("requested battery with unknown compatibility stays conditional and outside total", () => {
