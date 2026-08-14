@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Quote } from "./types";
 
 const STATUS_COLORS: Record<string, string> = {
@@ -14,9 +14,91 @@ const STATUS_COLORS: Record<string, string> = {
 
 const STATUSES = ["all", "draft", "sent", "viewed", "accepted", "declined", "expired"] as const;
 
-export default function QuotesListClient({ quotes }: { quotes: Quote[] }) {
+export default function QuotesListClient({ quotes: initialQuotes }: { quotes: Quote[] }) {
+  const [quotes, setQuotes] = useState(initialQuotes);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshError, setRefreshError] = useState("");
+  const [revisingId, setRevisingId] = useState<string | null>(null);
+
+  const refreshQuotes = useCallback(async () => {
+    setRefreshing(true);
+    setRefreshError("");
+
+    try {
+      const response = await fetch("/api/quotes", {
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      });
+      const body = (await response.json()) as {
+        ok?: boolean;
+        quotes?: Quote[];
+        error?: string;
+      };
+
+      if (!response.ok || !body.ok || !Array.isArray(body.quotes)) {
+        throw new Error(body.error || "Unable to refresh quotes");
+      }
+
+      setQuotes(body.quotes);
+    } catch (error) {
+      setRefreshError(error instanceof Error ? error.message : "Unable to refresh quotes");
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshQuotes();
+
+    const onFocus = () => void refreshQuotes();
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") void refreshQuotes();
+    };
+
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [refreshQuotes]);
+
+  async function handleRevise(quote: Quote) {
+    const confirmed = window.confirm(
+      `Create a new editable draft from ${quote.quote_number}? The customer-visible original will remain unchanged.`
+    );
+    if (!confirmed) return;
+
+    setRevisingId(quote.id);
+    setRefreshError("");
+
+    try {
+      const response = await fetch(`/api/admin/quotes/${quote.id}/revise`, {
+        method: "POST",
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      });
+      const body = (await response.json()) as {
+        ok?: boolean;
+        quote?: { id?: string };
+        error?: string;
+      };
+
+      if (!response.ok || !body.ok || !body.quote?.id) {
+        throw new Error(body.error || "Unable to create the quote revision");
+      }
+
+      window.location.assign(`/admin/quotes/${body.quote.id}`);
+    } catch (error) {
+      setRefreshError(
+        error instanceof Error ? error.message : "Unable to create the quote revision"
+      );
+      setRevisingId(null);
+    }
+  }
 
   const filtered = quotes.filter((q) => {
     if (filter !== "all" && q.status !== filter) return false;
@@ -32,8 +114,6 @@ export default function QuotesListClient({ quotes }: { quotes: Quote[] }) {
     return true;
   });
 
-  const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
-
   return (
     <div className="min-h-screen bg-ink-950 text-fog-50">
       <div className="max-w-6xl mx-auto px-6 py-8">
@@ -47,7 +127,14 @@ export default function QuotesListClient({ quotes }: { quotes: Quote[] }) {
               <span className="text-fog-400 font-semibold text-sm">Quotes</span>
             </div>
             <h1 className="text-2xl font-semibold text-fog-50">Quotes</h1>
-            <p className="text-sm text-fog-300 mt-1">{quotes.length} total</p>
+            <p className="text-sm text-fog-300 mt-1">
+              {quotes.length} total{refreshing ? " · Refreshing…" : ""}
+            </p>
+            {refreshError && (
+              <p className="mt-1 text-xs text-red-300" role="alert">
+                {refreshError}
+              </p>
+            )}
           </div>
           <a
             href="/admin/quotes/new"
@@ -143,13 +230,23 @@ export default function QuotesListClient({ quotes }: { quotes: Quote[] }) {
                       })}
                     </td>
                     <td className="py-3">
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <a
                           href={`/admin/quotes/${q.id}`}
                           className="text-xs text-fog-300 hover:text-fog-50 transition-colors"
                         >
-                          Edit
+                          {q.status === "draft" ? "Edit" : "Open"}
                         </a>
+                        {q.status !== "draft" && (
+                          <button
+                            type="button"
+                            onClick={() => void handleRevise(q)}
+                            disabled={revisingId === q.id}
+                            className="text-xs text-signal-300 hover:text-signal-200 transition-colors disabled:opacity-50"
+                          >
+                            {revisingId === q.id ? "Creating…" : "Revise"}
+                          </button>
+                        )}
                         {q.status !== "draft" && (
                           <a
                             href={`/quote/${q.public_token}`}

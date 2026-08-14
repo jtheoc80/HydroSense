@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import crypto from "crypto";
 import { allocateQuoteNumber } from "@/lib/quotes";
+import { noStoreJson } from "@/lib/site-visits/http";
 
 export async function POST(request: NextRequest) {
   try {
@@ -104,16 +105,16 @@ export async function GET() {
       .limit(500);
 
     if (error) {
-      return NextResponse.json(
+      return noStoreJson(
         { ok: false, error: error.message },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ ok: true, quotes: data || [] });
+    return noStoreJson({ ok: true, quotes: data || [] });
   } catch (err) {
     console.error("Quotes list error:", err);
-    return NextResponse.json(
+    return noStoreJson(
       { ok: false, error: "Internal server error" },
       { status: 500 }
     );

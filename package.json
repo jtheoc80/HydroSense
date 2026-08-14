@@ -10,7 +10,7 @@
     "lint": "next lint",
     "indexnow:seed": "tsx scripts/indexnow-seed.ts",
     "jotform:discover": "tsx scripts/discover-jotform-fields.ts",
-    "test": "tsx --test \"lib/site-visits/*.test.ts\" lib/devices.test.ts lib/quotes.test.ts lib/quote-delivery.test.ts \"lib/service-catalog/*.test.ts\" \"lib/seo/*.test.ts\"",
+    "test": "tsx --test \"lib/site-visits/*.test.ts\" lib/admin-routes.test.ts lib/devices.test.ts lib/quotes.test.ts lib/quote-delivery.test.ts lib/quote-revisions.test.ts \"lib/service-catalog/*.test.ts\" \"lib/seo/*.test.ts\"",
     "test:e2e": "playwright test"
   },
   "dependencies": {

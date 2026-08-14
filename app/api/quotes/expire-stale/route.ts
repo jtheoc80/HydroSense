@@ -1,7 +1,21 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request) {
+  const cronSecret = process.env.CRON_SECRET;
+  const authorization = request.headers.get("authorization");
+
+  if (!cronSecret || authorization !== `Bearer ${cronSecret}`) {
+    return NextResponse.json(
+      { ok: false, error: "Unauthorized" },
+      {
+        status: 401,
+        headers: { "Cache-Control": "no-store, max-age=0" },
+      }
+    );
+  }
   try {
     const now = new Date().toISOString();
 
