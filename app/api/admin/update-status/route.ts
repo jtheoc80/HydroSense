@@ -1,44 +1,57 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { parseLeadStatusUpdate } from "@/lib/lead-status";
+import { noStoreJson } from "@/lib/site-visits/http";
 import { supabase } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
-  const form = await request.formData();
-  const id = form.get("id") as string;
-  const status = form.get("status") as string;
+  let input: unknown;
 
-  if (!id || !status) {
-    return NextResponse.json(
-      { ok: false, error: "Missing id or status" },
+  try {
+    if (request.headers.get("content-type")?.includes("application/json")) {
+      input = await request.json();
+    } else {
+      const form = await request.formData();
+      input = {
+        id: form.get("id"),
+        status: form.get("status"),
+      };
+    }
+  } catch {
+    return noStoreJson(
+      { ok: false, error: "Invalid request body" },
       { status: 400 }
     );
   }
 
-  const validStatuses = [
-    "new",
-    "booked",
-    "showed",
-    "quoted",
-    "won",
-    "lost",
-  ];
-  if (!validStatuses.includes(status)) {
-    return NextResponse.json(
-      { ok: false, error: "Invalid status" },
+  const update = parseLeadStatusUpdate(input);
+  if (!update) {
+    return noStoreJson(
+      { ok: false, error: "A valid lead and outcome are required" },
       { status: 400 }
     );
   }
 
-  const { error } = await supabase
+  const { data: lead, error } = await supabase
     .from("leads")
-    .update({ status })
-    .eq("id", id);
+    .update({ status: update.status })
+    .eq("id", update.id)
+    .select("*")
+    .maybeSingle();
 
   if (error) {
-    return NextResponse.json(
-      { ok: false, error: error.message },
+    console.error("Lead outcome update error:", error);
+    return noStoreJson(
+      { ok: false, error: "Unable to save the lead outcome" },
       { status: 500 }
     );
   }
 
-  return NextResponse.json({ ok: true });
+  if (!lead) {
+    return noStoreJson(
+      { ok: false, error: "Lead not found" },
+      { status: 404 }
+    );
+  }
+
+  return noStoreJson({ ok: true, lead });
 }

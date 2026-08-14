@@ -1,3 +1,5 @@
+import type { LeadStatus } from "@/lib/lead-status";
+
 export interface Lead {
   id: string;
   created_at: string;
@@ -16,7 +18,7 @@ export interface Lead {
   utm_source: string | null;
   lead_score: number | null;
   lead_tier: string | null;
-  status: string;
+  status: LeadStatus;
   booked_at: string | null;
   meeting_url: string | null;
   notes: string | null;

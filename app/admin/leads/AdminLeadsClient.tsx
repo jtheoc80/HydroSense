@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import {
+  LEAD_STATUSES,
+  leadStatusLabel,
+  type LeadStatus,
+} from "@/lib/lead-status";
 import type { Lead } from "./types";
 
-const STATUSES = ["new", "booked", "showed", "quoted", "won", "lost"] as const;
-type Status = (typeof STATUSES)[number];
+const STATUSES = LEAD_STATUSES;
+type Status = LeadStatus;
 
 const STATUS_COLORS: Record<Status, string> = {
   new: "bg-hydro-400/20 text-hydro-400",
@@ -67,11 +72,20 @@ function getSourceTag(lead: Lead): string {
 }
 
 export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
+  const [leadRows, setLeadRows] = useState(leads);
   const [view, setView] = useState<"pipeline" | "table">("pipeline");
   const [search, setSearch] = useState("");
   const [sourceFilter, setSourceFilter] = useState("");
+  const [savingOutcome, setSavingOutcome] = useState<{
+    leadId: string;
+    status: LeadStatus;
+  } | null>(null);
+  const [feedback, setFeedback] = useState<{
+    kind: "success" | "error";
+    message: string;
+  } | null>(null);
 
-  const filtered = leads.filter((lead) => {
+  const filtered = leadRows.filter((lead) => {
     if (search) {
       const q = search.toLowerCase();
       const match =
@@ -91,17 +105,72 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
   const byStatus = (status: string) =>
     filtered.filter((l) => l.status === status);
 
-  async function moveCard(leadId: string, newStatus: string) {
-    const form = new FormData();
-    form.set("id", leadId);
-    form.set("status", newStatus);
+  async function moveCard(lead: Lead, newStatus: LeadStatus) {
+    if (lead.status === newStatus || savingOutcome?.leadId === lead.id) return;
 
-    await fetch("/api/admin/update-status", {
-      method: "POST",
-      body: form,
-    });
+    if (
+      (newStatus === "won" || newStatus === "lost") &&
+      !window.confirm(
+        "Record " +
+          lead.first_name +
+          " " +
+          lead.last_name +
+          " as " +
+          leadStatusLabel(newStatus) +
+          "?"
+      )
+    ) {
+      return;
+    }
 
-    window.location.reload();
+    setSavingOutcome({ leadId: lead.id, status: newStatus });
+    setFeedback(null);
+
+    try {
+      const response = await fetch("/api/admin/update-status", {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: lead.id, status: newStatus }),
+      });
+      const body = (await response.json()) as {
+        ok?: boolean;
+        lead?: Lead;
+        error?: string;
+      };
+
+      if (!response.ok || !body.ok || !body.lead) {
+        throw new Error(body.error || "Unable to save the lead outcome");
+      }
+
+      setLeadRows((current) =>
+        current.map((row) => (row.id === lead.id ? body.lead! : row))
+      );
+      setFeedback({
+        kind: "success",
+        message:
+          "Outcome saved: " +
+          lead.first_name +
+          " " +
+          lead.last_name +
+          " → " +
+          leadStatusLabel(newStatus) +
+          ".",
+      });
+    } catch (error) {
+      setFeedback({
+        kind: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Unable to save the lead outcome",
+      });
+    } finally {
+      setSavingOutcome(null);
+    }
   }
 
   return (
@@ -176,11 +245,24 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
           </div>
         </div>
 
+        {feedback && (
+          <div
+            role={feedback.kind === "error" ? "alert" : "status"}
+            className={
+              feedback.kind === "error"
+                ? "mb-6 rounded-lg border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200"
+                : "mb-6 rounded-lg border border-green-400/30 bg-green-400/10 px-4 py-3 text-sm text-green-200"
+            }
+          >
+            {feedback.message}
+          </div>
+        )}
+
         {view === "pipeline" ? (
           /* Pipeline view */
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 overflow-x-auto">
             {STATUSES.map((status) => (
-              <div key={status} className="min-w-[200px]">
+              <div key={status} className="min-w-[200px]" data-testid={"lead-column-" + status}>
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="text-xs uppercase tracking-widest text-fog-400">
                     {status}
@@ -193,6 +275,7 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
                   {byStatus(status).map((lead) => (
                     <div
                       key={lead.id}
+                      data-testid={"lead-card-" + lead.id}
                       className={`bg-ink-800 border rounded-lg p-3 ${
                         (lead.lead_tier === "hot" || (lead.lead_score ?? 0) >= 3)
                           ? "border-l-4 border-l-signal-400 border-t-ink-700 border-r-ink-700 border-b-ink-700"
@@ -264,10 +347,23 @@ export default function AdminLeadsClient({ leads }: { leads: Lead[] }) {
                         {STATUSES.filter((s) => s !== status).map((s) => (
                           <button
                             key={s}
-                            onClick={() => moveCard(lead.id, s)}
-                            className="text-[10px] px-2 py-0.5 rounded bg-ink-700 text-fog-300 hover:bg-ink-700/80 transition-colors"
+                            type="button"
+                            onClick={() => void moveCard(lead, s)}
+                            disabled={savingOutcome?.leadId === lead.id}
+                            aria-label={
+                              "Move " +
+                              lead.first_name +
+                              " " +
+                              lead.last_name +
+                              " to " +
+                              s
+                            }
+                            className="text-[10px] px-2 py-0.5 rounded bg-ink-700 text-fog-300 hover:bg-ink-700/80 transition-colors disabled:cursor-wait disabled:opacity-50"
                           >
-                            {s}
+                            {savingOutcome?.leadId === lead.id &&
+                            savingOutcome.status === s
+                              ? "saving…"
+                              : s}
                           </button>
                         ))}
                       </div>
