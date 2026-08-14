@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import CriticalBar from "@/components/CriticalBar";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -50,6 +51,18 @@ export default function PricingPage() {
       <CriticalBar />
       <Header />
       <main className="bg-white text-slate-950">
+        <div className="bg-[#00163f] pt-8">
+          <div className="section-container">
+            <Breadcrumbs
+              trailId="pricing"
+              tone="dark"
+              items={[
+                { name: "Home", href: "/" },
+                { name: "Pricing", href: "/pricing" },
+              ]}
+            />
+          </div>
+        </div>
         <section className="relative overflow-hidden bg-[#00163f] py-20 text-white sm:py-24 lg:py-28">
           <div className="pointer-events-none absolute -right-44 -top-52 h-[34rem] w-[34rem] rounded-full bg-sky-400/10 blur-3xl" />
           <div className="section-container relative">
@@ -58,7 +71,7 @@ export default function PricingPage() {
             </Badge>
             <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
               <h1 className="max-w-4xl text-balance font-display text-5xl leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-7xl">
-                Device-included pricing, sized to the incoming line.
+                Smart water shutoff installation pricing by incoming line size.
               </h1>
               <div>
                 <p className="text-lg leading-8 text-slate-300">
@@ -163,6 +176,26 @@ export default function PricingPage() {
                 <p><strong className="text-white">Always excluded:</strong> {serviceCatalog.policies.fireSuppressionExclusion}</p>
                 <p><strong className="text-white">Authority:</strong> Assessment-only next steps. A final written proposal is required before work.</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-slate-200 bg-white py-16 sm:py-20">
+          <div className="section-container">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700">Plan the installation</p>
+            <h2 className="mt-3 max-w-3xl font-display text-4xl tracking-[-0.025em] text-[#001a4e]">
+              Confirm the process, device fit, and service coverage before requesting a proposal.
+            </h2>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Button href="/#customer-journey" outline className="!rounded-full !border-slate-300 !px-5 !py-3 !text-[#001a4e]">
+                Review the installation process
+              </Button>
+              <Button href="/devices" outline className="!rounded-full !border-slate-300 !px-5 !py-3 !text-[#001a4e]">
+                Compare compatible smart shutoff devices
+              </Button>
+              <Button href="/service-area" outline className="!rounded-full !border-slate-300 !px-5 !py-3 !text-[#001a4e]">
+                Check Greater Houston service areas
+              </Button>
             </div>
           </div>
         </section>

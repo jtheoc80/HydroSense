@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import CriticalBar from "@/components/CriticalBar";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -36,13 +37,25 @@ export default function AgentReadyPage() {
       <CriticalBar />
       <Header />
       <main className="bg-white text-slate-950">
+        <div className="bg-[#00163f] pt-8">
+          <div className="section-container">
+            <Breadcrumbs
+              trailId="agent-ready"
+              tone="dark"
+              items={[
+                { name: "Home", href: "/" },
+                { name: "Agent-ready", href: "/agent-ready" },
+              ]}
+            />
+          </div>
+        </div>
         <section className="relative overflow-hidden bg-[#00163f] py-20 text-white sm:py-24 lg:py-28">
           <div className="pointer-events-none absolute inset-0 dot-grid opacity-60" />
           <div className="section-container relative grid gap-10 lg:grid-cols-[1.1fr_0.7fr] lg:items-end">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-200">Agent-ready foundation</p>
               <h1 className="mt-5 text-balance font-display text-5xl leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-7xl">
-                Home water protection structured for the agent economy.
+                HydroSense pricing and service discovery for agents.
               </h1>
             </div>
             <div>

@@ -1,42 +1,10 @@
 import { pingIndexNow } from "../lib/indexnow";
+import { getIndexNowUrls } from "../lib/seo/indexable-pages";
 
-const SITE =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://hydrosensetx.com";
-
-const urls: string[] = [
-  `${SITE}/`,
-  `${SITE}/insurance/ho-a-vs-ho-b-ho-3`,
-  `${SITE}/freeze-damage-texas`,
-  `${SITE}/devices`,
-  `${SITE}/devices/moen-flo`,
-  `${SITE}/devices/phyn-plus`,
-  `${SITE}/devices/streamlabs`,
-  `${SITE}/devices/guardian`,
-  `${SITE}/service-area`,
-  `${SITE}/service-area/houston`,
-  `${SITE}/service-area/katy`,
-  `${SITE}/service-area/cypress`,
-  `${SITE}/service-area/the-woodlands`,
-  `${SITE}/service-area/sugar-land`,
-  `${SITE}/service-area/spring`,
-  `${SITE}/service-area/baytown`,
-  `${SITE}/service-area/galveston`,
-  `${SITE}/service-area/lake-conroe`,
-  `${SITE}/service-area/lake-livingston`,
-  `${SITE}/blog`,
-  `${SITE}/blog/smart-water-shutoff-texas-vacation-rentals`,
-  `${SITE}/blog/best-home-investment-texas-tight-budget`,
-  `${SITE}/blog/texas-freeze-survival-checklist`,
-  `${SITE}/blog/houston-home-insurance-rising-smart-shutoff`,
-  `${SITE}/blog/frozen-pipes-while-traveling-winter`,
-  `${SITE}/blog/cost-of-burst-pipe-texas`,
-  `${SITE}/blog/smart-vs-manual-water-shutoff-freeze`,
-  `${SITE}/privacy`,
-  `${SITE}/terms`,
-];
+const urls = getIndexNowUrls();
 
 async function main() {
-  console.log(`Seeding ${urls.length} URLs to IndexNow...`);
+  console.log(`Seeding ${urls.length} registry-approved URLs to IndexNow...`);
   const result = await pingIndexNow(urls);
   console.log("Result:", result);
 }
