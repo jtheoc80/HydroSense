@@ -5,7 +5,7 @@ import { chromium } from "playwright";
 const baseUrl = process.env.VERIFY_BASE_URL ?? "http://127.0.0.1:3200";
 const widths = [375, 768, 1024, 1440, 1792];
 const routes = [
-  ["pricing", "/pricing", "Smart water shutoff installation pricing by incoming line size."],
+  ["pricing", "/pricing", "Smart water shutoff installation starting prices by incoming line size."],
   ["agent-ready", "/agent-ready", "HydroSense pricing and service discovery for agents."],
 ];
 const screenshotDir = "docs/pr-assets/a2a-pricing";

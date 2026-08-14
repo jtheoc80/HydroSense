@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import { Heading } from "./catalyst/heading";
-import { formatUsd, getFixedService, installationServices } from "@/lib/service-catalog/catalog";
+import { installationServices } from "@/lib/service-catalog/catalog";
 
 const installFeatures = [
   "Compatible smart shutoff device",
@@ -28,14 +28,6 @@ const lineSizeLabels = {
   "1.50": "1 1/2 in",
   "2.00": "2 in",
 } as const;
-
-const careService = getFixedService("HS-CARE-ANNUAL-001");
-const installationAmounts = installationServices.flatMap((service) =>
-  service.price.type === "fixed" ? [service.price.amount] : [],
-);
-const standardPriceRange = `${formatUsd(Math.min(...installationAmounts))}–${formatUsd(
-  Math.max(...installationAmounts),
-)}`;
 
 function CheckItem({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
@@ -72,7 +64,7 @@ export default function Pricing() {
           </p>
           <p className="mt-4 text-base leading-7 text-sky-100">
             <Link href="/pricing" className="font-semibold underline decoration-sky-300/50 underline-offset-4 hover:text-white">
-              Standard device-and-install rates range from {standardPriceRange} based on verified incoming line size.
+              View current starting prices by incoming line size on the pricing page.
             </Link>
           </p>
         </div>
@@ -92,18 +84,15 @@ export default function Pricing() {
             </div>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600">
-              A standard single-family installation with an accessible main line.
-              Non-standard pipework, electrical work, dual mains, inaccessible routing,
-              or required repairs are priced in the written proposal.
+              Starting prices for a standard single-family installation are published on the pricing page.
+              Additional material, non-standard pipework, electrical work, dual mains, inaccessible routing,
+              or required repairs are confirmed in the written proposal.
             </p>
 
             <div className="mt-7 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 sm:grid-cols-5">
               {installationServices.map((service) => (
                 <div key={service.id} className="bg-slate-50 px-3 py-4 text-center">
-                  <p className="text-xs font-semibold text-slate-500">{lineSizeLabels[service.incomingLineSize]}</p>
-                  <p className="mt-1 font-mono text-base font-semibold text-[#001a4e]">
-                    {service.price.type === "fixed" ? formatUsd(service.price.amount) : null}
-                  </p>
+                  <p className="font-display text-xl text-[#001a4e]">{lineSizeLabels[service.incomingLineSize]}</p>
                 </div>
               ))}
             </div>
@@ -119,7 +108,7 @@ export default function Pricing() {
               color="cyan"
               className="!mt-9 !w-full !rounded-full !border-transparent !bg-hydro-400 !px-6 !py-3.5 !text-sm !font-semibold !text-ink-950 !shadow-lg !shadow-sky-500/15 hover:!bg-hydro-300 sm:!w-auto"
             >
-              See all published pricing
+              View starting prices
             </Button>
           </article>
 
@@ -130,8 +119,8 @@ export default function Pricing() {
                 <h3 className="mt-3 font-display text-3xl text-white">Annual system care</h3>
               </div>
               <div className="text-right">
-                <p className="font-mono text-3xl font-semibold tracking-[-0.03em] text-white">{formatUsd(careService.price.amount)}</p>
-                <p className="mt-1 text-xs text-slate-400">per {careService.price.unit}</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.12em] text-white">Optional</p>
+                <p className="mt-1 text-xs text-slate-400">See pricing page</p>
               </div>
             </div>
 
@@ -147,11 +136,11 @@ export default function Pricing() {
             </ul>
 
             <Button
-              href="#lead-form"
+              href="/pricing#hs-care-annual-001"
               outline
               className="!mt-9 !w-full !rounded-full !border-white/20 !bg-white/5 !px-6 !py-3.5 !text-sm !font-semibold !text-white hover:!border-white/35 hover:!bg-white/10"
             >
-              Ask about annual care
+              View care pricing
             </Button>
           </article>
         </div>

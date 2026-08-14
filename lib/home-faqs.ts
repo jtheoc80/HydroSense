@@ -34,8 +34,8 @@ export const homeFaqs: HomeFaq[] = [
     a: "HydroSense coordinates the work under Texas Master Plumber License MPL 43057. The written proposal identifies the installation scope and responsible plumbing license information before work begins.",
   },
   {
-    q: "What does installation from $999 mean?",
-    a: "The starting price applies to a standard single-family installation with an accessible main line and typical plumbing conditions. Final pricing depends on the selected device, pipe size and material, existing valves, fittings, power, access, and any required corrective work. You receive a written fixed-price proposal before scheduling.",
+    q: "Where can I see installation starting prices?",
+    a: "Current starting prices by incoming domestic line size are published on the pricing page. Each starting price applies to a standard single-family installation with an accessible main line and typical plumbing conditions. Final pricing depends on the selected device, pipe size and material, existing valves, fittings, power, access, and any required corrective work. You receive a written fixed-price proposal before scheduling.",
   },
   {
     q: "Does HydroSense monitor my home around the clock?",

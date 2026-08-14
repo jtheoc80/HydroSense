@@ -250,12 +250,19 @@ check(!/insurance/i.test(homeH1), "Homepage H1 must not be insurance-first");
 
 const homepagePricing = read("components/Pricing.tsx");
 check(
-  homepagePricing.includes("Standard device-and-install rates range from") &&
+  homepagePricing.includes("View current starting prices by incoming line size on the pricing page.") &&
     homepagePricing.includes('href="/pricing"') &&
-    homepagePricing.includes("installationServices"),
-  "Homepage must show a catalog-derived $999–$4,175 pricing sentence linked to /pricing",
+    homepagePricing.includes("installationServices") &&
+    !homepagePricing.includes("formatUsd") &&
+    !homepagePricing.includes("standardPriceRange"),
+  "Homepage must link to starting prices without displaying catalog amounts",
 );
 
+const homepageFaqs = read("lib/home-faqs.ts");
+check(
+  !/\$\d/.test(homepageFaqs),
+  "Homepage FAQ content must direct visitors to pricing without displaying HydroSense amounts",
+);
 const retiredPriceTokens = ["2638", "3425", "$2,638", "$3,425"];
 for (const file of [
   "lib/service-catalog/catalog.ts",
@@ -285,6 +292,12 @@ for (const href of ['href="/pricing"', 'href="/devices"', 'href="#lead-form"']) 
   check(cityPage.includes(href), `City pages are missing required internal link: ${href}`);
 }
 const pricingPage = read("app/pricing/page.tsx");
+check(
+  pricingPage.includes("Starting at") &&
+    pricingPage.includes("Amounts shown are starting prices.") &&
+    !pricingPage.includes("{service.id}</p>"),
+  "Pricing page must label installation amounts as starting prices without visible service part numbers",
+);
 for (const href of ['href="/#customer-journey"', 'href="/devices"', 'href="/service-area"']) {
   check(pricingPage.includes(href), `Pricing page is missing required internal link: ${href}`);
 }

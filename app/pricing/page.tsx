@@ -16,7 +16,7 @@ import { buildPricingJsonLd } from "@/lib/service-catalog/schema";
 export const metadata: Metadata = {
   title: "Smart Water Shutoff Installation Pricing Houston",
   description:
-    "See device-included smart water shutoff installation rates by incoming line size, fixed compatible add-ons, and quote-required scope in Greater Houston.",
+    "See device-included smart water shutoff installation starting prices by incoming line size, fixed compatible add-ons, and quote-required scope in Greater Houston.",
   alternates: { canonical: "https://hydrosensetx.com/pricing" },
 };
 
@@ -71,11 +71,11 @@ export default function PricingPage() {
             </Badge>
             <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
               <h1 className="max-w-4xl text-balance font-display text-5xl leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-7xl">
-                Smart water shutoff installation pricing by incoming line size.
+                Smart water shutoff installation starting prices by incoming line size.
               </h1>
               <div>
                 <p className="text-lg leading-8 text-slate-300">
-                  Every published rate includes one compatible smart shutoff device and standard domestic-water installation. No separate standard device charge is added.
+                  Each starting price includes one compatible smart shutoff device and a standard domestic-water installation. Additional material or non-standard work is finalized in the written proposal.
                 </p>
                 <Button href="/#lead-form" color="cyan" className="!mt-7 !rounded-full !border-transparent !bg-hydro-400 !px-6 !py-3.5 !text-sm !font-semibold !text-ink-950 hover:!bg-hydro-300">
                   Request a written proposal
@@ -89,27 +89,26 @@ export default function PricingPage() {
           <div className="section-container">
             <div className="max-w-3xl">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700">Device + standard installation</p>
-              <h2 className="mt-3 font-display text-4xl tracking-[-0.025em] text-[#001a4e] sm:text-5xl">Published line-size rates</h2>
+              <h2 className="mt-3 font-display text-4xl tracking-[-0.025em] text-[#001a4e] sm:text-5xl">Starting prices by line size</h2>
               <p className="mt-5 text-base leading-7 text-slate-600">
-                Incoming line size must be verified. A final written proposal confirms access, pipework, power, Wi-Fi, routing, and non-standard conditions.
+                Amounts shown are starting prices. Incoming line size and pipe material must be verified. Additional material, specialized fittings, access, electrical work, or corrective plumbing may increase the final written proposal.
               </p>
             </div>
             <div className="mt-10 grid gap-px overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-5">
               {installationServices.map((service) => (
                 <article id={service.id.toLowerCase()} key={service.id} className="bg-white p-6 sm:p-7">
-                  <p className="font-mono text-xs font-medium text-slate-500">{service.id}</p>
-                  <h3 className="mt-5 font-display text-3xl text-[#001a4e]">{lineSizeLabels[service.incomingLineSize]}</h3>
-                  <p className="mt-4 font-mono text-3xl font-semibold tracking-[-0.04em] text-slate-950">
-                    {service.price.type === "fixed" ? formatUsd(service.price.amount) : null}
-                    {service.deviceFamily ? (
-                      <>
-                        {" "}
-                        <span className="mt-2 block font-sans text-sm font-medium leading-6 tracking-normal text-[#001a4e]">
-                          — {service.deviceFamily.name} large-line system + standard installation
-                        </span>
-                      </>
-                    ) : null}
+                  <h3 className="font-display text-3xl text-[#001a4e]">{lineSizeLabels[service.incomingLineSize]}</h3>
+                  <p className="mt-5">
+                    <span className="block text-xs font-semibold uppercase tracking-[0.14em] text-sky-700">Starting at</span>
+                    <span className="mt-1 block font-mono text-3xl font-semibold tracking-[-0.04em] text-slate-950">
+                      {service.price.type === "fixed" ? formatUsd(service.price.amount) : null}
+                    </span>
                   </p>
+                  {service.deviceFamily ? (
+                    <p className="mt-3 text-sm font-medium leading-6 text-[#001a4e]">
+                      {service.deviceFamily.name} large-line system + standard installation
+                    </p>
+                  ) : null}
                   <p className="mt-2 text-sm leading-6 text-slate-600">
                     {service.deviceFamily
                       ? `Designated device family${service.commercialGradeDeviceIncluded ? " · commercial grade" : ""}`
