@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import QuotesListClient from "./QuotesListClient";
 import type { Quote } from "./types";
@@ -11,6 +12,8 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminQuotesPage() {
+  noStore();
+
   const { data: quotes, error } = await supabase
     .from("quotes")
     .select("*")

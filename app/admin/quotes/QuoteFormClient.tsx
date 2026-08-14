@@ -65,6 +65,7 @@ interface QuoteFormProps {
 export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
   const [saving, setSaving] = useState(false);
   const [sending, setSending] = useState(false);
+  const [revising, setRevising] = useState(false);
   const [message, setMessage] = useState("");
 
   // Customer fields
@@ -244,6 +245,44 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
     }
   }
 
+  async function handleRevise() {
+    if (!existing?.id) return;
+
+    const confirmed = window.confirm(
+      `Create a new editable draft from ${existing.quote_number}? The customer-visible original will remain unchanged.`
+    );
+    if (!confirmed) return;
+
+    setRevising(true);
+    setMessage("");
+
+    try {
+      const response = await fetch(`/api/admin/quotes/${existing.id}/revise`, {
+        method: "POST",
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      });
+      const body = (await response.json()) as {
+        ok?: boolean;
+        quote?: { id?: string };
+        error?: string;
+      };
+
+      if (!response.ok || !body.ok || !body.quote?.id) {
+        throw new Error(body.error || "Unable to create the quote revision");
+      }
+
+      window.location.assign(`/admin/quotes/${body.quote.id}`);
+    } catch (error) {
+      setMessage(
+        `Revision error: ${
+          error instanceof Error ? error.message : "Unable to create the quote revision"
+        }`
+      );
+      setRevising(false);
+    }
+  }
+
   async function handleStatusUpdate(status: string) {
     if (!existing?.id) return;
     setSaving(true);
@@ -262,6 +301,7 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
   }
 
   const isDraft = !existing || existing.status === "draft";
+  const messageIsError = /error|unable|network/i.test(message);
   const suggestions = selectedLead
     ? SUGGESTED_ADDONS.filter((a) => a.condition(selectedLead))
     : [];
@@ -280,7 +320,11 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
           </span>
         </div>
         <h1 className="text-2xl font-semibold text-fog-50 mb-8">
-          {mode === "new" ? "New Quote" : `Edit ${existing?.quote_number}`}
+          {mode === "new"
+            ? "New Quote"
+            : isDraft
+              ? `Edit ${existing?.quote_number}`
+              : existing?.quote_number}
         </h1>
 
         {/* Status bar for existing quotes */}
@@ -330,6 +374,12 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
                 </button>
               </div>
             )}
+          </div>
+        )}
+        {existing && !isDraft && (
+          <div className="mb-8 rounded-xl border border-signal-400/30 bg-signal-400/10 p-4 text-sm text-signal-100">
+            This customer-visible quote is preserved as sent. Create a revision to change its
+            customer, scope, pricing, or notes in a new editable draft.
           </div>
         )}
 
@@ -668,8 +718,17 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
                 {sending ? "Resending..." : "Resend quote"}
               </button>
             )}
+            {mode === "edit" && existing && !isDraft && (
+              <button
+                onClick={handleRevise}
+                disabled={revising}
+                className="px-6 py-2.5 rounded-lg border border-signal-400/50 text-sm font-semibold text-signal-300 hover:bg-signal-400/10 transition-colors disabled:opacity-50"
+              >
+                {revising ? "Creating revision..." : "Create revision"}
+              </button>
+            )}
             {message && (
-              <p className={`text-sm ${message.startsWith("Error") ? "text-red-400" : "text-green-400"}`}>
+              <p className={`text-sm ${messageIsError ? "text-red-400" : "text-green-400"}`}>
                 {message}
               </p>
             )}

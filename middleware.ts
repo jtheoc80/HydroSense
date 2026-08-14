@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAdminRequestPath } from "@/lib/admin-routes";
 
 export function middleware(request: NextRequest) {
-  const isAdmin = request.nextUrl.pathname.startsWith("/admin")
-    || request.nextUrl.pathname.startsWith("/api/admin");
+  const isAdmin = isAdminRequestPath(request.nextUrl.pathname);
 
   if (!isAdmin) {
     const response = NextResponse.next();
@@ -31,9 +31,18 @@ export function middleware(request: NextRequest) {
       headers: { "WWW-Authenticate": 'Basic realm="HydroSense Admin"' },
     });
   }
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set("Cache-Control", "no-store, max-age=0");
+  response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  return response;
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*", "/site-visit/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/api/admin/:path*",
+    "/api/quotes",
+    "/api/quotes/:path*",
+    "/site-visit/:path*",
+  ],
 };
