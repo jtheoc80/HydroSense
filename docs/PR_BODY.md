@@ -19,8 +19,8 @@ This Phase 1 change publishes HydroSense pricing and service discovery as one re
 | `HS-INSTALL-075-001` | $999 |
 | `HS-INSTALL-100-001` | $1,450 |
 | `HS-INSTALL-125-001` | $1,875 |
-| `HS-INSTALL-150-001` | $2,638 |
-| `HS-INSTALL-200-001` | $3,425, commercial-grade device included |
+| `HS-INSTALL-150-001` | $3,456, FloLogic large-line system + standard installation |
+| `HS-INSTALL-200-001` | $4,175, FloLogic commercial-grade large-line system + standard installation |
 | `HS-SENSOR-ADD-001` | $75 each when compatibility is confirmed |
 | `HS-BATTERY-ADD-001` | $475/system when requested and compatible |
 | `HS-CARE-ANNUAL-001` | $99/year, optional |

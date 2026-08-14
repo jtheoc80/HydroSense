@@ -2,6 +2,14 @@ export type Currency = "USD";
 
 export type IncomingLineSize = "0.75" | "1.00" | "1.25" | "1.50" | "2.00";
 
+export type DeviceFamilyDesignation = "supported" | "designated";
+
+export interface DeviceFamily {
+  readonly slug: string;
+  readonly name: string;
+  readonly designation: DeviceFamilyDesignation;
+}
+
 export type ServiceCategory =
   | "installation"
   | "add_on"
@@ -35,6 +43,7 @@ export interface InstallationService extends CatalogServiceBase {
   readonly incomingLineSize: IncomingLineSize;
   readonly deviceIncluded: true;
   readonly commercialGradeDeviceIncluded: boolean;
+  readonly deviceFamily?: DeviceFamily;
 }
 
 export interface StandardCatalogService extends CatalogServiceBase {
@@ -44,8 +53,8 @@ export interface StandardCatalogService extends CatalogServiceBase {
 export type CatalogService = InstallationService | StandardCatalogService;
 
 export interface ServiceCatalog {
-  readonly catalogVersion: "2026-08-12.1";
-  readonly effectiveDate: "2026-08-12";
+  readonly catalogVersion: "2026-08-14.2";
+  readonly effectiveDate: "2026-08-14";
   readonly currency: Currency;
   readonly services: readonly CatalogService[];
   readonly policies: {
@@ -75,6 +84,7 @@ export interface EstimateLineItem {
   readonly quantity: number;
   readonly unitPrice: number;
   readonly total: number;
+  readonly deviceFamily?: DeviceFamily;
 }
 
 export interface ConditionalAddOn {

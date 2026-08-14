@@ -6,8 +6,8 @@ import type {
 } from "./types";
 
 export const PUBLIC_API_VERSION = "v1" as const;
-export const CATALOG_VERSION = "2026-08-12.1" as const;
-export const CATALOG_EFFECTIVE_DATE = "2026-08-12" as const;
+export const CATALOG_VERSION = "2026-08-14.2" as const;
+export const CATALOG_EFFECTIVE_DATE = "2026-08-14" as const;
 
 const catalogSeed = {
   catalogVersion: CATALOG_VERSION,
@@ -50,24 +50,34 @@ const catalogSeed = {
     {
       id: "HS-INSTALL-150-001",
       name: "1 1/2-inch smart shutoff installation",
-      description: "One compatible smart shutoff device plus standard installation on a verified 1 1/2-inch domestic incoming water line.",
+      description: "Device and standard installation for a verified 1 1/2-inch domestic incoming water line. FloLogic is the designated large-line device family, subject to final compatibility and model confirmation in the written proposal.",
       category: "installation",
       active: true,
-      price: { type: "fixed", amount: 2638, unit: "project" },
+      price: { type: "fixed", amount: 3456, unit: "project" },
       incomingLineSize: "1.50",
       deviceIncluded: true,
       commercialGradeDeviceIncluded: false,
+      deviceFamily: {
+        slug: "flologic",
+        name: "FloLogic",
+        designation: "designated",
+      },
     },
     {
       id: "HS-INSTALL-200-001",
       name: "2-inch commercial-grade smart shutoff installation",
-      description: "One compatible commercial-grade smart shutoff device plus standard installation on a verified 2-inch domestic incoming water line.",
+      description: "Commercial-grade device and standard installation for a verified 2-inch domestic incoming water line. FloLogic is the designated large-line device family, subject to final compatibility and model confirmation in the written proposal.",
       category: "installation",
       active: true,
-      price: { type: "fixed", amount: 3425, unit: "project" },
+      price: { type: "fixed", amount: 4175, unit: "project" },
       incomingLineSize: "2.00",
       deviceIncluded: true,
       commercialGradeDeviceIncluded: true,
+      deviceFamily: {
+        slug: "flologic",
+        name: "FloLogic",
+        designation: "designated",
+      },
     },
     {
       id: "HS-SENSOR-ADD-001",

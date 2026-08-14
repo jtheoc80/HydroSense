@@ -5,8 +5,8 @@ import { chromium } from "playwright";
 const baseUrl = process.env.VERIFY_BASE_URL ?? "http://127.0.0.1:3200";
 const widths = [375, 768, 1024, 1440, 1792];
 const routes = [
-  ["pricing", "/pricing", "Device-included pricing"],
-  ["agent-ready", "/agent-ready", "Home water protection structured for the agent economy"],
+  ["pricing", "/pricing", "Smart water shutoff installation pricing by incoming line size."],
+  ["agent-ready", "/agent-ready", "HydroSense pricing and service discovery for agents."],
 ];
 const screenshotDir = "docs/pr-assets/a2a-pricing";
 mkdirSync(screenshotDir, { recursive: true });
@@ -129,7 +129,7 @@ for (const path of [
 
 const catalog = (await get("/service-catalog.json")).body;
 assert.equal(catalog.services.length, 11);
-assert.equal(catalog.catalogVersion, "2026-08-12.1");
+assert.equal(catalog.catalogVersion, "2026-08-14.2");
 
 const openApi = (await get("/openapi.json")).body;
 assert.equal(openApi.openapi, "3.1.0");
@@ -144,7 +144,7 @@ assert.equal(known.body.serviceability.status, "serviceable");
 const unknown = await post("/api/public/v1/serviceability", { postalCode: "99999" });
 assert.equal(unknown.body.serviceability.status, "review_required");
 
-const expectedLineTotals = { "0.75": 999, "1.00": 1450, "1.25": 1875, "1.50": 2638, "2.00": 3425 };
+const expectedLineTotals = { "0.75": 999, "1.00": 1450, "1.25": 1875, "1.50": 3456, "2.00": 4175 };
 for (const [incomingLineSize, expectedTotal] of Object.entries(expectedLineTotals)) {
   const estimate = await post("/api/public/v1/estimate", { ...standardInput, incomingLineSize });
   assert.equal(estimate.body.publishedCatalogTotal, expectedTotal);

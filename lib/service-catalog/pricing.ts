@@ -57,6 +57,9 @@ function lineItem(serviceId: string, quantity = 1): EstimateLineItem {
     quantity,
     unitPrice: service.price.amount,
     total: service.price.amount * quantity,
+    ...("deviceFamily" in service && service.deviceFamily
+      ? { deviceFamily: service.deviceFamily }
+      : {}),
   };
 }
 

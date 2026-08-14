@@ -38,11 +38,15 @@ import { writeFileSync } from "fs";
 import { join } from "path";
 import { activeServices, formatUsd, serviceCatalog } from "../lib/service-catalog/catalog";
 
+import { deviceList } from "../lib/devices";
 const publicPricingLines = activeServices.map((service) => {
   const price = service.price.type === "fixed"
     ? `${formatUsd(service.price.amount)} per ${service.price.unit}`
     : "Quote required";
-  return `- ${service.id}: ${service.name} — ${price}`;
+  const family = "deviceFamily" in service && service.deviceFamily
+    ? ` — ${service.deviceFamily.name} (${service.deviceFamily.designation} device family)`
+    : "";
+  return `- ${service.id}: ${service.name} — ${price}${family}`;
 }).join("\n");
 
 let output = `# HydroSense Texas - Full Content
@@ -94,7 +98,7 @@ Currency: ${serviceCatalog.currency}
 
 ${publicPricingLines}
 
-Every line-size installation price includes one compatible smart shutoff device. The 2-inch rate includes a commercial-grade device. Annual care is optional. Irrigation and corrective plumbing require a written quote. Fire-sprinkler and fire-suppression piping are always excluded. A final written proposal is required before work.
+FloLogic is HydroSense's designated device family for qualifying 1 1/2-inch and 2-inch domestic water-line installations. The final device model and compatibility are confirmed in the written proposal. Fire-sprinkler and fire-suppression piping remain excluded. HydroSense catalog prices—not manufacturer MSRP—are the authoritative HydroSense public service prices. The 2-inch rate retains its commercial-grade designation. Annual care is optional; irrigation and corrective plumbing require a written quote.
 
 ## Carriers
 
@@ -102,7 +106,7 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 ## Devices Installed
 
-Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa
+${deviceList.map((device) => device.name).join(", ")}
 
 ---
 
@@ -179,12 +183,7 @@ URL: https://hydrosensetx.com/blog/smart-water-shutoff-texas-vacation-rentals
 `;
 
 // Device pages
-const deviceData = [
-  { name: "Flo by Moen", slug: "moen-flo", tagline: "The insurance default. Fastest to calibrate, most widely recognized.", howItWorks: "Installs at your main water line. Monitors flow and pressure continuously, runs a daily automated health test, and closes the valve when it detects an anomaly.", bestFor: "Homeowners who want the broadest carrier acceptance and protection calibrated within days, not a month." },
-  { name: "Phyn Plus", slug: "phyn-plus", tagline: "The accuracy leader. Independently ranked first for leak detection.", howItWorks: "Installs at your main. Uses pressure wave analysis to read your plumbing 240 times per second, detecting leaks without separate sensors placed around the house.", bestFor: "Older Houston homes, complex plumbing, and owners who want the most sensitive detection available." },
-  { name: "StreamLabs Control", slug: "streamlabs", tagline: "The durability pick. Fewer moving parts, fewer failure points.", howItWorks: "Installs inline on your main water line. Uses an ultrasonic flow meter with no internal turbine, monitors flow over Wi-Fi, and shuts off on a detected leak.", bestFor: "Homeowners who prioritize mechanical simplicity and long-term reliability." },
-  { name: "Guardian by Elexa", slug: "guardian", tagline: "The retrofit option. No plumbing replacement required.", howItWorks: "A motorized actuator mounts onto your existing main shutoff valve and physically turns the handle when wireless leak sensors detect water. No cutting into the line.", bestFor: "Older homes and situations where replacing or cutting into the main line is not an option." },
-];
+const deviceData = deviceList;
 
 for (const dev of deviceData) {
   output += `# ${dev.name}
@@ -198,6 +197,14 @@ ${dev.howItWorks}
 ## Best for
 
 ${dev.bestFor}
+
+${dev.selectionNote ? `## HydroSense selection note
+
+${dev.selectionNote}
+
+` : ""}Official manufacturer source: ${dev.officialSite}
+
+URL: https://hydrosensetx.com/devices/${dev.slug}
 
 ---
 

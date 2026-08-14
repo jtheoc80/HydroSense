@@ -10,14 +10,14 @@ import { installationScopeDisclosure } from "@/lib/installation-scope";
 export const metadata: Metadata = {
   title: "Smart Water Shutoff Devices Installed in Houston",
   description:
-    "Compare Flo by Moen, Phyn Plus, StreamLabs Control, and Guardian for Houston-area homes. HydroSense scopes the plumbing, power, Wi-Fi, and shutoff requirements before installation.",
+    "Compare Flo by Moen, Phyn Plus, StreamLabs Control, Guardian, and FloLogic for Houston-area homes. HydroSense scopes plumbing, power, connectivity, and shutoff requirements before installation.",
   alternates: {
     canonical: "https://hydrosensetx.com/devices",
   },
   openGraph: {
     title: "Smart Water Shutoff Devices Installed in Houston",
     description:
-      "Compare four smart water shutoff approaches and see what HydroSense verifies before installation in a Houston-area home.",
+      "Compare five smart water shutoff approaches, including FloLogic for qualifying large domestic lines, and see what HydroSense verifies before installation.",
     url: "https://hydrosensetx.com/devices",
     siteName: "HydroSense Texas",
     type: "website",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Smart Water Shutoff Devices Installed in Houston",
     description:
-      "Compare Flo by Moen, Phyn Plus, StreamLabs Control, and Guardian installation requirements.",
+      "Compare Flo by Moen, Phyn Plus, StreamLabs Control, Guardian, and FloLogic installation requirements.",
   },
 };
 
@@ -148,7 +148,7 @@ export default function DevicesPage() {
                 Side-by-side view
               </p>
               <h2 className="font-display text-3xl text-fog-50 mb-4">
-                Four different installation profiles
+                {deviceList.length} different installation profiles
               </h2>
               <p className="text-fog-300 leading-relaxed">
                 Product features and manufacturer requirements can change. The
@@ -191,6 +191,11 @@ export default function DevicesPage() {
                         >
                           {device.name}
                         </a>
+                        {device.hubBadge ? (
+                          <span className="mt-2 block w-fit rounded-full border border-signal-400/35 bg-signal-400/10 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-signal-400">
+                            {device.hubBadge}
+                          </span>
+                        ) : null}
                       </td>
                       <td className="py-5 px-5 align-top text-fog-200">
                         {device.detectionMethod}
@@ -248,6 +253,11 @@ export default function DevicesPage() {
                   key={device.slug}
                   className="bg-ink-800/40 border border-ink-700/30 rounded-2xl p-7 lg:p-9 flex flex-col"
                 >
+                  {device.hubBadge ? (
+                    <p className="mb-3 w-fit rounded-full border border-signal-400/35 bg-signal-400/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-signal-400">
+                      {device.hubBadge}
+                    </p>
+                  ) : null}
                   <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-3">
                     {device.installType}
                   </p>

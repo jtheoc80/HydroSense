@@ -156,7 +156,7 @@ for (const page of pages) {
 const deviceSource = read("lib/devices.ts");
 const deviceSlugs = [...deviceSource.matchAll(/^\s{2}"?([a-z][a-z-]+)"?:\s*\{/gm)]
   .map((match) => match[1])
-  .filter((slug) => ["moen-flo", "phyn-plus", "streamlabs", "guardian"].includes(slug));
+  .filter((slug) => ["moen-flo", "phyn-plus", "streamlabs", "guardian", "flologic"].includes(slug));
 const registryDeviceSlugs = paths
   .filter((path) => path.startsWith("/devices/"))
   .map((path) => path.split("/").at(-1));
@@ -253,8 +253,24 @@ check(
   homepagePricing.includes("Standard device-and-install rates range from") &&
     homepagePricing.includes('href="/pricing"') &&
     homepagePricing.includes("installationServices"),
-  "Homepage must show a catalog-derived $999–$3,425 pricing sentence linked to /pricing",
+  "Homepage must show a catalog-derived $999–$4,175 pricing sentence linked to /pricing",
 );
+
+const retiredPriceTokens = ["2638", "3425", "$2,638", "$3,425"];
+for (const file of [
+  "lib/service-catalog/catalog.ts",
+  "lib/service-catalog/openapi.ts",
+  "app/pricing/page.tsx",
+  "components/Pricing.tsx",
+  "public/llms-full.txt",
+  "public/llms.txt",
+]) {
+  const source = read(file);
+  check(
+    !retiredPriceTokens.some((token) => source.includes(token)),
+    `${file} must not contain retired 1.5-inch or 2-inch HydroSense pricing`,
+  );
+}
 check(read("components/Header.tsx").includes('href: "/devices"'), "Homepage navigation must link directly to /devices");
 for (const city of ["houston", "katy", "cypress", "the-woodlands"]) {
   check(read("components/ServiceArea.tsx").includes(city), `Homepage must link to the major city page: ${city}`);
