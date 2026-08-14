@@ -3,7 +3,7 @@ import { calculateEstimate } from "./pricing";
 
 const standardEstimateExample = {
   postalCode: "77494",
-  incomingLineSize: "1.00",
+  incomingLineSize: "1.50",
   propertyType: "single_family_residential",
   incomingLineSizeVerified: true,
   domesticMainAccessible: true,
@@ -284,7 +284,7 @@ export function buildOpenApiDocument() {
           required: ["type", "amount", "unit"],
           properties: {
             type: { type: "string", const: "fixed" },
-            amount: { type: "number", minimum: 0 },
+            amount: { type: "number", minimum: 0, examples: [999, 1450, 1875, 3456, 4175, 75, 475, 99, 0] },
             unit: { type: "string", enum: ["project", "each", "system", "year", "assessment"] },
           },
         },
@@ -293,6 +293,16 @@ export function buildOpenApiDocument() {
           additionalProperties: false,
           required: ["type"],
           properties: { type: { type: "string", const: "quote_required" } },
+        },
+        DeviceFamily: {
+          type: "object",
+          additionalProperties: false,
+          required: ["slug", "name", "designation"],
+          properties: {
+            slug: { type: "string", example: "flologic" },
+            name: { type: "string", example: "FloLogic" },
+            designation: { type: "string", enum: ["supported", "designated"], example: "designated" },
+          },
         },
         Service: {
           type: "object",
@@ -311,6 +321,7 @@ export function buildOpenApiDocument() {
             incomingLineSize: { type: "string", enum: ["0.75", "1.00", "1.25", "1.50", "2.00"] },
             deviceIncluded: { type: "boolean", const: true },
             commercialGradeDeviceIncluded: { type: "boolean" },
+            deviceFamily: { $ref: "#/components/schemas/DeviceFamily" },
           },
         },
         Catalog: {
@@ -406,6 +417,7 @@ export function buildOpenApiDocument() {
             quantity: { type: "integer", minimum: 1 },
             unitPrice: { type: "number", minimum: 0 },
             total: { type: "number", minimum: 0 },
+            deviceFamily: { $ref: "#/components/schemas/DeviceFamily" },
           },
         },
         RecurringSelection: {

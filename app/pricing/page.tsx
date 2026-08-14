@@ -101,11 +101,21 @@ export default function PricingPage() {
                   <h3 className="mt-5 font-display text-3xl text-[#001a4e]">{lineSizeLabels[service.incomingLineSize]}</h3>
                   <p className="mt-4 font-mono text-3xl font-semibold tracking-[-0.04em] text-slate-950">
                     {service.price.type === "fixed" ? formatUsd(service.price.amount) : null}
+                    {service.deviceFamily ? (
+                      <>
+                        {" "}
+                        <span className="mt-2 block font-sans text-sm font-medium leading-6 tracking-normal text-[#001a4e]">
+                          — {service.deviceFamily.name} large-line system + standard installation
+                        </span>
+                      </>
+                    ) : null}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
-                    {service.commercialGradeDeviceIncluded
-                      ? "Commercial-grade smart shutoff included"
-                      : "Compatible smart shutoff included"}
+                    {service.deviceFamily
+                      ? `Designated device family${service.commercialGradeDeviceIncluded ? " · commercial grade" : ""}`
+                      : service.commercialGradeDeviceIncluded
+                        ? "Commercial-grade smart shutoff included"
+                        : "Compatible smart shutoff included"}
                   </p>
                 </article>
               ))}
