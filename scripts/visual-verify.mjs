@@ -144,7 +144,7 @@ assert.equal(known.body.serviceability.status, "serviceable");
 const unknown = await post("/api/public/v1/serviceability", { postalCode: "99999" });
 assert.equal(unknown.body.serviceability.status, "review_required");
 
-const expectedLineTotals = { "0.75": 999, "1.00": 1450, "1.25": 1875, "1.50": 2638, "2.00": 3425 };
+const expectedLineTotals = { "0.75": 999, "1.00": 1450, "1.25": 1875, "1.50": 3456, "2.00": 4175 };
 for (const [incomingLineSize, expectedTotal] of Object.entries(expectedLineTotals)) {
   const estimate = await post("/api/public/v1/estimate", { ...standardInput, incomingLineSize });
   assert.equal(estimate.body.publishedCatalogTotal, expectedTotal);

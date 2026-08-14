@@ -119,7 +119,7 @@ test("catalog, REST estimate, and A2A expose the same FloLogic designation", asy
     (service: { id: string }) => service.id === "HS-INSTALL-150-001",
   );
   expect(catalogService.deviceFamily).toEqual(expectedFamily);
-  expect(catalogService.price.amount).toBe(2638);
+  expect(catalogService.price.amount).toBe(3456);
 
   const servicesResponse = await request.get("/api/public/v1/services");
   expect(servicesResponse.status()).toBe(200);
@@ -127,6 +127,9 @@ test("catalog, REST estimate, and A2A expose the same FloLogic designation", asy
   expect(
     services.services.find((service: { id: string }) => service.id === "HS-INSTALL-200-001").deviceFamily,
   ).toEqual(expectedFamily);
+  expect(
+    services.services.find((service: { id: string }) => service.id === "HS-INSTALL-200-001").price.amount,
+  ).toBe(4175);
 
   const estimateResponse = await request.post("/api/public/v1/estimate", {
     data: { postalCode: "77494", incomingLineSize: "1.50" },
@@ -134,7 +137,7 @@ test("catalog, REST estimate, and A2A expose the same FloLogic designation", asy
   expect(estimateResponse.status()).toBe(200);
   const estimate = await estimateResponse.json();
   expect(estimate.baseService.deviceFamily).toEqual(expectedFamily);
-  expect(estimate.baseService.unitPrice).toBe(2638);
+  expect(estimate.baseService.unitPrice).toBe(3456);
 
   const a2aResponse = await request.post("/api/a2a", {
     data: {
@@ -159,10 +162,26 @@ test("catalog, REST estimate, and A2A expose the same FloLogic designation", asy
   expect(a2aResponse.status()).toBe(200);
   const a2a = await a2aResponse.json();
   expect(a2a.result.message.parts[0].data.baseService.deviceFamily).toEqual(expectedFamily);
-  expect(a2a.result.message.parts[0].data.baseService.unitPrice).toBe(3425);
+  expect(a2a.result.message.parts[0].data.baseService.unitPrice).toBe(4175);
 
   const agentCardResponse = await request.get("/.well-known/agent-card.json");
   expect(agentCardResponse.status()).toBe(200);
+});
+
+test("pricing and homepage render the authoritative large-line prices", async ({ page }) => {
+  await page.goto("/pricing", { waitUntil: "domcontentloaded" });
+  const oneAndHalf = page.locator("#hs-install-150-001");
+  const twoInch = page.locator("#hs-install-200-001");
+
+  await expect(oneAndHalf).toContainText("$3,456 — FloLogic large-line system + standard installation");
+  await expect(oneAndHalf).toContainText("Designated device family");
+  await expect(twoInch).toContainText("$4,175 — FloLogic large-line system + standard installation");
+  await expect(twoInch).toContainText("Designated device family · commercial grade");
+
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(
+    page.getByText(/Standard device-and-install rates range from \$999–\$4,175 based on verified incoming line size/i),
+  ).toBeVisible();
 });
 
 for (const route of browserRoutes) {
@@ -188,7 +207,7 @@ for (const route of browserRoutes) {
 
     if (route === "/") {
       await expect(
-        page.getByText(/Standard device-and-install rates range from \$999–\$3,425 based on verified incoming line size/i),
+        page.getByText(/Standard device-and-install rates range from \$999–\$4,175 based on verified incoming line size/i),
       ).toBeVisible();
     }
   });

@@ -10,8 +10,8 @@ const exactPrices = {
   "HS-INSTALL-075-001": 999,
   "HS-INSTALL-100-001": 1450,
   "HS-INSTALL-125-001": 1875,
-  "HS-INSTALL-150-001": 2638,
-  "HS-INSTALL-200-001": 3425,
+  "HS-INSTALL-150-001": 3456,
+  "HS-INSTALL-200-001": 4175,
   "HS-SENSOR-ADD-001": 75,
   "HS-BATTERY-ADD-001": 475,
   "HS-CARE-ANNUAL-001": 99,
@@ -50,10 +50,12 @@ if (!/commercialGradeDeviceIncluded:\s*true/.test(twoInch)) {
 if (!/Fire-sprinkler and fire-suppression piping are always excluded/.test(catalog)) {
   errors.push("Catalog must preserve the fire-system exclusion");
 }
-if (!/catalogVersion:\s*CATALOG_VERSION/.test(catalog) || !/2026-08-14\.1/.test(catalog)) {
-  errors.push("Catalog version must be the stable 2026-08-14.1 value");
+if (!/catalogVersion:\s*CATALOG_VERSION/.test(catalog) || !/2026-08-14\.2/.test(catalog)) {
+  errors.push("Catalog version must be the stable 2026-08-14.2 value");
 }
 if (/catalogVersion[\s\S]{0,120}(?:new Date|Date\.now)/.test(catalog)) {
+  errors.push("Catalog version must not be generated at request time");
+}
 
 for (const serviceId of ["HS-INSTALL-150-001", "HS-INSTALL-200-001"]) {
   const record = catalog.match(new RegExp(`id:\\s*"${serviceId}"([\\s\\S]{0,1200}?)\\n\\s*\\},`))?.[1] ?? "";
@@ -68,7 +70,21 @@ for (const serviceId of ["HS-INSTALL-075-001", "HS-INSTALL-100-001", "HS-INSTALL
     errors.push(`${serviceId} must not gain a device-family designation`);
   }
 }
-  errors.push("Catalog version must not be generated at request time");
+
+const retiredPriceTokens = ["2638", "3425", "$2,638", "$3,425"];
+const activePricingFiles = [
+  "lib/service-catalog/catalog.ts",
+  "lib/service-catalog/openapi.ts",
+  "app/pricing/page.tsx",
+  "components/Pricing.tsx",
+  "public/llms-full.txt",
+  "public/llms.txt",
+];
+for (const file of activePricingFiles) {
+  const source = readFileSync(resolve(root, file), "utf8");
+  if (retiredPriceTokens.some((token) => source.includes(token))) {
+    errors.push(`${file} contains a retired HydroSense large-line price`);
+  }
 }
 
 const requiredFiles = [

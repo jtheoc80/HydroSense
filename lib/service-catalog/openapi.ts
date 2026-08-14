@@ -3,7 +3,7 @@ import { calculateEstimate } from "./pricing";
 
 const standardEstimateExample = {
   postalCode: "77494",
-  incomingLineSize: "1.00",
+  incomingLineSize: "1.50",
   propertyType: "single_family_residential",
   incomingLineSizeVerified: true,
   domesticMainAccessible: true,
@@ -284,7 +284,7 @@ export function buildOpenApiDocument() {
           required: ["type", "amount", "unit"],
           properties: {
             type: { type: "string", const: "fixed" },
-            amount: { type: "number", minimum: 0 },
+            amount: { type: "number", minimum: 0, examples: [999, 1450, 1875, 3456, 4175, 75, 475, 99, 0] },
             unit: { type: "string", enum: ["project", "each", "system", "year", "assessment"] },
           },
         },

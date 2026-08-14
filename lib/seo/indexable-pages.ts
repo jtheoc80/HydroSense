@@ -22,7 +22,7 @@ export interface IndexablePage {
   indexNowEligible: boolean;
 }
 
-const searchTeachingUpdate = "2026-08-13";
+const searchTeachingUpdate = "2026-08-14";
 
 /**
  * Canonical registry for every public HTML URL HydroSense intentionally exposes

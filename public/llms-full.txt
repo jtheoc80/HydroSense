@@ -41,15 +41,15 @@ The certificate is the product. The device is the hardware. A smart water shutof
 
 ## Pricing
 
-Catalog version: 2026-08-14.1
+Catalog version: 2026-08-14.2
 Effective date: 2026-08-14
 Currency: USD
 
 - HS-INSTALL-075-001: 3/4-inch smart shutoff installation — $999 per project
 - HS-INSTALL-100-001: 1-inch smart shutoff installation — $1,450 per project
 - HS-INSTALL-125-001: 1 1/4-inch smart shutoff installation — $1,875 per project
-- HS-INSTALL-150-001: 1 1/2-inch smart shutoff installation — $2,638 per project — FloLogic (designated device family)
-- HS-INSTALL-200-001: 2-inch commercial-grade smart shutoff installation — $3,425 per project — FloLogic (designated device family)
+- HS-INSTALL-150-001: 1 1/2-inch smart shutoff installation — $3,456 per project — FloLogic (designated device family)
+- HS-INSTALL-200-001: 2-inch commercial-grade smart shutoff installation — $4,175 per project — FloLogic (designated device family)
 - HS-SENSOR-ADD-001: Additional compatible sensor — $75 per each
 - HS-BATTERY-ADD-001: Compatible battery backup — $475 per system
 - HS-CARE-ANNUAL-001: Annual system care — $99 per year

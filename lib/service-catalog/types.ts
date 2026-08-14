@@ -53,7 +53,7 @@ export interface StandardCatalogService extends CatalogServiceBase {
 export type CatalogService = InstallationService | StandardCatalogService;
 
 export interface ServiceCatalog {
-  readonly catalogVersion: "2026-08-14.1";
+  readonly catalogVersion: "2026-08-14.2";
   readonly effectiveDate: "2026-08-14";
   readonly currency: Currency;
   readonly services: readonly CatalogService[];

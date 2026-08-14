@@ -32,7 +32,7 @@ test("standard confirmed inputs return a catalog-exact estimate", () => {
 
 test("large-line estimates expose FloLogic while smaller tiers remain unmapped", () => {
   const oneAndHalf = calculateEstimate({ ...standardInput, incomingLineSize: "1.50" });
-  assert.equal(oneAndHalf.publishedCatalogTotal, 2638);
+  assert.equal(oneAndHalf.publishedCatalogTotal, 3456);
   assert.deepEqual(oneAndHalf.baseService?.deviceFamily, {
     slug: "flologic",
     name: "FloLogic",
@@ -40,7 +40,7 @@ test("large-line estimates expose FloLogic while smaller tiers remain unmapped",
   });
 
   const twoInch = calculateEstimate({ ...standardInput, incomingLineSize: "2.00" });
-  assert.equal(twoInch.publishedCatalogTotal, 3425);
+  assert.equal(twoInch.publishedCatalogTotal, 4175);
   assert.deepEqual(twoInch.baseService?.deviceFamily, oneAndHalf.baseService?.deviceFamily);
 
   assert.equal(calculateEstimate(standardInput).baseService?.deviceFamily, undefined);
@@ -154,7 +154,7 @@ test("fire-sprinkler presence preserves the exclusion and requires routing revie
 
 test("2-inch estimate carries the commercial-grade catalog service", () => {
   const estimate = calculateEstimate({ ...standardInput, incomingLineSize: "2.00" });
-  assert.equal(estimate.publishedCatalogTotal, 3425);
+  assert.equal(estimate.publishedCatalogTotal, 4175);
   assert.match(estimate.baseService?.name ?? "", /commercial-grade/i);
   assert.equal(estimate.baseService?.deviceFamily?.designation, "designated");
 });

@@ -8,16 +8,16 @@ Dealer/landed acquisition economics reviewed — **NO**
 
 | Line size | Official FloLogic public system price observed | HydroSense public device + standard installation price | Difference |
 | --- | ---: | ---: | ---: |
-| 1 1/2 inch | $2,765 | $2,638 | HydroSense is $127 lower before acquisition, fittings, and labor |
-| 2 inch | $3,340 | $3,425 | HydroSense is $85 higher before acquisition, fittings, and labor |
+| 1 1/2 inch | $2,765 | $3,456 | HydroSense is $691 higher before acquisition, fittings, and labor |
+| 2 inch | $3,340 | $4,175 | HydroSense is $835 higher before acquisition, fittings, and labor |
 
 Official public-price source: [FloLogic systems collection](https://flologic.com/collections/flologic-system), observed 2026-08-14.
 
 ## Release rule
 
-The device page, compatibility support, and designated-family catalog mapping may remain in this draft. Until the owner changes the gate above to **YES** after reviewing dealer or landed acquisition economics:
+The device page, compatibility support, owner-authorized pricing, and designated-family catalog mapping may remain in this draft. Until the owner changes the gate above to **YES** after reviewing dealer or landed acquisition economics:
 
-- do not publish wording that guarantees a specific FloLogic model is included in either large-line price;
+- the public display may state "FloLogic large-line system + standard installation," but it must not guarantee a specific FloLogic model number;
 - keep the final family, model, plumbing compatibility, and required equipment subject to the written proposal;
 - keep HydroSense catalog prices authoritative and do not derive them from FloLogic retail or MSRP;
 - do not mark the pull request merge-ready or promote it to production.
