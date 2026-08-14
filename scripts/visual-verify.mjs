@@ -5,8 +5,8 @@ import { chromium } from "playwright";
 const baseUrl = process.env.VERIFY_BASE_URL ?? "http://127.0.0.1:3200";
 const widths = [375, 768, 1024, 1440, 1792];
 const routes = [
-  ["pricing", "/pricing", "Device-included pricing"],
-  ["agent-ready", "/agent-ready", "Home water protection structured for the agent economy"],
+  ["pricing", "/pricing", "Smart water shutoff installation pricing by incoming line size."],
+  ["agent-ready", "/agent-ready", "HydroSense pricing and service discovery for agents."],
 ];
 const screenshotDir = "docs/pr-assets/a2a-pricing";
 mkdirSync(screenshotDir, { recursive: true });
@@ -129,7 +129,7 @@ for (const path of [
 
 const catalog = (await get("/service-catalog.json")).body;
 assert.equal(catalog.services.length, 11);
-assert.equal(catalog.catalogVersion, "2026-08-12.1");
+assert.equal(catalog.catalogVersion, "2026-08-14.2");
 
 const openApi = (await get("/openapi.json")).body;
 assert.equal(openApi.openapi, "3.1.0");
