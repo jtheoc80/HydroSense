@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import { Heading } from "./catalyst/heading";
@@ -29,6 +30,12 @@ const lineSizeLabels = {
 } as const;
 
 const careService = getFixedService("HS-CARE-ANNUAL-001");
+const installationAmounts = installationServices.flatMap((service) =>
+  service.price.type === "fixed" ? [service.price.amount] : [],
+);
+const standardPriceRange = `${formatUsd(Math.min(...installationAmounts))}–${formatUsd(
+  Math.max(...installationAmounts),
+)}`;
 
 function CheckItem({ children, light = false }: { children: ReactNode; light?: boolean }) {
   return (
@@ -62,6 +69,11 @@ export default function Pricing() {
           <p className="mt-6 text-lg leading-8 text-slate-300">
             The final proposal is based on the selected device, pipe size and material,
             domestic-line access, electrical availability, fittings, and corrective plumbing.
+          </p>
+          <p className="mt-4 text-base leading-7 text-sky-100">
+            <Link href="/pricing" className="font-semibold underline decoration-sky-300/50 underline-offset-4 hover:text-white">
+              Standard device-and-install rates range from {standardPriceRange} based on verified incoming line size.
+            </Link>
           </p>
         </div>
 

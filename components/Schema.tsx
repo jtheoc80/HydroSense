@@ -1,4 +1,7 @@
-const SITE_URL = "https://hydrosensetx.com";
+import {
+  BUSINESS_ENTITY_ID,
+  SITE_ORIGIN,
+} from "@/lib/seo/indexable-pages";
 
 export default function Schema() {
   const sameAs = [
@@ -8,29 +11,21 @@ export default function Schema() {
 
   const localBusiness = {
     "@context": "https://schema.org",
-    "@type": "Plumber",
-    "@id": `${SITE_URL}/#business`,
+    "@type": ["LocalBusiness", "Plumber"],
+    "@id": BUSINESS_ENTITY_ID,
     name: "HydroSense Texas",
     legalName: "Lead Ledger Pro LLC",
-    url: SITE_URL,
-    logo: `${SITE_URL}/brand/logo-horizontal-light.png`,
-    image: `${SITE_URL}/og-image.png`,
+    url: SITE_ORIGIN,
+    logo: `${SITE_ORIGIN}/brand/logo-horizontal-light.png`,
+    image: `${SITE_ORIGIN}/og-image.png`,
     telephone: "+1-281-694-5754",
     priceRange: "$$",
     description:
       "Professional whole-home smart water shutoff installation across Greater Houston, including device selection, plumbing installation, app setup, shutoff testing, and an itemized installation record. Work coordinated under Texas Master Plumber License MPL 43057.",
-    areaServed: [
-      { "@type": "City", name: "Houston" },
-      { "@type": "City", name: "Katy" },
-      { "@type": "City", name: "Cypress" },
-      { "@type": "City", name: "The Woodlands" },
-      { "@type": "City", name: "Sugar Land" },
-      { "@type": "City", name: "Spring" },
-      { "@type": "City", name: "Baytown" },
-      { "@type": "City", name: "Galveston" },
-      { "@type": "City", name: "Conroe" },
-      { "@type": "City", name: "Livingston" },
-    ],
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Greater Houston, Texas",
+    },
     hasCredential: {
       "@type": "EducationalOccupationalCredential",
       credentialCategory: "license",
@@ -50,10 +45,10 @@ export default function Schema() {
   const service = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": `${SITE_URL}/#smart-water-shutoff-installation`,
+    "@id": `${SITE_ORIGIN}/#smart-water-shutoff-installation`,
     name: "Smart Water Shutoff Installation",
     serviceType: "Whole-home smart water shutoff installation",
-    provider: { "@id": `${SITE_URL}/#business` },
+    provider: { "@id": BUSINESS_ENTITY_ID },
     areaServed: {
       "@type": "AdministrativeArea",
       name: "Greater Houston, Texas",
@@ -65,12 +60,18 @@ export default function Schema() {
   return (
     <>
       <script
+        id="hydrosense-business-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusiness).replace(/</g, "\\u003c"),
+        }}
       />
       <script
+        id="hydrosense-service-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(service).replace(/</g, "\\u003c"),
+        }}
       />
     </>
   );
