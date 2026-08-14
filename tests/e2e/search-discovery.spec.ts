@@ -168,20 +168,31 @@ test("catalog, REST estimate, and A2A expose the same FloLogic designation", asy
   expect(agentCardResponse.status()).toBe(200);
 });
 
-test("pricing and homepage render the authoritative large-line prices", async ({ page }) => {
+test("pricing page renders authoritative starting prices while homepage links without amounts", async ({ page }) => {
   await page.goto("/pricing", { waitUntil: "domcontentloaded" });
   const oneAndHalf = page.locator("#hs-install-150-001");
   const twoInch = page.locator("#hs-install-200-001");
 
-  await expect(oneAndHalf).toContainText("$3,456 — FloLogic large-line system + standard installation");
+  await expect(oneAndHalf).toContainText("Starting at");
+  await expect(oneAndHalf).toContainText("$3,456");
+  await expect(oneAndHalf).toContainText("FloLogic large-line system + standard installation");
   await expect(oneAndHalf).toContainText("Designated device family");
-  await expect(twoInch).toContainText("$4,175 — FloLogic large-line system + standard installation");
+  await expect(oneAndHalf).not.toContainText("HS-INSTALL-150-001");
+  await expect(twoInch).toContainText("Starting at");
+  await expect(twoInch).toContainText("$4,175");
+  await expect(twoInch).toContainText("FloLogic large-line system + standard installation");
   await expect(twoInch).toContainText("Designated device family · commercial grade");
+  await expect(twoInch).not.toContainText("HS-INSTALL-200-001");
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(
-    page.getByText(/Standard device-and-install rates range from \$999–\$4,175 based on verified incoming line size/i),
-  ).toBeVisible();
+  const homepagePricing = page.locator("#pricing");
+  const pricingLink = homepagePricing.getByRole("link", {
+    name: /View current starting prices by incoming line size on the pricing page/i,
+  });
+  await expect(pricingLink).toBeVisible();
+  expect(await homepagePricing.innerText()).not.toMatch(/\$(?:999|1,450|1,875|3,456|4,175|99)\b/);
+  await pricingLink.click();
+  await expect(page).toHaveURL(/\/pricing$/);
 });
 
 for (const route of browserRoutes) {
@@ -206,9 +217,10 @@ for (const route of browserRoutes) {
     );
 
     if (route === "/") {
-      await expect(
-        page.getByText(/Standard device-and-install rates range from \$999–\$4,175 based on verified incoming line size/i),
-      ).toBeVisible();
+      const homepagePricing = page.locator("#pricing");
+      await expect(homepagePricing.getByRole("link", { name: /View current starting prices/i })).toBeVisible();
+      const pricingText = await homepagePricing.innerText();
+      expect(pricingText).not.toMatch(/\$(?:999|1,450|1,875|3,456|4,175|99)\b/);
     }
   });
 }
