@@ -156,7 +156,7 @@ for (const page of pages) {
 const deviceSource = read("lib/devices.ts");
 const deviceSlugs = [...deviceSource.matchAll(/^\s{2}"?([a-z][a-z-]+)"?:\s*\{/gm)]
   .map((match) => match[1])
-  .filter((slug) => ["moen-flo", "phyn-plus", "streamlabs", "guardian"].includes(slug));
+  .filter((slug) => ["moen-flo", "phyn-plus", "streamlabs", "guardian", "flologic"].includes(slug));
 const registryDeviceSlugs = paths
   .filter((path) => path.startsWith("/devices/"))
   .map((path) => path.split("/").at(-1));

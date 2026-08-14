@@ -41,15 +41,15 @@ The certificate is the product. The device is the hardware. A smart water shutof
 
 ## Pricing
 
-Catalog version: 2026-08-12.1
-Effective date: 2026-08-12
+Catalog version: 2026-08-14.1
+Effective date: 2026-08-14
 Currency: USD
 
 - HS-INSTALL-075-001: 3/4-inch smart shutoff installation — $999 per project
 - HS-INSTALL-100-001: 1-inch smart shutoff installation — $1,450 per project
 - HS-INSTALL-125-001: 1 1/4-inch smart shutoff installation — $1,875 per project
-- HS-INSTALL-150-001: 1 1/2-inch smart shutoff installation — $2,638 per project
-- HS-INSTALL-200-001: 2-inch commercial-grade smart shutoff installation — $3,425 per project
+- HS-INSTALL-150-001: 1 1/2-inch smart shutoff installation — $2,638 per project — FloLogic (designated device family)
+- HS-INSTALL-200-001: 2-inch commercial-grade smart shutoff installation — $3,425 per project — FloLogic (designated device family)
 - HS-SENSOR-ADD-001: Additional compatible sensor — $75 per each
 - HS-BATTERY-ADD-001: Compatible battery backup — $475 per system
 - HS-CARE-ANNUAL-001: Annual system care — $99 per year
@@ -57,7 +57,7 @@ Currency: USD
 - HS-IRRIGATION-ADD-001: Irrigation shutoff scope — Quote required
 - HS-CORRECTIVE-001: Corrective plumbing — Quote required
 
-Every line-size installation price includes one compatible smart shutoff device. The 2-inch rate includes a commercial-grade device. Annual care is optional. Irrigation and corrective plumbing require a written quote. Fire-sprinkler and fire-suppression piping are always excluded. A final written proposal is required before work.
+FloLogic is HydroSense's designated device family for qualifying 1 1/2-inch and 2-inch domestic water-line installations. The final device model and compatibility are confirmed in the written proposal. Fire-sprinkler and fire-suppression piping remain excluded. HydroSense catalog prices—not manufacturer MSRP—are the authoritative HydroSense public service prices. The 2-inch rate retains its commercial-grade designation. Annual care is optional; irrigation and corrective plumbing require a written quote.
 
 ## Carriers
 
@@ -65,7 +65,7 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 ## Devices Installed
 
-Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa
+Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa, FloLogic
 
 ---
 
@@ -137,57 +137,95 @@ URL: https://hydrosensetx.com/blog/smart-water-shutoff-texas-vacation-rentals
 
 # Flo by Moen
 
-The insurance default. Fastest to calibrate, most widely recognized.
+Inline flow-and-pressure monitoring with automatic shutoff control.
 
 ## How it works
 
-Installs at your main water line. Monitors flow and pressure continuously, runs a daily automated health test, and closes the valve when it detects an anomaly.
+The Moen Flo Shutoff installs on the home's domestic potable-water line and monitors water activity through the manufacturer platform. Depending on device settings and conditions, it can alert the homeowner and close the valve automatically.
 
 ## Best for
 
-Homeowners who want the broadest carrier acceptance and protection calibrated within days, not a month.
+Homes suited to an inline device where the owner wants whole-home domestic-water flow-and-pressure monitoring, app visibility, and automatic valve control.
+
+Official manufacturer source: https://www.moen.com/flo
+
+URL: https://hydrosensetx.com/devices/moen-flo
 
 ---
 
 # Phyn Plus
 
-The accuracy leader. Independently ranked first for leak detection.
+Pressure-wave analysis with whole-home domestic-water monitoring and automatic shutoff.
 
 ## How it works
 
-Installs at your main. Uses pressure wave analysis to read your plumbing 240 times per second, detecting leaks without separate sensors placed around the house.
+Phyn Plus installs on the domestic water supply after the primary shutoff and before downstream household branches. It uses pressure-based analysis through the manufacturer platform to identify water events, provide alerts, and control the integrated shutoff valve.
 
 ## Best for
 
-Older Houston homes, complex plumbing, and owners who want the most sensitive detection available.
+Homes suited to an inline device where the owner wants pressure-based whole-home domestic-water monitoring, plumbing insights, and automatic valve control.
+
+Official manufacturer source: https://www.phyn.com
+
+URL: https://hydrosensetx.com/devices/phyn-plus
 
 ---
 
 # StreamLabs Control
 
-The durability pick. Fewer moving parts, fewer failure points.
+Ultrasonic flow measurement with configurable alerts and automatic shutoff.
 
 ## How it works
 
-Installs inline on your main water line. Uses an ultrasonic flow meter with no internal turbine, monitors flow over Wi-Fi, and shuts off on a detected leak.
+StreamLabs Control installs inline on the domestic water entry line, uses ultrasonic measurement to monitor household flow, and controls an integrated shutoff valve through device settings and the StreamLabs app.
 
 ## Best for
 
-Homeowners who prioritize mechanical simplicity and long-term reliability.
+Homes suited to an inline device where the owner wants ultrasonic flow measurement, configurable leak thresholds, and automatic valve control.
+
+Official manufacturer source: https://streamlabswater.com/pages/streamlabs-control
+
+URL: https://hydrosensetx.com/devices/streamlabs
 
 ---
 
 # Guardian by Elexa
 
-The retrofit option. No plumbing replacement required.
+A sensor-based retrofit controller for compatible quarter-turn ball valves.
 
 ## How it works
 
-A motorized actuator mounts onto your existing main shutoff valve and physically turns the handle when wireless leak sensors detect water. No cutting into the line.
+Guardian uses point leak detectors that communicate with a motorized controller mounted over an existing compatible quarter-turn valve on the domestic water line. When a detector senses water or a configured freezing condition, the controller can close that valve without cutting into the pipe.
 
 ## Best for
 
-Older homes and situations where replacing or cutting into the main line is not an option.
+Homes with a compatible, accessible domestic-line quarter-turn ball valve where a sensor-based retrofit is preferable to cutting an inline device into the pipe.
+
+Official manufacturer source: https://getguardian.com
+
+URL: https://hydrosensetx.com/devices/guardian
+
+---
+
+# FloLogic
+
+Large-line flow monitoring and automatic shutoff for compatible domestic water systems.
+
+## How it works
+
+FloLogic installs inline on the main domestic water supply, continuously monitors flow, and can automatically close its valve when configured leak conditions are detected. Where connectivity is configured, the FloLogic app adds remote oversight, alerts, and controls without replacing local system operation.
+
+## Best for
+
+Properties with 1 1/2-inch or 2-inch domestic incoming water lines, higher-flow requirements, or owners who want FloLogic's flow-monitoring and automatic shutoff architecture.
+
+## HydroSense selection note
+
+HydroSense supports FloLogic as its designated large-line device family for qualifying 1 1/2-inch and 2-inch domestic incoming mains. Final compatibility and model are confirmed in the written proposal; fire-sprinkler and fire-suppression piping are excluded.
+
+Official manufacturer source: https://flologic.com/collections/flologic-system
+
+URL: https://hydrosensetx.com/devices/flologic
 
 ---
 

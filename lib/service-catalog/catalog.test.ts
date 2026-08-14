@@ -24,8 +24,8 @@ const expectedFixedPrices: Record<string, number> = {
 };
 
 test("catalog contains every exact public price and two quote-required records", () => {
-  assert.equal(serviceCatalog.catalogVersion, "2026-08-12.1");
-  assert.equal(serviceCatalog.effectiveDate, "2026-08-12");
+  assert.equal(serviceCatalog.catalogVersion, "2026-08-14.1");
+  assert.equal(serviceCatalog.effectiveDate, "2026-08-14");
   assert.equal(serviceCatalog.currency, "USD");
   assert.equal(activeServices.length, 11);
 
@@ -46,6 +46,38 @@ test("every line-size price includes a device and 2-inch includes commercial gra
   }
   assert.equal(getInstallationService("2.00").commercialGradeDeviceIncluded, true);
   assert.match(getInstallationService("2.00").description, /commercial-grade/i);
+});
+
+test("only the 1.5-inch and 2-inch services designate FloLogic without changing prices", () => {
+  const expectedFamily = {
+    slug: "flologic",
+    name: "FloLogic",
+    designation: "designated",
+  };
+
+  for (const lineSize of ["1.50", "2.00"] as const) {
+    const service = getInstallationService(lineSize);
+    assert.deepEqual(service.deviceFamily, expectedFamily);
+    assert.equal(service.price.type, "fixed");
+    if (service.price.type === "fixed") {
+      assert.equal(service.price.amount, lineSize === "1.50" ? 2638 : 3425);
+    }
+  }
+
+  for (const lineSize of ["0.75", "1.00", "1.25"] as const) {
+    const service = getInstallationService(lineSize);
+    assert.equal(service.deviceFamily, undefined);
+    assert.equal(service.price.type, "fixed");
+    if (service.price.type === "fixed") {
+      assert.equal(service.price.amount, expectedFixedPrices[service.id]);
+    }
+  }
+
+  const publicLargeLine = publicCatalogProjection().services.find(
+    (service) => service.id === "HS-INSTALL-150-001",
+  );
+  assert.ok(publicLargeLine && "deviceFamily" in publicLargeLine);
+  assert.deepEqual(publicLargeLine.deviceFamily, expectedFamily);
 });
 
 test("unknown service ID is not exposed", () => {
@@ -77,6 +109,9 @@ test("pricing structured data matches fixed catalog records without invented quo
 test("OpenAPI separates one-time totals and recurring selections in schemas and examples", () => {
   const document = buildOpenApiDocument() as any;
   const schema = document.components.schemas.EstimateResponse.allOf[1];
+  assert.equal(document.components.schemas.DeviceFamily.properties.designation.example, "designated");
+  assert.equal(document.components.schemas.Service.properties.deviceFamily.$ref, "#/components/schemas/DeviceFamily");
+  assert.equal(document.components.schemas.EstimateLineItem.properties.deviceFamily.$ref, "#/components/schemas/DeviceFamily");
   assert.ok(schema.required.includes("oneTimeCatalogTotal"));
   assert.ok(schema.required.includes("recurringSelections"));
   assert.match(schema.properties.oneTimeCatalogTotal.description, /never included/i);
@@ -129,7 +164,7 @@ function a2aResultData(outcome: ReturnType<typeof processA2ARequest>) {
 
 test("A2A catalog skill returns the runtime catalog", () => {
   const data = a2aResultData(processA2ARequest(a2aRequest("get_service_catalog")));
-  assert.equal(data.catalogVersion, "2026-08-12.1");
+  assert.equal(data.catalogVersion, "2026-08-14.1");
   assert.equal((data.services as unknown[]).length, 11);
 });
 
@@ -164,6 +199,29 @@ test("A2A estimate skill separates one-time and recurring pricing", () => {
     },
   ]);
   assert.equal(data.estimateStatus, "review_required");
+});
+
+test("A2A catalog and estimate responses expose the FloLogic large-line mapping", () => {
+  const catalog = a2aResultData(processA2ARequest(a2aRequest("get_service_catalog")));
+  const service = (catalog.services as any[]).find(
+    (candidate) => candidate.id === "HS-INSTALL-150-001",
+  );
+  assert.deepEqual(service.deviceFamily, {
+    slug: "flologic",
+    name: "FloLogic",
+    designation: "designated",
+  });
+
+  const estimate = a2aResultData(
+    processA2ARequest(
+      a2aRequest("estimate_standard_installation", {
+        postalCode: "77494",
+        incomingLineSize: "1.50",
+      }),
+    ),
+  );
+  assert.deepEqual((estimate.baseService as any).deviceFamily, service.deviceFamily);
+  assert.equal((estimate.baseService as any).unitPrice, 2638);
 });
 
 test("A2A unsupported method returns method not found", () => {

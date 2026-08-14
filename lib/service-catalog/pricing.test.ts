@@ -30,6 +30,22 @@ test("standard confirmed inputs return a catalog-exact estimate", () => {
   assert.equal(estimate.bookingAuthority, "assessment_only");
 });
 
+test("large-line estimates expose FloLogic while smaller tiers remain unmapped", () => {
+  const oneAndHalf = calculateEstimate({ ...standardInput, incomingLineSize: "1.50" });
+  assert.equal(oneAndHalf.publishedCatalogTotal, 2638);
+  assert.deepEqual(oneAndHalf.baseService?.deviceFamily, {
+    slug: "flologic",
+    name: "FloLogic",
+    designation: "designated",
+  });
+
+  const twoInch = calculateEstimate({ ...standardInput, incomingLineSize: "2.00" });
+  assert.equal(twoInch.publishedCatalogTotal, 3425);
+  assert.deepEqual(twoInch.baseService?.deviceFamily, oneAndHalf.baseService?.deviceFamily);
+
+  assert.equal(calculateEstimate(standardInput).baseService?.deviceFamily, undefined);
+});
+
 test("two compatible sensors add exact catalog arithmetic", () => {
   const estimate = calculateEstimate({
     ...standardInput,
@@ -140,4 +156,5 @@ test("2-inch estimate carries the commercial-grade catalog service", () => {
   const estimate = calculateEstimate({ ...standardInput, incomingLineSize: "2.00" });
   assert.equal(estimate.publishedCatalogTotal, 3425);
   assert.match(estimate.baseService?.name ?? "", /commercial-grade/i);
+  assert.equal(estimate.baseService?.deviceFamily?.designation, "designated");
 });

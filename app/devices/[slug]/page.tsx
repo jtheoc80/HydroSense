@@ -23,12 +23,13 @@ export function generateMetadata({ params }: PageProps): Metadata {
   const device = devices[params.slug];
   if (!device) return {};
 
-  const title = `${device.name} Installation in Houston`;
-  const socialTitle = `${title} | HydroSense Texas`;
+  const pageTitle = `${device.name} Installation in Houston`;
+  const title = device.metadataTitle ?? pageTitle;
+  const socialTitle = device.metadataTitle ?? `${pageTitle} | HydroSense Texas`;
   const description = `${device.name} installation for Houston-area homes. Review plumbing, power, Wi-Fi, valve, and site requirements before receiving a written HydroSense proposal.`;
 
   return {
-    title,
+    title: device.metadataTitle ? { absolute: device.metadataTitle } : title,
     description,
     alternates: {
       canonical: `https://hydrosensetx.com/devices/${device.slug}`,
@@ -135,6 +136,11 @@ export default function DevicePage({ params }: PageProps) {
                 <p className="text-xl text-fog-200 leading-relaxed mb-5">
                   {device.tagline}
                 </p>
+                {device.selectionNote ? (
+                  <p className="mb-6 max-w-2xl rounded-xl border border-signal-400/30 bg-signal-400/[0.08] p-4 text-sm leading-6 text-fog-200">
+                    {device.selectionNote}
+                  </p>
+                ) : null}
                 <p className="text-fog-300 leading-relaxed max-w-2xl mb-8">
                   HydroSense scopes the exact installation after reviewing the
                   home&apos;s domestic water line, power, Wi-Fi, valve layout, and

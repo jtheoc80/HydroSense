@@ -37,6 +37,7 @@ export const indexablePages: readonly IndexablePage[] = [
   { path: "/devices/phyn-plus", pageType: "device-detail", title: "Phyn Plus Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices/streamlabs", pageType: "device-detail", title: "StreamLabs Control Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices/guardian", pageType: "device-detail", title: "Guardian by Elexa Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/devices/flologic", pageType: "device-detail", title: "FloLogic Installation in Houston", indexable: true, lastModified: "2026-08-14", indexNowEligible: true },
   { path: "/service-area", pageType: "service-area-hub", title: "Greater Houston Smart Water Shutoff Service Area", indexable: true, indexNowEligible: true },
   { path: "/service-area/houston", pageType: "city-service", title: "Smart Water Shutoff Installation in Houston, TX", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/service-area/katy", pageType: "city-service", title: "Smart Water Shutoff Installation in Katy, TX", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },

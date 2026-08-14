@@ -103,10 +103,17 @@ export default function PricingPage() {
                     {service.price.type === "fixed" ? formatUsd(service.price.amount) : null}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
-                    {service.commercialGradeDeviceIncluded
-                      ? "Commercial-grade smart shutoff included"
-                      : "Compatible smart shutoff included"}
+                    {service.deviceFamily
+                      ? `${service.deviceFamily.name} designated large-line system`
+                      : service.commercialGradeDeviceIncluded
+                        ? "Commercial-grade smart shutoff included"
+                        : "Compatible smart shutoff included"}
                   </p>
+                  {service.deviceFamily ? (
+                    <p className="mt-2 text-sm font-medium leading-6 text-[#001a4e]">
+                      Device + standard installation{service.commercialGradeDeviceIncluded ? " · commercial grade" : ""}
+                    </p>
+                  ) : null}
                 </article>
               ))}
             </div>

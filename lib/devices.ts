@@ -25,6 +25,9 @@ export interface Device {
   detectionMethod: string;
   setupProfile: string;
   installType: string;
+  metadataTitle?: string;
+  hubBadge?: string;
+  selectionNote?: string;
   faqs: { q: string; a: string }[];
   video: DeviceVideo;
 }
@@ -190,6 +193,64 @@ export const devices: Record<string, Device> = {
       {
         q: "How is Guardian different from an inline monitor?",
         a: "Guardian relies on point sensors placed near toilets, appliances, water heaters, drains, and other domestic-water risk areas. It does not analyze household water flow or pressure through the domestic line in the same way as an inline whole-home monitor.",
+      },
+    ],
+  },
+  flologic: {
+    slug: "flologic",
+    name: "FloLogic",
+    tagline:
+      "Large-line flow monitoring and automatic shutoff for compatible domestic water systems.",
+    howItWorks:
+      "FloLogic installs inline on the main domestic water supply, continuously monitors flow, and can automatically close its valve when configured leak conditions are detected. Where connectivity is configured, the FloLogic app adds remote oversight, alerts, and controls without replacing local system operation.",
+    keyFacts: [
+      "Available in 1-inch, 1 1/2-inch, and 2-inch valve configurations",
+      "HydroSense designates FloLogic for qualifying 1 1/2-inch and 2-inch incoming domestic water mains; final compatibility and model are confirmed in the written proposal",
+      "Manufacturer flow guidance is up to approximately 50 GPM for 1 inch, more than approximately 100 GPM for 1 1/2 inches, and approximately 200 GPM for 2 inches",
+      "Uses standard 120V AC power and includes a standard backup battery",
+      "App and remote connectivity add oversight and controls but do not replace local system operation",
+      "May be installed indoors or in a protected outdoor location that meets current manufacturer conditions",
+      "Below-grade installation is not permitted under the manufacturer warranty",
+      "Current manufacturer guidance recommends professional or licensed plumbing installation because the pipe is cut for the valve",
+      "The manufacturer lists a five-year limited warranty, subject to its current terms",
+      "Fire-sprinkler and fire-suppression piping are excluded from every HydroSense FloLogic installation",
+    ],
+    bestFor:
+      "Properties with 1 1/2-inch or 2-inch domestic incoming water lines, higher-flow requirements, or owners who want FloLogic's flow-monitoring and automatic shutoff architecture.",
+    officialSite: "https://flologic.com/collections/flologic-system",
+    detectionMethod: "Continuous inline flow monitoring",
+    setupProfile:
+      "120V power + Gateway/Connect configuration + installation clearance",
+    installType: "Inline on the domestic main",
+    metadataTitle: "FloLogic Installation Houston | HydroSense Texas",
+    hubBadge: "Large-line option",
+    selectionNote:
+      "HydroSense supports FloLogic as its designated large-line device family for qualifying 1 1/2-inch and 2-inch domestic incoming mains. Final compatibility and model are confirmed in the written proposal; fire-sprinkler and fire-suppression piping are excluded.",
+    video: {
+      videoTitle: "FloLogic whole-property water protection systems",
+      fallbackUrl: "https://flologic.com/collections/flologic-system",
+      fallbackLabel: "Review official FloLogic systems",
+    },
+    faqs: [
+      {
+        q: "What line sizes does HydroSense support with FloLogic?",
+        a: "HydroSense uses FloLogic as its designated large-line device family for qualifying 1 1/2-inch and 2-inch domestic incoming water mains. The exact configuration, final model, installation conditions, and required equipment are confirmed in the written proposal. Fire-sprinkler and fire-suppression piping are excluded.",
+      },
+      {
+        q: "Does FloLogic include battery backup?",
+        a: "Current manufacturer guidance describes a standard backup battery that supports local monitoring and valve operation during an AC power interruption. Battery condition, replacement timing, and current manufacturer requirements are reviewed during the final system handoff.",
+      },
+      {
+        q: "Does FloLogic work if internet service is interrupted?",
+        a: "Yes. Current manufacturer guidance says local monitoring and shutoff operation continue without internet service. App alerts, remote oversight, and remote controls remain dependent on the configured connectivity and manufacturer services.",
+      },
+      {
+        q: "What does HydroSense verify before a FloLogic installation?",
+        a: "We verify the domestic-line size and flow requirements, pipe material, main-line routing, installation clearance, valve condition, protected placement, 120V power, and Gateway or Connect configuration. We also identify and exclude fire-sprinkler and fire-suppression piping. Final compatibility, model, and equipment are confirmed in the written proposal. " + installationScopeDisclosure,
+      },
+      {
+        q: "Can FloLogic qualify for an insurance incentive?",
+        a: insuranceAnswer("FloLogic"),
       },
     ],
   },

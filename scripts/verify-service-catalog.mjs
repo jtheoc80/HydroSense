@@ -50,10 +50,24 @@ if (!/commercialGradeDeviceIncluded:\s*true/.test(twoInch)) {
 if (!/Fire-sprinkler and fire-suppression piping are always excluded/.test(catalog)) {
   errors.push("Catalog must preserve the fire-system exclusion");
 }
-if (!/catalogVersion:\s*CATALOG_VERSION/.test(catalog) || !/2026-08-12\.1/.test(catalog)) {
-  errors.push("Catalog version must be the stable 2026-08-12.1 value");
+if (!/catalogVersion:\s*CATALOG_VERSION/.test(catalog) || !/2026-08-14\.1/.test(catalog)) {
+  errors.push("Catalog version must be the stable 2026-08-14.1 value");
 }
 if (/catalogVersion[\s\S]{0,120}(?:new Date|Date\.now)/.test(catalog)) {
+
+for (const serviceId of ["HS-INSTALL-150-001", "HS-INSTALL-200-001"]) {
+  const record = catalog.match(new RegExp(`id:\\s*"${serviceId}"([\\s\\S]{0,1200}?)\\n\\s*\\},`))?.[1] ?? "";
+  if (!/deviceFamily:\s*\{[\s\S]*?slug:\s*"flologic"[\s\S]*?name:\s*"FloLogic"[\s\S]*?designation:\s*"designated"/.test(record)) {
+    errors.push(`${serviceId} must designate the FloLogic device family`);
+  }
+}
+
+for (const serviceId of ["HS-INSTALL-075-001", "HS-INSTALL-100-001", "HS-INSTALL-125-001"]) {
+  const record = catalog.match(new RegExp(`id:\\s*"${serviceId}"([\\s\\S]{0,900}?)\\n\\s*\\},`))?.[1] ?? "";
+  if (/deviceFamily:/.test(record)) {
+    errors.push(`${serviceId} must not gain a device-family designation`);
+  }
+}
   errors.push("Catalog version must not be generated at request time");
 }
 

@@ -15,6 +15,7 @@ const browserRoutes = [
   "/devices/moen-flo",
   "/devices/phyn-plus",
   "/devices/streamlabs",
+  "/devices/flologic",
   "/service-area",
   "/service-area/houston",
   "/service-area/katy",
@@ -25,6 +26,7 @@ const rawHtmlRoutes = [
   "/",
   "/pricing",
   "/devices/moen-flo",
+  "/devices/flologic",
   "/service-area/houston",
   "/agent-ready",
 ] as const;
@@ -80,6 +82,7 @@ test("structured data is present in raw server HTML before hydration", async ({ 
   for (const route of [
     "/pricing",
     "/devices/moen-flo",
+    "/devices/flologic",
     "/service-area/houston",
     "/agent-ready",
   ]) {
@@ -90,6 +93,76 @@ test("structured data is present in raw server HTML before hydration", async ({ 
       `${route} raw BreadcrumbList`,
     ).toBe(true);
   }
+});
+
+test("FloLogic detail page has unique search intent and governed manufacturer copy", async ({ page }) => {
+  const response = await page.goto("/devices/flologic", { waitUntil: "domcontentloaded" });
+  expect(response?.status()).toBe(200);
+  await expect(page).toHaveTitle("FloLogic Installation Houston | HydroSense Texas");
+  await expect(page.getByRole("heading", { level: 1, name: "FloLogic installation in Houston" })).toBeVisible();
+  await expect(page.locator(`a[href="https://flologic.com/collections/flologic-system"]`).first()).toBeVisible();
+  await expect(page.getByText(/designated large-line device family/i).first()).toBeVisible();
+  await expect(page.getByText(/fire-sprinkler and fire-suppression piping are excluded/i).first()).toBeVisible();
+});
+
+test("catalog, REST estimate, and A2A expose the same FloLogic designation", async ({ request }) => {
+  const expectedFamily = {
+    slug: "flologic",
+    name: "FloLogic",
+    designation: "designated",
+  };
+
+  const catalogResponse = await request.get("/service-catalog.json");
+  expect(catalogResponse.status()).toBe(200);
+  const catalog = await catalogResponse.json();
+  const catalogService = catalog.services.find(
+    (service: { id: string }) => service.id === "HS-INSTALL-150-001",
+  );
+  expect(catalogService.deviceFamily).toEqual(expectedFamily);
+  expect(catalogService.price.amount).toBe(2638);
+
+  const servicesResponse = await request.get("/api/public/v1/services");
+  expect(servicesResponse.status()).toBe(200);
+  const services = await servicesResponse.json();
+  expect(
+    services.services.find((service: { id: string }) => service.id === "HS-INSTALL-200-001").deviceFamily,
+  ).toEqual(expectedFamily);
+
+  const estimateResponse = await request.post("/api/public/v1/estimate", {
+    data: { postalCode: "77494", incomingLineSize: "1.50" },
+  });
+  expect(estimateResponse.status()).toBe(200);
+  const estimate = await estimateResponse.json();
+  expect(estimate.baseService.deviceFamily).toEqual(expectedFamily);
+  expect(estimate.baseService.unitPrice).toBe(2638);
+
+  const a2aResponse = await request.post("/api/a2a", {
+    data: {
+      jsonrpc: "2.0",
+      id: "flologic-e2e",
+      method: "SendMessage",
+      params: {
+        message: {
+          messageId: "flologic-e2e-message",
+          role: "ROLE_USER",
+          parts: [{
+            data: {
+              skill: "estimate_standard_installation",
+              input: { postalCode: "77494", incomingLineSize: "2.00" },
+            },
+            mediaType: "application/json",
+          }],
+        },
+      },
+    },
+  });
+  expect(a2aResponse.status()).toBe(200);
+  const a2a = await a2aResponse.json();
+  expect(a2a.result.message.parts[0].data.baseService.deviceFamily).toEqual(expectedFamily);
+  expect(a2a.result.message.parts[0].data.baseService.unitPrice).toBe(3425);
+
+  const agentCardResponse = await request.get("/.well-known/agent-card.json");
+  expect(agentCardResponse.status()).toBe(200);
 });
 
 for (const route of browserRoutes) {
@@ -171,6 +244,7 @@ test("robots, sitemap, and legacy noindex headers match registry policy", async 
   );
   expect(sitemapUrls).toContain(`${SITE_ORIGIN}/pricing`);
   expect(sitemapUrls).toContain(`${SITE_ORIGIN}/agent-ready`);
+  expect(sitemapUrls).toContain(`${SITE_ORIGIN}/devices/flologic`);
 
   for (const path of protectedNoindexPaths) {
     expect(sitemapUrls).not.toContain(new URL(path, `${SITE_ORIGIN}/`).toString());
