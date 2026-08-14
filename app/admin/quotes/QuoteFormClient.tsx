@@ -658,7 +658,8 @@ export default function QuoteFormClient({ existing, mode }: QuoteFormProps) {
                 {sending ? "Sending..." : "Send quote"}
               </button>
             )}
-            {mode === "edit" && existing?.status === "sent" && (
+            {mode === "edit" &&
+              (existing?.status === "sent" || existing?.status === "viewed") && (
               <button
                 onClick={handleSend}
                 disabled={sending}

@@ -2,7 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import QuoteFormClient from "../QuoteFormClient";
+import QuoteLog from "../QuoteLog";
 import type { Quote } from "../types";
+import type { QuoteDeliveryEvent } from "@/lib/quote-delivery";
 
 export const metadata: Metadata = {
   title: "Admin | Edit Quote",
@@ -17,11 +19,17 @@ export default async function EditQuotePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { data: quote, error } = await supabase
-    .from("quotes")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const [quoteResult, deliveryResult] = await Promise.all([
+    supabase.from("quotes").select("*").eq("id", id).single(),
+    supabase
+      .from("quote_delivery_events")
+      .select(
+        "id,quote_id,attempt_id,channel,provider,recipient,copy_recipient,status,provider_message_id,provider_status,error,created_at,completed_at"
+      )
+      .eq("quote_id", id)
+      .order("created_at", { ascending: false }),
+  ]);
+  const { data: quote, error } = quoteResult;
 
   if (error || !quote) {
     return (
@@ -33,6 +41,12 @@ export default async function EditQuotePage({
       </div>
     );
   }
+
+  if (deliveryResult.error) {
+    console.error("Unable to load quote delivery log:", deliveryResult.error);
+  }
+
+  const typedQuote = quote as Quote;
 
   return (
     <>
@@ -46,7 +60,13 @@ export default async function EditQuotePage({
           </Link>
         )}
       </div>
-      <QuoteFormClient mode="edit" existing={quote as Quote} />
+      <QuoteFormClient mode="edit" existing={typedQuote} />
+      <div className="bg-ink-950">
+        <QuoteLog
+          quote={typedQuote}
+          deliveryEvents={(deliveryResult.data || []) as QuoteDeliveryEvent[]}
+        />
+      </div>
     </>
   );
 }

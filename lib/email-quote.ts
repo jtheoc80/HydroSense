@@ -1,4 +1,8 @@
 import { Resend } from "resend";
+import {
+  safeQuoteDeliveryError,
+  type QuoteDeliveryResult,
+} from "./quote-delivery";
 
 const FROM_DEFAULT = "HydroSense Texas <quotes@hydrosensetx.com>";
 
@@ -20,15 +24,41 @@ function escapeHtml(s: string): string {
 export async function sendQuoteEmail(quote: {
   customer_first_name: string;
   customer_email: string;
+  copy_email?: string | null;
   quote_number: string;
   total: number;
   public_token: string;
   expires_at: string;
-}): Promise<void> {
+}): Promise<QuoteDeliveryResult> {
+  const recipient = quote.customer_email.trim();
+  const copyRecipient = quote.copy_email?.trim() || null;
+
+  if (!recipient.includes("@")) {
+    return {
+      channel: "email",
+      provider: "resend",
+      recipient,
+      copyRecipient,
+      status: "skipped",
+      providerMessageId: null,
+      providerStatus: "invalid_recipient",
+      error: "No valid customer email address",
+    };
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.warn("[email-quote] RESEND_API_KEY missing, skipping");
-    return;
+    return {
+      channel: "email",
+      provider: "resend",
+      recipient,
+      copyRecipient,
+      status: "skipped",
+      providerMessageId: null,
+      providerStatus: "not_configured",
+      error: "Resend is not configured",
+    };
   }
 
   const siteUrl =
@@ -96,18 +126,59 @@ View your quote: ${quoteUrl}
 Jimmy Theoc, on behalf of Texas Master Plumber MPL 43057
 HydroSense Texas is a service of Lead Ledger Pro LLC.`;
 
-  const resend = new Resend(apiKey);
-  await resend.emails.send({
-    from: from(),
-    to: quote.customer_email,
-    subject: `Your HydroSense quote is ready — ${quote.quote_number}`,
-    html,
-    text,
-    headers: {
-      "List-Unsubscribe": "<mailto:unsubscribe@hydrosensetx.com>",
-      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-    },
-  });
+  try {
+    const resend = new Resend(apiKey);
+    const { data, error } = await resend.emails.send({
+      from: from(),
+      to: recipient,
+      ...(copyRecipient ? { bcc: copyRecipient } : {}),
+      ...(process.env.LEAD_NOTIFICATION_EMAIL
+        ? { replyTo: process.env.LEAD_NOTIFICATION_EMAIL }
+        : {}),
+      subject: `Your HydroSense quote is ready — ${quote.quote_number}`,
+      html,
+      text,
+      headers: {
+        "List-Unsubscribe": "<mailto:unsubscribe@hydrosensetx.com>",
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      },
+    });
+
+    if (error || !data?.id) {
+      return {
+        channel: "email",
+        provider: "resend",
+        recipient,
+        copyRecipient,
+        status: "failed",
+        providerMessageId: null,
+        providerStatus: "rejected",
+        error: safeQuoteDeliveryError(error?.message || "Resend did not return a message ID"),
+      };
+    }
+
+    return {
+      channel: "email",
+      provider: "resend",
+      recipient,
+      copyRecipient,
+      status: "sent",
+      providerMessageId: data.id,
+      providerStatus: "accepted",
+      error: null,
+    };
+  } catch (error) {
+    return {
+      channel: "email",
+      provider: "resend",
+      recipient,
+      copyRecipient,
+      status: "failed",
+      providerMessageId: null,
+      providerStatus: "request_failed",
+      error: safeQuoteDeliveryError(error),
+    };
+  }
 }
 
 // ── Quote accepted confirmation (to customer) ───────
