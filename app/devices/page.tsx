@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { deviceList } from "@/lib/devices";
 import CriticalBar from "@/components/CriticalBar";
 import Header from "@/components/Header";
@@ -355,20 +356,48 @@ export default function DevicesPage() {
                   See the starting price, scope, exclusions, and optional care plan.
                 </p>
               </a>
-              <a
-                href="/blog"
+              <Link
+                href="/guides/flo-by-moen-vs-phyn-vs-streamlabs-vs-flologic"
                 className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
               >
                 <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">
-                  Guides
+                  Device comparison
                 </p>
                 <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">
-                  Home water-protection resources
+                  Compare four inline device families
                 </p>
                 <p className="text-fog-300 text-sm">
-                  Read installation, leak-prevention, and homeowner planning guides.
+                  Review detection, installation, connectivity, and large-line fit.
                 </p>
-              </a>
+              </Link>
+              <Link
+                href="/guides/smart-water-shutoff-power-wifi-outage"
+                className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
+              >
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">
+                  Reliability guide
+                </p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">
+                  Power and Wi-Fi outage behavior
+                </p>
+                <p className="text-fog-300 text-sm">
+                  Separate local monitoring, shutoff, alerts, remote control, and battery support.
+                </p>
+              </Link>
+              <Link
+                href="/guides/what-size-smart-water-shutoff-do-i-need"
+                className="bg-ink-800/40 border border-ink-700/30 rounded-xl p-6 hover:border-hydro-400/30 transition-all group"
+              >
+                <p className="text-xs uppercase tracking-[0.15em] text-fog-400 mb-2">
+                  Line-size guide
+                </p>
+                <p className="text-fog-50 font-semibold text-lg group-hover:text-hydro-400 transition-colors mb-2">
+                  Match the device to the domestic main
+                </p>
+                <p className="text-fog-300 text-sm">
+                  See what HydroSense verifies before selecting a supported device family.
+                </p>
+              </Link>
             </div>
           </div>
         </section>

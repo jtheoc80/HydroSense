@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     absolute: "Smart Water Shutoff Installation Houston | HydroSense Texas",
   },
   description:
-    "Professional Flo by Moen, Phyn Plus, and StreamLabs smart water shutoff installation across Greater Houston. App setup, shutoff testing, and installation records. Call (281) 694-5754.",
+    "Professional smart water shutoff installation across Greater Houston. Device compatibility review, app setup, shutoff testing, and installation records. Call (281) 694-5754.",
   alternates: {
     canonical: "https://hydrosensetx.com/",
   },

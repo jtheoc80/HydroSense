@@ -36,7 +36,17 @@ const cities: Record<
 
 import { writeFileSync } from "fs";
 import { join } from "path";
-import { activeServices, formatUsd, serviceCatalog } from "../lib/service-catalog/catalog";
+import {
+  activeServices,
+  formatUsd,
+  installationServices,
+  serviceCatalog,
+} from "../lib/service-catalog/catalog";
+import {
+  commercialGuides,
+  installationMaximumStartingPrice,
+  installationStartingPrice,
+} from "../lib/guides/commercial-guides";
 
 import { deviceList } from "../lib/devices";
 const publicPricingLines = activeServices.map((service) => {
@@ -48,6 +58,29 @@ const publicPricingLines = activeServices.map((service) => {
     : "";
   return `- ${service.id}: ${service.name} — ${price}${family}`;
 }).join("\n");
+
+const installationPricingLines = installationServices.map((service) => {
+  if (service.price.type !== "fixed") {
+    throw new Error(`Installation service ${service.id} must have a fixed price`);
+  }
+  const family = service.deviceFamily
+    ? `; designated device family: ${service.deviceFamily.name}`
+    : "";
+  const grade = service.commercialGradeDeviceIncluded
+    ? "; commercial-grade device included"
+    : "";
+  return `- ${service.incomingLineSize}-inch domestic main: starting at ${formatUsd(service.price.amount)}${family}${grade}`;
+}).join("\n");
+
+const commercialGuideContent = commercialGuides.map((guide) => `## ${guide.h1}
+
+**${guide.directQuestion}**
+
+${guide.directAnswer}
+
+${guide.sections.map((section) => `### ${section.heading}\n\n${section.paragraphs.join("\n\n")}${section.bullets ? `\n\n${section.bullets.map((bullet) => `- ${bullet}`).join("\n")}` : ""}`).join("\n\n")}
+
+URL: https://hydrosensetx.com${guide.href}`).join("\n\n---\n\n");
 
 let output = `# HydroSense Texas - Full Content
 
@@ -98,6 +131,10 @@ Currency: ${serviceCatalog.currency}
 
 ${publicPricingLines}
 
+HydroSense standard installation starting prices currently range from ${formatUsd(installationStartingPrice)} to ${formatUsd(installationMaximumStartingPrice)}, based on the verified incoming domestic-main size:
+
+${installationPricingLines}
+
 FloLogic is HydroSense's designated device family for qualifying 1 1/2-inch and 2-inch domestic water-line installations. The final device model and compatibility are confirmed in the written proposal. Fire-sprinkler and fire-suppression piping remain excluded. HydroSense catalog prices—not manufacturer MSRP—are the authoritative HydroSense public service prices. The 2-inch rate retains its commercial-grade designation. Annual care is optional; irrigation and corrective plumbing require a written quote.
 
 ## Carriers
@@ -113,6 +150,10 @@ ${deviceList.map((device) => device.name).join(", ")}
 `;
 
 output += `# Guides
+
+${commercialGuideContent}
+
+---
 
 ## HO-A vs HO-B vs HO-3 in Texas
 

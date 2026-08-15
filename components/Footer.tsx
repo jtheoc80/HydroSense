@@ -24,7 +24,7 @@ const quickLinks = [
   { name: "Pricing", href: "/pricing" },
   { name: "Agent-ready", href: "/agent-ready" },
   { name: "FAQ", href: "/#faq" },
-  { name: "Guides", href: "/blog" },
+  { name: "Blog", href: "/blog" },
   { name: "Privacy policy", href: "/privacy" },
   { name: "Terms of service", href: "/terms" },
 ];

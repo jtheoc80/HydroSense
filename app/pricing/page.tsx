@@ -196,6 +196,12 @@ export default function PricingPage() {
               Confirm the process, device fit, and service coverage before requesting a proposal.
             </h2>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Button href="/guides/smart-water-shutoff-installation-cost-houston" outline className="!rounded-full !border-slate-300 !px-5 !py-3 !text-[#001a4e]">
+                Read the Houston cost guide
+              </Button>
+              <Button href="/guides/what-size-smart-water-shutoff-do-i-need" outline className="!rounded-full !border-slate-300 !px-5 !py-3 !text-[#001a4e]">
+                Verify line-size decisions
+              </Button>
               <Button href="/#customer-journey" outline className="!rounded-full !border-slate-300 !px-5 !py-3 !text-[#001a4e]">
                 Review the installation process
               </Button>

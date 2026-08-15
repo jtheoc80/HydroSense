@@ -2,6 +2,21 @@ import {
   BUSINESS_ENTITY_ID,
   SITE_ORIGIN,
 } from "@/lib/seo/indexable-pages";
+import { deviceList } from "@/lib/devices";
+
+export function getSupportedDeviceNames() {
+  return deviceList.map((device) => device.name);
+}
+
+export function buildGlobalServiceDescription() {
+  const names = getSupportedDeviceNames();
+  const supportedSet = names.length > 1
+    ? `${names.slice(0, -1).join(", ")}, and ${names.at(-1)}`
+    : names[0] ?? "compatible smart water shutoff systems";
+
+  return `Professional installation and configuration of compatible ${supportedSet} domestic-water monitoring and automatic shutoff systems. Service includes a written scope, plumbing installation, app setup where applicable, shutoff testing, homeowner handoff, and an itemized installation record.`;
+}
+
 
 export default function Schema() {
   const sameAs = [
@@ -53,8 +68,7 @@ export default function Schema() {
       "@type": "AdministrativeArea",
       name: "Greater Houston, Texas",
     },
-    description:
-      "Professional installation and configuration of compatible Flo by Moen, Phyn Plus, and StreamLabs whole-home water monitoring and automatic shutoff systems. Service includes a written scope, plumbing installation, app setup, shutoff testing, homeowner handoff, and an itemized installation record.",
+    description: buildGlobalServiceDescription(),
   };
 
   return (

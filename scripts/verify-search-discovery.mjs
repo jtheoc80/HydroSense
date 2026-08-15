@@ -134,6 +134,10 @@ const dynamicCanonicalSignals = {
     file: "app/service-area/[city]/page.tsx",
     signal: "https://hydrosensetx.com/service-area/\${city.slug}",
   },
+  "commercial-guide": {
+    file: "app/guides/[slug]/page.tsx",
+    signal: "absoluteSearchUrl(guide.href)",
+  },
 };
 for (const page of pages) {
   const dynamic = dynamicCanonicalSignals[page.pageType];
@@ -203,6 +207,11 @@ for (const fact of [
 }
 check(!/streetAddress/.test(schemaSource), "Global business schema must not publish a street address");
 check(!/insurance|premium|discount/i.test(schemaSource), "Insurance claims must not define the core business entity");
+check(
+  schemaSource.includes('import { deviceList } from "@/lib/devices"') &&
+    schemaSource.includes("buildGlobalServiceDescription()"),
+  "Global Service schema must derive supported device names from deviceList",
+);
 
 function sourceFiles(directory) {
   return readdirSync(resolve(root, directory), { withFileTypes: true }).flatMap((entry) => {
