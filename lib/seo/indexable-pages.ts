@@ -8,6 +8,8 @@ export type IndexablePageType =
   | "device-detail"
   | "service-area-hub"
   | "city-service"
+  | "guide-hub"
+  | "commercial-guide"
   | "blog-hub"
   | "article"
   | "agent-ready"
@@ -52,6 +54,12 @@ export const indexablePages: readonly IndexablePage[] = [
   { path: "/service-area/galveston", pageType: "city-service", title: "Smart Water Shutoff Installation in Galveston, TX", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/service-area/lake-conroe", pageType: "city-service", title: "Smart Water Shutoff Installation in Lake Conroe, TX", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/service-area/lake-livingston", pageType: "city-service", title: "Smart Water Shutoff Installation in Lake Livingston, TX", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/guides", pageType: "guide-hub", title: "Smart Water Shutoff Buying Guides | HydroSense Texas", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/guides/smart-water-shutoff-installation-cost-houston", pageType: "commercial-guide", title: "Smart Water Shutoff Installation Cost in Houston | HydroSense", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/guides/what-size-smart-water-shutoff-do-i-need", pageType: "commercial-guide", title: "What Size Smart Water Shutoff Do I Need? | HydroSense", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/guides/flo-by-moen-vs-phyn-vs-streamlabs-vs-flologic", pageType: "commercial-guide", title: "Flo by Moen vs Phyn vs StreamLabs vs FloLogic | HydroSense", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/guides/do-i-need-a-plumber-for-smart-water-shutoff", pageType: "commercial-guide", title: "Do You Need a Plumber for a Smart Water Shutoff? | HydroSense", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/guides/smart-water-shutoff-power-wifi-outage", pageType: "commercial-guide", title: "Do Smart Water Shutoffs Work Without Power or Wi-Fi? | HydroSense", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/blog", pageType: "blog-hub", title: "HydroSense Smart Water Shutoff and Leak Prevention Guides", indexable: true, indexNowEligible: true },
   { path: "/blog/hidden-water-leak-damage-houston", pageType: "article", title: "Hidden Water Leak Damage: What 6 Months Does to a Houston Home", indexable: true, indexNowEligible: true },
   { path: "/blog/slab-leak-repair-cost-houston", pageType: "article", title: "Slab Leak Repair Cost in Houston: What an Untreated Leak Costs Every Hour", indexable: true, indexNowEligible: true },

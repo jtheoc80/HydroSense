@@ -57,6 +57,14 @@ Currency: USD
 - HS-IRRIGATION-ADD-001: Irrigation shutoff scope — Quote required
 - HS-CORRECTIVE-001: Corrective plumbing — Quote required
 
+HydroSense standard installation starting prices currently range from $999 to $4,175, based on the verified incoming domestic-main size:
+
+- 0.75-inch domestic main: starting at $999
+- 1.00-inch domestic main: starting at $1,450
+- 1.25-inch domestic main: starting at $1,875
+- 1.50-inch domestic main: starting at $3,456; designated device family: FloLogic
+- 2.00-inch domestic main: starting at $4,175; designated device family: FloLogic; commercial-grade device included
+
 FloLogic is HydroSense's designated device family for qualifying 1 1/2-inch and 2-inch domestic water-line installations. The final device model and compatibility are confirmed in the written proposal. Fire-sprinkler and fire-suppression piping remain excluded. HydroSense catalog prices—not manufacturer MSRP—are the authoritative HydroSense public service prices. The 2-inch rate retains its commercial-grade designation. Annual care is optional; irrigation and corrective plumbing require a written quote.
 
 ## Carriers
@@ -70,6 +78,158 @@ Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa, FloLogic
 ---
 
 # Guides
+
+## Smart water shutoff installation cost in Houston
+
+**How much does a smart water shutoff cost to install in Houston?**
+
+HydroSense smart water shutoff installation in Greater Houston starts at $999 and currently ranges to $4,175 for a verified 2-inch domestic main. Each published starting price includes a compatible device and standard installation. Line size is a major price factor; plumbing compatibility, extra material, corrective work, and final equipment are confirmed in the written proposal.
+
+### What each published starting price includes
+
+Every installation row combines one compatible smart water shutoff device with standard installation on the verified incoming domestic water line. The standard handoff includes manufacturer-app setup where applicable, an automatic shutoff test, homeowner operating guidance, and an itemized installation record.
+
+Qualifying 1 1/2-inch and 2-inch services use FloLogic as HydroSense's designated supported large-line device family. The 2-inch service retains its commercial-grade designation, while the exact model and required equipment remain subject to the written proposal.
+
+### When a standard installation becomes review-required
+
+HydroSense checks line access, pipe size and material, existing valves, pressure-reducing-valve position, installation clearance, nearby power, connectivity, and the need for specialized fittings before committing to the final project scope.
+
+Corrective plumbing, electrical modification, dual mains, inaccessible routing, repairs, and other non-standard conditions are not guessed into the public price. They are identified and quoted in the written proposal.
+
+### Domestic water is standard; irrigation and fire piping are not
+
+The home’s domestic water line is the standard HydroSense installation scope. HydroSense does not install leak detection, monitoring, or automatic shutoff control on fire-sprinkler or fire-suppression piping. Irrigation is optional and must be specifically requested, technically reviewed, and quoted in the written proposal. The proposal confirms the actual plumbing configuration and any equipment required; one shutoff device is not assumed to control both domestic water and irrigation.
+
+Irrigation is a separate quote-required catalog scope when the homeowner specifically requests it. The proposal must confirm the actual plumbing configuration and equipment; HydroSense does not assume that one shutoff device controls both domestic water and irrigation.
+
+### Annual care stays outside the one-time installation total
+
+Annual system care is optional and currently published at $99 per year. It is recurring and is never included in the one-time installation total. Manufacturer core monitoring and automatic shutoff do not require a HydroSense care plan.
+
+URL: https://hydrosensetx.com/guides/smart-water-shutoff-installation-cost-houston
+
+---
+
+## What size smart water shutoff do I need?
+
+**What size smart water shutoff do I need?**
+
+Choose a smart water shutoff for the home's verified incoming domestic main—not by guessing from a nearby valve or fixture. HydroSense confirms nominal line size, pipe material, clearance, valve arrangement, PRV position, power, and connectivity. Qualifying 1.5-inch and 2-inch domestic mains use FloLogic as HydroSense's designated supported large-line family, with final model and equipment confirmed in writing.
+
+### Nominal pipe size must be verified, not estimated
+
+A domestic main can change material or diameter near a meter, pressure-reducing valve, transition fitting, or existing shutoff. Measuring the outside of insulation, a valve body, or a branch line can produce the wrong nominal size.
+
+HydroSense identifies the incoming domestic main and confirms the size at the proposed installation location before selecting the device and fittings.
+
+### What HydroSense checks before quoting
+
+The recommendation considers pipe material, existing valve condition, installation clearance, pressure-reducing-valve relationship, nearby power, required connectivity, protected placement, and the ability to test and service the installed system.
+
+These conditions can change the placement, fitting package, device family, and whether corrective work is needed before the smart shutoff can be commissioned.
+
+### Why a 1.5-inch or 2-inch domestic main changes the device choice
+
+Higher-flow and large-line applications require a supported valve architecture that fits the verified line and household demand. HydroSense uses FloLogic as its designated supported large-line device family for qualifying 1.5-inch and 2-inch domestic mains.
+
+That is a HydroSense supported-device decision, not a claim that FloLogic is the only manufacturer worldwide for those sizes. The final configuration, model, power, clearance, and equipment are confirmed in the written proposal; 2-inch HydroSense scope remains commercial grade.
+
+URL: https://hydrosensetx.com/guides/what-size-smart-water-shutoff-do-i-need
+
+---
+
+## Flo by Moen vs Phyn vs StreamLabs vs FloLogic
+
+**How do Flo by Moen, Phyn Plus, StreamLabs, and FloLogic compare?**
+
+Flo by Moen combines flow-and-pressure monitoring, Phyn Plus uses pressure-wave analysis, StreamLabs Control uses ultrasonic flow measurement, and FloLogic continuously monitors flow for compatible domestic systems. The best fit depends on the home's domestic-main size, pipe arrangement, power, connectivity, installation location, and protection goals. HydroSense confirms the current model and requirements before proposing installation.
+
+### A universal winner cannot be named without seeing the home
+
+Inline flow, pressure-wave, ultrasonic, and large-line architectures observe household water differently. A useful comparison connects those approaches to the verified plumbing and the homeowner's desired protection—not to a generic ranking badge.
+
+HydroSense supports multiple families so the written proposal can account for domestic-main size, pipe material, valve layout, installation clearance, power, connectivity, and protected placement.
+
+### What changes the HydroSense recommendation
+
+A 3/4-inch indoor copper main near power can produce a different recommendation from a 2-inch high-flow domestic main, a protected outdoor location, or a home with a compatible quarter-turn valve and a preference for point sensors.
+
+HydroSense also identifies and excludes fire-sprinkler and fire-suppression piping. Irrigation is considered only when specifically requested and quoted separately.
+
+### Where Guardian by Elexa fits differently
+
+Guardian is a sensor-based retrofit alternative rather than one of the four primary inline comparison systems. It mounts over a compatible existing quarter-turn domestic-line ball valve and relies on point sensors placed near selected risk areas.
+
+That approach can avoid cutting the pipe when valve type, handle clearance, mounting room, and full valve operation are compatible. It does not analyze whole-home flow or pressure in the same way as an inline monitor.
+
+URL: https://hydrosensetx.com/guides/flo-by-moen-vs-phyn-vs-streamlabs-vs-flologic
+
+---
+
+## Do I need a plumber for a smart water shutoff?
+
+**Do I need a plumber to install a smart water shutoff?**
+
+An inline smart water shutoff requires the domestic water line, pipe, valves, fittings, placement, and orientation to be evaluated before the line is modified. HydroSense coordinates plumbing installation under Texas Master Plumber License MPL 43057, then completes compatible-device setup, commissioning, shutoff testing, and homeowner handoff. The written proposal confirms the exact responsibilities and scope before scheduling.
+
+### Device selection, plumbing work, and commissioning are different tasks
+
+A complete installation separates product selection from the physical work on the domestic line and from the connected-device handoff. HydroSense verifies each layer before the system is considered complete.
+
+- Select a compatible device for the verified incoming domestic main and protection goals.
+- Plan cuts, fittings, valves, orientation, support, clearance, and service access.
+- Inspect pressure, pipe material, existing valve condition, and PRV relationship where relevant.
+- Confirm power and connectivity at the actual installation location.
+- Commission the manufacturer app or gateway, configure settings, test shutoff operation, and hand the system over.
+
+### What HydroSense verifies before installation
+
+The review identifies the incoming domestic line, nominal size, pipe material, existing valve condition, working clearance, PRV relationship where relevant, nearby power, required connectivity, and current device compatibility.
+
+An active leak, failed valve, inaccessible routing, unsuitable material, missing power, or unverified line can move the project from standard scope to corrective work, preparation, or additional technical review.
+
+### What the homeowner receives after installation
+
+HydroSense connects the compatible manufacturer experience, tests automatic shutoff operation, walks the homeowner through normal control and alerts, and provides an itemized installation record with responsible license details.
+
+Product requirements and services can change, so the proposal and handoff confirm the exact model, settings, documentation, and current manufacturer conditions used for that home.
+
+### The plumbing scope is the domestic household water line
+
+The home’s domestic water line is the standard HydroSense installation scope. HydroSense does not install leak detection, monitoring, or automatic shutoff control on fire-sprinkler or fire-suppression piping. Irrigation is optional and must be specifically requested, technically reviewed, and quoted in the written proposal. The proposal confirms the actual plumbing configuration and any equipment required; one shutoff device is not assumed to control both domestic water and irrigation. Work is coordinated under Texas Master Plumber License MPL 43057.
+
+URL: https://hydrosensetx.com/guides/do-i-need-a-plumber-for-smart-water-shutoff
+
+---
+
+## What happens to a smart water shutoff if power or Wi-Fi goes out?
+
+**What happens to a smart water shutoff if power or Wi-Fi goes out?**
+
+Outage behavior depends on the device and on whether the interruption affects internet service, Wi-Fi, or electrical power. Some supported systems retain local monitoring or configured automatic shutoff without Wi-Fi, while app alerts, remote control, and cloud reporting usually require connectivity. Battery support also varies. HydroSense confirms the selected device's current local, connected, and backup-power behavior before installation.
+
+### Without Wi-Fi is not the same as without power
+
+A device may continue measuring flow or receiving point-sensor signals locally while losing phone alerts and remote control. It may also retain an automatic shutoff rule during an internet interruption but stop if AC power is unavailable and no compatible backup is active.
+
+Cloud history, remote commands, push notifications, local sensing, valve operation, and backup power should be reviewed as separate rows—not compressed into one online/offline label.
+
+### What HydroSense checks before recommending an outage plan
+
+HydroSense verifies the outlet, circuit environment, Wi-Fi signal, broadband availability, gateway or controller placement, manufacturer account requirements, configured automatic-shutoff settings, and available compatible backup options.
+
+The proposal and handoff document the selected architecture. HydroSense does not extend one manufacturer's offline behavior to every device or promise a feature that is absent from the governed manufacturer data.
+
+### The handoff should explain what the homeowner can still do
+
+The homeowner should know how to operate the physical valve, which settings are stored locally, which alerts require connectivity, how backup power is checked where present, and what to review after service returns.
+
+HydroSense tests shutoff operation at installation and reviews the current manufacturer requirements for the exact model and configuration in the written proposal.
+
+URL: https://hydrosensetx.com/guides/smart-water-shutoff-power-wifi-outage
+
+---
 
 ## HO-A vs HO-B vs HO-3 in Texas
 

@@ -69,6 +69,17 @@ export default function DevicePage({ params }: PageProps) {
   if (!device) notFound();
 
   const otherDevices = deviceList.filter((item) => item.slug !== device.slug);
+  const guideDecisionLinks = device.slug === "flologic"
+    ? [
+        { eyebrow: "Large-line sizing", label: "See what changes at 1 1/2 and 2 inches", href: "/guides/what-size-smart-water-shutoff-do-i-need" },
+        { eyebrow: "Device comparison", label: "Compare FloLogic with other supported systems", href: "/guides/flo-by-moen-vs-phyn-vs-streamlabs-vs-flologic" },
+      ]
+    : [
+        { eyebrow: "Device comparison", label: `Compare ${device.name} with other supported systems`, href: "/guides/flo-by-moen-vs-phyn-vs-streamlabs-vs-flologic" },
+        { eyebrow: "Reliability guide", label: "Understand power and Wi-Fi outage behavior", href: "/guides/smart-water-shutoff-power-wifi-outage" },
+      ];
+
+
 
   const serviceSchema = {
     "@context": "https://schema.org",
@@ -474,7 +485,17 @@ export default function DevicePage({ params }: PageProps) {
 
         <section className="py-16 lg:py-20">
           <div className="section-container">
-            <div className="grid gap-6 sm:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+              {guideDecisionLinks.map((link) => (
+                <Link key={link.href} href={link.href} className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                  <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">
+                    {link.eyebrow}
+                  </p>
+                  <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">
+                    {link.label}
+                  </p>
+                </Link>
+              ))}
               <Link href="/pricing" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
                 <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Published pricing</p>
                 <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">See device-and-install rates by line size</p>

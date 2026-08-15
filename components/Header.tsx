@@ -15,7 +15,7 @@ const navLinks = [
   { label: "Devices", href: "/devices" },
   { label: "Pricing", href: "/pricing" },
   { label: "Service areas", href: "/service-area" },
-  { label: "Guides", href: "/blog" },
+  { label: "Guides", href: "/guides" },
   { label: "FAQ", href: "/#faq" },
 ];
 

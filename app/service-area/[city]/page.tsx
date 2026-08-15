@@ -223,7 +223,13 @@ export default function CityPage({ params }: PageProps) {
 
         <section className="bg-ink-950/50 py-16 lg:py-20">
           <div className="section-container">
-            <div className="grid gap-6 sm:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <Link href="/guides/smart-water-shutoff-installation-cost-houston" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
+                <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Houston cost guide</p>
+                <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">
+                  See starting prices and what changes the written proposal
+                </p>
+              </Link>
               <Link href="/pricing" className="group rounded-xl border border-ink-700/30 bg-ink-800/40 p-6 transition-all hover:border-hydro-400/30">
                 <p className="mb-2 text-xs uppercase tracking-[0.15em] text-fog-400">Published pricing</p>
                 <p className="font-semibold text-fog-50 transition-colors group-hover:text-hydro-400">See device-and-install rates by line size</p>
