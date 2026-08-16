@@ -193,6 +193,31 @@ test("pricing page renders authoritative starting prices while homepage links wi
   await expect(page).toHaveURL(/\/pricing$/);
 });
 
+test("homepage primary-market card uses its height for useful service details", async ({
+  page,
+}) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  const card = page.locator("[data-primary-market-card]");
+  const detailsLink = card.locator("[data-primary-market-link]");
+  await expect(card).toBeVisible();
+  await expect(card).toContainText("From review to handoff");
+  await expect(card).toContainText("Compatibility review");
+  await expect(card).toContainText("Written proposal");
+  await expect(card).toContainText("Tested handoff");
+  await expect(card).toContainText("Fire-sprinkler and fire-suppression piping are excluded");
+  await expect(detailsLink).toBeVisible();
+
+  const cardBox = await card.boundingBox();
+  const linkBox = await detailsLink.boundingBox();
+  expect(cardBox).not.toBeNull();
+  expect(linkBox).not.toBeNull();
+
+  const unusedBottomSpace =
+    cardBox!.y + cardBox!.height - (linkBox!.y + linkBox!.height);
+  expect(unusedBottomSpace).toBeLessThanOrEqual(48);
+});
+
 for (const route of browserRoutes) {
   test(`${route} exposes canonical intent without viewport overflow`, async ({ page }) => {
     const response = await page.goto(route, { waitUntil: "domcontentloaded" });

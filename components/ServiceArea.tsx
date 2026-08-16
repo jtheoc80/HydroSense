@@ -16,6 +16,21 @@ const cityList = [
   "baytown",
 ] as const;
 
+const houstonProjectSteps = [
+  {
+    title: "Compatibility review",
+    body: "Domestic-line routing, device fit, access, power, and Wi-Fi are reviewed first.",
+  },
+  {
+    title: "Written proposal",
+    body: "Equipment, installation scope, exclusions, and site-specific work are documented before scheduling.",
+  },
+  {
+    title: "Tested handoff",
+    body: "Installation, app setup, shutoff-cycle testing, and homeowner guidance are completed together.",
+  },
+] as const;
+
 export default function ServiceArea() {
   return (
     <section id="service-area" className="bg-[#f4f7fb] py-20 sm:py-24 lg:py-28">
@@ -46,14 +61,17 @@ export default function ServiceArea() {
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:gap-8">
-          <div className="relative overflow-hidden rounded-[2rem] bg-[#001a4e] p-7 text-white shadow-[0_30px_80px_-45px_rgba(0,26,78,0.8)] sm:p-9 lg:p-10">
+          <div
+            data-primary-market-card
+            className="relative flex flex-col overflow-hidden rounded-[2rem] bg-[#001a4e] p-7 text-white shadow-[0_30px_80px_-45px_rgba(0,26,78,0.8)] sm:p-9 lg:p-10"
+          >
             <div className="pointer-events-none absolute inset-0 opacity-25">
               <div className="absolute -right-16 -top-20 h-64 w-64 rounded-full border border-sky-200/40" />
               <div className="absolute -right-4 -top-8 h-64 w-64 rounded-full border border-sky-200/25" />
               <div className="absolute bottom-0 left-0 h-56 w-56 -translate-x-1/3 translate-y-1/3 rounded-full bg-sky-400/20 blur-3xl" />
             </div>
 
-            <div className="relative">
+            <div className="relative flex flex-1 flex-col">
               <span className="inline-flex rounded-full border border-sky-200/20 bg-sky-200/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-sky-200">
                 Primary market
               </span>
@@ -74,9 +92,43 @@ export default function ServiceArea() {
                 </div>
               </div>
 
+              <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.06] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sky-200">
+                  From review to handoff
+                </p>
+                <ul className="mt-4 space-y-4">
+                  {houstonProjectSteps.map((step) => (
+                    <li key={step.title} className="flex gap-3">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-300/15 text-sky-200">
+                        <svg
+                          className="h-3 w-3"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          aria-hidden="true"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m5 10 3 3 7-7" />
+                        </svg>
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold text-white">{step.title}</p>
+                        <p className="mt-1 text-sm leading-6 text-slate-300">{step.body}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-5 border-t border-white/10 pt-4 text-xs leading-5 text-slate-300">
+                  Domestic water is the standard scope. Fire-sprinkler and fire-suppression
+                  piping are excluded; irrigation must be specifically requested, reviewed,
+                  and quoted.
+                </p>
+              </div>
+
               <a
                 href="/service-area/houston"
-                className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-sky-200 transition hover:text-white"
+                data-primary-market-link
+                className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-sky-200 transition hover:text-white"
               >
                 Houston installation details
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 20 20" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
