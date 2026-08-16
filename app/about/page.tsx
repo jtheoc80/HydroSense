@@ -11,8 +11,10 @@ import {
   manufacturerAuthoritySummary,
   manufacturerAuthorities,
 } from "@/lib/business/manufacturer-authorizations";
-import { MASTER_PLUMBER_LICENSE } from "@/lib/config";
-import { cautiousLicenseCoordinationStatement } from "@/lib/business/plumbing-license";
+import {
+  fullServiceAuthorityStatement,
+  publicPlumbingAuthorityStatement,
+} from "@/lib/business/plumbing-license";
 import { deviceList } from "@/lib/devices";
 import {
   formatUsd,
@@ -83,9 +85,12 @@ export default function AboutPage() {
                 Smart water protection scoped for the home in front of us.
               </h1>
               <p className="max-w-3xl text-xl leading-relaxed text-fog-200">
-                HydroSense evaluates the domestic water line, plumbing configuration,
-                power, connectivity, and installation conditions before recommending a
-                compatible system and issuing a written proposal.
+                {fullServiceAuthorityStatement}
+              </p>
+              <p className="mt-5 max-w-3xl text-base leading-7 text-fog-300">
+                Every HydroSense project includes compatibility review, device selection,
+                project coordination, plumbing installation, device setup, shutoff testing,
+                homeowner handoff, and an installation record.
               </p>
             </div>
           </div>
@@ -119,10 +124,10 @@ export default function AboutPage() {
               </div>
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-[0.16em] text-fog-400">
-                  License coordination
+                  Plumbing execution
                 </dt>
                 <dd className="mt-2 text-sm leading-6 text-fog-200">
-                  {cautiousLicenseCoordinationStatement}
+                  {publicPlumbingAuthorityStatement}
                 </dd>
               </div>
             </dl>
@@ -221,8 +226,7 @@ export default function AboutPage() {
                   The domestic household water line is the standard scope. Fire-sprinkler
                   and fire-suppression piping are excluded. Irrigation is optional only
                   when specifically requested, technically reviewed, and included in the
-                  written proposal. Work is coordinated under Texas Master Plumber License
-                  {` ${MASTER_PLUMBER_LICENSE}`}.
+                  written proposal. {publicPlumbingAuthorityStatement}
                 </p>
                 <div className="mt-6 border-t border-ink-700/50 pt-6">
                   <p className="text-sm font-semibold text-fog-50">

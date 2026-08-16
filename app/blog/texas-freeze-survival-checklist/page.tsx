@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title:
     "The Texas Freeze Survival Checklist Every Houston Homeowner Needs Before Winter | HydroSense",
   description:
-    "A complete freeze preparation checklist for Houston homeowners: 72-hour prep, during-freeze monitoring, and post-thaw inspection steps. Reviewed under Texas Registered Master Plumber MPL 43057.",
+    "A complete freeze preparation checklist for Houston homeowners: 72-hour prep, during-freeze monitoring, and post-thaw inspection steps.",
   keywords: [
     "texas freeze checklist",
     "houston freeze preparation",
@@ -77,7 +77,7 @@ export default function TexasFreezeSurvivalChecklist() {
     datePublished: "2026-06-03",
     dateModified: "2026-06-03",
     description:
-      "A complete freeze preparation checklist for Houston homeowners, reviewed under Texas Registered Master Plumber MPL 43057. Covers 72-hour prep, during-freeze monitoring, and the post-thaw inspection steps most homeowners skip.",
+      "A complete freeze preparation checklist for Houston homeowners covering 72-hour prep, during-freeze monitoring, and the post-thaw inspection steps most homeowners skip.",
     mainEntityOfPage:
       "https://hydrosensetx.com/blog/texas-freeze-survival-checklist",
   };
@@ -601,8 +601,9 @@ export default function TexasFreezeSurvivalChecklist() {
                   .
                 </p>
                 <p>
-                  Installation is performed under Texas Master Plumber license
-                  MPL 43057. The device goes on the main water line where it enters the
+                  Plumbing work is performed through a Texas-licensed plumbing partner
+                  under Responsible Master Plumber M-43057. The device goes on the main
+                  water line where it enters the
                   home, typically taking about two hours for a complete install,
                   configuration, and app walkthrough. After installation, HydroSense
                   issues a carrier-recognized insurance certificate in paper and

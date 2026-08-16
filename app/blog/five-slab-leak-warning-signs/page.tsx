@@ -297,7 +297,7 @@ export default function FiveSlabLeakWarningSigns() {
                 </p>
                 <p>
                   This is essentially manual acoustic leak detection. The same
-                  physical principle is what our Texas Master Plumber uses with
+                  physical principle is what a Texas-licensed plumber uses with
                   professional acoustic equipment, just amplified and tuned for
                   very small leaks.
                 </p>
@@ -392,7 +392,7 @@ export default function FiveSlabLeakWarningSigns() {
                   failure.
                 </p>
                 <p>
-                  This is the same test our Texas Master Plumber runs as the
+                  This is the same test a Texas-licensed plumber runs as the
                   first diagnostic step when called to a suspected slab leak. (
                   <Link
                     href="/blog/how-to-find-water-leak-home-houston"

@@ -142,7 +142,7 @@ for (const fact of [
   "1 1/2-inch and 2-inch domestic water-line installations",
   "Fire-sprinkler and fire-suppression piping remain excluded",
   "Irrigation",
-  "MPL 43057",
+  "M-43057",
 ]) {
   check(fullLlm.includes(fact), `llms-full.txt is missing governed answer fact: ${fact}`);
 }

@@ -9,8 +9,12 @@ import {
   manufacturerAuthoritySummary,
 } from "./manufacturer-authorizations";
 import {
-  cautiousLicenseCoordinationStatement,
+  footerPlumbingTrustStatement,
+  fullServiceAuthorityStatement,
+  googleBusinessProfilePlumbingStatement,
+  homepagePlumbingTrustStatement,
   plumbingLicenseEvidence,
+  publicPlumbingAuthorityStatement,
   TEXAS_PUBLIC_LICENSE_SEARCH_URL,
 } from "./plumbing-license";
 import {
@@ -69,32 +73,53 @@ test("supported manufacturers do not inherit manufacturer authority", () => {
   }
 });
 
-test("license evidence remains separate from the RMP business relationship", () => {
+test("license evidence preserves private owner verification and brand-first public wording", () => {
   assert.equal(plumbingLicenseEvidence.licenseNumber, "43057");
   assert.equal(plumbingLicenseEvidence.licenseType, "Master Plumber");
   assert.equal(plumbingLicenseEvidence.licenseStatus, "Current");
   assert.equal(plumbingLicenseEvidence.licensePubliclyVerified, true);
-  assert.equal(plumbingLicenseEvidence.rmpBusinessRelationshipVerified, false);
+  assert.equal(plumbingLicenseEvidence.licenseHolderName, "Jamyron L. Davis");
+  assert.equal(plumbingLicenseEvidence.stateListedCompanyName, "Davis Quality Plumbing LLC");
+  assert.equal(plumbingLicenseEvidence.rmpEndorsementVerified, true);
+  assert.equal(plumbingLicenseEvidence.certificateOfInsuranceVerified, true);
+  assert.equal(plumbingLicenseEvidence.hydroSenseContractualRelationshipOwnerVerified, true);
+  assert.equal(plumbingLicenseEvidence.plumbingExecutionRelationshipOwnerVerified, true);
+  assert.equal(plumbingLicenseEvidence.rmpBusinessRelationshipPubliclyCorroborated, false);
   assert.equal(plumbingLicenseEvidence.verificationUrl, TEXAS_PUBLIC_LICENSE_SEARCH_URL);
   assert.equal(
-    cautiousLicenseCoordinationStatement,
-    "Work coordinated under Texas Master Plumber License MPL 43057.",
+    publicPlumbingAuthorityStatement,
+    "Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.",
   );
+  assert.match(fullServiceAuthorityStatement, /^HydroSense manages device selection/);
+  assert.equal(homepagePlumbingTrustStatement, "Licensed plumbing execution under RMP M-43057.");
+  assert.equal(googleBusinessProfilePlumbingStatement, "Plumbing execution is performed under RMP M-43057.");
+  assert.equal(footerPlumbingTrustStatement, "Plumbing execution under RMP M-43057.");
+  for (const publicCopy of [
+    publicPlumbingAuthorityStatement,
+    fullServiceAuthorityStatement,
+    homepagePlumbingTrustStatement,
+    googleBusinessProfilePlumbingStatement,
+    footerPlumbingTrustStatement,
+  ]) {
+    assert.doesNotMatch(publicCopy, /Jamyron|Davis Quality/i);
+  }
   assert.doesNotMatch(TEXAS_PUBLIC_LICENSE_SEARCH_URL, /list\.do\?anchor/i);
 });
 
-test("recommended Google Business Profile description uses governed cautious wording", () => {
+test("recommended Google Business Profile description uses governed brand-first wording", () => {
   assert.ok(
     recommendedGoogleBusinessProfileDescription.length <=
       GOOGLE_BUSINESS_PROFILE_DESCRIPTION_LIMIT,
   );
   assert.match(
     recommendedGoogleBusinessProfileDescription,
-    /listed in Phyn's Find a Phyn Pro Directory\./,
+    /listed in Phyn's Find a Phyn Pro Directory and supports FloLogic large-line applications\./,
   );
   assert.match(
     recommendedGoogleBusinessProfileDescription,
-    /Work coordinated under Texas Master Plumber License MPL 43057\./,
+    /Plumbing execution is performed under RMP M-43057\./,
   );
+  assert.doesNotMatch(recommendedGoogleBusinessProfileDescription, /Authorized by FloLogic/i);
+  assert.doesNotMatch(recommendedGoogleBusinessProfileDescription, /Jamyron|Davis Quality/i);
   assert.doesNotMatch(recommendedGoogleBusinessProfileDescription, /https?:|<[^>]+>/);
 });

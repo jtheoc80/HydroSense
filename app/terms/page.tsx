@@ -56,7 +56,7 @@ export default function TermsOfService() {
               <h2 className="font-display text-xl text-fog-50 mb-4">Services</h2>
               <p className="mb-4">HydroSense Texas provides:</p>
               <ul className="list-disc pl-6 space-y-2 text-fog-200">
-                <li><strong className="text-fog-50">Smart water shutoff installation</strong> — professional installation of an automatic water shutoff device at your home&apos;s main water line by a licensed plumber operating under a Texas Master Plumber license (see our site footer for license details).</li>
+                <li><strong className="text-fog-50">Smart water shutoff installation</strong> — professional installation of an automatic water shutoff device at your home&apos;s main water line through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.</li>
                 <li><strong className="text-fog-50">Insurance discount certificate</strong> — a certificate in paper and digital form documenting the installed device, issued after install completion and final payment. This certificate is designed for submission to your homeowners insurance carrier to request an applicable discount.</li>
                 <li><strong className="text-fog-50">Optional monitoring subscription</strong> — ongoing device monitoring, anomaly alerts, and app access on a monthly subscription basis.</li>
               </ul>
@@ -101,7 +101,7 @@ export default function TermsOfService() {
             <section>
               <h2 className="font-display text-xl text-fog-50 mb-4">Installation and workmanship</h2>
               <p>
-                All installations are performed by licensed plumbing professionals operating under a Texas Master Plumber license. We install each device according to the manufacturer&apos;s specifications and local plumbing codes. We warrant our workmanship (pipe fittings, mounting, and connections) for 12 months from the date of install.
+                HydroSense coordinates each project, and plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057. Each device is installed according to the manufacturer&apos;s specifications and local plumbing codes. We warrant our workmanship (pipe fittings, mounting, and connections) for 12 months from the date of install.
               </p>
             </section>
 

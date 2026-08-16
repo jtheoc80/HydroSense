@@ -77,7 +77,7 @@ test("plumber and scope guidance preserves the licensed domestic-water boundary"
   const guide = getCommercialGuide("do-i-need-a-plumber-for-smart-water-shutoff");
   assert.ok(guide);
   const content = JSON.stringify(guide);
-  assert.match(content, /MPL 43057/);
+  assert.match(content, /Responsible Master Plumber M-43057/);
   assert.match(content, /domestic/i);
   assert.match(content, /fire-sprinkler or fire-suppression piping/i);
   assert.match(content, /written proposal/i);

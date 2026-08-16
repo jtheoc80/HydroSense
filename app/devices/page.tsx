@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import { installationScopeDisclosure } from "@/lib/installation-scope";
 import { getManufacturerAuthority } from "@/lib/business/manufacturer-authorizations";
+import { fullServiceAuthorityStatement } from "@/lib/business/plumbing-license";
 
 export const metadata: Metadata = {
   title: "Smart Water Shutoff Devices Installed in Houston",
@@ -142,6 +143,9 @@ export default function DevicesPage() {
               connectivity, valve layout, and protection goals. HydroSense
               verifies those conditions before issuing a written installation
               proposal.
+            </p>
+            <p className="mb-8 max-w-3xl text-base leading-7 text-fog-300">
+              {fullServiceAuthorityStatement}
             </p>
             <div className="mb-8 max-w-3xl rounded-2xl border border-hydro-400/25 bg-hydro-400/[0.06] p-5">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-hydro-400">

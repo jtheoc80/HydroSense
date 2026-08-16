@@ -207,7 +207,7 @@ for (const fact of [
 check(!/streetAddress/.test(schemaSource), "Global business schema must not publish a street address");
 check(
   !schemaSource.includes("hasCredential"),
-  "Global business schema must not claim the unverified RMP/company relationship",
+  "Global business schema must not imply HydroSense owns the partner RMP credential",
 );
 check(!/insurance|premium|discount/i.test(schemaSource), "Insurance claims must not define the core business entity");
 check(

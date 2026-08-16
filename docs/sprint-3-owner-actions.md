@@ -1,6 +1,6 @@
 # Sprint 3 owner actions
 
-These are owner-only follow-ups. They are not authorization applications and do not block the cautious public wording shipped in PR #10.
+These are owner-only follow-ups. They are not authorization applications and do not block the governed public wording shipped in draft PR #10.
 
 ## PHYN DIRECTORY DATA
 
@@ -19,28 +19,39 @@ OWNER ACTION: Ask Phyn to update the existing directory entry so it matches the 
 - https://hydrosensetx.com
 - HydroSense-domain email if available
 
-After Phyn confirms the update, verify every displayed field on the official directory. Do not add the Phyn directory to HydroSense `sameAs`.
+After Phyn confirms the update, verify every displayed field on the official directory. Do not add the Phyn directory to HydroSense sameAs.
 
 Do not use Phyn Certified, Phyn Authorized Installer, Phyn Approved Installer, or Phyn Endorsed Installer unless separate written evidence explicitly grants the exact designation.
 
-## TEXAS PLUMBING LICENSE DETAIL
+## TEXAS PLUMBING EVIDENCE
 
-The public search evidence currently verifies license 43057 as Master Plumber with status Current. It does not yet verify HydroSense's RMP/company relationship.
+Status complete for the governed internal model:
 
-OWNER ACTION: Open the license detail for Jamyron L. Davis in the Texas State Board of Plumbing Examiners Public License Search and verify:
+- Responsible Master Plumber endorsement: verified
+- certificate of insurance: verified
+- HydroSense contractual relationship: owner verified
+- plumbing execution relationship: owner verified
+- public corroboration of the business relationship: not established
 
-- Responsible Master Plumber status
-- company/business association
-- certificate-of-insurance status where publicly available
-- exact official display format of the license number
+The governed record retains the license holder and state-listed company name internally. Do not publish those identities, their contact details, or outbound links on normal HydroSense marketing pages.
 
-Durable search destination:
+Durable public license search destination:
 
 https://vo.licensing.hpc.texas.gov/datamart/selSearchType.do
 
-Do not retain or publish a session-specific `list.do?anchor` URL. Until the relationship is confirmed, retain:
+Public pages must use:
 
-> Work coordinated under Texas Master Plumber License MPL 43057.
+> Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
+
+Do not retain or publish a session-specific list.do?anchor URL.
+
+## ESTIMATES AND INVOICES
+
+The compliance audit for required Texas plumbing disclosures is intentionally separate from PR #10:
+
+- docs/estimates-invoices-plumbing-compliance-follow-up.md
+
+Do not expand this authority sprint into estimate, invoice, quote, email, SMS, or receipt workflow changes.
 
 ## FLOLOGIC PROGRAM DESIGNATION
 
@@ -65,4 +76,4 @@ OWNER ACTION: Before changing the live profile, verify:
 - Primary category
 - Whether the intended custom-service and separate-price fields are available
 
-Do not publish a residential or unverified storefront address.
+Keep the description HydroSense-focused. Do not publish the plumbing fulfillment partner or a residential or unverified storefront address.

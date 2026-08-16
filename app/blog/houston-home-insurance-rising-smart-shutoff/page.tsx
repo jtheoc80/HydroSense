@@ -114,7 +114,7 @@ export default function HoustonHomeInsuranceRisingPost() {
         name: "What if my carrier is not on your list?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "We issue a standard certificate documenting the install under a Texas Master Plumber license (MPL 43057). Most carriers recognize it. We have not encountered a Texas carrier that does not offer some form of water mitigation credit when presented with a professional installation certificate.",
+          text: "We issue a standard certificate documenting the installation and responsible plumbing license details. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057. Most carriers recognize it. We have not encountered a Texas carrier that does not offer some form of water mitigation credit when presented with a professional installation certificate.",
         },
       },
     ],
@@ -460,8 +460,9 @@ export default function HoustonHomeInsuranceRisingPost() {
                   credit on your policy.
                 </p>
                 <p>
-                  HydroSense issues this certificate under Texas Registered
-                  Master Plumber license MPL 43057. The certificate documents
+                  HydroSense issues the installation record after the project.
+                  Plumbing work is performed through a Texas-licensed plumbing partner
+                  under Responsible Master Plumber M-43057. The record documents
                   the device model, installation date, property address, and
                   the license number under which the work was performed. It is
                   formatted to match what underwriters at major Texas carriers
@@ -613,8 +614,10 @@ export default function HoustonHomeInsuranceRisingPost() {
                     What if my carrier is not on your list?
                   </h3>
                   <p className="text-fog-200 leading-relaxed">
-                    We issue a standard certificate documenting the install
-                    under Texas Master Plumber license MPL 43057. The
+                    We issue a standard certificate documenting the installation
+                    and responsible plumbing license details. Plumbing work is performed
+                    through a Texas-licensed plumbing partner under Responsible Master
+                    Plumber M-43057. The
                     certificate format follows the documentation standards that
                     underwriters across the industry expect. Most carriers
                     recognize it. We have not encountered a Texas carrier that

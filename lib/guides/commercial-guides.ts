@@ -6,6 +6,10 @@ import {
   installationServices,
   serviceCatalog,
 } from "@/lib/service-catalog/catalog";
+import {
+  fullServiceAuthorityStatement,
+  publicPlumbingAuthorityStatement,
+} from "@/lib/business/plumbing-license";
 
 export const guideCategories = [
   "Cost",
@@ -405,8 +409,7 @@ export const commercialGuides: readonly CommercialGuide[] = [
     intro:
       "The answer depends on the device architecture, but an inline system requires much more than choosing hardware and connecting an app.",
     directQuestion: "Do I need a plumber to install a smart water shutoff?",
-    directAnswer:
-      "An inline smart water shutoff requires the domestic water line, pipe, valves, fittings, placement, and orientation to be evaluated before the line is modified. HydroSense coordinates plumbing installation under Texas Master Plumber License MPL 43057, then completes compatible-device setup, commissioning, shutoff testing, and homeowner handoff. The written proposal confirms the exact responsibilities and scope before scheduling.",
+    directAnswer: `An inline smart water shutoff requires the domestic water line, pipe, valves, fittings, placement, and orientation to be evaluated before the line is modified. ${fullServiceAuthorityStatement} The written proposal confirms the exact responsibilities and scope before scheduling.`,
     homeownerMeaning:
       "Buying a compatible device is not the same as confirming that it can be safely placed, powered, commissioned, and tested on your home's domestic main.",
     sections: [
@@ -448,7 +451,7 @@ export const commercialGuides: readonly CommercialGuide[] = [
         eyebrow: "Explicit exclusion",
         heading: "The plumbing scope is the domestic household water line",
         paragraphs: [
-          `${installationScopeDisclosure} Work is coordinated under Texas Master Plumber License MPL 43057.`,
+          `${installationScopeDisclosure} ${publicPlumbingAuthorityStatement}`,
         ],
       },
     ],

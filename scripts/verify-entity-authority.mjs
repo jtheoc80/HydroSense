@@ -20,6 +20,7 @@ const requiredFiles = [
   "docs/manufacturer-authority-ledger.md",
   "docs/sprint-3-owner-actions.md",
   "docs/google-business-profile-recommendation.md",
+  "docs/estimates-invoices-plumbing-compliance-follow-up.md",
   "tests/e2e/entity-authority.spec.ts",
   "scripts/generate-llms-full.ts",
   "public/llms.txt",
@@ -94,22 +95,61 @@ check(
   "Short manufacturer authority label drifted",
 );
 
-check(license.plumbingLicenseEvidence.licenseNumber === "43057", "License number drifted");
-check(license.plumbingLicenseEvidence.licenseType === "Master Plumber", "License type drifted");
-check(license.plumbingLicenseEvidence.licenseStatus === "Current", "License status drifted");
+const plumbingEvidence = license.plumbingLicenseEvidence;
+check(plumbingEvidence.licenseNumber === "43057", "License number drifted");
+check(plumbingEvidence.publicIdentifier === "M-43057", "Public RMP identifier drifted");
+check(plumbingEvidence.licenseType === "Master Plumber", "License type drifted");
+check(plumbingEvidence.licenseStatus === "Current", "License status drifted");
+check(plumbingEvidence.licensePubliclyVerified === true, "License must remain publicly verified");
+check(plumbingEvidence.licenseHolderName === "Jamyron L. Davis", "Internal license holder evidence drifted");
+check(plumbingEvidence.stateListedCompanyName === "Davis Quality Plumbing LLC", "Internal state-listed company evidence drifted");
+check(plumbingEvidence.rmpEndorsementVerified === true, "RMP endorsement evidence must remain verified");
+check(plumbingEvidence.certificateOfInsuranceVerified === true, "Certificate-of-insurance evidence must remain verified");
 check(
-  license.plumbingLicenseEvidence.licensePubliclyVerified === true,
-  "License must remain publicly verified",
+  plumbingEvidence.hydroSenseContractualRelationshipOwnerVerified === true,
+  "HydroSense contractual relationship must remain owner verified",
 );
 check(
-  license.plumbingLicenseEvidence.rmpBusinessRelationshipVerified === false,
-  "RMP/company relationship must remain unverified",
+  plumbingEvidence.plumbingExecutionRelationshipOwnerVerified === true,
+  "Plumbing execution relationship must remain owner verified",
 );
 check(
-  license.cautiousLicenseCoordinationStatement ===
-    "Work coordinated under Texas Master Plumber License MPL 43057.",
-  "Cautious public license wording drifted",
+  plumbingEvidence.rmpBusinessRelationshipPubliclyCorroborated === false,
+  "Private RMP/company relationship must not be represented as publicly corroborated",
 );
+check(
+  license.publicPlumbingAuthorityStatement ===
+    "Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.",
+  "Public plumbing authority statement drifted",
+);
+check(
+  license.fullServiceAuthorityStatement ===
+    "HydroSense manages device selection, plumbing coordination, installation, setup, shutoff testing, and homeowner handoff in one complete service. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.",
+  "Full HydroSense service authority statement drifted",
+);
+check(
+  license.homepagePlumbingTrustStatement ===
+    "Licensed plumbing execution under RMP M-43057.",
+  "Homepage plumbing trust statement drifted",
+);
+check(
+  license.googleBusinessProfilePlumbingStatement ===
+    "Plumbing execution is performed under RMP M-43057.",
+  "Google Business Profile plumbing statement drifted",
+);
+check(
+  license.footerPlumbingTrustStatement === "Plumbing execution under RMP M-43057.",
+  "Footer plumbing trust statement drifted",
+);
+for (const publicCopy of [
+  license.publicPlumbingAuthorityStatement,
+  license.fullServiceAuthorityStatement,
+  license.homepagePlumbingTrustStatement,
+  license.googleBusinessProfilePlumbingStatement,
+  license.footerPlumbingTrustStatement,
+]) {
+  check(!/Jamyron|Davis Quality/i.test(publicCopy), "Public authority copy exposes private fulfillment identity");
+}
 check(
   license.TEXAS_PUBLIC_LICENSE_SEARCH_URL ===
     "https://vo.licensing.hpc.texas.gov/datamart/selSearchType.do" &&
@@ -130,8 +170,10 @@ check(
   "/about must expose the official Phyn corroboration link",
 );
 check(
-  aboutSource.includes("cautiousLicenseCoordinationStatement"),
-  "/about must use cautious governed license wording",
+  aboutSource.includes("fullServiceAuthorityStatement") &&
+    aboutSource.includes("publicPlumbingAuthorityStatement") &&
+    aboutSource.includes("Every HydroSense project includes compatibility review"),
+  "/about must keep HydroSense primary and use partner-neutral authority wording",
 );
 for (const fact of [
   "HydroSense Texas",
@@ -185,6 +227,71 @@ function sourceFiles(directory) {
 const productionSource = [...sourceFiles("app"), ...sourceFiles("components"), ...sourceFiles("lib")]
   .map((file) => read(file))
   .join("\n");
+
+const publicMarketingFiles = [
+  ...sourceFiles("app").filter(
+    (file) => !/^app[\\/](?:api|admin|quote|e2e)[\\/]/.test(file),
+  ),
+  ...sourceFiles("components").filter(
+    (file) => !/(?:QuoteDocument|Admin)/.test(file),
+  ),
+  "lib/home-faqs.ts",
+  "lib/guides/commercial-guides.ts",
+  "lib/business/google-business-profile.ts",
+  "public/llms.txt",
+  "public/llms-full.txt",
+];
+const publicMarketingSource = publicMarketingFiles.map((file) => read(file)).join("\n");
+for (const privateIdentity of ["Jamyron L. Davis", "Davis Quality Plumbing LLC"]) {
+  check(
+    !publicMarketingSource.includes(privateIdentity),
+    `Public marketing exposes private fulfillment identity: ${privateIdentity}`,
+  );
+}
+check(
+  !/MPL 43057|Work coordinated under Texas Master Plumber License|HydroSense coordinates plumbing installation under Texas Master Plumber/i.test(
+    publicMarketingSource,
+  ),
+  "Public marketing retains legacy license wording that can imply HydroSense owns the credential",
+);
+check(
+  !/our Texas (?:Registered )?Master Plumber|HydroSense installs under Texas (?:Registered )?Master Plumber/i.test(
+    publicMarketingSource,
+  ),
+  "Public marketing uses ownership-style plumbing authority language",
+);
+check(
+  !publicMarketingSource.includes("plumbingLicenseEvidence"),
+  "Public marketing must not render or serialize the private plumbing evidence object",
+);
+
+const positioningSources = {
+  homepage: read("components/Hero.tsx"),
+  about: aboutSource,
+  pricing: read("app/pricing/page.tsx"),
+  devices: deviceHubSource,
+  guides: read("lib/guides/commercial-guides.ts"),
+};
+check(
+  positioningSources.homepage.includes(
+    "HydroSense manages device selection, plumbing coordination, installation,",
+  ),
+  "Homepage must position HydroSense as the complete-service manager",
+);
+for (const page of ["about", "pricing", "devices", "guides"]) {
+  check(
+    positioningSources[page].includes("fullServiceAuthorityStatement"),
+    `${page} must use the governed HydroSense complete-service statement`,
+  );
+}
+check(
+  read("components/CriticalBar.tsx").includes("homepagePlumbingTrustStatement"),
+  "Homepage trust bar must use the restrained RMP statement",
+);
+check(
+  read("components/Footer.tsx").includes("footerPlumbingTrustStatement"),
+  "Footer must use the compact RMP statement",
+);
 for (const claim of [
   "Authorized by Phyn",
   "Phyn Certified",
@@ -201,7 +308,7 @@ for (const claim of [
 }
 
 const schemaSource = read("components/Schema.tsx");
-check(!schemaSource.includes("hasCredential"), "Business schema must not claim the unverified RMP/company relationship");
+check(!schemaSource.includes("hasCredential"), "Business schema must not imply HydroSense owns the partner RMP credential");
 check(
   schemaSource.includes('telephone: "+1-281-694-5754"'),
   "Current HydroSense public phone must remain in business schema",
@@ -219,7 +326,7 @@ check(
   !/flologic\.com|phyn\.com|moen\.com|streamlabswater\.com|elexa/i.test(schemaSource),
   "Manufacturer websites must not enter HydroSense sameAs",
 );
-for (const relationship of ["memberOf", "brand", "parentOrganization", "affiliation"]) {
+for (const relationship of ["employee", "memberOf", "brand", "parentOrganization", "subOrganization", "affiliation"]) {
   check(
     !new RegExp(`(?:["']${relationship}["']|\\b${relationship})\\s*:`).test(schemaSource),
     `Fake schema relationship found: ${relationship}`,
@@ -230,6 +337,14 @@ check(!/streetAddress\s*:/.test(productionSource), "Production source must not p
 check(
   !schemaSource.includes("manufacturerAuthorities"),
   "Manufacturer authority records must not be added to global schema",
+);
+check(
+  !/Jamyron L\. Davis|Davis Quality Plumbing LLC/i.test(schemaSource),
+  "Business schema exposes private plumbing fulfillment identity",
+);
+check(
+  (schemaSource.match(/"@type": \["LocalBusiness", "Plumber"\]/g) ?? []).length === 1,
+  "HydroSense must remain the only public LocalBusiness entity",
 );
 const registrySource = read("lib/seo/indexable-pages.ts");
 check(
@@ -252,27 +367,33 @@ check(
 
 const ledger = read("docs/manufacturer-authority-ledger.md");
 for (const token of [
-  "programStatus: `phyn_pro`",
-  "publiclyCorroborated: `true`",
-  "ownerVerified: `true`",
-  "licensePubliclyVerified: `true`",
-  "rmpBusinessRelationshipVerified: `false`",
+  "programStatus: phyn_pro",
+  "publiclyCorroborated: true",
+  "ownerVerified: true",
+  "licensePubliclyVerified: true",
+  "licenseHolderName: Jamyron L. Davis",
+  "stateListedCompanyName: Davis Quality Plumbing LLC",
+  "rmpEndorsementVerified: true",
+  "certificateOfInsuranceVerified: true",
+  "hydroSenseContractualRelationshipOwnerVerified: true",
+  "plumbingExecutionRelationshipOwnerVerified: true",
+  "rmpBusinessRelationshipPubliclyCorroborated: false",
   "https://phyn.com/pages/find-a-phyn-pro",
   "https://vo.licensing.hpc.texas.gov/datamart/selSearchType.do",
 ]) {
   check(ledger.includes(token), `Authority ledger is missing: ${token}`);
 }
-
 const ownerActions = read("docs/sprint-3-owner-actions.md");
 for (const token of [
   "HydroSense Texas",
   "(281) 694-5754",
   "https://hydrosensetx.com",
   "HydroSense-domain email if available",
-  "Jamyron L. Davis",
-  "Responsible Master Plumber status",
-  "company/business association",
-  "certificate-of-insurance status",
+  "Responsible Master Plumber endorsement: verified",
+  "certificate of insurance: verified",
+  "HydroSense contractual relationship: owner verified",
+  "plumbing execution relationship: owner verified",
+  "docs/estimates-invoices-plumbing-compliance-follow-up.md",
   "Referral Installer",
   "Dealer",
 ]) {
@@ -280,24 +401,39 @@ for (const token of [
 }
 check(!/apply for authorization/i.test(ownerActions), "Owner actions must not request authorization applications");
 
+const complianceFollowup = read("docs/estimates-invoices-plumbing-compliance-follow-up.md");
+for (const token of [
+  "out of scope for PR #10",
+  "estimates",
+  "invoices",
+  "transactional templates",
+  "qualified Texas plumbing compliance or legal review",
+]) {
+  check(complianceFollowup.includes(token), `Compliance follow-up is missing: ${token}`);
+}
 const gbpSource = read("lib/business/google-business-profile.ts");
 const gbpRecommendation = read("docs/google-business-profile-recommendation.md");
 check(
   gbpSource.includes("GOOGLE_BUSINESS_PROFILE_DESCRIPTION_LIMIT = 750") &&
-    gbpSource.includes("manufacturerAuthoritySummary") &&
-    gbpSource.includes("cautiousLicenseCoordinationStatement"),
-  "GBP source must use governed relationship and license wording",
+    gbpSource.includes("googleBusinessProfilePlumbingStatement") &&
+    gbpSource.includes("supports FloLogic large-line applications") &&
+    !gbpSource.includes("manufacturerAuthoritySummary"),
+  "GBP source must stay HydroSense-focused and use governed partner-neutral wording",
 );
 for (const token of [
-  authority.manufacturerAuthoritySummary,
+  "HydroSense is listed in Phyn's Find a Phyn Pro Directory and supports FloLogic large-line applications.",
+  "Plumbing execution is performed under RMP M-43057.",
   "(281) 694-5754",
   "https://support.google.com/business/answer/3039617",
   "License publicly verified",
-  "RMP/company relationship not yet verified",
+  "relationship is not publicly corroborated",
 ]) {
   check(gbpRecommendation.includes(token), `GBP recommendation is missing: ${token}`);
 }
-for (const service of catalog.activeServices) {
+check(
+  !/Jamyron L\. Davis|Davis Quality Plumbing LLC|Authorized by FloLogic/i.test(gbpRecommendation),
+  "GBP recommendation exposes private fulfillment identity or non-preferred FloLogic positioning",
+);for (const service of catalog.activeServices) {
   const price = service.price.type === "fixed"
     ? catalog.formatUsd(service.price.amount)
     : "Quote required";
@@ -330,32 +466,48 @@ check(
 );
 
 const e2eSource = read("tests/e2e/entity-authority.spec.ts");
-for (const route of ["/about", "/devices", "/devices/flologic", "/devices/phyn-plus"]) {
+for (const route of [
+  "/",
+  "/about",
+  "/pricing",
+  "/devices",
+  "/guides/do-i-need-a-plumber-for-smart-water-shutoff",
+  "/devices/flologic",
+  "/devices/phyn-plus",
+]) {
   check(e2eSource.includes(`"${route}"`), `Authority browser test is missing ${route}`);
 }
 check(e2eSource.includes("not.toHaveProperty(\"hasCredential\")"), "E2E must reject unsupported credential schema");
 check(e2eSource.includes("business?.sameAs"), "E2E must verify Phyn is absent from sameAs");
-
+check(
+  e2eSource.includes("Jamyron L\\. Davis|Davis Quality Plumbing LLC") &&
+    e2eSource.includes("HydroSense(?: Texas)? (?:owns|holds|is licensed under)"),
+  "E2E must reject private fulfillment identities and HydroSense license-ownership claims",
+);
 const llmsGeneratorSource = read("scripts/generate-llms-full.ts");
 check(
   llmsGeneratorSource.includes("manufacturerAuthoritySummary") &&
     llmsGeneratorSource.includes("getManufacturerAuthorityStatement") &&
-    llmsGeneratorSource.includes("verificationUrl"),
-  "Full LLM output must derive governed authority and corroboration",
+    llmsGeneratorSource.includes("verificationUrl") &&
+    llmsGeneratorSource.includes("fullServiceAuthorityStatement") &&
+    llmsGeneratorSource.includes("publicPlumbingAuthorityStatement"),
+  "Full LLM output must derive governed manufacturer and plumbing authority wording",
 );
 for (const file of ["public/llms.txt", "public/llms-full.txt"]) {
   const source = read(file);
   for (const token of [
     authority.manufacturerAuthoritySummary,
     "https://phyn.com/pages/find-a-phyn-pro",
-    "Work coordinated under Texas Master Plumber License MPL 43057.",
+    license.publicPlumbingAuthorityStatement,
     "(281) 694-5754",
   ]) {
     check(source.includes(token), `${file} is missing: ${token}`);
   }
+  check(source.includes("HydroSense manages device selection"), `${file} lacks HydroSense-first positioning`);
   check(!/Authorized by Phyn/i.test(source), `${file} retains unsupported Phyn authorization language`);
+  check(!/Jamyron L\. Davis|Davis Quality Plumbing LLC/i.test(source), `${file} exposes private fulfillment identity`);
+  check(!/MPL 43057|Work coordinated under Texas Master Plumber License/i.test(source), `${file} retains legacy license wording`);
 }
-
 if (errors.length > 0) {
   console.error("HydroSense entity-authority verification failed:\n");
   for (const error of errors) console.error(`- ${error}`);

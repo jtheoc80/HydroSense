@@ -36,7 +36,7 @@ export default function Schema() {
     telephone: "+1-281-694-5754",
     priceRange: "$$",
     description:
-      "Professional whole-home smart water shutoff installation across Greater Houston, including device selection, plumbing installation, app setup, shutoff testing, and an itemized installation record. Work coordinated under Texas Master Plumber License MPL 43057.",
+      "HydroSense manages professional whole-home smart water shutoff projects across Greater Houston, including device selection, plumbing coordination, installation, setup, shutoff testing, homeowner handoff, and an itemized installation record. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.",
     areaServed: {
       "@type": "AdministrativeArea",
       name: "Greater Houston, Texas",

@@ -4,6 +4,11 @@ import {
   getManufacturerAuthorityStatement,
   manufacturerAuthoritySummary,
 } from "../../lib/business/manufacturer-authorizations";
+import {
+  fullServiceAuthorityStatement,
+  homepagePlumbingTrustStatement,
+  publicPlumbingAuthorityStatement,
+} from "../../lib/business/plumbing-license";
 
 const unsupportedAuthorityClaim =
   /Phyn Certified|Phyn Authorized Installer|Phyn Approved Installer|Phyn Endorsed Installer|Certified Installer|Preferred Installer|Factory Certified|Official Partner|Authorized Dealer/i;
@@ -38,7 +43,7 @@ test("manufacturer authority is visible in raw server HTML", async ({ request })
   }
 });
 
-test("About authority profile separates authorization, program, and license evidence", async ({
+test("About authority profile keeps HydroSense primary while separating evidence types", async ({
   request,
 }) => {
   const response = await request.get("/about");
@@ -53,7 +58,8 @@ test("About authority profile separates authorization, program, and license evid
     "Lead Ledger Pro LLC",
     "Greater Houston, Texas",
     "(281) 694-5754",
-    "Work coordinated under Texas Master Plumber License MPL 43057.",
+    fullServiceAuthorityStatement,
+    publicPlumbingAuthorityStatement,
     "Authorized by FloLogic",
     "Phyn Pro",
     "listed in Phyn's Find a Phyn Pro Directory",
@@ -129,10 +135,45 @@ test("Phyn corroboration is a visible link but never sameAs or a business creden
     telephone: "+1-281-694-5754",
   });
   expect(business).not.toHaveProperty("hasCredential");
+  for (const relationship of [
+    "employee",
+    "memberOf",
+    "parentOrganization",
+    "subOrganization",
+  ]) {
+    expect(business).not.toHaveProperty(relationship);
+  }
   expect(JSON.stringify(business?.sameAs ?? [])).not.toContain(PHYN_PRO_DIRECTORY_URL);
+  expect(JSON.stringify(business)).not.toMatch(/Jamyron L\. Davis|Davis Quality Plumbing LLC/i);
   expect(JSON.stringify(business)).not.toMatch(unsupportedAuthorityClaim);
 });
 
+test("brand-first marketing pages keep fulfillment identities private", async ({ request }) => {
+  const pages = [
+    { route: "/", authority: homepagePlumbingTrustStatement },
+    { route: "/about", authority: publicPlumbingAuthorityStatement },
+    { route: "/pricing", authority: fullServiceAuthorityStatement },
+    { route: "/devices", authority: fullServiceAuthorityStatement },
+    {
+      route: "/guides/do-i-need-a-plumber-for-smart-water-shutoff",
+      authority: publicPlumbingAuthorityStatement,
+    },
+  ];
+
+  for (const page of pages) {
+    const response = await request.get(page.route);
+    expect(response.status(), page.route).toBe(200);
+    const html = normalizeRawHtml(await response.text());
+    expect(html, page.route).toContain(page.authority);
+    expect(html, page.route).not.toMatch(/Jamyron L\. Davis|Davis Quality Plumbing LLC/i);
+    expect(html, page.route).not.toMatch(
+      /Work coordinated under Texas Master Plumber License|MPL 43057/i,
+    );
+    expect(html, page.route).not.toMatch(
+      /HydroSense(?: Texas)? (?:owns|holds|is licensed under).{0,80}M-43057/i,
+    );
+  }
+});
 test("authority pages remain readable and overflow-safe", async ({ page }) => {
   const consoleErrors: string[] = [];
   page.on("console", (message) => {

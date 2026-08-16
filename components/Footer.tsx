@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MASTER_PLUMBER_LICENSE } from "@/lib/config";
+import { footerPlumbingTrustStatement } from "@/lib/business/plumbing-license";
 import { Button } from "./catalyst/button";
 import TrackedPhoneLink from "./TrackedPhoneLink";
 
@@ -130,7 +130,7 @@ export default function Footer() {
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs font-medium text-slate-400">
-              Work coordinated under Texas Master Plumber License {MASTER_PLUMBER_LICENSE}.
+              {footerPlumbingTrustStatement}
             </p>
             <p className="text-xs text-slate-500">
               Copyright {new Date().getFullYear()} Lead Ledger Pro LLC. All rights reserved.
