@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import {
   PHYN_PRO_DIRECTORY_URL,
   getManufacturerAuthorityStatement,
+  manufacturerAuthorityShortLabel,
   manufacturerAuthoritySummary,
 } from "../../lib/business/manufacturer-authorizations";
 import {
@@ -18,6 +19,11 @@ function normalizeRawHtml(html: string) {
 }
 
 test("manufacturer authority is visible in raw server HTML", async ({ request }) => {
+  const homepageResponse = await request.get("/");
+  expect(homepageResponse.status()).toBe(200);
+  const homepageHtml = normalizeRawHtml(await homepageResponse.text());
+  expect(homepageHtml).not.toContain(manufacturerAuthorityShortLabel);
+
   const expectedPages = [
     { route: "/about", statement: manufacturerAuthoritySummary },
     {

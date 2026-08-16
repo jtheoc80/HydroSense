@@ -207,6 +207,11 @@ check(
     deviceDetailSource.includes("verificationUrl"),
   "Device details must render governed authority and corroboration",
 );
+const heroSource = read("components/Hero.tsx");
+check(
+  !heroSource.includes("manufacturerAuthorityShortLabel"),
+  "Homepage hero must keep manufacturer authority on the relevant product pages",
+);
 const deviceHubSource = read("app/devices/page.tsx");
 check(
   deviceHubSource.includes("getManufacturerAuthority") &&
