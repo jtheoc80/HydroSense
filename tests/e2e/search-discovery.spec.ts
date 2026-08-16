@@ -62,10 +62,8 @@ test("structured data is present in raw server HTML before hydration", async ({ 
   );
   expect(businessEntities).toHaveLength(1);
   expect(businessEntities[0]["@type"]).toEqual(["LocalBusiness", "Plumber"]);
-  expect(businessEntities[0]).toMatchObject({
-    name: "HydroSense Texas",
-    hasCredential: { identifier: "MPL 43057" },
-  });
+  expect(businessEntities[0]).toMatchObject({ name: "HydroSense Texas" });
+  expect(businessEntities[0]).not.toHaveProperty("hasCredential");
 
   const pricingJsonLd = structuredDataByRoute.get("/pricing") ?? [];
   const pricingService = pricingJsonLd.find(
@@ -240,10 +238,10 @@ test("structured data preserves one global business identity and pricing provide
     url: SITE_ORIGIN,
     telephone: "+1-281-694-5754",
     areaServed: { name: "Greater Houston, Texas" },
-    hasCredential: { identifier: "MPL 43057" },
   });
   expect(JSON.stringify(businessEntities[0])).not.toContain("streetAddress");
 
+  expect(businessEntities[0]).not.toHaveProperty("hasCredential");
   await page.goto("/pricing", { waitUntil: "networkidle" });
   const pricingJsonLd = (
     await page.locator('script[type="application/ld+json"]').allTextContents()

@@ -1,6 +1,6 @@
 # HydroSense Texas - Full Content
 
-> Licensed smart water shutoff installs certified under a Texas Master Plumber license, with carrier-recognized insurance discount certification. Houston metro.
+> Professional smart water shutoff installation across Greater Houston. Work coordinated under Texas Master Plumber License MPL 43057.
 
 ---
 
@@ -75,11 +75,12 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa, FloLogic
 
-## Manufacturer authorization
+## Manufacturer authority and programs
 
-HydroSense Texas is authorized by FloLogic and Phyn.
+HydroSense Texas is authorized by FloLogic and listed in Phyn's Find a Phyn Pro Directory.
 
-Authorized manufacturers: FloLogic, Phyn.
+- Authorized by FloLogic: HydroSense Texas is authorized by FloLogic.
+- Phyn Pro: HydroSense Texas is listed in Phyn's Find a Phyn Pro Directory. Official corroboration: https://phyn.com/pages/find-a-phyn-pro
 
 About: https://hydrosensetx.com/about
 
@@ -333,9 +334,11 @@ Phyn Plus installs on the domestic water supply after the primary shutoff and be
 
 Homes suited to an inline device where the owner wants pressure-based whole-home domestic-water monitoring, plumbing insights, and automatic valve control.
 
-## Manufacturer authorization
+## Manufacturer authority
 
-HydroSense Texas is authorized by Phyn.
+HydroSense Texas is listed in Phyn's Find a Phyn Pro Directory.
+
+Official program corroboration: https://phyn.com/pages/find-a-phyn-pro
 
 Official manufacturer source: https://www.phyn.com
 
@@ -395,7 +398,7 @@ Properties with 1 1/2-inch or 2-inch domestic incoming water lines, higher-flow 
 
 HydroSense supports FloLogic as its designated large-line device family for qualifying 1 1/2-inch and 2-inch domestic incoming mains. Final compatibility and model are confirmed in the written proposal; fire-sprinkler and fire-suppression piping are excluded.
 
-## Manufacturer authorization
+## Manufacturer authority
 
 HydroSense Texas is authorized by FloLogic.
 

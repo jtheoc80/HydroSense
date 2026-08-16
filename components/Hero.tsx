@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import TrackedPhoneLink from "./TrackedPhoneLink";
-import { manufacturerAuthorizationShortLabel } from "@/lib/business/manufacturer-authorizations";
+import { manufacturerAuthorityShortLabel } from "@/lib/business/manufacturer-authorizations";
 
 const assuranceItems = [
   {
@@ -100,7 +100,7 @@ export default function Hero() {
 
             <p className="mt-3 text-sm font-semibold text-[#001a4e]">
               <a href="/about" className="underline decoration-sky-300 underline-offset-4 transition hover:decoration-sky-600">
-                {manufacturerAuthorizationShortLabel}
+                {manufacturerAuthorityShortLabel}
               </a>
             </p>
 

@@ -11,10 +11,12 @@ const check = (condition, message) => {
 
 const requiredFiles = [
   "lib/business/manufacturer-authorizations.ts",
+  "lib/business/plumbing-license.ts",
   "lib/business/google-business-profile.ts",
   "app/about/page.tsx",
   "app/devices/page.tsx",
   "app/devices/[slug]/page.tsx",
+  "components/Schema.tsx",
   "docs/manufacturer-authority-ledger.md",
   "docs/sprint-3-owner-actions.md",
   "docs/google-business-profile-recommendation.md",
@@ -28,114 +30,148 @@ for (const file of requiredFiles) {
   check(existsSync(resolve(root, file)), `Missing entity-authority file: ${file}`);
 }
 
-const authoritySource = read("lib/business/manufacturer-authorizations.ts");
-const transpiledAuthority = ts.transpileModule(authoritySource, {
-  compilerOptions: { module: ts.ModuleKind.ES2022, target: ts.ScriptTarget.ES2022 },
-}).outputText;
-const authority = await import(
-  `data:text/javascript;base64,${Buffer.from(transpiledAuthority).toString("base64")}`
-);
-
-const catalogSource = read("lib/service-catalog/catalog.ts");
-const transpiledCatalog = ts.transpileModule(catalogSource, {
-  compilerOptions: { module: ts.ModuleKind.ES2022, target: ts.ScriptTarget.ES2022 },
-}).outputText;
-const catalog = await import(
-  `data:text/javascript;base64,${Buffer.from(transpiledCatalog).toString("base64")}`
-);
-
-const records = authority.manufacturerAuthorizations;
-check(Array.isArray(records), "manufacturerAuthorizations must be an array");
-check(records.length === 2, "Only FloLogic and Phyn may be authorized in the current source");
-
-for (const expected of [
-  { manufacturer: "FloLogic", deviceSlug: "flologic", publicLabel: "Authorized by FloLogic" },
-  { manufacturer: "Phyn", deviceSlug: "phyn-plus", publicLabel: "Authorized by Phyn" },
-]) {
-  const record = records.find((candidate) => candidate.deviceSlug === expected.deviceSlug);
-  check(Boolean(record), `Missing ${expected.manufacturer} authorization`);
-  if (!record) continue;
-  check(record.manufacturer === expected.manufacturer, `${expected.deviceSlug} manufacturer drifted`);
-  check(record.status === "authorized", `${expected.manufacturer} status must be authorized`);
-  check(record.ownerVerified === true, `${expected.manufacturer} must be ownerVerified`);
-  check(record.publicLabel === expected.publicLabel, `${expected.manufacturer} public label drifted`);
-  check(record.exactProgramTitle === null, `${expected.manufacturer} exact program title is not documented`);
-  check(record.verificationUrl === null, `${expected.manufacturer} has no public verification URL yet`);
+async function loadTypescriptModule(path) {
+  const source = read(path);
+  const transpiled = ts.transpileModule(source, {
+    compilerOptions: { module: ts.ModuleKind.ES2022, target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  return import(
+    `data:text/javascript;base64,${Buffer.from(transpiled).toString("base64")}`
+  );
 }
+
+const authority = await loadTypescriptModule(
+  "lib/business/manufacturer-authorizations.ts",
+);
+const license = await loadTypescriptModule("lib/business/plumbing-license.ts");
+const catalog = await loadTypescriptModule("lib/service-catalog/catalog.ts");
+
+const records = authority.manufacturerAuthorities;
+check(Array.isArray(records), "manufacturerAuthorities must be an array");
+check(records.length === 2, "Only FloLogic and Phyn may have governed authority records");
+
+const floLogic = records.find((record) => record.deviceSlug === "flologic");
+check(floLogic?.manufacturer === "FloLogic", "FloLogic authority record is missing");
+check(floLogic?.relationshipType === "authorization", "FloLogic relationship must remain authorization");
+check(floLogic?.programStatus === "owner_verified_authorization", "FloLogic program status drifted");
+check(floLogic?.publicLabel === "Authorized by FloLogic", "FloLogic public label drifted");
+check(floLogic?.ownerVerified === true, "FloLogic must remain owner verified");
+check(floLogic?.publiclyCorroborated === false, "FloLogic must not be publicly corroborated yet");
+check(floLogic?.exactProgramTitle === null, "FloLogic exact program title is not confirmed");
+check(floLogic?.verificationUrl === null, "FloLogic public verification URL is not confirmed");
+
+const phyn = records.find((record) => record.deviceSlug === "phyn-plus");
+check(phyn?.manufacturer === "Phyn", "Phyn authority record is missing");
+check(phyn?.relationshipType === "program_participation", "Phyn must be program participation");
+check(phyn?.programStatus === "phyn_pro", "Phyn programStatus must be phyn_pro");
+check(phyn?.publicLabel === "Phyn Pro", "Phyn short label must be Phyn Pro");
+check(
+  phyn?.publicStatement ===
+    "HydroSense Texas is listed in Phyn's Find a Phyn Pro Directory.",
+  "Phyn public statement drifted",
+);
+check(phyn?.exactProgramTitle === "Phyn Pro Program", "Phyn exact program title drifted");
+check(
+  phyn?.verificationUrl === "https://phyn.com/pages/find-a-phyn-pro",
+  "Phyn corroboration URL drifted",
+);
+check(phyn?.publiclyCorroborated === true, "Phyn must be publicly corroborated");
+check(phyn?.ownerVerified === true, "Phyn must remain owner verified");
 
 for (const unsupportedSlug of ["moen-flo", "streamlabs", "guardian"]) {
   check(
-    authority.getManufacturerAuthorization(unsupportedSlug) === undefined,
-    `${unsupportedSlug} must remain supported-only, not authorized`,
+    authority.getManufacturerAuthority(unsupportedSlug) === undefined,
+    `${unsupportedSlug} must remain supported-only`,
   );
 }
 check(
-  authority.manufacturerAuthorizationSummary ===
-    "HydroSense Texas is authorized by FloLogic and Phyn.",
-  "Combined authorization statement drifted",
+  authority.manufacturerAuthoritySummary ===
+    "HydroSense Texas is authorized by FloLogic and listed in Phyn's Find a Phyn Pro Directory.",
+  "Combined manufacturer authority statement drifted",
 );
 check(
-  authority.manufacturerAuthorizationShortLabel === "Authorized by FloLogic and Phyn.",
-  "Short authorization label drifted",
+  authority.manufacturerAuthorityShortLabel === "Authorized by FloLogic; Phyn Pro",
+  "Short manufacturer authority label drifted",
 );
 
+check(license.plumbingLicenseEvidence.licenseNumber === "43057", "License number drifted");
+check(license.plumbingLicenseEvidence.licenseType === "Master Plumber", "License type drifted");
+check(license.plumbingLicenseEvidence.licenseStatus === "Current", "License status drifted");
+check(
+  license.plumbingLicenseEvidence.licensePubliclyVerified === true,
+  "License must remain publicly verified",
+);
+check(
+  license.plumbingLicenseEvidence.rmpBusinessRelationshipVerified === false,
+  "RMP/company relationship must remain unverified",
+);
+check(
+  license.cautiousLicenseCoordinationStatement ===
+    "Work coordinated under Texas Master Plumber License MPL 43057.",
+  "Cautious public license wording drifted",
+);
+check(
+  license.TEXAS_PUBLIC_LICENSE_SEARCH_URL ===
+    "https://vo.licensing.hpc.texas.gov/datamart/selSearchType.do" &&
+    !/list\.do\?anchor/i.test(license.TEXAS_PUBLIC_LICENSE_SEARCH_URL),
+  "License verification must use the durable Texas Public License Search destination",
+);
 
 const aboutSource = read("app/about/page.tsx");
 check(
-  aboutSource.includes("manufacturerAuthorizationSummary") &&
-    aboutSource.includes("manufacturerAuthorizations.map") &&
-    aboutSource.includes("Manufacturer authorization"),
-  "/about must render authorization from the governed source",
-);
-for (const supportedName of ["Flo by Moen", "StreamLabs Control", "Guardian by Elexa"]) {
-  check(
-    !authoritySource.includes(`manufacturer: "${supportedName}"`),
-    `${supportedName} entered the authorization source`,
-  );
-}
-check(
-  aboutSource.includes("Supported means HydroSense can evaluate and install compatible systems") &&
-    aboutSource.includes("it does not represent manufacturer authorization"),
-  "/about must distinguish supported systems from authorized manufacturers",
-);
-for (const fact of ["HydroSense Texas", "Lead Ledger Pro LLC", "Greater Houston, Texas", "(281) 694-5754", "MASTER_PLUMBER_LICENSE"]) {
-  check(
-    aboutSource.includes(fact),
-    `/about is missing required business fact source: ${fact}`,
-  );
-}
-check(
-  aboutSource.includes('from "@/lib/service-catalog/catalog"') &&
-    aboutSource.includes("Math.min(...installationAmounts)") &&
-    aboutSource.includes("Math.max(...installationAmounts)"),
-  "/about price range must derive from active installation catalog amounts",
+  aboutSource.includes("manufacturerAuthoritySummary") &&
+    aboutSource.includes("manufacturerAuthorities.map") &&
+    aboutSource.includes("Manufacturer authority and program participation"),
+  "/about must render governed manufacturer relationships",
 );
 check(
-  aboutSource.includes('getInstallationService("1.50")') &&
-    aboutSource.includes('getInstallationService("2.00")') &&
-    aboutSource.includes("commercialGradeDeviceIncluded"),
-  "/about FloLogic large-line facts must derive from governed catalog records",
+  aboutSource.includes("PHYN_PRO_DIRECTORY_URL") &&
+    aboutSource.includes("Official Find a Phyn Pro Directory"),
+  "/about must expose the official Phyn corroboration link",
 );
-
-for (const scopeFact of ["domestic household water line is the standard scope", "Fire-sprinkler", "fire-suppression piping are excluded", "Irrigation is optional", "final written proposal"]) {
-  check(
-    aboutSource.includes(scopeFact),
-    `/about is missing required installation-scope source: ${scopeFact}`,
-  );
+check(
+  aboutSource.includes("cautiousLicenseCoordinationStatement"),
+  "/about must use cautious governed license wording",
+);
+for (const fact of [
+  "HydroSense Texas",
+  "Lead Ledger Pro LLC",
+  "Greater Houston, Texas",
+  "(281) 694-5754",
+]) {
+  check(aboutSource.includes(fact), `/about is missing business fact: ${fact}`);
 }
+for (const scopeFact of [
+  "domestic household water line is the standard scope",
+  "Fire-sprinkler",
+  "fire-suppression piping are excluded",
+  "Irrigation is optional",
+  "final written proposal",
+]) {
+  check(aboutSource.includes(scopeFact), `/about is missing scope fact: ${scopeFact}`);
+}
+check(
+  aboutSource.includes("Math.min(...installationAmounts)") &&
+    aboutSource.includes("Math.max(...installationAmounts)") &&
+    aboutSource.includes('getInstallationService("1.50")') &&
+    aboutSource.includes('getInstallationService("2.00")'),
+  "/about pricing must remain catalog derived",
+);
 
 const deviceDetailSource = read("app/devices/[slug]/page.tsx");
 check(
-  deviceDetailSource.includes("getManufacturerAuthorizationStatement") &&
-    deviceDetailSource.includes("data-manufacturer-authorization"),
-  "Device detail pages must render governed authorization wording",
+  deviceDetailSource.includes("getManufacturerAuthorityStatement") &&
+    deviceDetailSource.includes("data-manufacturer-authority") &&
+    deviceDetailSource.includes("verificationUrl"),
+  "Device details must render governed authority and corroboration",
 );
 const deviceHubSource = read("app/devices/page.tsx");
 check(
-  deviceHubSource.includes("getManufacturerAuthorization") &&
-    deviceHubSource.includes("data-manufacturer-authorization-badge") &&
-    deviceHubSource.includes("HydroSense Texas is authorized by this manufacturer."),
-  "/devices must render accessible governed authorization badges",
+  deviceHubSource.includes("getManufacturerAuthority") &&
+    deviceHubSource.includes("data-manufacturer-authority-badge") &&
+    deviceHubSource.includes("authority.publicLabel") &&
+    deviceHubSource.includes("authority.publicStatement"),
+  "/devices must render accessible exact authority labels",
 );
 
 function sourceFiles(directory) {
@@ -149,37 +185,52 @@ function sourceFiles(directory) {
 const productionSource = [...sourceFiles("app"), ...sourceFiles("components"), ...sourceFiles("lib")]
   .map((file) => read(file))
   .join("\n");
-const controlledTitles = new Set(
-  records
-    .map((record) => record.exactProgramTitle)
-    .filter((value) => typeof value === "string"),
-);
 for (const claim of [
-  "Authorized Dealer",
+  "Authorized by Phyn",
+  "Phyn Certified",
+  "Phyn Authorized Installer",
+  "Phyn Approved Installer",
+  "Phyn Endorsed Installer",
   "Certified Installer",
   "Preferred Installer",
-  "Elite Partner",
   "Factory Certified",
-  "Master Dealer",
+  "Official Partner",
+  "Authorized Dealer",
 ]) {
-  check(
-    !new RegExp(claim, "i").test(productionSource) || controlledTitles.has(claim),
-    `Unsupported manufacturer designation found in production source: ${claim}`,
-  );
+  check(!new RegExp(claim, "i").test(productionSource), `Unsupported designation found: ${claim}`);
 }
 
 const schemaSource = read("components/Schema.tsx");
+check(!schemaSource.includes("hasCredential"), "Business schema must not claim the unverified RMP/company relationship");
 check(
-  !schemaSource.includes("manufacturerAuthorizations"),
-  "Manufacturer authorizations must not be added to sameAs or global schema",
+  schemaSource.includes('telephone: "+1-281-694-5754"'),
+  "Current HydroSense public phone must remain in business schema",
 );
 check(
-  schemaSource.includes("GOOGLE_BUSINESS_PROFILE_URL") && schemaSource.includes("FACEBOOK_URL"),
+  schemaSource.includes("GOOGLE_BUSINESS_PROFILE_URL") &&
+    schemaSource.includes("FACEBOOK_URL"),
   "sameAs must remain limited to governed HydroSense profile URLs",
 );
+check(
+  !schemaSource.includes("https://phyn.com/pages/find-a-phyn-pro"),
+  "Phyn directory corroboration must never enter sameAs or business schema",
+);
+check(
+  !/flologic\.com|phyn\.com|moen\.com|streamlabswater\.com|elexa/i.test(schemaSource),
+  "Manufacturer websites must not enter HydroSense sameAs",
+);
 for (const relationship of ["memberOf", "brand", "parentOrganization", "affiliation"]) {
-  check(!new RegExp(`(?:["']${relationship}["']|\\b${relationship})\\s*:`).test(schemaSource), `Fake schema relationship found: ${relationship}`);
+  check(
+    !new RegExp(`(?:["']${relationship}["']|\\b${relationship})\\s*:`).test(schemaSource),
+    `Fake schema relationship found: ${relationship}`,
+  );
 }
+check(!/AggregateRating/.test(productionSource), "Production source must not fabricate ratings");
+check(!/streetAddress\s*:/.test(productionSource), "Production source must not publish an address");
+check(
+  !schemaSource.includes("manufacturerAuthorities"),
+  "Manufacturer authority records must not be added to global schema",
+);
 const registrySource = read("lib/seo/indexable-pages.ts");
 check(
   registrySource.includes('BUSINESS_ENTITY_ID = `${SITE_ORIGIN}/#business`') &&
@@ -188,62 +239,64 @@ check(
 );
 for (const competingIdentity of ["#organization", "#company", "#plumber", "#hydrosense"]) {
   check(
-    !productionSource.toLowerCase().includes(`https://hydrosensetx.com/${competingIdentity}`),
+    !productionSource.toLowerCase().includes(
+      `https://hydrosensetx.com/${competingIdentity}`,
+    ),
     `Competing business identity found: ${competingIdentity}`,
   );
 }
-check(!/AggregateRating/.test(productionSource), "Production source must not fabricate AggregateRating schema");
-check(!/["']@type["']\s*:\s*["']Review["']/.test(productionSource), "Production source must not fabricate Review schema");
-check(!/streetAddress\s*:/.test(productionSource), "Production source must not publish a street or residential address");
 check(
-  !/flologic\.com|phyn\.com|moen\.com|streamlabswater\.com|elexa/i.test(schemaSource),
-  "Manufacturer websites must not enter HydroSense sameAs or global entity schema",
+  !/["']@type["']\s*:\s*["']Review["']/.test(productionSource),
+  "Production source must not fabricate Review schema",
 );
 
-
 const ledger = read("docs/manufacturer-authority-ledger.md");
-for (const manufacturer of ["FloLogic", "Phyn"]) {
-  check(
-    new RegExp(`\\| ${manufacturer} \\| Tier 1 \\| AUTHORIZED — OWNER VERIFIED \\| NOT PUBLICLY CORROBORATED`).test(ledger),
-    `${manufacturer} ledger status is incomplete`,
-  );
+for (const token of [
+  "programStatus: `phyn_pro`",
+  "publiclyCorroborated: `true`",
+  "ownerVerified: `true`",
+  "licensePubliclyVerified: `true`",
+  "rmpBusinessRelationshipVerified: `false`",
+  "https://phyn.com/pages/find-a-phyn-pro",
+  "https://vo.licensing.hpc.texas.gov/datamart/selSearchType.do",
+]) {
+  check(ledger.includes(token), `Authority ledger is missing: ${token}`);
 }
 
 const ownerActions = read("docs/sprint-3-owner-actions.md");
-for (const manufacturer of ["FLOLOGIC", "PHYN"]) {
-  check(ownerActions.includes(`## ${manufacturer}`), `${manufacturer} owner-action section is missing`);
-}
-for (const line of [
-  "Authorization confirmed — YES",
-  "Exact manufacturer program title — OWNER PROVIDE IF AVAILABLE",
-  "Public manufacturer listing/profile URL — OWNER PROVIDE IF AVAILABLE",
+for (const token of [
+  "HydroSense Texas",
+  "(281) 694-5754",
+  "https://hydrosensetx.com",
+  "HydroSense-domain email if available",
+  "Jamyron L. Davis",
+  "Responsible Master Plumber status",
+  "company/business association",
+  "certificate-of-insurance status",
+  "Referral Installer",
+  "Dealer",
 ]) {
-  check((ownerActions.match(new RegExp(line, "g")) ?? []).length === 2, `Owner-action output must contain twice: ${line}`);
+  check(ownerActions.includes(token), `Owner actions are missing: ${token}`);
 }
-check(!/apply for authorization/i.test(ownerActions), "Owner actions must not request an authorization application");
+check(!/apply for authorization/i.test(ownerActions), "Owner actions must not request authorization applications");
 
 const gbpSource = read("lib/business/google-business-profile.ts");
 const gbpRecommendation = read("docs/google-business-profile-recommendation.md");
 check(
   gbpSource.includes("GOOGLE_BUSINESS_PROFILE_DESCRIPTION_LIMIT = 750") &&
-    gbpSource.includes("manufacturerAuthorizationSummary"),
-  "GBP recommendation must use the current 750-character limit and governed authority copy",
+    gbpSource.includes("manufacturerAuthoritySummary") &&
+    gbpSource.includes("cautiousLicenseCoordinationStatement"),
+  "GBP source must use governed relationship and license wording",
 );
-check(
-  gbpRecommendation.includes("https://support.google.com/business/answer/3039617") &&
-    gbpRecommendation.includes(authority.manufacturerAuthorizationSummary),
-  "GBP recommendation must cite current official guidance and include the governed statement",
-);
-for (const value of ["HydroSense Texas", "https://hydrosensetx.com", "(281) 694-5754", "Greater Houston"]) {
-  check(
-    gbpRecommendation.includes(`| ${value} | OWNER VERIFY |`),
-    `GBP profile field is missing or not marked OWNER VERIFY: ${value}`,
-  );
+for (const token of [
+  authority.manufacturerAuthoritySummary,
+  "(281) 694-5754",
+  "https://support.google.com/business/answer/3039617",
+  "License publicly verified",
+  "RMP/company relationship not yet verified",
+]) {
+  check(gbpRecommendation.includes(token), `GBP recommendation is missing: ${token}`);
 }
-check(
-  (gbpRecommendation.match(/OWNER VERIFY/g) ?? []).length >= 8,
-  "GBP owner-only profile fields must be clearly marked OWNER VERIFY",
-);
 for (const service of catalog.activeServices) {
   const price = service.price.type === "fixed"
     ? catalog.formatUsd(service.price.amount)
@@ -253,6 +306,22 @@ for (const service of catalog.activeServices) {
     `GBP custom-service parity drifted: ${service.name}`,
   );
 }
+
+for (const value of [
+  "HydroSense Texas",
+  "https://hydrosensetx.com",
+  "(281) 694-5754",
+  "Greater Houston",
+]) {
+  check(
+    gbpRecommendation.includes(`| ${value} | OWNER VERIFY |`),
+    `GBP profile field is missing or not marked OWNER VERIFY: ${value}`,
+  );
+}
+check(
+  (gbpRecommendation.match(/OWNER VERIFY/g) ?? []).length >= 8,
+  "GBP owner-only profile fields must be clearly marked OWNER VERIFY",
+);
 check(
   gbpRecommendation.includes("Do not append a price to a custom service name") &&
     gbpRecommendation.includes("no category is fabricated") &&
@@ -260,23 +329,31 @@ check(
   "GBP recommendation must preserve service-name, category, and address guardrails",
 );
 
-
 const e2eSource = read("tests/e2e/entity-authority.spec.ts");
-for (const route of ["/about", "/devices/flologic", "/devices/phyn-plus"]) {
-  check(e2eSource.includes(`route: "${route}"`), `Raw-HTML authority test is missing ${route}`);
+for (const route of ["/about", "/devices", "/devices/flologic", "/devices/phyn-plus"]) {
+  check(e2eSource.includes(`"${route}"`), `Authority browser test is missing ${route}`);
 }
+check(e2eSource.includes("not.toHaveProperty(\"hasCredential\")"), "E2E must reject unsupported credential schema");
+check(e2eSource.includes("business?.sameAs"), "E2E must verify Phyn is absent from sameAs");
 
 const llmsGeneratorSource = read("scripts/generate-llms-full.ts");
 check(
-  llmsGeneratorSource.includes("manufacturerAuthorizationSummary") &&
-    llmsGeneratorSource.includes("getManufacturerAuthorizationStatement"),
-  "Full LLM content must derive authority copy from the governed source",
+  llmsGeneratorSource.includes("manufacturerAuthoritySummary") &&
+    llmsGeneratorSource.includes("getManufacturerAuthorityStatement") &&
+    llmsGeneratorSource.includes("verificationUrl"),
+  "Full LLM output must derive governed authority and corroboration",
 );
 for (const file of ["public/llms.txt", "public/llms-full.txt"]) {
   const source = read(file);
-  check(source.includes("https://hydrosensetx.com/about"), `${file} is missing the canonical About URL`);
-  check(source.includes(authority.manufacturerAuthorizationSummary), `${file} is missing the governed authorization statement`);
-  check(source.includes("FloLogic") && source.includes("Phyn"), `${file} is missing authorized manufacturer names`);
+  for (const token of [
+    authority.manufacturerAuthoritySummary,
+    "https://phyn.com/pages/find-a-phyn-pro",
+    "Work coordinated under Texas Master Plumber License MPL 43057.",
+    "(281) 694-5754",
+  ]) {
+    check(source.includes(token), `${file} is missing: ${token}`);
+  }
+  check(!/Authorized by Phyn/i.test(source), `${file} retains unsupported Phyn authorization language`);
 }
 
 if (errors.length > 0) {
@@ -286,5 +363,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `HydroSense entity-authority verification passed (${records.length} owner-verified manufacturer authorizations).`,
+  `HydroSense entity-authority verification passed (${records.length} governed manufacturer relationships).`,
 );

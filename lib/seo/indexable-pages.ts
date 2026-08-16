@@ -34,11 +34,11 @@ const searchTeachingUpdate = "2026-08-14";
  */
 export const indexablePages: readonly IndexablePage[] = [
   { path: "/", pageType: "home", title: "Smart Water Shutoff Installation Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
-  { path: "/about", pageType: "about", title: "About HydroSense Texas", indexable: true, lastModified: "2026-08-15", indexNowEligible: true },
+  { path: "/about", pageType: "about", title: "About HydroSense Texas", indexable: true, lastModified: "2026-08-16", indexNowEligible: true },
   { path: "/pricing", pageType: "pricing", title: "Smart Water Shutoff Installation Pricing Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices", pageType: "device-hub", title: "Smart Water Shutoff Devices Installed in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices/moen-flo", pageType: "device-detail", title: "Flo by Moen Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
-  { path: "/devices/phyn-plus", pageType: "device-detail", title: "Phyn Plus Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/devices/phyn-plus", pageType: "device-detail", title: "Phyn Plus Installation in Houston", indexable: true, lastModified: "2026-08-16", indexNowEligible: true },
   { path: "/devices/streamlabs", pageType: "device-detail", title: "StreamLabs Control Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices/guardian", pageType: "device-detail", title: "Guardian by Elexa Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices/flologic", pageType: "device-detail", title: "FloLogic Installation in Houston", indexable: true, lastModified: "2026-08-14", indexNowEligible: true },

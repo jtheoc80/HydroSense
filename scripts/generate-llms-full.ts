@@ -50,10 +50,12 @@ import {
 
 import { deviceList } from "../lib/devices";
 import {
-  getManufacturerAuthorizationStatement,
-  manufacturerAuthorizationSummary,
-  manufacturerAuthorizations,
+  getManufacturerAuthority,
+  getManufacturerAuthorityStatement,
+  manufacturerAuthorities,
+  manufacturerAuthoritySummary,
 } from "../lib/business/manufacturer-authorizations";
+import { cautiousLicenseCoordinationStatement } from "../lib/business/plumbing-license";
 const publicPricingLines = activeServices.map((service) => {
   const price = service.price.type === "fixed"
     ? `${formatUsd(service.price.amount)} per ${service.price.unit}`
@@ -89,7 +91,7 @@ URL: https://hydrosensetx.com${guide.href}`).join("\n\n---\n\n");
 
 let output = `# HydroSense Texas - Full Content
 
-> Licensed smart water shutoff installs certified under a Texas Master Plumber license, with carrier-recognized insurance discount certification. Houston metro.
+> Professional smart water shutoff installation across Greater Houston. Work coordinated under Texas Master Plumber License MPL 43057.
 
 ---
 
@@ -150,11 +152,11 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 ${deviceList.map((device) => device.name).join(", ")}
 
-## Manufacturer authorization
+## Manufacturer authority and programs
 
-${manufacturerAuthorizationSummary}
+${manufacturerAuthoritySummary}
 
-Authorized manufacturers: ${manufacturerAuthorizations.map((authorization) => authorization.manufacturer).join(", ")}.
+${manufacturerAuthorities.map((authority) => `- ${authority.publicLabel}: ${authority.publicStatement}${authority.verificationUrl ? ` Official corroboration: ${authority.verificationUrl}` : ""}`).join("\n")}
 
 About: https://hydrosensetx.com/about
 
@@ -240,7 +242,8 @@ URL: https://hydrosensetx.com/blog/smart-water-shutoff-texas-vacation-rentals
 const deviceData = deviceList;
 
 for (const dev of deviceData) {
-  const authorizationStatement = getManufacturerAuthorizationStatement(dev.slug);
+  const manufacturerAuthority = getManufacturerAuthority(dev.slug);
+  const authorityStatement = getManufacturerAuthorityStatement(dev.slug);
 
   output += `# ${dev.name}
 
@@ -258,11 +261,11 @@ ${dev.selectionNote ? `## HydroSense selection note
 
 ${dev.selectionNote}
 
-` : ""}${authorizationStatement ? `## Manufacturer authorization
+` : ""}${authorityStatement ? `## Manufacturer authority
 
-${authorizationStatement}
+${authorityStatement}
 
-` : ""}Official manufacturer source: ${dev.officialSite}
+${manufacturerAuthority?.verificationUrl ? `Official program corroboration: ${manufacturerAuthority.verificationUrl}\n\n` : ""}` : ""}Official manufacturer source: ${dev.officialSite}
 
 URL: https://hydrosensetx.com/devices/${dev.slug}
 
@@ -312,7 +315,7 @@ output += `## Contact
 - Service catalog: https://hydrosensetx.com/service-catalog.json
 - OpenAPI: https://hydrosensetx.com/openapi.json
 - A2A Agent Card: https://hydrosensetx.com/.well-known/agent-card.json
-- License coordination: Work coordinated under Texas Master Plumber License MPL 43057.
+- License coordination: ${cautiousLicenseCoordinationStatement}
 - Company: Lead Ledger Pro LLC
 `;
 

@@ -1,21 +1,27 @@
 import { expect, test } from "@playwright/test";
 import {
-  getManufacturerAuthorizationStatement,
-  manufacturerAuthorizationSummary,
+  PHYN_PRO_DIRECTORY_URL,
+  getManufacturerAuthorityStatement,
+  manufacturerAuthoritySummary,
 } from "../../lib/business/manufacturer-authorizations";
-const unsupportedAuthorityClaim =
-  /Authorized Dealer|Certified Installer|Preferred Installer|Factory Certified|Official Partner/i;
 
-test("manufacturer authorization is visible in raw server HTML", async ({ request }) => {
+const unsupportedAuthorityClaim =
+  /Phyn Certified|Phyn Authorized Installer|Phyn Approved Installer|Phyn Endorsed Installer|Certified Installer|Preferred Installer|Factory Certified|Official Partner|Authorized Dealer/i;
+
+function normalizeRawHtml(html: string) {
+  return html.replaceAll("&#x27;", "'").replaceAll("&apos;", "'");
+}
+
+test("manufacturer authority is visible in raw server HTML", async ({ request }) => {
   const expectedPages = [
-    { route: "/about", statement: manufacturerAuthorizationSummary },
+    { route: "/about", statement: manufacturerAuthoritySummary },
     {
       route: "/devices/flologic",
-      statement: getManufacturerAuthorizationStatement("flologic")!,
+      statement: getManufacturerAuthorityStatement("flologic")!,
     },
     {
       route: "/devices/phyn-plus",
-      statement: getManufacturerAuthorizationStatement("phyn-plus")!,
+      statement: getManufacturerAuthorityStatement("phyn-plus")!,
     },
   ];
 
@@ -23,33 +29,36 @@ test("manufacturer authorization is visible in raw server HTML", async ({ reques
     const response = await request.get(expected.route);
     expect(response.status(), expected.route).toBe(200);
     expect(response.headers()["content-type"], expected.route).toContain("text/html");
-    const html = await response.text();
+    const html = normalizeRawHtml(await response.text());
     expect(html, expected.route).toContain(expected.statement);
     expect(html, expected.route).not.toMatch(unsupportedAuthorityClaim);
-    if (expected.route.startsWith("/devices/"))
-      expect(html, expected.route).toContain("data-manufacturer-authorization");
+    if (expected.route.startsWith("/devices/")) {
+      expect(html, expected.route).toContain("data-manufacturer-authority");
+    }
   }
 });
 
-test("About authority profile is complete in raw server HTML", async ({ request }) => {
+test("About authority profile separates authorization, program, and license evidence", async ({
+  request,
+}) => {
   const response = await request.get("/about");
   expect(response.status()).toBe(200);
-  const html = await response.text();
+  const html = normalizeRawHtml(await response.text());
 
   expect((html.match(/<h1\b/g) ?? []).length).toBe(1);
-  expect(html).toContain(
-    'rel="canonical" href="https://hydrosensetx.com/about"',
-  );
+  expect(html).toContain('rel="canonical" href="https://hydrosensetx.com/about"');
 
   for (const fact of [
     "HydroSense Texas",
     "Lead Ledger Pro LLC",
     "Greater Houston, Texas",
     "(281) 694-5754",
-    "MPL 43057",
+    "Work coordinated under Texas Master Plumber License MPL 43057.",
     "Authorized by FloLogic",
-    "Authorized by Phyn",
-    "$999–$4,175",
+    "Phyn Pro",
+    "listed in Phyn's Find a Phyn Pro Directory",
+    PHYN_PRO_DIRECTORY_URL,
+    "Published installation starting range:",
     "1.5-inch domestic main:",
     "$3,456",
     "2-inch domestic main:",
@@ -65,41 +74,72 @@ test("About authority profile is complete in raw server HTML", async ({ request 
   expect(html).not.toMatch(unsupportedAuthorityClaim);
 });
 
-test("supported device pages do not inherit authorization", async ({ request }) => {
+test("supported device pages do not inherit manufacturer authority", async ({ request }) => {
   for (const deviceSlug of ["moen-flo", "streamlabs", "guardian"]) {
     const response = await request.get(`/devices/${deviceSlug}`);
     expect(response.status(), deviceSlug).toBe(200);
-    const html = await response.text();
-    expect(html, deviceSlug).not.toContain("data-manufacturer-authorization");
+    const html = normalizeRawHtml(await response.text());
+    expect(html, deviceSlug).not.toContain("data-manufacturer-authority");
     expect(html, deviceSlug).not.toMatch(/HydroSense Texas is authorized by/i);
     expect(html, deviceSlug).not.toMatch(unsupportedAuthorityClaim);
   }
 });
 
-test("devices hub marks only owner-verified manufacturers as authorized", async ({ page }) => {
+test("devices hub presents the exact governed relationship labels", async ({ page }) => {
   await page.goto("/devices", { waitUntil: "domcontentloaded" });
 
-  for (const deviceSlug of ["flologic", "phyn-plus"]) {
-    const card = page.locator(`article[data-device-slug="${deviceSlug}"]`);
-    await expect(card.locator("[data-manufacturer-authorization-badge]")).toBeVisible();
-    await expect(card).toContainText(
-      "HydroSense Texas is authorized by this manufacturer.",
-    );
-  }
+  const floLogicCard = page.locator('article[data-device-slug="flologic"]');
+  await expect(floLogicCard.locator("[data-manufacturer-authority-badge]")).toBeVisible();
+  await expect(floLogicCard).toContainText("Authorized by FloLogic");
+
+  const phynCard = page.locator('article[data-device-slug="phyn-plus"]');
+  await expect(phynCard.locator("[data-manufacturer-authority-badge]")).toBeVisible();
+  await expect(phynCard).toContainText("Phyn Pro");
+  await expect(phynCard).toContainText(
+    "HydroSense Texas is listed in Phyn's Find a Phyn Pro Directory.",
+  );
 
   for (const deviceSlug of ["moen-flo", "streamlabs", "guardian"]) {
     const card = page.locator(`article[data-device-slug="${deviceSlug}"]`);
-    await expect(card.locator("[data-manufacturer-authorization-badge]")).toHaveCount(0);
+    await expect(card.locator("[data-manufacturer-authority-badge]")).toHaveCount(0);
   }
 });
 
-test("authorization pages remain readable and overflow-safe", async ({ page }) => {
+test("Phyn corroboration is a visible link but never sameAs or a business credential", async ({
+  request,
+}) => {
+  const phynResponse = await request.get("/devices/phyn-plus");
+  const phynHtml = normalizeRawHtml(await phynResponse.text());
+  expect(phynHtml).toContain(`href="${PHYN_PRO_DIRECTORY_URL}"`);
+
+  const homeResponse = await request.get("/");
+  const homeHtml = await homeResponse.text();
+  const schemaBlocks = Array.from(
+    homeHtml.matchAll(
+      /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
+    ),
+    (match) => JSON.parse(match[1]) as Record<string, unknown>,
+  );
+  const business = schemaBlocks.find(
+    (schema) => schema["@id"] === "https://hydrosensetx.com/#business",
+  );
+  expect(business).toBeDefined();
+  expect(business).toMatchObject({
+    name: "HydroSense Texas",
+    telephone: "+1-281-694-5754",
+  });
+  expect(business).not.toHaveProperty("hasCredential");
+  expect(JSON.stringify(business?.sameAs ?? [])).not.toContain(PHYN_PRO_DIRECTORY_URL);
+  expect(JSON.stringify(business)).not.toMatch(unsupportedAuthorityClaim);
+});
+
+test("authority pages remain readable and overflow-safe", async ({ page }) => {
   const consoleErrors: string[] = [];
   page.on("console", (message) => {
     if (message.type() === "error") consoleErrors.push(message.text());
   });
 
-  for (const route of ["/", "/about", "/devices/flologic", "/devices/phyn-plus"]) {
+  for (const route of ["/", "/about", "/devices", "/devices/flologic", "/devices/phyn-plus"]) {
     await page.goto(route, { waitUntil: "domcontentloaded" });
     expect((await page.locator("body").innerText()).trim(), `${route} body content`).not.toBe("");
     await expect(

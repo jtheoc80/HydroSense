@@ -6,11 +6,13 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Button } from "@/components/catalyst/button";
 import {
-  getManufacturerAuthorization,
-  manufacturerAuthorizationSummary,
-  manufacturerAuthorizations,
+  PHYN_PRO_DIRECTORY_URL,
+  getManufacturerAuthority,
+  manufacturerAuthoritySummary,
+  manufacturerAuthorities,
 } from "@/lib/business/manufacturer-authorizations";
 import { MASTER_PLUMBER_LICENSE } from "@/lib/config";
+import { cautiousLicenseCoordinationStatement } from "@/lib/business/plumbing-license";
 import { deviceList } from "@/lib/devices";
 import {
   formatUsd,
@@ -36,14 +38,14 @@ const twoInchAmount = getFixedInstallationAmount(twoInchService);
 export const metadata: Metadata = {
   title: "About HydroSense Texas",
   description:
-    `${manufacturerAuthorizationSummary} Learn how HydroSense scopes and installs compatible smart water shutoff systems across Greater Houston.`,
+    `${manufacturerAuthoritySummary} Learn how HydroSense scopes and installs compatible smart water shutoff systems across Greater Houston.`,
   alternates: {
     canonical: "https://hydrosensetx.com/about",
   },
   openGraph: {
     title: "About HydroSense Texas",
     description:
-      `${manufacturerAuthorizationSummary} Professional smart water shutoff installation across Greater Houston.`,
+      `${manufacturerAuthoritySummary} Professional smart water shutoff installation across Greater Houston.`,
     url: "https://hydrosensetx.com/about",
     siteName: "HydroSense Texas",
     type: "website",
@@ -52,7 +54,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const supportedDevices = deviceList.filter(
-    (device) => !getManufacturerAuthorization(device.slug),
+    (device) => !getManufacturerAuthority(device.slug),
   );
 
   return (
@@ -120,53 +122,61 @@ export default function AboutPage() {
                   License coordination
                 </dt>
                 <dd className="mt-2 text-sm leading-6 text-fog-200">
-                  Work coordinated under Texas Master Plumber License {MASTER_PLUMBER_LICENSE}.
+                  {cautiousLicenseCoordinationStatement}
                 </dd>
               </div>
             </dl>
           </div>
         </section>
 
-        <section className="bg-ink-950/50 py-16 lg:py-20" aria-labelledby="manufacturer-authorization">
+        <section className="bg-ink-950/50 py-16 lg:py-20" aria-labelledby="manufacturer-authority">
           <div className="section-container">
             <div className="max-w-4xl">
               <p className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-signal-400">
-                Verified business relationships
+                Governed business relationships
               </p>
-              <h2 id="manufacturer-authorization" className="font-display text-3xl text-fog-50 sm:text-4xl">
-                Manufacturer authorization
+              <h2 id="manufacturer-authority" className="font-display text-3xl text-fog-50 sm:text-4xl">
+                Manufacturer authority and program participation
               </h2>
               <p className="mt-5 max-w-3xl text-lg leading-8 text-fog-200">
-                {manufacturerAuthorizationSummary} HydroSense also supports additional
+                {manufacturerAuthoritySummary} HydroSense also supports additional
                 compatible smart water shutoff systems based on the home&apos;s plumbing,
                 line size, power, connectivity, and installation requirements.
               </p>
             </div>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
-              <section className="rounded-2xl border border-hydro-400/30 bg-hydro-400/[0.06] p-7 lg:p-8" aria-labelledby="authorized-manufacturers">
+              <section className="rounded-2xl border border-hydro-400/30 bg-hydro-400/[0.06] p-7 lg:p-8" aria-labelledby="manufacturer-relationships">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-hydro-400">
-                  Authorized
+                  Manufacturer relationships
                 </p>
-                <h3 id="authorized-manufacturers" className="sr-only">
-                  Authorized manufacturers
+                <h3 id="manufacturer-relationships" className="sr-only">
+                  Manufacturer authority and programs
                 </h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                  {manufacturerAuthorizations.map((authorization) => (
+                  {manufacturerAuthorities.map((authority) => (
                     <Link
-                      key={authorization.deviceSlug}
-                      href={`/devices/${authorization.deviceSlug}`}
+                      key={authority.deviceSlug}
+                      href={`/devices/${authority.deviceSlug}`}
                       className="rounded-xl border border-ink-700/50 bg-ink-900/50 p-5 transition-colors hover:border-hydro-400/50"
                     >
                       <span className="block font-semibold text-fog-50">
-                        {authorization.manufacturer}
+                        {authority.manufacturer}
                       </span>
                       <span className="mt-1 block text-sm text-fog-300">
-                        {authorization.publicLabel}
+                        {authority.publicLabel}
                       </span>
                     </Link>
                   ))}
                 </div>
+                <a
+                  href={PHYN_PRO_DIRECTORY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-block text-sm font-medium text-hydro-400 hover:text-hydro-300"
+                >
+                  View Phyn&apos;s Official Find a Phyn Pro Directory
+                </a>
               </section>
 
               <section className="rounded-2xl border border-ink-700/40 bg-ink-800/40 p-7 lg:p-8" aria-labelledby="supported-manufacturers">
@@ -190,7 +200,7 @@ export default function AboutPage() {
                 </div>
                 <p className="mt-5 text-sm leading-6 text-fog-400">
                   Supported means HydroSense can evaluate and install compatible systems;
-                  it does not represent manufacturer authorization.
+                  it does not represent manufacturer authorization or program participation.
                 </p>
               </section>
             </div>

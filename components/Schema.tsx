@@ -41,12 +41,6 @@ export default function Schema() {
       "@type": "AdministrativeArea",
       name: "Greater Houston, Texas",
     },
-    hasCredential: {
-      "@type": "EducationalOccupationalCredential",
-      credentialCategory: "license",
-      name: "Texas Master Plumber License",
-      identifier: "MPL 43057",
-    },
     contactPoint: {
       "@type": "ContactPoint",
       telephone: "+1-281-694-5754",

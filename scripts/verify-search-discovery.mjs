@@ -200,12 +200,15 @@ for (const fact of [
   'legalName: "Lead Ledger Pro LLC"',
   'telephone: "+1-281-694-5754"',
   'name: "Greater Houston, Texas"',
-  'identifier: "MPL 43057"',
   "BUSINESS_ENTITY_ID",
 ]) {
   check(schemaSource.includes(fact), `Global business schema is missing required fact: ${fact}`);
 }
 check(!/streetAddress/.test(schemaSource), "Global business schema must not publish a street address");
+check(
+  !schemaSource.includes("hasCredential"),
+  "Global business schema must not claim the unverified RMP/company relationship",
+);
 check(!/insurance|premium|discount/i.test(schemaSource), "Insurance claims must not define the core business entity");
 check(
   schemaSource.includes('import { deviceList } from "@/lib/devices"') &&

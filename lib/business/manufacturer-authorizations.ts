@@ -1,56 +1,66 @@
-export type ManufacturerAuthorizationStatus = "authorized";
+export const PHYN_PRO_DIRECTORY_URL = "https://phyn.com/pages/find-a-phyn-pro";
 
-export interface ManufacturerAuthorization {
+export type ManufacturerProgramStatus =
+  | "owner_verified_authorization"
+  | "phyn_pro";
+
+export type ManufacturerAuthority = {
   manufacturer: "FloLogic" | "Phyn";
   deviceSlug: "flologic" | "phyn-plus";
-  status: ManufacturerAuthorizationStatus;
-  publicLabel: `Authorized by ${string}`;
+  relationshipType: "authorization" | "program_participation";
+  programStatus: ManufacturerProgramStatus;
+  publicLabel: string;
+  publicStatement: string;
   exactProgramTitle: string | null;
   verificationUrl: string | null;
+  publiclyCorroborated: boolean;
   ownerVerified: boolean;
-}
+};
 
-export const manufacturerAuthorizations = [
+export const manufacturerAuthorities: readonly ManufacturerAuthority[] = [
   {
     manufacturer: "FloLogic",
     deviceSlug: "flologic",
-    status: "authorized",
+    relationshipType: "authorization",
+    programStatus: "owner_verified_authorization",
     publicLabel: "Authorized by FloLogic",
+    publicStatement: "HydroSense Texas is authorized by FloLogic.",
     exactProgramTitle: null,
     verificationUrl: null,
+    publiclyCorroborated: false,
     ownerVerified: true,
   },
   {
     manufacturer: "Phyn",
     deviceSlug: "phyn-plus",
-    status: "authorized",
-    publicLabel: "Authorized by Phyn",
-    exactProgramTitle: null,
-    verificationUrl: null,
+    relationshipType: "program_participation",
+    programStatus: "phyn_pro",
+    publicLabel: "Phyn Pro",
+    publicStatement:
+      "HydroSense Texas is listed in Phyn's Find a Phyn Pro Directory.",
+    exactProgramTitle: "Phyn Pro Program",
+    verificationUrl: PHYN_PRO_DIRECTORY_URL,
+    publiclyCorroborated: true,
     ownerVerified: true,
   },
-] as const satisfies readonly ManufacturerAuthorization[];
+] as const;
 
-export const manufacturerAuthorizationSummary =
-  "HydroSense Texas is authorized by FloLogic and Phyn.";
+export const manufacturerAuthoritySummary =
+  "HydroSense Texas is authorized by FloLogic and listed in Phyn's Find a Phyn Pro Directory.";
 
-export const manufacturerAuthorizationShortLabel =
-  "Authorized by FloLogic and Phyn.";
+export const manufacturerAuthorityShortLabel =
+  "Authorized by FloLogic; Phyn Pro";
 
-export function getManufacturerAuthorization(deviceSlug: string) {
-  return manufacturerAuthorizations.find(
-    (authorization) => authorization.deviceSlug === deviceSlug,
+export function getManufacturerAuthority(deviceSlug: string) {
+  return manufacturerAuthorities.find(
+    (authority) => authority.deviceSlug === deviceSlug,
   );
 }
 
-export function isManufacturerAuthorized(deviceSlug: string) {
-  return getManufacturerAuthorization(deviceSlug) !== undefined;
+export function hasManufacturerAuthority(deviceSlug: string) {
+  return Boolean(getManufacturerAuthority(deviceSlug));
 }
 
-export function getManufacturerAuthorizationStatement(deviceSlug: string) {
-  const authorization = getManufacturerAuthorization(deviceSlug);
-
-  return authorization
-    ? `HydroSense Texas is authorized by ${authorization.manufacturer}.`
-    : null;
+export function getManufacturerAuthorityStatement(deviceSlug: string) {
+  return getManufacturerAuthority(deviceSlug)?.publicStatement ?? null;
 }
