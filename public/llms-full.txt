@@ -75,6 +75,14 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa, FloLogic
 
+## Manufacturer authorization
+
+HydroSense Texas is authorized by FloLogic and Phyn.
+
+Authorized manufacturers: FloLogic, Phyn.
+
+About: https://hydrosensetx.com/about
+
 ---
 
 # Guides
@@ -277,7 +285,7 @@ URL: https://hydrosensetx.com/blog/cost-of-burst-pipe-texas
 
 ## Smart vs Manual Water Shutoff
 
-Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Installed under Texas Master Plumber license MPL 43057.
+Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Work coordinated under Texas Master Plumber License MPL 43057.
 
 URL: https://hydrosensetx.com/blog/smart-vs-manual-water-shutoff-freeze
 
@@ -324,6 +332,10 @@ Phyn Plus installs on the domestic water supply after the primary shutoff and be
 ## Best for
 
 Homes suited to an inline device where the owner wants pressure-based whole-home domestic-water monitoring, plumbing insights, and automatic valve control.
+
+## Manufacturer authorization
+
+HydroSense Texas is authorized by Phyn.
 
 Official manufacturer source: https://www.phyn.com
 
@@ -382,6 +394,10 @@ Properties with 1 1/2-inch or 2-inch domestic incoming water lines, higher-flow 
 ## HydroSense selection note
 
 HydroSense supports FloLogic as its designated large-line device family for qualifying 1 1/2-inch and 2-inch domestic incoming mains. Final compatibility and model are confirmed in the written proposal; fire-sprinkler and fire-suppression piping are excluded.
+
+## Manufacturer authorization
+
+HydroSense Texas is authorized by FloLogic.
 
 Official manufacturer source: https://flologic.com/collections/flologic-system
 
@@ -697,5 +713,5 @@ A: Yes, Livingston, Onalaska, Coldspring, and surrounding communities.
 - Service catalog: https://hydrosensetx.com/service-catalog.json
 - OpenAPI: https://hydrosensetx.com/openapi.json
 - A2A Agent Card: https://hydrosensetx.com/.well-known/agent-card.json
-- License: Texas Registered Master Plumber
+- License coordination: Work coordinated under Texas Master Plumber License MPL 43057.
 - Company: Lead Ledger Pro LLC

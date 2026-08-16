@@ -3,6 +3,7 @@ export const BUSINESS_ENTITY_ID = `${SITE_ORIGIN}/#business`;
 
 export type IndexablePageType =
   | "home"
+  | "about"
   | "pricing"
   | "device-hub"
   | "device-detail"
@@ -33,6 +34,7 @@ const searchTeachingUpdate = "2026-08-14";
  */
 export const indexablePages: readonly IndexablePage[] = [
   { path: "/", pageType: "home", title: "Smart Water Shutoff Installation Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
+  { path: "/about", pageType: "about", title: "About HydroSense Texas", indexable: true, lastModified: "2026-08-15", indexNowEligible: true },
   { path: "/pricing", pageType: "pricing", title: "Smart Water Shutoff Installation Pricing Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices", pageType: "device-hub", title: "Smart Water Shutoff Devices Installed in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },
   { path: "/devices/moen-flo", pageType: "device-detail", title: "Flo by Moen Installation in Houston", indexable: true, lastModified: searchTeachingUpdate, indexNowEligible: true },

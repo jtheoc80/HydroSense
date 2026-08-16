@@ -18,6 +18,7 @@ const serviceAreas = [
 ];
 
 const quickLinks = [
+  { name: "About HydroSense", href: "/about" },
   { name: "How it works", href: "/#customer-journey" },
   { name: "Devices we install", href: "/devices" },
   { name: "Service areas", href: "/service-area" },

@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import LiteYouTube from "@/components/LiteYouTube";
 import { installationScopeDisclosure } from "@/lib/installation-scope";
+import { getManufacturerAuthorizationStatement } from "@/lib/business/manufacturer-authorizations";
 
 export function generateStaticParams() {
   return deviceSlugs.map((slug) => ({ slug }));
@@ -67,6 +68,8 @@ const processSteps = [
 export default function DevicePage({ params }: PageProps) {
   const device = devices[params.slug];
   if (!device) notFound();
+  const manufacturerAuthorizationStatement = getManufacturerAuthorizationStatement(device.slug);
+
 
   const otherDevices = deviceList.filter((item) => item.slug !== device.slug);
   const guideDecisionLinks = device.slug === "flologic"
@@ -147,6 +150,11 @@ export default function DevicePage({ params }: PageProps) {
                 <p className="text-xl text-fog-200 leading-relaxed mb-5">
                   {device.tagline}
                 </p>
+                {manufacturerAuthorizationStatement ? (
+                  <p data-manufacturer-authorization className="mb-6 inline-flex w-fit rounded-full border border-hydro-400/35 bg-hydro-400/10 px-3 py-1.5 text-sm font-semibold text-hydro-400">
+                    {manufacturerAuthorizationStatement}
+                  </p>
+                ) : null}
                 {device.selectionNote ? (
                   <p className="mb-6 max-w-2xl rounded-xl border border-signal-400/30 bg-signal-400/[0.08] p-4 text-sm leading-6 text-fog-200">
                     {device.selectionNote}

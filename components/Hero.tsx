@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Badge } from "./catalyst/badge";
 import { Button } from "./catalyst/button";
 import TrackedPhoneLink from "./TrackedPhoneLink";
+import { manufacturerAuthorizationShortLabel } from "@/lib/business/manufacturer-authorizations";
 
 const assuranceItems = [
   {
@@ -95,6 +96,12 @@ export default function Hero() {
             >
               Domestic household water is the standard scope. Irrigation is optional when
               requested and quoted. Fire-sprinkler and fire-suppression piping are excluded.
+            </p>
+
+            <p className="mt-3 text-sm font-semibold text-[#001a4e]">
+              <a href="/about" className="underline decoration-sky-300 underline-offset-4 transition hover:decoration-sky-600">
+                {manufacturerAuthorizationShortLabel}
+              </a>
             </p>
 
             <p className="mt-3 max-w-[620px] text-xs leading-5 text-slate-500">

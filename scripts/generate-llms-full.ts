@@ -49,6 +49,11 @@ import {
 } from "../lib/guides/commercial-guides";
 
 import { deviceList } from "../lib/devices";
+import {
+  getManufacturerAuthorizationStatement,
+  manufacturerAuthorizationSummary,
+  manufacturerAuthorizations,
+} from "../lib/business/manufacturer-authorizations";
 const publicPricingLines = activeServices.map((service) => {
   const price = service.price.type === "fixed"
     ? `${formatUsd(service.price.amount)} per ${service.price.unit}`
@@ -145,6 +150,14 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 
 ${deviceList.map((device) => device.name).join(", ")}
 
+## Manufacturer authorization
+
+${manufacturerAuthorizationSummary}
+
+Authorized manufacturers: ${manufacturerAuthorizations.map((authorization) => authorization.manufacturer).join(", ")}.
+
+About: https://hydrosensetx.com/about
+
 ---
 
 `;
@@ -203,7 +216,7 @@ URL: https://hydrosensetx.com/blog/cost-of-burst-pipe-texas
 
 ## Smart vs Manual Water Shutoff
 
-Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Installed under Texas Master Plumber license MPL 43057.
+Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Work coordinated under Texas Master Plumber License MPL 43057.
 
 URL: https://hydrosensetx.com/blog/smart-vs-manual-water-shutoff-freeze
 
@@ -227,6 +240,8 @@ URL: https://hydrosensetx.com/blog/smart-water-shutoff-texas-vacation-rentals
 const deviceData = deviceList;
 
 for (const dev of deviceData) {
+  const authorizationStatement = getManufacturerAuthorizationStatement(dev.slug);
+
   output += `# ${dev.name}
 
 ${dev.tagline}
@@ -242,6 +257,10 @@ ${dev.bestFor}
 ${dev.selectionNote ? `## HydroSense selection note
 
 ${dev.selectionNote}
+
+` : ""}${authorizationStatement ? `## Manufacturer authorization
+
+${authorizationStatement}
 
 ` : ""}Official manufacturer source: ${dev.officialSite}
 
@@ -293,7 +312,7 @@ output += `## Contact
 - Service catalog: https://hydrosensetx.com/service-catalog.json
 - OpenAPI: https://hydrosensetx.com/openapi.json
 - A2A Agent Card: https://hydrosensetx.com/.well-known/agent-card.json
-- License: Texas Registered Master Plumber
+- License coordination: Work coordinated under Texas Master Plumber License MPL 43057.
 - Company: Lead Ledger Pro LLC
 `;
 

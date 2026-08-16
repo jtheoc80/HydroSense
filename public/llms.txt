@@ -5,6 +5,7 @@
 ## Core pages
 
 - [Homepage](https://hydrosensetx.com/): Overview, insurance savings calculator, certificate explainer, pricing
+- [About HydroSense](https://hydrosensetx.com/about): Manufacturer authorization, supported systems, installation scope, and licensing
 - [How it works](https://hydrosensetx.com/#customer-journey): Six-step process from quote to insurance certificate
 - [Insurance forms guide](https://hydrosensetx.com/#insurance-forms): HO-A vs HO-B vs HO-3 explained for Texas homeowners
 - [Freeze damage](https://hydrosensetx.com/#freeze-damage): Long-tail consequences of hard freezes in Texas
@@ -69,8 +70,11 @@ HydroSense standard installation starting prices currently range from $999 to $4
 ## About
 
 - Company: HydroSense Texas, a Lead Ledger Pro LLC brand
-- License: Texas Registered Master Plumber
+- License coordination: Work coordinated under Texas Master Plumber License MPL 43057.
 - Service area: Houston metropolitan area, Greater Houston, Southeast Texas
 - Devices installed: Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa, FloLogic
+- Manufacturer authorization: HydroSense Texas is authorized by FloLogic and Phyn.
+- Authorized manufacturers: FloLogic, Phyn
+- Additional supported systems: Flo by Moen, StreamLabs Control, Guardian by Elexa
 - Phone: (281) 694-5754
 - Carriers recognized: State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Progressive, Texas Farm Bureau, Chubb
