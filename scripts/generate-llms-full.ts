@@ -49,6 +49,16 @@ import {
 } from "../lib/guides/commercial-guides";
 
 import { deviceList } from "../lib/devices";
+import {
+  getManufacturerAuthority,
+  getManufacturerAuthorityStatement,
+  manufacturerAuthorities,
+  manufacturerAuthoritySummary,
+} from "../lib/business/manufacturer-authorizations";
+import {
+  fullServiceAuthorityStatement,
+  publicPlumbingAuthorityStatement,
+} from "../lib/business/plumbing-license";
 const publicPricingLines = activeServices.map((service) => {
   const price = service.price.type === "fixed"
     ? `${formatUsd(service.price.amount)} per ${service.price.unit}`
@@ -84,7 +94,7 @@ URL: https://hydrosensetx.com${guide.href}`).join("\n\n---\n\n");
 
 let output = `# HydroSense Texas - Full Content
 
-> Licensed smart water shutoff installs certified under a Texas Master Plumber license, with carrier-recognized insurance discount certification. Houston metro.
+> ${fullServiceAuthorityStatement}
 
 ---
 
@@ -119,7 +129,7 @@ The certificate is the product. The device is the hardware. A smart water shutof
 1. Sign up (form or phone call)
 2. 15-minute phone assessment
 3. Service agreement with exact pricing
-4. Professional install by Texas Master Plumber (~2 hours)
+4. Plumbing installation through a Texas-licensed partner under RMP M-43057 (~2 hours)
 5. App handoff and device configuration
 6. Certificate issued in paper and digital form after final payment
 
@@ -144,6 +154,14 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 ## Devices Installed
 
 ${deviceList.map((device) => device.name).join(", ")}
+
+## Manufacturer authority and programs
+
+${manufacturerAuthoritySummary}
+
+${manufacturerAuthorities.map((authority) => `- ${authority.publicLabel}: ${authority.publicStatement}${authority.verificationUrl ? ` Official corroboration: ${authority.verificationUrl}` : ""}`).join("\n")}
+
+About: https://hydrosensetx.com/about
 
 ---
 
@@ -203,7 +221,7 @@ URL: https://hydrosensetx.com/blog/cost-of-burst-pipe-texas
 
 ## Smart vs Manual Water Shutoff
 
-Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Installed under Texas Master Plumber license MPL 43057.
+Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). ${publicPlumbingAuthorityStatement}
 
 URL: https://hydrosensetx.com/blog/smart-vs-manual-water-shutoff-freeze
 
@@ -227,6 +245,9 @@ URL: https://hydrosensetx.com/blog/smart-water-shutoff-texas-vacation-rentals
 const deviceData = deviceList;
 
 for (const dev of deviceData) {
+  const manufacturerAuthority = getManufacturerAuthority(dev.slug);
+  const authorityStatement = getManufacturerAuthorityStatement(dev.slug);
+
   output += `# ${dev.name}
 
 ${dev.tagline}
@@ -243,7 +264,11 @@ ${dev.selectionNote ? `## HydroSense selection note
 
 ${dev.selectionNote}
 
-` : ""}Official manufacturer source: ${dev.officialSite}
+` : ""}${authorityStatement ? `## Manufacturer authority
+
+${authorityStatement}
+
+${manufacturerAuthority?.verificationUrl ? `Official program corroboration: ${manufacturerAuthority.verificationUrl}\n\n` : ""}` : ""}Official manufacturer source: ${dev.officialSite}
 
 URL: https://hydrosensetx.com/devices/${dev.slug}
 
@@ -293,7 +318,7 @@ output += `## Contact
 - Service catalog: https://hydrosensetx.com/service-catalog.json
 - OpenAPI: https://hydrosensetx.com/openapi.json
 - A2A Agent Card: https://hydrosensetx.com/.well-known/agent-card.json
-- License: Texas Registered Master Plumber
+- Plumbing authority: ${publicPlumbingAuthorityStatement}
 - Company: Lead Ledger Pro LLC
 `;
 

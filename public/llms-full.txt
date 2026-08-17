@@ -1,6 +1,6 @@
 # HydroSense Texas - Full Content
 
-> Licensed smart water shutoff installs certified under a Texas Master Plumber license, with carrier-recognized insurance discount certification. Houston metro.
+> HydroSense manages device selection, plumbing coordination, installation, setup, shutoff testing, and homeowner handoff in one complete service. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
 
 ---
 
@@ -35,7 +35,7 @@ The certificate is the product. The device is the hardware. A smart water shutof
 1. Sign up (form or phone call)
 2. 15-minute phone assessment
 3. Service agreement with exact pricing
-4. Professional install by Texas Master Plumber (~2 hours)
+4. Plumbing installation through a Texas-licensed partner under RMP M-43057 (~2 hours)
 5. App handoff and device configuration
 6. Certificate issued in paper and digital form after final payment
 
@@ -74,6 +74,15 @@ State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Prog
 ## Devices Installed
 
 Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa, FloLogic
+
+## Manufacturer authority and programs
+
+HydroSense Texas is authorized by FloLogic and listed in Phyn's Find a Phyn Pro Directory.
+
+- Authorized by FloLogic: HydroSense Texas is authorized by FloLogic.
+- Phyn Pro: HydroSense Texas is listed in Phyn's Find a Phyn Pro Directory. Official corroboration: https://phyn.com/pages/find-a-phyn-pro
+
+About: https://hydrosensetx.com/about
 
 ---
 
@@ -171,7 +180,7 @@ URL: https://hydrosensetx.com/guides/flo-by-moen-vs-phyn-vs-streamlabs-vs-flolog
 
 **Do I need a plumber to install a smart water shutoff?**
 
-An inline smart water shutoff requires the domestic water line, pipe, valves, fittings, placement, and orientation to be evaluated before the line is modified. HydroSense coordinates plumbing installation under Texas Master Plumber License MPL 43057, then completes compatible-device setup, commissioning, shutoff testing, and homeowner handoff. The written proposal confirms the exact responsibilities and scope before scheduling.
+An inline smart water shutoff requires the domestic water line, pipe, valves, fittings, placement, and orientation to be evaluated before the line is modified. HydroSense manages device selection, plumbing coordination, installation, setup, shutoff testing, and homeowner handoff in one complete service. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057. The written proposal confirms the exact responsibilities and scope before scheduling.
 
 ### Device selection, plumbing work, and commissioning are different tasks
 
@@ -197,7 +206,7 @@ Product requirements and services can change, so the proposal and handoff confir
 
 ### The plumbing scope is the domestic household water line
 
-The home’s domestic water line is the standard HydroSense installation scope. HydroSense does not install leak detection, monitoring, or automatic shutoff control on fire-sprinkler or fire-suppression piping. Irrigation is optional and must be specifically requested, technically reviewed, and quoted in the written proposal. The proposal confirms the actual plumbing configuration and any equipment required; one shutoff device is not assumed to control both domestic water and irrigation. Work is coordinated under Texas Master Plumber License MPL 43057.
+The home’s domestic water line is the standard HydroSense installation scope. HydroSense does not install leak detection, monitoring, or automatic shutoff control on fire-sprinkler or fire-suppression piping. Irrigation is optional and must be specifically requested, technically reviewed, and quoted in the written proposal. The proposal confirms the actual plumbing configuration and any equipment required; one shutoff device is not assumed to control both domestic water and irrigation. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
 
 URL: https://hydrosensetx.com/guides/do-i-need-a-plumber-for-smart-water-shutoff
 
@@ -277,7 +286,7 @@ URL: https://hydrosensetx.com/blog/cost-of-burst-pipe-texas
 
 ## Smart vs Manual Water Shutoff
 
-Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Installed under Texas Master Plumber license MPL 43057.
+Side-by-side comparison. Manual valve: $0, 10-30 minute response (if home), no monitoring, no insurance credit. Smart shutoff: from $999, 3-8 second response, 24/7 monitoring, 10-15% carrier credit ($300-$600/year). Five failure points of manual valves: location unknown, accessibility, corrosion, response time, absence. Device options: Moen Flo (broadest acceptance), Phyn Plus (most sensitive), StreamLabs (fewest moving parts). Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
 
 URL: https://hydrosensetx.com/blog/smart-vs-manual-water-shutoff-freeze
 
@@ -324,6 +333,12 @@ Phyn Plus installs on the domestic water supply after the primary shutoff and be
 ## Best for
 
 Homes suited to an inline device where the owner wants pressure-based whole-home domestic-water monitoring, plumbing insights, and automatic valve control.
+
+## Manufacturer authority
+
+HydroSense Texas is listed in Phyn's Find a Phyn Pro Directory.
+
+Official program corroboration: https://phyn.com/pages/find-a-phyn-pro
 
 Official manufacturer source: https://www.phyn.com
 
@@ -382,6 +397,10 @@ Properties with 1 1/2-inch or 2-inch domestic incoming water lines, higher-flow 
 ## HydroSense selection note
 
 HydroSense supports FloLogic as its designated large-line device family for qualifying 1 1/2-inch and 2-inch domestic incoming mains. Final compatibility and model are confirmed in the written proposal; fire-sprinkler and fire-suppression piping are excluded.
+
+## Manufacturer authority
+
+HydroSense Texas is authorized by FloLogic.
 
 Official manufacturer source: https://flologic.com/collections/flologic-system
 
@@ -697,5 +716,5 @@ A: Yes, Livingston, Onalaska, Coldspring, and surrounding communities.
 - Service catalog: https://hydrosensetx.com/service-catalog.json
 - OpenAPI: https://hydrosensetx.com/openapi.json
 - A2A Agent Card: https://hydrosensetx.com/.well-known/agent-card.json
-- License: Texas Registered Master Plumber
+- Plumbing authority: Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
 - Company: Lead Ledger Pro LLC

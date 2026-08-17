@@ -47,9 +47,8 @@ export default function Hero() {
               data-hero-body="true"
               className="mt-6 max-w-[660px] text-lg leading-8 text-slate-600 lg:text-xl"
             >
-              HydroSense installs and configures Flo by Moen, Phyn Plus, and StreamLabs
-              systems for Houston-area homes, tests automatic shutoff operation, and walks
-              the homeowner through the finished system.
+              HydroSense manages device selection, plumbing coordination, installation,
+              setup, shutoff testing, and homeowner handoff in one complete service.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">

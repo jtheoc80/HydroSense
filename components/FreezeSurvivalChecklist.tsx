@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
-import { MASTER_PLUMBER_LICENSE } from "@/lib/config";
 
 interface ChecklistItem {
   id: string;
@@ -158,7 +157,7 @@ export default function FreezeSurvivalChecklist({
           </div>
           <div className="text-right text-sm">
             <p>(281) 694-5754</p>
-            <p>License {MASTER_PLUMBER_LICENSE}</p>
+            <p>Plumbing execution under RMP M-43057</p>
           </div>
         </div>
 
@@ -252,7 +251,7 @@ export default function FreezeSurvivalChecklist({
         {/* Print-only footer */}
         <div className="hidden print-header mt-8 pt-4 border-t-2 border-black text-sm justify-between">
           <p>hydrosensetx.com</p>
-          <p>License {MASTER_PLUMBER_LICENSE} | (281) 694-5754</p>
+          <p>Plumbing execution under RMP M-43057 | (281) 694-5754</p>
         </div>
 
         {/* Email capture variant */}

@@ -609,8 +609,9 @@ export default function SmartVsManualWaterShutoffFreeze() {
                   walls.
                 </p>
                 <p>
-                  HydroSense installs under Texas Registered Master Plumber
-                  license MPL 43057. This is not a marketing detail, it is a
+                  Plumbing work is performed through a Texas-licensed plumbing partner
+                  under Responsible Master Plumber M-43057. This is not a marketing
+                  detail, it is a
                   requirement. Most carriers require documented professional
                   installation under a licensed plumber to honor the insurance
                   credit. The carrier needs to see that the device was installed

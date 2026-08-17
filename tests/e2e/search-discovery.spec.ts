@@ -62,10 +62,8 @@ test("structured data is present in raw server HTML before hydration", async ({ 
   );
   expect(businessEntities).toHaveLength(1);
   expect(businessEntities[0]["@type"]).toEqual(["LocalBusiness", "Plumber"]);
-  expect(businessEntities[0]).toMatchObject({
-    name: "HydroSense Texas",
-    hasCredential: { identifier: "MPL 43057" },
-  });
+  expect(businessEntities[0]).toMatchObject({ name: "HydroSense Texas" });
+  expect(businessEntities[0]).not.toHaveProperty("hasCredential");
 
   const pricingJsonLd = structuredDataByRoute.get("/pricing") ?? [];
   const pricingService = pricingJsonLd.find(
@@ -195,6 +193,31 @@ test("pricing page renders authoritative starting prices while homepage links wi
   await expect(page).toHaveURL(/\/pricing$/);
 });
 
+test("homepage primary-market card uses its height for useful service details", async ({
+  page,
+}) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  const card = page.locator("[data-primary-market-card]");
+  const detailsLink = card.locator("[data-primary-market-link]");
+  await expect(card).toBeVisible();
+  await expect(card).toContainText("From review to handoff");
+  await expect(card).toContainText("Compatibility review");
+  await expect(card).toContainText("Written proposal");
+  await expect(card).toContainText("Tested handoff");
+  await expect(card).toContainText("Fire-sprinkler and fire-suppression piping are excluded");
+  await expect(detailsLink).toBeVisible();
+
+  const cardBox = await card.boundingBox();
+  const linkBox = await detailsLink.boundingBox();
+  expect(cardBox).not.toBeNull();
+  expect(linkBox).not.toBeNull();
+
+  const unusedBottomSpace =
+    cardBox!.y + cardBox!.height - (linkBox!.y + linkBox!.height);
+  expect(unusedBottomSpace).toBeLessThanOrEqual(48);
+});
+
 for (const route of browserRoutes) {
   test(`${route} exposes canonical intent without viewport overflow`, async ({ page }) => {
     const response = await page.goto(route, { waitUntil: "domcontentloaded" });
@@ -240,10 +263,10 @@ test("structured data preserves one global business identity and pricing provide
     url: SITE_ORIGIN,
     telephone: "+1-281-694-5754",
     areaServed: { name: "Greater Houston, Texas" },
-    hasCredential: { identifier: "MPL 43057" },
   });
   expect(JSON.stringify(businessEntities[0])).not.toContain("streetAddress");
 
+  expect(businessEntities[0]).not.toHaveProperty("hasCredential");
   await page.goto("/pricing", { waitUntil: "networkidle" });
   const pricingJsonLd = (
     await page.locator('script[type="application/ld+json"]').allTextContents()

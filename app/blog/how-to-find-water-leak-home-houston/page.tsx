@@ -336,7 +336,7 @@ export default function HowToFindWaterLeakHomeHouston() {
                 </p>
                 <p>
                   For Houston area homeowners, call us at (281) 694-5754. We
-                  will get our Texas Master Plumber on site within 90 minutes
+                  will help assess the next step and identify appropriate licensed plumbing support
                   during business hours, and after hours emergency leak detection
                   in Houston TX is available for active flooding situations.
                 </p>

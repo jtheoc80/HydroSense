@@ -1,10 +1,11 @@
 # HydroSense Texas
 
-> Licensed smart water shutoff installs certified under a Texas Master Plumber license, with carrier-recognized insurance discount certification. Houston metro and surrounding Texas markets.
+> HydroSense manages device selection, plumbing coordination, installation, setup, shutoff testing, and homeowner handoff in one complete service. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
 
 ## Core pages
 
 - [Homepage](https://hydrosensetx.com/): Overview, insurance savings calculator, certificate explainer, pricing
+- [About HydroSense](https://hydrosensetx.com/about): Manufacturer authority, Phyn Pro program participation, supported systems, installation scope, and licensing
 - [How it works](https://hydrosensetx.com/#customer-journey): Six-step process from quote to insurance certificate
 - [Insurance forms guide](https://hydrosensetx.com/#insurance-forms): HO-A vs HO-B vs HO-3 explained for Texas homeowners
 - [Freeze damage](https://hydrosensetx.com/#freeze-damage): Long-tail consequences of hard freezes in Texas
@@ -18,7 +19,7 @@
 - [Smart water shutoff installation cost in Houston](https://hydrosensetx.com/guides/smart-water-shutoff-installation-cost-houston): Catalog-backed starting prices by verified domestic-main size and written-scope boundaries
 - [What size smart water shutoff do I need?](https://hydrosensetx.com/guides/what-size-smart-water-shutoff-do-i-need): Line-size verification, site requirements, and large-line device selection
 - [Flo by Moen vs Phyn vs StreamLabs vs FloLogic](https://hydrosensetx.com/guides/flo-by-moen-vs-phyn-vs-streamlabs-vs-flologic): Fit comparison by monitoring approach, installation, power, connectivity, and line size
-- [Do I need a plumber for a smart water shutoff?](https://hydrosensetx.com/guides/do-i-need-a-plumber-for-smart-water-shutoff): Plumbing, commissioning, testing, and homeowner handoff under MPL 43057
+- [Do I need a plumber for a smart water shutoff?](https://hydrosensetx.com/guides/do-i-need-a-plumber-for-smart-water-shutoff): Plumbing, commissioning, testing, and homeowner handoff. Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
 - [Smart water shutoffs during power or Wi-Fi outages](https://hydrosensetx.com/guides/smart-water-shutoff-power-wifi-outage): Device-specific local behavior, connected features, and backup-power limits
 
 HydroSense standard installation starting prices currently range from $999 to $4,175 by verified incoming domestic-main size. The domestic household water line is the standard scope. Irrigation must be specifically requested and quoted separately. Fire-sprinkler and fire-suppression piping are excluded.
@@ -69,8 +70,12 @@ HydroSense standard installation starting prices currently range from $999 to $4
 ## About
 
 - Company: HydroSense Texas, a Lead Ledger Pro LLC brand
-- License: Texas Registered Master Plumber
+- Plumbing authority: Plumbing work is performed through a Texas-licensed plumbing partner under Responsible Master Plumber M-43057.
 - Service area: Houston metropolitan area, Greater Houston, Southeast Texas
 - Devices installed: Flo by Moen, Phyn Plus, StreamLabs Control, Guardian by Elexa, FloLogic
+- Manufacturer authority: HydroSense Texas is authorized by FloLogic and listed in Phyn's Find a Phyn Pro Directory.
+- Phyn program: Phyn Pro Program participant; official corroboration: https://phyn.com/pages/find-a-phyn-pro
+- FloLogic relationship: Authorized by FloLogic; exact program designation and public corroboration remain unconfirmed.
+- Additional supported systems: Flo by Moen, StreamLabs Control, Guardian by Elexa
 - Phone: (281) 694-5754
 - Carriers recognized: State Farm, USAA, Allstate, Farmers, Travelers, Liberty Mutual, Nationwide, Progressive, Texas Farm Bureau, Chubb

@@ -7,6 +7,8 @@ import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import { installationScopeDisclosure } from "@/lib/installation-scope";
+import { getManufacturerAuthority } from "@/lib/business/manufacturer-authorizations";
+import { fullServiceAuthorityStatement } from "@/lib/business/plumbing-license";
 
 export const metadata: Metadata = {
   title: "Smart Water Shutoff Devices Installed in Houston",
@@ -46,6 +48,28 @@ const fitFactors = [
   },
 ];
 
+function ManufacturerAuthorityBadge({
+  deviceSlug,
+  className = "",
+}: {
+  deviceSlug: string;
+  className?: string;
+}) {
+  const authority = getManufacturerAuthority(deviceSlug);
+  if (!authority) return null;
+
+  return (
+    <span
+      data-manufacturer-authority-badge
+      className={`${className} block w-fit rounded-full border border-hydro-400/35 bg-hydro-400/10 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-hydro-400`}
+    >
+      <span aria-hidden="true">{authority.publicLabel}</span>
+      <span className="sr-only">{authority.publicStatement}</span>
+    </span>
+  );
+
+
+}
 export default function DevicesPage() {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -120,6 +144,9 @@ export default function DevicesPage() {
               verifies those conditions before issuing a written installation
               proposal.
             </p>
+            <p className="mb-8 max-w-3xl text-base leading-7 text-fog-300">
+              {fullServiceAuthorityStatement}
+            </p>
             <div className="mb-8 max-w-3xl rounded-2xl border border-hydro-400/25 bg-hydro-400/[0.06] p-5">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-hydro-400">
                 Installation boundary
@@ -183,6 +210,7 @@ export default function DevicesPage() {
                   {deviceList.map((device) => (
                     <tr
                       key={device.slug}
+                      data-device-slug={device.slug}
                       className="border-b border-ink-700/30 last:border-b-0 hover:bg-white/[0.02] transition-colors"
                     >
                       <td className="py-5 px-5 align-top">
@@ -192,6 +220,7 @@ export default function DevicesPage() {
                         >
                           {device.name}
                         </a>
+                        <ManufacturerAuthorityBadge deviceSlug={device.slug} className="mt-2" />
                         {device.hubBadge ? (
                           <span className="mt-2 block w-fit rounded-full border border-signal-400/35 bg-signal-400/10 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-signal-400">
                             {device.hubBadge}
@@ -253,7 +282,9 @@ export default function DevicesPage() {
                 <article
                   key={device.slug}
                   className="bg-ink-800/40 border border-ink-700/30 rounded-2xl p-7 lg:p-9 flex flex-col"
+                  data-device-slug={device.slug}
                 >
+                  <ManufacturerAuthorityBadge deviceSlug={device.slug} className="mb-3" />
                   {device.hubBadge ? (
                     <p className="mb-3 w-fit rounded-full border border-signal-400/35 bg-signal-400/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-signal-400">
                       {device.hubBadge}

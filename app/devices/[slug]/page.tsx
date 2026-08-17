@@ -10,6 +10,10 @@ import Footer from "@/components/Footer";
 import TrackedPhoneLink from "@/components/TrackedPhoneLink";
 import LiteYouTube from "@/components/LiteYouTube";
 import { installationScopeDisclosure } from "@/lib/installation-scope";
+import {
+  getManufacturerAuthority,
+  getManufacturerAuthorityStatement,
+} from "@/lib/business/manufacturer-authorizations";
 
 export function generateStaticParams() {
   return deviceSlugs.map((slug) => ({ slug }));
@@ -67,6 +71,9 @@ const processSteps = [
 export default function DevicePage({ params }: PageProps) {
   const device = devices[params.slug];
   if (!device) notFound();
+  const manufacturerAuthority = getManufacturerAuthority(device.slug);
+  const manufacturerAuthorityStatement = getManufacturerAuthorityStatement(device.slug);
+
 
   const otherDevices = deviceList.filter((item) => item.slug !== device.slug);
   const guideDecisionLinks = device.slug === "flologic"
@@ -147,6 +154,21 @@ export default function DevicePage({ params }: PageProps) {
                 <p className="text-xl text-fog-200 leading-relaxed mb-5">
                   {device.tagline}
                 </p>
+                {manufacturerAuthorityStatement ? (
+                  <div data-manufacturer-authority className="mb-6 w-fit rounded-xl border border-hydro-400/35 bg-hydro-400/10 px-4 py-3 text-sm font-semibold text-hydro-400">
+                    <p>{manufacturerAuthorityStatement}</p>
+                    {manufacturerAuthority?.verificationUrl ? (
+                      <a
+                        href={manufacturerAuthority.verificationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-2 inline-block underline decoration-hydro-400/50 underline-offset-4 hover:text-hydro-300"
+                      >
+                        View the official Phyn directory
+                      </a>
+                    ) : null}
+                  </div>
+                ) : null}
                 {device.selectionNote ? (
                   <p className="mb-6 max-w-2xl rounded-xl border border-signal-400/30 bg-signal-400/[0.08] p-4 text-sm leading-6 text-fog-200">
                     {device.selectionNote}

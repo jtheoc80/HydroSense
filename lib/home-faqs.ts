@@ -2,6 +2,7 @@ import {
   compatibilityReviewScope,
   installationScopeDisclosure,
 } from "./installation-scope";
+import { fullServiceAuthorityStatement } from "./business/plumbing-license";
 
 export interface HomeFaq {
   q: string;
@@ -31,7 +32,7 @@ export const homeFaqs: HomeFaq[] = [
   },
   {
     q: "Who performs the plumbing work?",
-    a: "HydroSense coordinates the work under Texas Master Plumber License MPL 43057. The written proposal identifies the installation scope and responsible plumbing license information before work begins.",
+    a: `${fullServiceAuthorityStatement} The written proposal identifies the installation scope and responsible plumbing license information before work begins.`,
   },
   {
     q: "Where can I see installation starting prices?",

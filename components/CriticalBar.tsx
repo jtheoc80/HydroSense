@@ -1,4 +1,5 @@
 import TrackedPhoneLink from "./TrackedPhoneLink";
+import { homepagePlumbingTrustStatement } from "@/lib/business/plumbing-license";
 
 export default function CriticalBar() {
   return (
@@ -13,7 +14,7 @@ export default function CriticalBar() {
           <p className="truncate text-xs text-slate-200 sm:text-sm">
             Whole-home domestic-water shutoff installation
             <span className="hidden lg:inline">
-              {" "}• Work coordinated under Texas Master Plumber License MPL 43057
+              {" "}• {homepagePlumbingTrustStatement}
             </span>
           </p>
         </div>

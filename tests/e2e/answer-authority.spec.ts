@@ -27,7 +27,7 @@ const guides = [
     route: "/guides/do-i-need-a-plumber-for-smart-water-shutoff",
     title: "Do You Need a Plumber for a Smart Water Shutoff? | HydroSense",
     question: "Do I need a plumber to install a smart water shutoff?",
-    facts: ["MPL 43057", "domestic", "fire-sprinkler"],
+    facts: ["M-43057", "domestic", "fire-sprinkler"],
   },
   {
     route: "/guides/smart-water-shutoff-power-wifi-outage",
@@ -124,7 +124,7 @@ test("cost, sizing, comparison, plumbing, and outage claims remain intentionally
   await expect(page.getByText(/A universal winner cannot be named/i)).toBeVisible();
 
   await page.goto(guides[3].route);
-  await expect(page.locator("[data-direct-answer-text]")).toContainText("Texas Master Plumber License MPL 43057");
+  await expect(page.locator("[data-direct-answer-text]")).toContainText("Texas-licensed plumbing partner under Responsible Master Plumber M-43057");
   await expect(page.locator("#scope-boundary")).toContainText(/fire-sprinkler or fire-suppression piping/i);
 
   await page.goto(guides[4].route);

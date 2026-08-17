@@ -12,6 +12,7 @@ import {
   serviceCatalog,
 } from "@/lib/service-catalog/catalog";
 import { buildPricingJsonLd } from "@/lib/service-catalog/schema";
+import { fullServiceAuthorityStatement } from "@/lib/business/plumbing-license";
 
 export const metadata: Metadata = {
   title: "Smart Water Shutoff Installation Pricing Houston",
@@ -76,6 +77,9 @@ export default function PricingPage() {
               <div>
                 <p className="text-lg leading-8 text-slate-300">
                   Each starting price includes one compatible smart shutoff device and a standard domestic-water installation. Additional material or non-standard work is finalized in the written proposal.
+                </p>
+                <p className="mt-4 text-sm leading-6 text-slate-400">
+                  {fullServiceAuthorityStatement}
                 </p>
                 <Button href="/#lead-form" color="cyan" className="!mt-7 !rounded-full !border-transparent !bg-hydro-400 !px-6 !py-3.5 !text-sm !font-semibold !text-ink-950 hover:!bg-hydro-300">
                   Request a written proposal
